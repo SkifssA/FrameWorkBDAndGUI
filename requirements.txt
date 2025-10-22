@@ -1,0 +1,7 @@
+dearpygui
+aiofiles
+aiohttp
+libsql-client
+pyyaml
+beautifulsoup4
+pandas

@@ -1,0 +1,48 @@
+﻿import dearpygui.dearpygui as dpg
+import os
+import sys
+import asyncio
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from core.createClass.createClass import main, createFile
+
+from core.object.clas.Core_ClassAvi import Core_ClassAvi
+from core.object.attr.Core_AttrAvi import Core_AttrAvi
+from core.object.script.Core_ScriptAvi import Core_ScriptAvi
+
+
+async def mainProgram():
+    dpg.create_context()
+
+    # Путь к шрифту
+    font_path = os.path.join(os.path.dirname(__file__), "core/font/minecraft_0.ttf")
+    if not os.path.exists(font_path):
+        raise FileNotFoundError(f"Шрифт не найден: {font_path}")
+
+    # Создаём реестр шрифтов и загружаем шрифт с кириллицей
+    with dpg.font_registry():
+        with dpg.font(font_path, 14) as font:
+            dpg.add_font_range_hint(dpg.mvFontRangeHint_Cyrillic)
+
+    # Устанавливаем шрифт как активный (заменяет устаревший default_font=True)
+    dpg.bind_font(font)
+
+    await Core_AttrAvi().List().open()
+    await Core_ClassAvi().List().open()
+    await Core_ScriptAvi().List().open()
+
+    # Создаём viewport и запускаем
+    dpg.create_viewport(title='Dear PyGui Таблица', width=1000, height=400)
+    dpg.setup_dearpygui()
+    dpg.show_viewport()
+    dpg.start_dearpygui()
+    dpg.destroy_context()
+
+if __name__ == "__main__":
+    args = sys.argv[1:]  # первый элемент — имя скрипта
+    if (args[0] == 'createClass'):
+        asyncio.run(main())
+    elif (args[0] == 'createSours'):
+        asyncio.run(createFile())
+    elif (args[0] == 'launchApp'):
+        asyncio.run(mainProgram())

@@ -1,0 +1,33 @@
+{
+    "name": "Core_Attr",
+    "caption": "Атрибуты класса",
+    "attr": [
+        {
+            "name": "idTab",
+            "caption": "Класс",
+            "type": "INTEGER",
+            "refTab": "Core_Class",
+            "isHeadLine": true,
+            "isMnemoCode": true
+        },{
+           "name": "sCode",
+            "caption": "Код",
+            "type": "TEXT",
+            "isMnemoCode": true 
+        },{
+           "name": "sCaption",
+            "caption": "Название",
+            "type": "TEXT",
+            "isHeadLine": true 
+        },{
+           "name": "sType",
+            "caption": "Тип",
+            "type": "TEXT",
+            "isHeadLine": true 
+        },{
+           "name": "sRefClass",
+            "caption": "Ссылка на класс",
+            "type": "TEXT"
+        }
+    ]
+}

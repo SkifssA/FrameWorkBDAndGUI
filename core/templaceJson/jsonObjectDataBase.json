@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/entity.schema.json",
+  "title": "Entity Definition",
+  "description": "Описание сущности с атрибутами и опциональными зависимостями базы данных",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Уникальное имя сущности (например, Hbc_Lesson)"
+    },
+    "caption": {
+      "type": "string",
+      "description": "Отображаемое название сущности"
+    },
+    "attr": {
+      "type": "array",
+      "description": "Список атрибутов сущности",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Имя атрибута (используется в коде)"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["TEXT", "INTEGER", "INT", "BOOLEAN", "DATE"],
+            "description": "Тип данных атрибута"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Отображаемое название атрибута"
+          },
+          "refTab": {
+            "type": "string",
+            "description": "Класс зависимости"
+          },
+          "isHeadLine": {
+            "type": "boolean",
+            "enum": [true, false],
+            "description": "Вставиться ли значение в HeadLine"
+          },
+          "isMnemoCode": {
+            "type": "boolean",
+            "enum": [true, false],
+            "description": "Вставиться ли значение в MnemoCode"
+          },
+          "isVisible": {
+            "type": "boolean",
+            "enum": [true, false],
+            "description": "Будет ли отображаться атр в стандартной выборке"
+          }
+        },
+        "required": ["name", "type", "caption"],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "collections": {
+      "type": "array",
+      "description": "Список коллекций сущности",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Имя класса (используется в коде)"
+          },
+          "attr": {
+            "type": "string",
+            "description": "Имя атрибута соединения колекции с классом"
+          }
+        },
+        "required": ["name", "attr"],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "dbData": {
+      "type": "array",
+      "description": "Список зависимостей или установок данных в БД (опционально)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dependence": {
+            "type": "string",
+            "description": "Путь к зависимости (например, Hbc_StudentApi.dataInstall)"
+          },
+          "name": {
+            "type": "string",
+            "description": "Имя установщика данных"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Версия данных"
+          }
+        },
+        "required": ["name", "version"],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": ["name", "caption", "attr"],
+  "additionalProperties": false
+}

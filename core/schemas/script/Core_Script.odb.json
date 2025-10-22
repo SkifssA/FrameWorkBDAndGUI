@@ -1,0 +1,16 @@
+{
+    "name": "Core_Script",
+    "caption": "Скрипты",
+    "attr": [
+        {
+            "name": "sAction",
+            "caption": "Выполненый код",
+            "type": "TEXT",
+            "isHeadLine": true
+        },{
+           "name": "nVersion",
+            "caption": "Версия",
+            "type": "INTEGER"
+        }
+    ]
+}
