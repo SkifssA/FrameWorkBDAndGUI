@@ -6,16 +6,16 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.createClass.createClass import main, createFile
 
-from core.object.clas.Core_ClassAvi import Core_ClassAvi
+from core.object.Core_MainMenu import Core_MainMenu
 from core.object.attr.Core_AttrAvi import Core_AttrAvi
-from core.object.script.Core_ScriptAvi import Core_ScriptAvi
 
 
 async def mainProgram():
     dpg.create_context()
 
     # Путь к шрифту
-    font_path = os.path.join(os.path.dirname(__file__), "core/font/minecraft_0.ttf")
+    font_path = os.path.join(os.path.dirname(__file__), "core", "font", "minecraft_0.ttf")
+    print(font_path)
     if not os.path.exists(font_path):
         raise FileNotFoundError(f"Шрифт не найден: {font_path}")
 
@@ -27,13 +27,12 @@ async def mainProgram():
     # Устанавливаем шрифт как активный (заменяет устаревший default_font=True)
     dpg.bind_font(font)
 
-    await Core_AttrAvi().List().open()
-    await Core_ClassAvi().List().open()
-    await Core_ScriptAvi().List().open()
+    await Core_MainMenu().open()
 
     # Создаём viewport и запускаем
-    dpg.create_viewport(title='Dear PyGui Таблица', width=1000, height=400)
+    dpg.create_viewport(title='Dear PyGui Таблица', width=800, height=600)
     dpg.setup_dearpygui()
+    dpg.maximize_viewport()
     dpg.show_viewport()
     dpg.start_dearpygui()
     dpg.destroy_context()

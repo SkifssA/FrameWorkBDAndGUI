@@ -6,14 +6,6 @@ from ..package import ASQL
 class BaseAvi:
     class DefaultList:
         async def open(self):
-            with dpg.window(label="Таблица данных",
-                            no_title_bar=True,        # убираем заголовок (опционально)
-                            no_move=True,             # нельзя двигать
-                            no_resize=True,           # нельзя менять размер
-                            no_collapse=True,         # нельзя свернуть
-                            width=-1,                 # ← растянуть по ширине
-                            height=-1):
-                # Создаём таблицу
                 with dpg.theme() as table_theme:
                         with dpg.theme_component(dpg.mvTable):
                             dpg.add_theme_color(dpg.mvThemeCol_HeaderActive, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
@@ -26,7 +18,8 @@ class BaseAvi:
                                 borders_innerH=True,
                                 borders_innerV=True,
                                 borders_outerH=True,
-                                borders_outerV=True) as table_sel_rows:
+                                borders_outerV=True,
+                                parent='main_window') as table_sel_rows:
                     data = await self.__getDataTab()
                     for i in data['column']:
                         dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr))
