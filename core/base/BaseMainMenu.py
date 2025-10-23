@@ -24,16 +24,18 @@ class mainMenu:
             with dpg.menu_bar():
                 for i in w:
                     with dpg.menu(label=w[i]['data'][1]):
-                        for j in w[i]['child']:
+                        for j in sorted(w[i]['child'], key=lambda x: w[i]['child'][x]['data'][1]._order):
                             s = w[i]['child'][j]
-                            dpg.add_menu_item(label=s['data'][1], callback=s['data'][-1])
+                            dpg.add_menu_item(label=s['data'][1]._oper_label, callback=s['data'][-1])
+            with dpg.tab_bar(tag="tab_bar"):
+                pass
 
     async def _createMenu(self):
         menuDict = make_btn()
         for name, obj in inspect.getmembers(self.__class__, predicate=inspect.isfunction):
             if hasattr(obj, '_is_oper_handler'):
                 if obj._headOper:
-                    menuDict[obj._headOper]['child'][obj._oper_id]['data'] = (name, obj._oper_label, self.appendAction(obj, name))
+                    menuDict[obj._headOper]['child'][obj._oper_id]['data'] = (name, obj, self.appendAction(obj, name))
                 else:
                     menuDict[obj._oper_id]['data'] = (name, obj._oper_label, obj)
         return to_dict(menuDict)

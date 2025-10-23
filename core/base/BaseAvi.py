@@ -6,29 +6,34 @@ from ..package import ASQL
 class BaseAvi:
     class DefaultList:
         async def open(self):
-                with dpg.theme() as table_theme:
-                        with dpg.theme_component(dpg.mvTable):
-                            dpg.add_theme_color(dpg.mvThemeCol_HeaderActive, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
-                            dpg.add_theme_color(dpg.mvThemeCol_Header, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
+                data = await self.__getDataTab()
+                sTag = await (await self.thisApi())._getNameClass()
+                if dpg.does_item_exist(sTag):
+                    dpg.show_item(sTag)
+                else:
+                    self.createTable(sTag, data['column'])
 
-                def clb_selectable(sender, app_data, user_data):
-                    print(f"Row {user_data}")
+                await self._refresh(sTag, data['row'])
+                dpg.set_value("tab_bar", sTag)
 
-                with dpg.table(header_row=True, # ← растягивает колонки
-                                borders_innerH=True,
-                                borders_innerV=True,
-                                borders_outerH=True,
-                                borders_outerV=True,
-                                parent='main_window') as table_sel_rows:
-                    data = await self.__getDataTab()
-                    for i in data['column']:
-                        dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr))
+        def createTheme(self):
+            with dpg.theme() as table_theme:
+                with dpg.theme_component(dpg.mvTable):
+                    dpg.add_theme_color(dpg.mvThemeCol_HeaderActive, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
+                    dpg.add_theme_color(dpg.mvThemeCol_Header, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
+                    return table_theme
 
-                    for i in data['row']:
-                        with dpg.table_row():
-                            for j in i:
-                                dpg.add_selectable(label=i[j], span_columns=True, callback=clb_selectable, user_data=i)
-                dpg.bind_item_theme(table_sel_rows, table_theme)
+        async def _refresh(self, tabl, rows):
+            tabl += self.__class__.__name__
+            children = dpg.get_item_children(tabl, slot=0)  # slot=0 — основной контейнер
+            for child in children:
+                if dpg.get_item_type(child) == "mvAppItemType::mvTableRow":
+                    dpg.delete_item(child)
+
+            for i in rows:
+                with dpg.table_row(parent=tabl):
+                    for j in i:
+                        dpg.add_selectable(label=i[j], span_columns=True, user_data=i)
 
         async def _getCollumn(self, column)->tuple[tuple[str]]:
             def getNameNotHL(name):
@@ -39,14 +44,31 @@ class BaseAvi:
             headRes = tuple((col, caption_map[getNameNotHL(col)] if getNameNotHL(col) in caption_map else col) for col in column)
             return headRes
         
-        async def __getDataTab(self):
+        async def __getDataTab(self, column=True):
             res = {}
             res['row'] = await ASQL(await self.onRefresh())
-            if res['row']:
-                res['column'] = await self._getCollumn(res['row'][0].keys())
-            else:
-                res['column'] = await self._getCollumn(self.showAttr)
+            if column:
+                if res['row']:
+                    res['column'] = await self._getCollumn(res['row'][0].keys())
+                else:
+                    res['column'] = await self._getCollumn(self.showAttr)
             return res
+
+        def createTable(self, tabl, collumn):
+            tab = dpg.add_tab(tag=tabl, label=tabl, parent='tab_bar')
+
+            dpg.add_button(label="Закрыть", callback=lambda: dpg.hide_item(tab), parent=tab)
+
+            with dpg.table(header_row=True, # ← растягивает колонки
+                            borders_innerH=True,
+                            borders_innerV=True,
+                            borders_outerH=True,
+                            borders_outerV=True,
+                            parent=tab,
+                            tag=tab+self.__class__.__name__) as table_sel_rows:
+                for i in collumn:
+                    dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr))
+            dpg.bind_item_theme(table_sel_rows, self.createTheme())
 
         def thisApi(self):
             outer_class_name = self.__class__.__qualname__.rsplit('.', 1)[0]

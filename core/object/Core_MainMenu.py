@@ -11,10 +11,10 @@ class Core_MainMenu(mainMenu):
     @SetOper(label='Классы')
     def mm_class(self): pass
 
-    @SetOper(label='Классы', headOper='mm_class')
+    @SetOper(label='Классы', headOper='mm_class', order=10)
     async def classAvi(self):
         await Core_ClassAvi().List().open()
 
-    @SetOper(label='Атрибуты', headOper='mm_class')
+    @SetOper(label='Атрибуты', headOper='mm_class', order=20)
     async def attrAvi(self):
         await Core_AttrAvi().List().open()

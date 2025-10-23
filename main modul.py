@@ -7,7 +7,6 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from core.createClass.createClass import main, createFile
 
 from core.object.Core_MainMenu import Core_MainMenu
-from core.object.attr.Core_AttrAvi import Core_AttrAvi
 
 
 async def mainProgram():
@@ -32,6 +31,7 @@ async def mainProgram():
     # Создаём viewport и запускаем
     dpg.create_viewport(title='Dear PyGui Таблица', width=800, height=600)
     dpg.setup_dearpygui()
+    dpg.set_primary_window("main_window", True)
     dpg.maximize_viewport()
     dpg.show_viewport()
     dpg.start_dearpygui()
