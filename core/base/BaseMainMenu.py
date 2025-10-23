@@ -19,7 +19,6 @@ def to_dict(d):
 class mainMenu:
     async def open(self):
         w = await self._createMenu()
-        print(w)
         with dpg.window(label="Главное окно", tag="main_window", menubar=True):
             with dpg.menu_bar():
                 for i in w:

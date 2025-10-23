@@ -87,13 +87,13 @@ async def __initMetaTab():
         data = await Core_FileManagerPkg.ReadFile(i.__str__())
         q = await __getQ(None, data['attr'])
         await __createOrUpdateTable(q, data['attr'], data['name'], False)
-        await ASQL("INSERT INTO Core_Class (sCode, sMnemoCode) VALUES (?, ?)", (data['name'],data['name'],))
+        await ASQL("INSERT OR IGNORE INTO Core_Class (sCode, sMnemoCode) VALUES (?, ?)", (data['name'],data['name'],))
 
     for i in await Core_FileManagerPkg.getFilesWithExtension(f'../../core/schemas/attr', '.odb.json'):
         data = await Core_FileManagerPkg.ReadFile(i.__str__())
         q = await __getQ(None, data['attr'])
         await __createOrUpdateTable(q, data['attr'], data['name'], False)
-        await ASQL("INSERT INTO Core_Class (sCode, sMnemoCode) VALUES (?, ?)", (data['name'],data['name'],))
+        await ASQL("INSERT OR IGNORE INTO Core_Class (sCode, sMnemoCode) VALUES (?, ?)", (data['name'],data['name'],))
 
 async def __insertMetaTable(sName, sCaption):
     from ..object.clas.Core_ClassApi import Core_ClassApi
@@ -103,7 +103,7 @@ async def __insertMetaTable(sName, sCaption):
 
 async def __insertMetaColumn(idTab, sName, sType, sCaption, sNameRefTab=None):
     from ..object.attr.Core_AttrApi import Core_AttrApi
-    await Core_AttrApi().insert(idTab, sName, sType, sCaption, sNameRefTab)
+    await Core_AttrApi().register(idTab, sName, sType, sCaption, sNameRefTab)
 
 async def _createDataForFile(data):
     data['sqlList'] = await __getSqlList(data['attr'], data['name'])

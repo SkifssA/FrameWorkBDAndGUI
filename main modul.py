@@ -14,7 +14,6 @@ async def mainProgram():
 
     # Путь к шрифту
     font_path = os.path.join(os.path.dirname(__file__), "core", "font", "minecraft_0.ttf")
-    print(font_path)
     if not os.path.exists(font_path):
         raise FileNotFoundError(f"Шрифт не найден: {font_path}")
 

@@ -17,7 +17,6 @@ class BaseApi:
         return r
     
     async def _sqlMetaColumns(self, columns:str):
-        print(f"select {columns} from Core_Attr t where t.idTab = ? and t.sCode <> 'id'", (await self.idClass(),))
         return await ASQL(f"select {columns} from Core_Attr t where t.idTab = ? and t.sCode <> 'id'", (await self.idClass(),))
 
     async def _findDataBase(self, attr:str, value):

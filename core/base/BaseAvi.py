@@ -25,7 +25,7 @@ class BaseAvi:
 
         async def _refresh(self, tabl, rows):
             tabl += self.__class__.__name__
-            children = dpg.get_item_children(tabl, slot=0)  # slot=0 — основной контейнер
+            children = dpg.get_item_children(tabl, slot=1)  # slot=0 — основной контейнер
             for child in children:
                 if dpg.get_item_type(child) == "mvAppItemType::mvTableRow":
                     dpg.delete_item(child)
@@ -65,7 +65,7 @@ class BaseAvi:
                             borders_outerH=True,
                             borders_outerV=True,
                             parent=tab,
-                            tag=tab+self.__class__.__name__) as table_sel_rows:
+                            tag=tabl+self.__class__.__name__) as table_sel_rows:
                 for i in collumn:
                     dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr))
             dpg.bind_item_theme(table_sel_rows, self.createTheme())
