@@ -21,6 +21,7 @@ class BaseApi:
 
     async def _findDataBase(self, attr:str, value):
         if value:
+            print(f'SELECT * FROM {await self._getNameClass()} WHERE {attr} = ?', [value,])
             w = await ASQL(f'SELECT * FROM {await self._getNameClass()} WHERE {attr} = ?', [value,])
         else:
             w = await ASQL(f'SELECT * FROM {await self._getNameClass()} WHERE {attr} IS NULL')

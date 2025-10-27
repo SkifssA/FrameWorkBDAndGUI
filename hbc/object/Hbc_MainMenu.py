@@ -13,14 +13,14 @@ class Hbc_MainMenu(mainMenu):
     @SetOper(label="Ученики")
     def mm_student(self):pass
 
-    @SetOper(label='Ученики', order=2, headOper="mm_student")
+    @SetOper(label='Ученики', order=1, headOper="mm_student")
     async def Hbc_Student(self):
         await Hbc_StudentAvi.List().open()
 
-    @SetOper(label='Время учеников', order=3, headOper="mm_student")
+    @SetOper(label='Время учеников', order=2, headOper="mm_student")
     async def Hbc_StudentData(self):
         await Hbc_StudentDataAvi.List().open()
 
-    @SetOper(label='Выполненые практические', order=4, headOper="mm_student")
+    @SetOper(label='Выполненые практические', order=3, headOper="mm_student")
     async def Hbc_StudentLesson(self):
         await Hbc_StudentLessonAvi.List().open()

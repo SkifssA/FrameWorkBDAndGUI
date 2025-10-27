@@ -2,6 +2,8 @@ import inspect
 from collections import defaultdict
 import dearpygui.dearpygui as dpg
 import asyncio
+from .BaseOper import SetOper
+from ..object.Core_SelectApp import Core_SelectApp
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -17,10 +19,20 @@ def to_dict(d):
     return d
 
 class mainMenu:
+
+    @SetOper(label="Приложение", order=-10)
+    def mm_main_oper(self): pass
+
+
+    @SetOper(label='Выйти', headOper='mm_main_oper', order=10000)
+    async def exit(self): 
+        dpg.delete_item("main_window", children_only=True)
+        await Core_SelectApp().open()
+
     async def open(self):
         w = await self._createMenu()
         with dpg.menu_bar(parent='main_window'):
-            for i in w:
+            for i in sorted(w, key=lambda x: w[x]['data'][1]._order):
                 with dpg.menu(label=w[i]['data'][1]._oper_label):
                     for j in sorted(w[i]['child'], key=lambda x: w[i]['child'][x]['data'][1]._order):
                         s = w[i]['child'][j]

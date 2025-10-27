@@ -12,7 +12,7 @@ TYPE_MAPPING = {
     "DATE": "TEXT",
 }
 
-async def main():
+async def createTab():
     await __initMetaTab()
     listApp = await Core_FileManagerPkg.ReadFile("../../project.yaml")
     script = []
