@@ -4,7 +4,7 @@ import inspect
 class Core_ActionDispatcherPkg:
     async def action(self, sAction:str):
         sNameClass, sNameMetod = sAction.split('.')
-        sNameModule = f'{sNameClass[:sNameClass.find('_')].lower()}.object'
+        sNameModule = f'{sNameClass[:sNameClass.find('_')].lower()}.object.{sNameClass}'
         try:
             module = importlib.import_module(sNameModule)
             if not hasattr(module, sNameClass):

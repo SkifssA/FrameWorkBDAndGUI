@@ -1,0 +1,33 @@
+{
+    "name": "Hbc_StudentLesson",
+    "caption": "Выполненые практические студента",
+    "collections": [
+        {
+            "name": "Bc_File",
+            "attr": "gidScr"
+        }
+    ],
+    "attr":[
+        {
+            "name": "idStudent",
+            "type": "INT",
+            "caption": "Студент",
+            "refTab": "Hbc_Student",
+            "isMnemoCode": true 
+        },{
+            "name": "idLesson",
+            "type": "INT",
+            "caption": "Практическая",
+            "refTab": "Hbc_Lesson",
+            "isMnemoCode": true 
+        },{
+            "name": "bUploadFile",
+            "type": "INT",
+            "caption": "Скачены файлы"
+        },{
+            "name": "bFillScore",
+            "type": "INT",
+            "caption": "Оценено"
+        }
+    ]
+}

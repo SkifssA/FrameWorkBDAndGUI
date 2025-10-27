@@ -12,8 +12,10 @@ class Bc_FileObj:
         self.sPath:str = None
 
 class Bc_FileDpi(BaseApi):
-    _idClass = 2
     _classObj = Bc_FileObj
+
+    async def _getNameClass(self):
+        return "Bc_File"
 
     def calcHeadLine(self, rop:Bc_FileObj)->str:
         return f'{rop.id}'

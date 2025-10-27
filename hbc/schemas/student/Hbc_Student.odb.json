@@ -1,0 +1,45 @@
+{
+    "name": "Hbc_Student",
+    "caption": "Студенты",
+    "collections": [
+        {
+            "name": "Hbc_StudentData",
+            "attr": "idStudent"
+        },{
+            "name": "Hbc_StudentLesson",
+            "attr": "idStudent"
+        }
+    ],
+    "attr":[
+        {
+            "name": "sName",
+            "type": "TEXT",
+            "caption": "ФИО",
+            "isHeadLine": true
+        },{
+            "name": "sContact",
+            "type": "TEXT",
+            "caption": "Телеграм"
+        },{
+            "name": "sIpVM",
+            "type": "TEXT",
+            "caption": "ip виртуальной машины"
+        },{
+            "name": "sLoginVM",
+            "type": "TEXT",
+            "caption": "Логин виртуальной машины"
+        },{
+            "name": "sPassworVM",
+            "type": "TEXT",
+            "caption": "Пароль виртуальной машины"
+        },{
+            "name": "sIdNew",
+            "type": "TEXT",
+            "caption": "Внешний id"
+        },{
+            "name": "bEnd",
+            "type": "INT",
+            "caption": "Закончил обучение"
+        }
+    ]
+}

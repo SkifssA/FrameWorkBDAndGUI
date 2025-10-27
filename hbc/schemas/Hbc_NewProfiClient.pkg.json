@@ -1,0 +1,9 @@
+{
+    "dbData": [
+        {
+            "dependence": "Hbc_DataInstallPkg.dataInstallConfig",
+            "name": "Hbc_NewProfiClientPkg.dataInstall",
+            "version": 1
+        }
+    ]
+}

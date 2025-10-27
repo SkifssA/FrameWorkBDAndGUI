@@ -1,0 +1,16 @@
+{
+    "name": "Hbc_StudentData",
+    "caption": "Время начала студента",
+    "attr":[
+        {
+            "name": "idStudent",
+            "type": "INT",
+            "caption": "Студент",
+            "refTab": "Hbc_Student"
+        },{
+            "name": "sData",
+            "type": "TEXT",
+            "caption": "Начал в"
+        }
+    ]
+}

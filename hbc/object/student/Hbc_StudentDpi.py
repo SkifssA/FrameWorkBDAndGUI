@@ -1,0 +1,45 @@
+# Системный файл для логики
+import asyncio
+from core.base import BaseApi, gid
+
+class Hbc_StudentObj:
+    def __init__(self):
+        self.id:int = None
+        self.gid:gid = None
+        self.sName:str = None
+        self.sContact:str = None
+        self.sIpVM:str = None
+        self.sLoginVM:str = None
+        self.sPassworVM:str = None
+        self.sIdNew:str = None
+        self.bEnd:int = None
+
+class Hbc_StudentDpi(BaseApi):
+    _classObj = Hbc_StudentObj
+
+    async def _getNameClass(self):
+        return "Hbc_Student"
+
+    def calcHeadLine(self, rop:Hbc_StudentObj)->str:
+        return f'{rop.sName}'
+
+    def calcMnemoCode(self, rop:Hbc_StudentObj)->str:
+        return f'{rop.id}'
+
+    async def insert(self)->Hbc_StudentObj:
+        return await super().insert()
+
+    async def delete(self, rop:Hbc_StudentObj)->None:
+        from ...object import Hbc_StudentDataApi
+        d = await Hbc_StudentDataApi()._getAllByAttr('idStudent', rop.id)
+        if d: asyncio.gather(*(Hbc_StudentDataApi().delete(i) for i in d))
+        from ...object import Hbc_StudentLessonApi
+        d = await Hbc_StudentLessonApi()._getAllByAttr('idStudent', rop.id)
+        if d: asyncio.gather(*(Hbc_StudentLessonApi().delete(i) for i in d))
+        return await super().delete(rop)
+    
+    async def update(self, rop:Hbc_StudentObj)->None:
+        return await super().update(rop)
+    
+    async def load(self, id: int)->Hbc_StudentObj:
+        return await super().load(id)

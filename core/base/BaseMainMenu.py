@@ -19,15 +19,14 @@ def to_dict(d):
 class mainMenu:
     async def open(self):
         w = await self._createMenu()
-        with dpg.window(label="Главное окно", tag="main_window", menubar=True):
-            with dpg.menu_bar():
-                for i in w:
-                    with dpg.menu(label=w[i]['data'][1]):
-                        for j in sorted(w[i]['child'], key=lambda x: w[i]['child'][x]['data'][1]._order):
-                            s = w[i]['child'][j]
-                            dpg.add_menu_item(label=s['data'][1]._oper_label, callback=s['data'][-1])
-            with dpg.tab_bar(tag="tab_bar"):
-                pass
+        with dpg.menu_bar(parent='main_window'):
+            for i in w:
+                with dpg.menu(label=w[i]['data'][1]._oper_label):
+                    for j in sorted(w[i]['child'], key=lambda x: w[i]['child'][x]['data'][1]._order):
+                        s = w[i]['child'][j]
+                        dpg.add_menu_item(label=s['data'][1]._oper_label, callback=s['data'][-1])
+        with dpg.tab_bar(tag="tab_bar", parent='main_window'):
+            pass
 
     async def _createMenu(self):
         menuDict = make_btn()
@@ -36,7 +35,7 @@ class mainMenu:
                 if obj._headOper:
                     menuDict[obj._headOper]['child'][obj._oper_id]['data'] = (name, obj, self.appendAction(obj, name))
                 else:
-                    menuDict[obj._oper_id]['data'] = (name, obj._oper_label, obj)
+                    menuDict[obj._oper_id]['data'] = (name, obj, self.appendAction(obj, name))
         return to_dict(menuDict)
     
     def appendAction(self, obj, name):

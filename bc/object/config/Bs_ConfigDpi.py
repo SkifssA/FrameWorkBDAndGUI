@@ -11,8 +11,10 @@ class Bs_ConfigObj:
         self.sValue:str = None
 
 class Bs_ConfigDpi(BaseApi):
-    _idClass = 1
     _classObj = Bs_ConfigObj
+
+    async def _getNameClass(self):
+        return "Bs_Config"
 
     def calcHeadLine(self, rop:Bs_ConfigObj)->str:
         return f'{rop.id}'

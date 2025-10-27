@@ -249,7 +249,7 @@ async def __actionScripts(datas:list[dict]):
 
     for data in datas:
         print(data)
-        d = await ASQL(f"SELECT nVersion FROM meta_script WHERE sAction = '{data['name']}'")
+        d = await ASQL(f"SELECT nVersion FROM Core_Script WHERE sAction = '{data['name']}'")
         if d == [] or d[0]['nVersion'] < data['version']:
             if 'dependence' in data.keys():
                 if isinstance(data['dependence'], list):
@@ -259,9 +259,9 @@ async def __actionScripts(datas:list[dict]):
                     await actionDependence(data['dependence'])
             await Core_ActionDispatcherPkg().action(data['name'])
             if d == []:
-                s = f"INSERT INTO meta_script (nVersion, sAction) VALUES (?, ?)"
+                s = f"INSERT INTO Core_Script (nVersion, sAction) VALUES (?, ?)"
             else:
-                s = f"UPDATE meta_script SET nVersion = ? WHERE sAction = ?"
+                s = f"UPDATE Core_Script SET nVersion = ? WHERE sAction = ?"
             await ATQSL(s, (data['version'], data['name']))
 
 async def __getHeadLine(dataAttr):

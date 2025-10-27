@@ -6,8 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.createClass.createClass import main, createFile
 
-from core.object.Core_MainMenu import Core_MainMenu
-
+from core.object.Core_SelectApp import Core_SelectApp 
 
 async def mainProgram():
     dpg.create_context()
@@ -24,8 +23,9 @@ async def mainProgram():
 
     # Устанавливаем шрифт как активный (заменяет устаревший default_font=True)
     dpg.bind_font(font)
-
-    await Core_MainMenu().open()
+    with dpg.window(label="Главное окно", tag="main_window", menubar=True):
+        pass
+    await Core_SelectApp().open()
 
     # Создаём viewport и запускаем
     dpg.create_viewport(title='Dear PyGui Таблица', width=800, height=600)
