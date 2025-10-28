@@ -82,7 +82,7 @@ class EmptyList:
     async def createTable(self, tabl):
         tab = dpg.add_tab(tag=tabl, label=tabl, parent='tab_bar')
 
-        with dpg.group(horizontal=True, parent=tab, tag=f"tabl_toolbar"):
+        with dpg.group(horizontal=True, parent=tab):
             await self.addTools()
 
         with dpg.table(header_row=True, # ← растягивает колонки
@@ -103,7 +103,6 @@ class EmptyList:
                 q.append((name, obj))
             
         for i in sorted(q, key=lambda x: x[-1]._order): 
-            print(f"{nameApi}_{i[-1]._oper_id}")   
             dpg.add_button(label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]), tag=f"{nameApi}_{i[-1]._oper_id}")
 
     def appendAction(self, obj, name):
