@@ -8,6 +8,8 @@ python/
 # C extensions
 *.so
 
+data/
+
 # Distribution / packaging
 .Python
 build/

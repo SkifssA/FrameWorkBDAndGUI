@@ -1,11 +1,12 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi
+from core.base import BaseAvi, Selection
 from .Core_ScriptApi import Core_ScriptApi, Core_ScriptObj
 
 class Core_ScriptDvi(BaseAvi):
     thisApi = Core_ScriptApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['sAction', 'nVersion']
+        selection = Selection('Core_Script')
         async def onRefresh(self):
             return """
             SELECT t.id,

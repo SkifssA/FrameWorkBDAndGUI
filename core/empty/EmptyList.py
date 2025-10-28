@@ -10,7 +10,7 @@ class EmptyList:
         if dpg.does_item_exist(sTag):
             dpg.show_item(sTag)
         else:
-            self.createTable(sTag, data['column'])
+            await self.createTable(sTag)
 
         await self._refresh(sTag, data)
         dpg.set_value("tab_bar", sTag)
@@ -41,6 +41,13 @@ class EmptyList:
         await self._refresh(sTag, data)
 
     def _click(self, tagSelf, tagTable):
+        self._oneShow(tagSelf, tagTable)
+        self.checwork()
+
+    def checwork(self):
+        pass
+
+    def _oneShow(self, tagSelf, tagTable):
         for i in dpg.get_item_children(tagTable, slot=1):
             ch = dpg.get_item_children(i, slot=1)
             for j in ch:
@@ -72,11 +79,11 @@ class EmptyList:
                 res['column'] = await self._getCollumn(self.showAttr)
         return res
 
-    def createTable(self, tabl, collumn):
+    async def createTable(self, tabl):
         tab = dpg.add_tab(tag=tabl, label=tabl, parent='tab_bar')
 
-        with dpg.group(horizontal=True, parent=tab):
-            self.addTools()
+        with dpg.group(horizontal=True, parent=tab, tag=f"tabl_toolbar"):
+            await self.addTools()
 
         with dpg.table(header_row=True, # ← растягивает колонки
                         borders_innerH=True,
@@ -88,14 +95,16 @@ class EmptyList:
             pass
         # dpg.bind_item_theme(table_sel_rows, self.createTheme())
 
-    def addTools(self):
+    async def addTools(self):
+        nameApi = await (await self.thisApi())._getNameClass()
         q = []
         for name, obj in inspect.getmembers(self.__class__, predicate=inspect.isfunction):
             if hasattr(obj, '_is_oper_handler'):
                 q.append((name, obj))
             
-        for i in sorted(q, key=lambda x: x[-1]._order):    
-            dpg.add_button(label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]))
+        for i in sorted(q, key=lambda x: x[-1]._order): 
+            print(f"{nameApi}_{i[-1]._oper_id}")   
+            dpg.add_button(label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]), tag=f"{nameApi}_{i[-1]._oper_id}")
 
     def appendAction(self, obj, name):
         bound_method = getattr(self, name)

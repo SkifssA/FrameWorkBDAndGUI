@@ -1,11 +1,12 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi
+from core.base import BaseAvi, Selection
 from .Hbc_LessonApi import Hbc_LessonApi, Hbc_LessonObj
 
 class Hbc_LessonDvi(BaseAvi):
     thisApi = Hbc_LessonApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['sCaption', 'sIdExit']
+        selection = Selection('Hbc_Lesson')
         async def onRefresh(self):
             return """
             SELECT t.id,

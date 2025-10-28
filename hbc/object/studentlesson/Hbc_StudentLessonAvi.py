@@ -4,6 +4,8 @@ from ..student.Hbc_StudentApi import Hbc_StudentApi
 from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
 from core.base.BaseOper import SetOper
 
+import dearpygui.dearpygui as dpg
+
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
     class List(Hbc_StudentLessonDvi.DviList):
         @SetOper(label='Обновить практические')
@@ -40,10 +42,9 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
         # async def flt_NotScore(self):
         #     await self._refresh()
 
-        # async def chr(self):
-        #     await super().chr()
-            
-        #     self.oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
+        def checwork(self):
+            super().checwork()
+            self.selection.oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
 
     class LookUp(Hbc_StudentLessonDvi.DviLookUp):
         pass

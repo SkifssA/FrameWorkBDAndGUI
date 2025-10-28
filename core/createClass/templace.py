@@ -17,13 +17,14 @@ class {nameClass}Api({nameClass}Dpi):
 """
 
 Dvi = """# Системный файл для интерфейса
-from core.base import BaseAvi
+from core.base import BaseAvi, Selection
 from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
 
 class {nameClass}Dvi(BaseAvi):
     thisApi = {nameClass}Api
     class DviList(BaseAvi.DefaultList):
         showAttr = [{showAttr}]
+        selection = Selection('{nameClass}')
         async def onRefresh(self):
             return \"\"\"{sqlList}\"\"\"
 

@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 import importlib
+import asyncio
 
 from ..empty.EmptyList import EmptyList
 from .BaseOper import SetOper
@@ -11,15 +12,14 @@ class BaseAvi:
         async def closeForm(self):
             dpg.hide_item(await (await self.thisApi())._getNameClass())
 
-        async def getAttr(self, name):
-            row = await self.get_row()
+        def getAttr(self, name):
+            row = asyncio.run(self.get_row())
             if name in row:
                 return row[name]
             return None
 
         async def thisRop(self):
             row = await self.get_row()
-            print(row)
             return await (await self.thisApi())._createRop(row)
 
         def thisApi(self):

@@ -8,6 +8,17 @@ from ..object.Core_SelectApp import Core_SelectApp
 async def mainProgram():
     dpg.create_context()
 
+    # Тема для корректного отображения отключённых кнопок
+    with dpg.theme() as compat_theme:
+        with dpg.theme_component(dpg.mvButton, enabled_state=False):
+            c = (41, 41, 44, 255)
+            dpg.add_theme_color(dpg.mvThemeCol_Button, c)
+            dpg.add_theme_color(dpg.mvThemeCol_ButtonHovered, c)
+            dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, c)
+            dpg.add_theme_color(dpg.mvThemeCol_Text, (180, 180, 180, 255))
+
+    dpg.bind_theme(compat_theme)
+
     # Путь к шрифту
     font_path = Core_FileManagerPkg._getObjPath("../font/minecraft_0.ttf", index=1)
     font_path = font_path['real_path']

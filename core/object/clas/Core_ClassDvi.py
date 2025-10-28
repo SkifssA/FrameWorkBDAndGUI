@@ -1,11 +1,12 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi
+from core.base import BaseAvi, Selection
 from .Core_ClassApi import Core_ClassApi, Core_ClassObj
 
 class Core_ClassDvi(BaseAvi):
     thisApi = Core_ClassApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['sCode', 'sCaption']
+        selection = Selection('Core_Class')
         async def onRefresh(self):
             return """
             SELECT t.id,

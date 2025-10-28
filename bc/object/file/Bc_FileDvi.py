@@ -1,11 +1,12 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi
+from core.base import BaseAvi, Selection
 from .Bc_FileApi import Bc_FileApi, Bc_FileObj
 
 class Bc_FileDvi(BaseAvi):
     thisApi = Bc_FileApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['gidScr', 'sCaption', 'sSuffix', 'sPath']
+        selection = Selection('Bc_File')
         async def onRefresh(self):
             return """
             SELECT t.id,
