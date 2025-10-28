@@ -16,11 +16,11 @@ class EmptyList:
         dpg.set_value("tab_bar", sTag)
 
     def createTheme(self):
-            with dpg.theme() as table_theme:
-                with dpg.theme_component(dpg.mvTable):
-                    dpg.add_theme_color(dpg.mvThemeCol_HeaderActive, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
-                    dpg.add_theme_color(dpg.mvThemeCol_Header, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
-                    return table_theme
+        with dpg.theme() as table_theme:
+            with dpg.theme_component(dpg.mvTable):
+                dpg.add_theme_color(dpg.mvThemeCol_HeaderActive, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
+                dpg.add_theme_color(dpg.mvThemeCol_Header, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
+        return table_theme
                 
     async def _refresh(self, tabl, rows):
         tabl += self.__class__.__name__
@@ -28,11 +28,24 @@ class EmptyList:
         for child in children:
             if dpg.get_item_type(child) == "mvAppItemType::mvTableRow":
                 dpg.delete_item(child)
-
         for i in rows:
             with dpg.table_row(parent=tabl):
                 for j in i:
-                    dpg.add_selectable(label=i[j], span_columns=True, user_data=i)
+                    w = dpg.add_selectable(label=i[j], span_columns=True, user_data=i, callback=lambda x, y, z: self._click(x, tabl))
+
+    def _click(self, tagSelf, tagTable):
+        for i in dpg.get_item_children(tagTable, slot=1):
+            ch = dpg.get_item_children(i, slot=1)
+            for j in ch:
+                dpg.set_value(j, tagSelf in ch)
+
+    async def get_row(self):
+        tagTable = (await (await self.thisApi())._getNameClass()) + self.__class__.__name__
+        for i in dpg.get_item_children(tagTable, slot=1):
+            for j in dpg.get_item_children(i, slot=1):
+                if dpg.get_value(j):
+                    return dpg.get_item_user_data(j)
+
 
     async def _getCollumn(self, column)->tuple[tuple[str]]:
         def getNameNotHL(name):
@@ -56,7 +69,8 @@ class EmptyList:
     def createTable(self, tabl, collumn):
         tab = dpg.add_tab(tag=tabl, label=tabl, parent='tab_bar')
 
-        self.addTools(tab)
+        with dpg.group(horizontal=True, parent=tab):
+            self.addTools()
 
         with dpg.table(header_row=True, # ← растягивает колонки
                         borders_innerH=True,
@@ -67,16 +81,16 @@ class EmptyList:
                         tag=tabl+self.__class__.__name__) as table_sel_rows:
             for i in collumn:
                 dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr))
-        dpg.bind_item_theme(table_sel_rows, self.createTheme())
+        # dpg.bind_item_theme(table_sel_rows, self.createTheme())
 
-    def addTools(self, tab):
+    def addTools(self):
         q = []
         for name, obj in inspect.getmembers(self.__class__, predicate=inspect.isfunction):
             if hasattr(obj, '_is_oper_handler'):
                 q.append((name, obj))
             
         for i in sorted(q, key=lambda x: x[-1]._order):    
-            dpg.add_button(label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]), parent=tab)
+            dpg.add_button(label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]))
 
     def appendAction(self, obj, name):
         bound_method = getattr(self, name)

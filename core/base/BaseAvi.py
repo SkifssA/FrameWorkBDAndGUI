@@ -7,9 +7,20 @@ from .BaseOper import SetOper
 class BaseAvi:
     class DefaultList(EmptyList):
 
-        @SetOper(label='Закрыть')
+        @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
             dpg.hide_item(await (await self.thisApi())._getNameClass())
+
+        async def getAttr(self, name):
+            row = await self.get_row()
+            if name in row:
+                return row[name]
+            return None
+
+        async def thisRop(self):
+            row = await self.get_row()
+            print(row)
+            return await (await self.thisApi())._createRop(row)
 
         def thisApi(self):
             outer_class_name = self.__class__.__qualname__.rsplit('.', 1)[0]
