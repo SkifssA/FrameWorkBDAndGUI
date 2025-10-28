@@ -1,5 +1,9 @@
 from core.package import Core_AiohttpPkg
-from ..object import Hbc_LessonApi, Hbc_StudentDataApi, Hbc_StudentApi, Hbc_StudentLessonApi
+from ..object.lesson.Hbc_LessonApi import Hbc_LessonApi
+from ..object.studentdata.Hbc_StudentDataApi import Hbc_StudentDataApi
+from ..object.student.Hbc_StudentApi import Hbc_StudentApi
+from ..object.studentlesson.Hbc_StudentLessonApi import Hbc_StudentLessonApi
+
 from bc.object.config.Bs_ConfigApi import Bs_ConfigApi
 from bc.object.file.Bc_FileApi import Bc_FileApi
 

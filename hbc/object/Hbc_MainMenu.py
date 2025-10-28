@@ -1,4 +1,7 @@
-from . import Hbc_LessonAvi, Hbc_StudentAvi, Hbc_StudentDataAvi, Hbc_StudentLessonAvi
+from .lesson.Hbc_LessonAvi import Hbc_LessonAvi
+from .student.Hbc_StudentAvi import Hbc_StudentAvi
+from .studentdata.Hbc_StudentDataAvi import Hbc_StudentDataAvi
+from .studentlesson.Hbc_StudentLessonAvi import Hbc_StudentLessonAvi
 from core.base.BaseOper import SetOper
 from core.base.BaseMainMenu import mainMenu
 

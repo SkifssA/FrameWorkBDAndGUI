@@ -12,7 +12,7 @@ class EmptyList:
         else:
             self.createTable(sTag, data['column'])
 
-        await self._refresh(sTag, data['row'])
+        await self._refresh(sTag, data)
         dpg.set_value("tab_bar", sTag)
 
     def createTheme(self):
@@ -22,16 +22,23 @@ class EmptyList:
                 dpg.add_theme_color(dpg.mvThemeCol_Header, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
         return table_theme
                 
-    async def _refresh(self, tabl, rows):
+    async def _refresh(self, tabl, data):
         tabl += self.__class__.__name__
-        children = dpg.get_item_children(tabl, slot=1)  # slot=0 — основной контейнер
+        children = dpg.get_item_children(tabl, slot=1) + dpg.get_item_children(tabl, slot=0) # slot=0 — основной контейнер
         for child in children:
-            if dpg.get_item_type(child) == "mvAppItemType::mvTableRow":
-                dpg.delete_item(child)
-        for i in rows:
+            dpg.delete_item(child)
+        
+        for i in data['column']:
+                dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr), parent=tabl)
+        for row in data['row']:
             with dpg.table_row(parent=tabl):
-                for j in i:
-                    w = dpg.add_selectable(label=i[j], span_columns=True, user_data=i, callback=lambda x, y, z: self._click(x, tabl))
+                for j in row:
+                    dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl))
+
+    async def refresh(self):
+        data = await self.__getDataTab()
+        sTag = await (await self.thisApi())._getNameClass()
+        await self._refresh(sTag, data)
 
     def _click(self, tagSelf, tagTable):
         for i in dpg.get_item_children(tagTable, slot=1):
@@ -45,7 +52,6 @@ class EmptyList:
             for j in dpg.get_item_children(i, slot=1):
                 if dpg.get_value(j):
                     return dpg.get_item_user_data(j)
-
 
     async def _getCollumn(self, column)->tuple[tuple[str]]:
         def getNameNotHL(name):
@@ -79,8 +85,7 @@ class EmptyList:
                         borders_outerV=True,
                         parent=tab,
                         tag=tabl+self.__class__.__name__) as table_sel_rows:
-            for i in collumn:
-                dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr))
+            pass
         # dpg.bind_item_theme(table_sel_rows, self.createTheme())
 
     def addTools(self):

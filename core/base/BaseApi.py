@@ -38,7 +38,7 @@ class BaseApi:
 
     async def _findAllByAttr(self, attr:str, value)->list[int]|None:
         w = await self._findDataBase(attr, value)
-        return list(i['id'] for i in w) if w!=[] else []
+        return list(i['id'] for i in w) if w!=[] else None
 
     async def _findByAttr(self, attr: str, value):
         w = await self._findAllByAttr(attr, value)

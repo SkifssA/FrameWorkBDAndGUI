@@ -27,7 +27,7 @@ class Hbc_StudentLessonDpi(BaseApi):
         return await super().insert()
 
     async def delete(self, rop:Hbc_StudentLessonObj)->None:
-        from bc.object import Bc_FileApi
+        from bc.object.file.Bc_FileApi import Bc_FileApi
         d = await Bc_FileApi()._getAllByAttr('gidScr', rop.gid)
         if d: asyncio.gather(*(Bc_FileApi().delete(i) for i in d))
         return await super().delete(rop)

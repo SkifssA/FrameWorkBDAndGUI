@@ -292,10 +292,10 @@ async def __getDelete(data):
     if 'collections' in data.keys():
         mM = data['name'][:data['name'].find('_')].lower()
         for i in data['collections']:
-            w = i['name']
+            w:str = i['name']
             m = i['name'][:i['name'].find('_')].lower()
             mtemp = '...' if mM == m else f'{m}.'
-            res.append(f'from {mtemp}object import {w}Api')
+            res.append(f'from {mtemp}object.{w.split('_')[-1].lower()}.{w}Api import {w}Api')
             res.append(f'd = await {w}Api()._getAllByAttr(\'{i['attr']}\', rop.{'id' if i['attr'].startswith('id') else 'gid'})')
             res.append(f'if d: asyncio.gather(*({w}Api().delete(i) for i in d))')
             

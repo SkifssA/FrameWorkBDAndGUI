@@ -25,7 +25,7 @@ class Core_ClassDpi(BaseApi):
         return await super().insert()
 
     async def delete(self, rop:Core_ClassObj)->None:
-        from ...object import Core_AttrApi
+        from ...object.attr.Core_AttrApi import Core_AttrApi
         d = await Core_AttrApi()._getAllByAttr('idClass', rop.id)
         if d: asyncio.gather(*(Core_AttrApi().delete(i) for i in d))
         return await super().delete(rop)

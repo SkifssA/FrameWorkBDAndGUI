@@ -15,6 +15,7 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             w = Hbc_NewProfiClientPkg()
             await w.Login()
             await w.createFileStudents(sHeadLineListt)
+            await self.refresh()
 
         @SetOper(label='Загрузить файлы по уроку')
         async def uploadlesson(self):

@@ -30,10 +30,10 @@ class Hbc_StudentDpi(BaseApi):
         return await super().insert()
 
     async def delete(self, rop:Hbc_StudentObj)->None:
-        from ...object import Hbc_StudentDataApi
+        from ...object.studentdata.Hbc_StudentDataApi import Hbc_StudentDataApi
         d = await Hbc_StudentDataApi()._getAllByAttr('idStudent', rop.id)
         if d: asyncio.gather(*(Hbc_StudentDataApi().delete(i) for i in d))
-        from ...object import Hbc_StudentLessonApi
+        from ...object.studentlesson.Hbc_StudentLessonApi import Hbc_StudentLessonApi
         d = await Hbc_StudentLessonApi()._getAllByAttr('idStudent', rop.id)
         if d: asyncio.gather(*(Hbc_StudentLessonApi().delete(i) for i in d))
         return await super().delete(rop)
