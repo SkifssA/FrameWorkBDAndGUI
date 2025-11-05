@@ -51,5 +51,9 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             super().checwork()
             print(self.getIdMaster())
 
+        def openCh(self, master):
+            from bc.object.file.Bc_FileAvi import Bc_FileAvi
+            yield Bc_FileAvi.list(right=True)
+
     class LookUp(Hbc_StudentLessonDvi.DviLookUp):
         pass

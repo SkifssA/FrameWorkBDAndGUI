@@ -14,11 +14,11 @@ class Hbc_StudentAvi(Hbc_StudentDvi):
             await (await self.thisApi()).delete(await self.thisRop())
             await self.refresh()
 
-        async def openCh(self, master):
+        def openCh(self, master):
             from ..studentdata.Hbc_StudentDataAvi import Hbc_StudentDataAvi
             from ..studentlesson.Hbc_StudentLessonAvi import Hbc_StudentLessonAvi
-            await Hbc_StudentDataAvi.List_idStudent().open(master)
-            await Hbc_StudentLessonAvi.List_idStudent().open(master)
+            yield Hbc_StudentDataAvi.List_idStudent()
+            yield Hbc_StudentLessonAvi.List_idStudent()
 
 
     class LookUp(Hbc_StudentDvi.DviLookUp):

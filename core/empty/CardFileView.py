@@ -17,15 +17,15 @@ class CardFileView:
 
     async def open(self, master, w=-1, h=-1):
         self.parent = master
-        with dpg.tab(label='Просмотр файла', parent=master) as tab:
-            with dpg.child_window(width=-1
-                                  ,height=-1
-                                  , no_scrollbar=True
-                                  , no_scroll_with_mouse= True) as image_container:
-                self.image_drawlist = dpg.add_drawlist(width=w, height=h)
-                self.regHandler()
+        with dpg.child_window(width=-1
+                                ,height=-1
+                                , no_scrollbar=True
+                                , no_scroll_with_mouse= True
+                                , parent=self.parent) as image_container:
+            self.image_drawlist = dpg.add_drawlist(width=w, height=h)
+            self.regHandler()
         self.image_container = image_container
-        dpg.configure_item(master, show=True)
+        dpg.configure_item(dpg.get_item_parent(master), show=True)
         # Отложенно настроим размер и отрисуем изображение
         dpg.split_frame()  # ждём следующего кадра (чтобы элементы отрендерились)
         await asyncio.sleep(0)  # уступаем управление
@@ -67,12 +67,16 @@ class CardFileView:
     def loadFile(self, image_path):
         try:
             image_data, self.img_w, self.img_h = self.load_image_as_raw(image_path)
-            with dpg.texture_registry(show=False):
+            with dpg.texture_registry(show=True):
                 self.textureTag = dpg.add_static_texture(width=self.img_w, height=self.img_h, default_value=image_data)
         except Exception as e:
             print(f'{image_path=}')
             print("Ошибка:", e)
-            exit()
+            self.img_w, self.img_h = 200, 150
+            pixel_data = [0.0, 0.0, 0.0, 0.0] * (self.img_w * self.img_h)  # чёрный + прозрачный
+            # или [1.0, 1.0, 1.0, 1.0] * N — белый непрозрачный
+            with dpg.texture_registry(show=False):
+                self.textureTag = dpg.add_static_texture(self.img_w, self.img_h, pixel_data)
 
     def regHandler(self):
         with dpg.handler_registry():

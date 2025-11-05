@@ -9,27 +9,41 @@ class EmptyList:
         return self.thisApi()._getNameClass() + str(self.parent)
 
     async def open(self, parent='tab_bar'):
+        dpg.show_tool(dpg.mvTool_ItemRegistry)
         data = await self.__getDataTab()
         self.parent = parent
         self.sTag = self.getTag()
+        self.ch = tuple(self.openCh(self.sTag))
         if dpg.does_item_exist(self.sTag):
             dpg.show_item(self.sTag)
             await self._refresh(data)
             await self.refreshCh()
         else:
-            master = await self.createTab(self.sTag, parent)
-            await self._refresh(data)
-            self.ch = tuple(self.openCh(master))
+            w = 0
             for i in self.ch:
-                print(f'{i=}')
-                await i.open(master)
+                if i is not None:
+                    if hasattr(i, 'right'):
+                        w = -800              
+            master = await self.createTab(self.sTag, parent, w)
+            await self._refresh(data)
+            for i in self.ch:
+                if i is not None:
+                    print(f'{i=}')
+                    if hasattr(i, 'right'):
+                        await i.open(self.right)
+                    else:
+                        with dpg.tab(label='Просмотр файла', parent=master) as tab:
+                            await i.open(tab)
+                            dpg.configure_item(master, show=True)
+            
 
     async def refreshCh(self):
         for i in self.ch:
-            await i.refresh()
+            if i is not None:
+                await i.refresh()
 
     def openCh(self, master):
-        return []
+        yield 
 
     def createTheme(self):
         with dpg.theme() as table_theme:
@@ -41,19 +55,20 @@ class EmptyList:
     async def _refresh(self, data):
         s = True
         tabl = self.sTag + self.__class__.__name__
-        children = dpg.get_item_children(tabl, slot=1) + dpg.get_item_children(tabl, slot=0) # slot=0 — основной контейнер
-        for child in children:
-            dpg.delete_item(child)
+        if dpg.does_item_exist(tabl):
+            children = dpg.get_item_children(tabl, slot=1) + dpg.get_item_children(tabl, slot=0) # slot=0 — основной контейнер
+            for child in children:
+                dpg.delete_item(child)
         
-        for i in data['column']:
-                dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr), parent=tabl)
-        for row in data['row']:
-            with dpg.table_row(parent=tabl):
-                for j in row:
-                    q = dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl))
-                    if s:
-                        s=False
-                        self._click(q, tabl)
+            for i in data['column']:
+                    dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr), parent=tabl)
+            for row in data['row']:
+                with dpg.table_row(parent=tabl):
+                    for j in row:
+                        q = dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl))
+                        if s:
+                            s=False
+                            self._click(q, tabl)
 
     async def __getWhereSql(self):
             res = await self.onRefresh()
@@ -107,20 +122,25 @@ class EmptyList:
                 res['column'] = await self._getCollumn(self.showAttr)
         return res
 
-    async def createTab(self, tabl, parent='tab_bar'):
-        tab = dpg.add_tab(tag=tabl, label=tabl, parent=parent)
+    async def createTab(self, tabl, parent='tab_bar', width=0):
+        if parent == 'tab_bar':
+            tab = dpg.add_tab(tag=tabl, label=tabl, parent=parent)
+        else:
+            tab = parent
         dpg.configure_item(parent, show=True)
-
-        with dpg.group(parent=tab) as WWWW:
-            pass
-
-        return await self.createTable(WWWW)
+        with dpg.group(parent=tab, horizontal=True) as right:
+            with dpg.group() as WWWW:
+                pass
+        self.right = right 
+        return await self.createTable(WWWW, width)
        
-    async def createTable(self, par):
+    async def createTable(self, par, width=0):
         self.sTag = self.thisApi()._getNameClass()
         with dpg.group(horizontal=True, parent=par):
             await self.addTools()
-        with dpg.table(header_row=True, # ← растягивает колонки
+
+        with dpg.table(header_row=True,
+                       width=width, # ← растягивает колонки
                         borders_innerH=True,
                         borders_innerV=True,
                         borders_outerH=True,

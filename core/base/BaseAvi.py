@@ -11,6 +11,7 @@ class BaseAvi:
             if name.split('$', maxsplit=1)[0] == 'super':
                 if self.parent != 'tab_bar':
                     master = dpg.get_item_parent(self.parent)
+                    master = dpg.get_item_parent(master)
                     for i in dpg.get_item_children(master, slot=1):
                         if dpg.get_item_type(i) == 'mvAppItemType::mvTable':
                             return self.get_any_row(i)[name.split('$')[-1]]
