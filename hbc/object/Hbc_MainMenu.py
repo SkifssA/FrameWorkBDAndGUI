@@ -4,6 +4,7 @@ from .studentdata.Hbc_StudentDataAvi import Hbc_StudentDataAvi
 from .studentlesson.Hbc_StudentLessonAvi import Hbc_StudentLessonAvi
 from core.base.BaseOper import SetOper
 from core.base.BaseMainMenu import mainMenu
+from bc.object.file.Bc_FileAvi import Bc_FileAvi
 
 class Hbc_MainMenu(mainMenu):
     @SetOper(label="Справочники")
@@ -12,6 +13,10 @@ class Hbc_MainMenu(mainMenu):
     @SetOper(label='Уроки', order=1, headOper='mm_respo')
     async def Hbc_Lesson(self):
         await Hbc_LessonAvi.List().open()
+
+    @SetOper(label='Файлы', order=2, headOper='mm_respo')
+    async def Bc_File(self):
+        await Bc_FileAvi.List().open()
 
     @SetOper(label="Ученики")
     def mm_student(self):pass

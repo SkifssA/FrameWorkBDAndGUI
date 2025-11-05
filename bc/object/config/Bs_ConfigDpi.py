@@ -13,7 +13,7 @@ class Bs_ConfigObj:
 class Bs_ConfigDpi(BaseApi):
     _classObj = Bs_ConfigObj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "Bs_Config"
 
     def calcHeadLine(self, rop:Bs_ConfigObj)->str:

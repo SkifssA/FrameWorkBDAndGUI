@@ -4,11 +4,11 @@ from ..student.Hbc_StudentApi import Hbc_StudentApi
 from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
 from core.base.BaseOper import SetOper
 
-import dearpygui.dearpygui as dpg
-
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
     class List(Hbc_StudentLessonDvi.DviList):
-        @SetOper(label='Обновить практические')
+        showAttr = ['idStudentHL', 'idLessonHL']
+
+        @SetOper(label='Обновить практические', order=-1)
         async def uploadlessonAll(self):
             sHeadLineListt = []
             for i in await Hbc_StudentApi().findBybEnd():
@@ -44,7 +44,12 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
 
         def checwork(self):
             super().checwork()
-            self.selection.oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
+            self.selection().oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
+        
+    class List_idStudent(Hbc_StudentLessonDvi.DviDet): 
+        def checwork(self):
+            super().checwork()
+            print(self.getIdMaster())
 
     class LookUp(Hbc_StudentLessonDvi.DviLookUp):
         pass

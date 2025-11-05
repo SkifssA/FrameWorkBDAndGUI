@@ -6,7 +6,7 @@ class Hbc_StudentLessonDvi(BaseAvi):
     thisApi = Hbc_StudentLessonApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['idStudentHL', 'idLessonHL', 'bUploadFile', 'bFillScore']
-        selection = Selection('Hbc_StudentLesson')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -25,7 +25,31 @@ class Hbc_StudentLessonDvi(BaseAvi):
         async def thisRop(self)->Hbc_StudentLessonObj:
             return await super().thisRop()
 
-        async def thisApi(self)->Hbc_StudentLessonApi:
+        def thisApi(self)->Hbc_StudentLessonApi:
+            return super().thisApi()
+        
+    class DviDet(BaseAvi.DefaultDet):
+        showAttr = ['idLessonHL', 'bUploadFile', 'bFillScore']
+        selection = lambda self: Selection(self.getTag())
+        async def onRefresh(self):
+            return """
+            SELECT t.id,
+                   t.gid,
+                   t.idStudent,
+                   t1.sHeadLine as idStudentHL,
+                   t.idLesson,
+                   t2.sHeadLine as idLessonHL,
+                   t.bUploadFile,
+                   t.bFillScore
+            FROM Hbc_StudentLesson AS t
+                   LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+                   LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
+            """
+        
+        async def thisRop(self)->Hbc_StudentLessonObj:
+            return await super().thisRop()
+
+        def thisApi(self)->Hbc_StudentLessonApi:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):

@@ -6,7 +6,7 @@ class Bc_FileDvi(BaseAvi):
     thisApi = Bc_FileApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['gidScr', 'sCaption', 'sSuffix', 'sPath']
-        selection = Selection('Bc_File')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -22,7 +22,7 @@ class Bc_FileDvi(BaseAvi):
         async def thisRop(self)->Bc_FileObj:
             return await super().thisRop()
 
-        async def thisApi(self)->Bc_FileApi:
+        def thisApi(self)->Bc_FileApi:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):

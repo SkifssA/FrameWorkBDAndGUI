@@ -12,7 +12,7 @@ class Core_ClassObj:
 class Core_ClassDpi(BaseApi):
     _classObj = Core_ClassObj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "Core_Class"
 
     def calcHeadLine(self, rop:Core_ClassObj)->str:

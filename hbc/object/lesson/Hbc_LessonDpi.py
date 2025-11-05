@@ -12,7 +12,7 @@ class Hbc_LessonObj:
 class Hbc_LessonDpi(BaseApi):
     _classObj = Hbc_LessonObj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "Hbc_Lesson"
 
     def calcHeadLine(self, rop:Hbc_LessonObj)->str:

@@ -6,7 +6,7 @@ class Bs_ConfigDvi(BaseAvi):
     thisApi = Bs_ConfigApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['sModule', 'sCaprionSetting', 'sValue']
-        selection = Selection('Bs_Config')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -21,7 +21,7 @@ class Bs_ConfigDvi(BaseAvi):
         async def thisRop(self)->Bs_ConfigObj:
             return await super().thisRop()
 
-        async def thisApi(self)->Bs_ConfigApi:
+        def thisApi(self)->Bs_ConfigApi:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):

@@ -14,7 +14,7 @@ class Bc_FileObj:
 class Bc_FileDpi(BaseApi):
     _classObj = Bc_FileObj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "Bc_File"
 
     def calcHeadLine(self, rop:Bc_FileObj)->str:

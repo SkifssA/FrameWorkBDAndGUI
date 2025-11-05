@@ -1,6 +1,7 @@
 # Пользовательский файл для логики
 from core.package import Core_FileManagerPkg
 from .Bc_FileDpi import Bc_FileDpi, Bc_FileObj
+import asyncio
 
 class Bc_FileApi(Bc_FileDpi):
     async def findBygidSrc(self, gidSrc):
@@ -16,3 +17,7 @@ class Bc_FileApi(Bc_FileDpi):
         rop.sSuffix = nameFile[nameFile.rfind('.')+1:]
         await self.update(rop)
         print(f"Сохранёт файл {rop.sCaption} для источника {rop.gidScr}")
+
+    async def getRealPath(self, id):
+        rop = await self.load(id)
+        return Core_FileManagerPkg._getObjPath(rop.sPath)['real_path']

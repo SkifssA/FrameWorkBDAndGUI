@@ -15,7 +15,7 @@ class Core_AttrObj:
 class Core_AttrDpi(BaseApi):
     _classObj = Core_AttrObj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "Core_Attr"
 
     def calcHeadLine(self, rop:Core_AttrObj)->str:

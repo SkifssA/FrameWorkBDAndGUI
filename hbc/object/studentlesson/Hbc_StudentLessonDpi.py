@@ -14,7 +14,7 @@ class Hbc_StudentLessonObj:
 class Hbc_StudentLessonDpi(BaseApi):
     _classObj = Hbc_StudentLessonObj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "Hbc_StudentLesson"
 
     def calcHeadLine(self, rop:Hbc_StudentLessonObj)->str:

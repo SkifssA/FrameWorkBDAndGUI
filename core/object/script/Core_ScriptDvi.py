@@ -6,7 +6,7 @@ class Core_ScriptDvi(BaseAvi):
     thisApi = Core_ScriptApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['sAction', 'nVersion']
-        selection = Selection('Core_Script')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -20,7 +20,7 @@ class Core_ScriptDvi(BaseAvi):
         async def thisRop(self)->Core_ScriptObj:
             return await super().thisRop()
 
-        async def thisApi(self)->Core_ScriptApi:
+        def thisApi(self)->Core_ScriptApi:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):

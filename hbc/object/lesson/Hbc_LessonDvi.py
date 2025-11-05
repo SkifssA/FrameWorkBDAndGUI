@@ -6,7 +6,7 @@ class Hbc_LessonDvi(BaseAvi):
     thisApi = Hbc_LessonApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['sCaption', 'sIdExit']
-        selection = Selection('Hbc_Lesson')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -20,7 +20,7 @@ class Hbc_LessonDvi(BaseAvi):
         async def thisRop(self)->Hbc_LessonObj:
             return await super().thisRop()
 
-        async def thisApi(self)->Hbc_LessonApi:
+        def thisApi(self)->Hbc_LessonApi:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):

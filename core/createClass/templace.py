@@ -24,14 +24,14 @@ class {nameClass}Dvi(BaseAvi):
     thisApi = {nameClass}Api
     class DviList(BaseAvi.DefaultList):
         showAttr = [{showAttr}]
-        selection = Selection('{nameClass}')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return \"\"\"{sqlList}\"\"\"
 
         async def thisRop(self)->{nameClass}Obj:
             return await super().thisRop()
 
-        async def thisApi(self)->{nameClass}Api:
+        def thisApi(self)->{nameClass}Api:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):
@@ -56,7 +56,7 @@ class {nameClass}Obj:
 class {nameClass}Dpi(BaseApi):
     _classObj = {nameClass}Obj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "{nameClass}"
 
     def calcHeadLine(self, rop:{nameClass}Obj)->str:

@@ -6,7 +6,7 @@ class Hbc_StudentDataDvi(BaseAvi):
     thisApi = Hbc_StudentDataApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['idStudentHL', 'sData']
-        selection = Selection('Hbc_StudentData')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -21,7 +21,7 @@ class Hbc_StudentDataDvi(BaseAvi):
         async def thisRop(self)->Hbc_StudentDataObj:
             return await super().thisRop()
 
-        async def thisApi(self)->Hbc_StudentDataApi:
+        def thisApi(self)->Hbc_StudentDataApi:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):

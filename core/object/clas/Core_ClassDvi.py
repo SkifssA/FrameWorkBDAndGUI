@@ -6,7 +6,7 @@ class Core_ClassDvi(BaseAvi):
     thisApi = Core_ClassApi
     class DviList(BaseAvi.DefaultList):
         showAttr = ['sCode', 'sCaption']
-        selection = Selection('Core_Class')
+        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -20,7 +20,7 @@ class Core_ClassDvi(BaseAvi):
         async def thisRop(self)->Core_ClassObj:
             return await super().thisRop()
 
-        async def thisApi(self)->Core_ClassApi:
+        def thisApi(self)->Core_ClassApi:
             return super().thisApi()
 
     class DviLookUp(BaseAvi.DefaultLookUp):

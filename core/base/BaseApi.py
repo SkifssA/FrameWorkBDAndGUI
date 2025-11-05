@@ -9,7 +9,7 @@ class BaseApi:
         return ' '
 
     async def idClass(self):
-        id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (await self._getNameClass(),))
+        id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))
         return id[0]['id']
 
     async def getCaptionAttrClass(self)->list:
@@ -21,10 +21,10 @@ class BaseApi:
 
     async def _findDataBase(self, attr:str, value):
         if value:
-            print(f'SELECT * FROM {await self._getNameClass()} WHERE {attr} = ?', [value,])
-            w = await ASQL(f'SELECT * FROM {await self._getNameClass()} WHERE {attr} = ?', [value,])
+            print(f'SELECT * FROM {self._getNameClass()} WHERE {attr} = ?', [value,])
+            w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} = ?', [value,])
         else:
-            w = await ASQL(f'SELECT * FROM {await self._getNameClass()} WHERE {attr} IS NULL')
+            w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} IS NULL')
         return w
     
     async def _getAllByAttr(self, attr:str, value)->list|None:
@@ -54,7 +54,7 @@ class BaseApi:
         return ' '
 
     async def insert(self):
-        t = await self._getNameClass()
+        t = self._getNameClass()
         rop = self._classObj()
         rop.id = await ATQSL(f"INSERT INTO {t} (id) VALUES (NULL)")
         return rop
@@ -66,13 +66,13 @@ class BaseApi:
         value['sHeadLine'] = self.calcHeadLine(rop)
         value['sMnemoCode'] = self.calcMnemoCode(rop)
         keys = [k for k in value.keys() if k != 'id']
-        await ATQSL(f"UPDATE {await self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (rop.id,))
+        await ATQSL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (rop.id,))
         
     async def delete(self, rop):
         return await self._deleteById(rop.id)
         
     async def _deleteById(self, id):
-        t = await self._getNameClass()
+        t = self._getNameClass()
         return await ATQSL(f"DELETE FROM {t} WHERE id = ?", [id])
 
     async def _createRop(self, data):
@@ -83,7 +83,7 @@ class BaseApi:
         return rop
 
     async def load(self, id):
-        t = await self._getNameClass()
+        t = self._getNameClass()
         data = await ASQL(f"SELECT * FROM {t} WHERE id = ?", [id])
         return await self._createRop(data=data[0])
 

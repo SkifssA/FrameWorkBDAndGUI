@@ -12,7 +12,7 @@ class Core_ScriptObj:
 class Core_ScriptDpi(BaseApi):
     _classObj = Core_ScriptObj
 
-    async def _getNameClass(self):
+    def _getNameClass(self):
         return "Core_Script"
 
     def calcHeadLine(self, rop:Core_ScriptObj)->str:
