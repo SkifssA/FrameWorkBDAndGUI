@@ -1,0 +1,52 @@
+{
+  "Default": {
+    "caption": "Тест",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sName": {
+        "caption": "ФИО",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "nQty": {
+        "caption": "Кол-во",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "idConfig": {
+        "caption": "Сыылка",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idConfigHL": {
+        "caption": "Сыылка",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "idConfigLook": {
+        "caption": "Выпадающий список",
+        "edit": "lookUp",
+        "isVisible": false
+      },
+      "idConfigLookHL": {
+        "caption": "Выпадающий список",
+        "edit": "lookUp",
+        "isVisible": true
+      },
+      "bEnd": {
+        "caption": "Чек",
+        "edit": "chek",
+        "isVisible": true
+      }
+    }
+  }
+}

@@ -20,7 +20,7 @@ class Bc_FileAvi(Bc_FileDvi):
         def onRefresh(self):
             return super().onRefresh()
 
-    class List_gidSrc(Bc_FileDvi.DviDet):
+    class List_gidSrc(Bc_FileDvi.DviList):
         showAttr = ['sCaption', 'sSuffix']
         def openCh(self):
             yield Bc_FileAvi.CardFileView()

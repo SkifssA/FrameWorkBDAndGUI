@@ -1,0 +1,27 @@
+{
+  "Default": {
+    "caption": "Классы",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sCode": {
+        "caption": "Код",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sCaption": {
+        "caption": "Название",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

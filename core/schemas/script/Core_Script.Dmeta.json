@@ -1,0 +1,27 @@
+{
+  "Default": {
+    "caption": "Скрипты",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sAction": {
+        "caption": "Выполненый код",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "nVersion": {
+        "caption": "Версия",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

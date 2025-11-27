@@ -27,9 +27,12 @@ class Core_DbManager:
 
     async def ASQL(self, SQLstr, parameters=None):
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
-            result = await db.execute(SQLstr, parameters or [])
-            if result.columns:
-                return [dict(zip(result.columns, row)) for row in result.rows]
+            try:
+                result = await db.execute(SQLstr, parameters or [])
+                if result.columns:
+                    return [dict(zip(result.columns, row)) for row in result.rows]
+            except:
+                return []
 
 Core_DbManagerPkg = Core_DbManager()
 

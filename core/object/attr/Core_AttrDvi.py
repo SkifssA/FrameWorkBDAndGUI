@@ -4,8 +4,7 @@ from .Core_AttrApi import Core_AttrApi, Core_AttrObj
 
 class Core_AttrDvi(BaseAvi):
     thisApi = Core_AttrApi
-    class DviList(BaseAvi.DefaultList):
-        showAttr = ['idTabHL', 'sCode', 'sCaption', 'sType', 'sRefClass']
+    class DviDefault(BaseAvi.DefaultDefault):
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
@@ -26,6 +25,8 @@ class Core_AttrDvi(BaseAvi):
 
         def thisApi(self)->Core_AttrApi:
             return super().thisApi()
+
+    class DviList(DviDefault, BaseAvi.DefaultList): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

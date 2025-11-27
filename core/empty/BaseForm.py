@@ -1,6 +1,7 @@
 import dearpygui.dearpygui as dpg
 import inspect
 import asyncio
+from ..package.Core_FileManagerPkg import Core_FileManagerPkg
 
 class BaseForm:
     def __init__(self):
@@ -26,15 +27,26 @@ class BaseForm:
         self.parent = parent
         self.parentTable = parentTable
         self.ch = tuple(self.openCh())
+        self.meta = await self.getMeta()
         if self.tab is not None:
             await self._refresh()
             await self.refreshCh()
         else:    
-            await self.createTab(self.tab, parent, self.getW())
+            await self.createTab(parent, self.getW())
             await self._refresh()
             await self._openCh()
         dpg.show_item(self.tab)
             
+    async def getMeta(self):
+        mod, clas = self.thisApi()._getNameClass().split("_")
+        path = f"../../{mod.lower()}/schemas/{clas.lower()}/{self.thisApi()._getNameClass()}"
+        w = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
+        if (self.__class__.__name__ in w):
+            return w[self.__class__.__name__]
+        else:
+            w = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
+            return w['Default']
+
     def getW(self):
         '''Получение ширины'''
         w = -1
@@ -59,26 +71,25 @@ class BaseForm:
         '''Открытие дочерних форм. Системный'''
         for i in self.ch:
             if i is not None:
-                print(f'{i=}')
                 if hasattr(i, 'right'):
                     await i.open(self.rightGroup, parentTable=self.mainForm)
+                    dpg.configure_item(self.LeftRight, show=True)
                 else:
-                    with dpg.tab(label='', parent=self.tabBar) as tab:
-                        await i.open(tab, parentTable=self.mainForm)
-                        dpg.configure_item(self.tabBar, show=True)
-                        dpg.configure_item(self.UpDown, show=True)
-                        dpg.configure_item(self.mainForm, height=self.defaultHeight)
+                    await i.open(self.tabBar, parentTable=self.mainForm)
+                    dpg.configure_item(self.tabBar, show=True)
+                    dpg.configure_item(self.UpDown, show=True)
+                    dpg.configure_item(self.mainForm, height=self.defaultHeight)
 
-    async def createTab(self, tabl, parent='tab_bar', width=0):
+    async def createTab(self, parent='tab_bar', width=0):
         '''Создание фрейма'''
-        if parent == 'tab_bar':
-            self.tab = dpg.add_tab(label=tabl, parent=parent, show=False)
+        if (dpg.get_item_type(parent) == "mvAppItemType::mvTabBar"):
+            self.tab = dpg.add_tab(label=self.meta['caption'], parent=parent, show=False)
         else:
             self.tab = parent
 
         with dpg.group(parent=self.tab, horizontal=True) as rightGroup:
             with dpg.group() as mainGroup: pass
-            self.LeftRight = dpg.add_button(label="", width=self.sizeLineResize, height=-1)
+            self.LeftRight = dpg.add_button(label="", width=self.sizeLineResize, height=-1, show=False)
 
         self.rightGroup = rightGroup
         self.selfgroup = mainGroup
@@ -91,7 +102,9 @@ class BaseForm:
         '''Создание основного фрейма'''
         height = height if height is not None else self.defaultHeight
 
-        self.toolBar = dpg.add_child_window(show=False, parent=par, height=50)
+        with dpg.child_window(show=False, parent=par, height=40) as upToolBar:
+            self.upToolBar = upToolBar
+            self.toolBar = dpg.add_group(show=False, horizontal=True)
         self.mainForm = self.createMainForm(par)
         self.UpDown = dpg.add_button(label="", height=self.sizeLineResize, width=width, parent=par, show=False)
         self.tabBar = dpg.add_tab_bar(show=False, parent=par)
@@ -155,8 +168,9 @@ class BaseForm:
                 q.append((name, obj))
             
         for i in sorted(q, key=lambda x: x[-1]._order): 
-            dpg.add_button(parent=self.toolBar, label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]), tag=f"{nameApi}_{i[-1]._oper_id}")
+            dpg.add_button(parent=self.toolBar, label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]))
             dpg.configure_item(self.toolBar, show=True)
+            dpg.configure_item(self.upToolBar, show=True)
 
     def appendAction(self, obj, name):
         '''Создание обработчиков для операций'''

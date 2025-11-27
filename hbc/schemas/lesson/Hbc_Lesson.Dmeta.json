@@ -1,0 +1,27 @@
+{
+  "Default": {
+    "caption": "Практические",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sCaption": {
+        "caption": "Наименование",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sIdExit": {
+        "caption": "Внешней Id",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

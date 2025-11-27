@@ -1,0 +1,32 @@
+{
+    "name": "Tst_Test",
+    "caption": "Тест",
+    "attr":[
+        {
+            "name": "sName",
+            "type": "TEXT",
+            "caption": "ФИО",
+            "isHeadLine": true
+        },{
+            "name": "nQty",
+            "type": "INT",
+            "caption": "Кол-во"
+        },{
+            "name": "idConfig",
+            "type": "INT",
+            "caption": "Сыылка",
+            "refTab": "Bc_Config"
+        },{
+            "name": "idConfigLook",
+            "type": "INT",
+            "caption": "Выпадающий список",
+            "refTab": "Bc_Config",
+            "editType": "lookUp"
+        },{
+            "name": "bEnd",
+            "type": "INT",
+            "caption": "Чек",
+            "editType": "chek"
+        }
+    ]
+}

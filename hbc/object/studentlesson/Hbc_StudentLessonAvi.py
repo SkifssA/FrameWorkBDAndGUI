@@ -45,8 +45,12 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
         def checwork(self):
             super().checwork()
             self.selection().oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
+
+    class List_idStudent(Hbc_StudentLessonDvi.DviList):
+        showAttr = ['idLessonHL', 'bUploadFile', 'bFillScore']
+        async def onRefresh(self):
+            return await super().onRefresh() + f"WHERE t.idStudent = {self.getAttr('super$id')}"
         
-    class List_idStudent(Hbc_StudentLessonDvi.DviDet):
         def openCh(self):
             from bc.object.file.Bc_FileAvi import Bc_FileAvi
             yield Bc_FileAvi.list_gidSrc(right=True)

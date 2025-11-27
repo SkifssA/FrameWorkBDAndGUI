@@ -23,7 +23,6 @@ from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
 class {nameClass}Dvi(BaseAvi):
     thisApi = {nameClass}Api
     class DviDefault(BaseAvi.DefaultDefault):
-        showAttr = [{showAttr}]
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return \"\"\"{sqlList}\"\"\"

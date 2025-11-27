@@ -28,7 +28,7 @@ class EmptyList(BaseForm):
             oneRow = None
 
             for i in data['column']:
-                    dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr), parent=tabl)
+                    dpg.add_table_column(label=i[1], user_data=i[0], enabled=i[2], parent=tabl)
             for row in data['row']:
                 with dpg.table_row(parent=tabl):
                     for j in row:
@@ -75,35 +75,28 @@ class EmptyList(BaseForm):
             for j in ch:
                 dpg.set_value(j, tagSelf in ch)
 
-    async def _getCollumn(self, column)->tuple[tuple[str]]:
+    async def _getCollumn(self)->tuple[tuple[str]]:
         '''Получение столбцов'''
-        def getNameNotHL(name):
-            return name[:-2] if name.endswith('HL') else name
-
-        head = await self.thisApi().getCaptionAttrClass()
-        caption_map = {item['sCode']: item['sCaption'] for item in head}
-        headRes = tuple((col, caption_map[getNameNotHL(col)] if getNameNotHL(col) in caption_map else col) for col in column)
+        attrs = self.meta['attr']
+        headRes = tuple((col, attrs[col]['caption'], attrs[col]['isVisible']) for col in attrs)
         return headRes
     
     async def __getDataTab(self, column=True):
         '''Получение данных из БД для данной таблицы'''
         res = {}
         res['row'] = await ASQL(await self.onRefresh())
-        if column:
-            if res['row']:
-                res['column'] = await self._getCollumn(res['row'][0].keys())
-            else:
-                res['column'] = await self._getCollumn(self.showAttr)
+        res['column'] = await self._getCollumn()
         return res
 
     def createMainForm(self, par):
         return dpg.add_table(header_row=True,
-                        height=-1,
-                        borders_innerH=True,
-                        borders_innerV=True,
-                        borders_outerH=True,
-                        borders_outerV=True,
-                        parent=par,
-                        scrollY=True)
+                             resizable=True,
+                             height=-1,
+                             borders_innerH=True,
+                             borders_innerV=True,
+                             borders_outerH=True,
+                             borders_outerV=True,
+                             parent=par,
+                             scrollY=True)
         
     

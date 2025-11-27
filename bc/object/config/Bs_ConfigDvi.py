@@ -4,8 +4,7 @@ from .Bs_ConfigApi import Bs_ConfigApi, Bs_ConfigObj
 
 class Bs_ConfigDvi(BaseAvi):
     thisApi = Bs_ConfigApi
-    class DviList(BaseAvi.DefaultList):
-        showAttr = ['sModule', 'sCaprionSetting', 'sValue']
+    class DviDefault(BaseAvi.DefaultDefault):
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
@@ -23,6 +22,8 @@ class Bs_ConfigDvi(BaseAvi):
 
         def thisApi(self)->Bs_ConfigApi:
             return super().thisApi()
+
+    class DviList(DviDefault, BaseAvi.DefaultList): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

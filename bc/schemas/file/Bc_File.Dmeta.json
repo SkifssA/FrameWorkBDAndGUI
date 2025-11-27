@@ -1,0 +1,37 @@
+{
+  "Default": {
+    "caption": "Файлы",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gidScr": {
+        "caption": "Источник",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sCaption": {
+        "caption": "Наименование файла",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sSuffix": {
+        "caption": "Расширение файла",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sPath": {
+        "caption": "Путь до файла",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

@@ -4,8 +4,7 @@ from .Core_ScriptApi import Core_ScriptApi, Core_ScriptObj
 
 class Core_ScriptDvi(BaseAvi):
     thisApi = Core_ScriptApi
-    class DviList(BaseAvi.DefaultList):
-        showAttr = ['sAction', 'nVersion']
+    class DviDefault(BaseAvi.DefaultDefault):
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
@@ -22,6 +21,8 @@ class Core_ScriptDvi(BaseAvi):
 
         def thisApi(self)->Core_ScriptApi:
             return super().thisApi()
+
+    class DviList(DviDefault, BaseAvi.DefaultList): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

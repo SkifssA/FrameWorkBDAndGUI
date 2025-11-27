@@ -47,14 +47,61 @@ async def createFile():
                     lFiles = await Core_FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json')
                     for File in lFiles:
                         data = await Core_FileManagerPkg.ReadFile(File.__str__())
-                        await _createFile(f'../../{app}/object/{cl}', data)
+                        await _createFileProg(f'../../{app}/object/{cl}', data)
+                        await _createFileMeta(f'../../{app}/schemas/{cl}', data)
 
-async def _createFile(path, data):
+async def _createFileProg(path, data):
      data = await _createDataForFile(data)
      await __createDpi(path, data)
      await __createApi(path, data)
      await __createDvi(path, data)
      await __createAvi(path, data)
+
+async def _createFileMeta(path, data):
+    print(data['name'])
+    print(data['caption'])
+    print(data['attr'])
+    print(data['showAttr'])
+
+    pathWhitFileD = f'{path}/{data['name']}.Dmeta.json'
+    pathWhitFileA = f'{path}/{data['name']}.Ameta.json'
+
+    if not await Core_FileManagerPkg.Exists(pathWhitFileA):
+        fA = {}
+        await Core_FileManagerPkg.CreateFile(pathWhitFileA, fA)
+
+    attr = {
+        'id': {
+                'caption': 'id',
+                'edit': 'edit',
+                'isVisible': False
+            },
+        'gid': {
+                'caption': 'gid',
+                'edit': 'edit',
+                'isVisible': False
+            }
+        }
+    
+    for i in data['attr']:
+        attr[i['name']] = {
+                "caption": i['caption'],
+                "edit": i['editType'] if 'editType' in i else 'edit',
+                'isVisible': i['name'] in data['showAttr']
+            }
+        if i['name'].startswith('id'):
+            attr[i['name']+'HL'] = {
+                "caption": i['caption'],
+                "edit": i['editType'] if 'editType' in i else 'edit',
+                'isVisible': i['name']+'HL' in data['showAttr']
+            }
+        
+
+    fD = {'Default':{
+            'caption': data['caption'],
+            'attr': attr
+        }}
+    await Core_FileManagerPkg.CreateFile(pathWhitFileD, fD)
 
 async def __createApi(path, data):
      pathWhitFile = f'{path}/{data['name']}Api.py'
@@ -79,7 +126,7 @@ async def __createDpi(path, data):
 
 async def __createDvi(path, data):
     pathWhitFile = f'{path}/{data['name']}Dvi.py'
-    f = Dvi.format(nameClass=data['name'], sqlList=data['sqlList'], showAttr=data['showAttr'])
+    f = Dvi.format(nameClass=data['name'], sqlList=data['sqlList'], showAttr='\''+'\', \''.join(data['showAttr'])+'\'')
     await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
 
 async def __initMetaTab():
@@ -285,7 +332,7 @@ async def __getShowAttr(dataAttr):
             if not i['isVisible']:
                 continue
         res.append(i['name']+('HL' if i['name'].startswith('id') else ''))
-    return '\''+'\', \''.join(res)+'\''
+    return res
 
 async def __getDelete(data):
     res = []

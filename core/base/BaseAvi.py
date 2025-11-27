@@ -3,6 +3,7 @@ import importlib
 import asyncio
 
 from ..empty.EmptyList import EmptyList
+from ..empty.EmptyCard import EmptyCard
 from .BaseOper import SetOper
 
 class BaseAvi:
@@ -43,8 +44,7 @@ class BaseAvi:
             return outer_class.thisApi()
         
         def get_row(self):
-            tagTable = self.thisApi()._getNameClass() + self.__class__.__name__
-            return self.get_any_row(tagTable)
+            return self.get_any_row(self.mainForm)
     
         def get_any_row(self, tagTable):
             if not dpg.does_item_exist(tagTable):
@@ -58,6 +58,8 @@ class BaseAvi:
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
             dpg.hide_item(self.tab)
+
+    class DefaultCard(DefaultDefault, EmptyCard): pass
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):
