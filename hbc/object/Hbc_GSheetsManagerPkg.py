@@ -1,7 +1,7 @@
 import pandas as pd
 import asyncio
 
-from bc.object.config.Bs_ConfigApi import Bs_ConfigApi
+from bc.object.config.Bc_ConfigApi import Bc_ConfigApi
 from ..object import Hbc_StudentApi, Hbc_StudentDataApi
 
 
@@ -11,9 +11,9 @@ class Hbc_GSheetsManagerPkg:
 
     async def GetStudents(self):
         # Используем pandas для обработки
-        idGS = await Bs_ConfigApi().getValueByModule('hbc', 'idGSheets')
-        idMainList = await Bs_ConfigApi().getValueByModule('hbc', 'idMainListGSheets')
-        nameCurator = await Bs_ConfigApi().getValueByModule('hbc', 'firstNameLastName')
+        idGS = await Bc_ConfigApi().getValueByModule('hbc', 'idGSheets')
+        idMainList = await Bc_ConfigApi().getValueByModule('hbc', 'idMainListGSheets')
+        nameCurator = await Bc_ConfigApi().getValueByModule('hbc', 'firstNameLastName')
         df = await asyncio.to_thread(pd.read_csv, self._url.format(idGS, idMainList))
         filtered_df = df[df['Куратор'] == nameCurator].to_dict()  # Замените 'Столбец' на нужное имя
         for idS in filtered_df['Unnamed: 0'].keys():

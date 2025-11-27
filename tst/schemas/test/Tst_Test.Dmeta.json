@@ -44,7 +44,7 @@
       },
       "bEnd": {
         "caption": "Чек",
-        "edit": "chek",
+        "edit": "check",
         "isVisible": true
       }
     }

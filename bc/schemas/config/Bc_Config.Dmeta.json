@@ -1,0 +1,32 @@
+{
+  "Default": {
+    "caption": "Настройки",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sModule": {
+        "caption": "Модуль",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sCaprionSetting": {
+        "caption": "Навзапние",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sValue": {
+        "caption": "Значение",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

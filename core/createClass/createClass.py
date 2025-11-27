@@ -287,15 +287,12 @@ async def __createOrUpdateTable(q, dataAttr, nameTable, isExisted):
         await __createTable(q, nameTable, False)
 
 async def __actionScripts(datas:list[dict]):
-    print(datas)
 
     async def actionDependence(sName):
-        print(sName)
         w = next((d for d in datas if d.get("name") == sName), None)
         await __actionScripts([w])
 
     for data in datas:
-        print(data)
         d = await ASQL(f"SELECT nVersion FROM Core_Script WHERE sAction = '{data['name']}'")
         if d == [] or d[0]['nVersion'] < data['version']:
             if 'dependence' in data.keys():

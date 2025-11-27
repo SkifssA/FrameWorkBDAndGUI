@@ -1,9 +1,9 @@
 # Системный файл для интерфейса
 from core.base import BaseAvi, Selection
-from .Bs_ConfigApi import Bs_ConfigApi, Bs_ConfigObj
+from .Bc_ConfigApi import Bc_ConfigApi, Bc_ConfigObj
 
-class Bs_ConfigDvi(BaseAvi):
-    thisApi = Bs_ConfigApi
+class Bc_ConfigDvi(BaseAvi):
+    thisApi = Bc_ConfigApi
     class DviDefault(BaseAvi.DefaultDefault):
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
@@ -17,10 +17,10 @@ class Bs_ConfigDvi(BaseAvi):
                    
             """
 
-        async def thisRop(self)->Bs_ConfigObj:
+        async def thisRop(self)->Bc_ConfigObj:
             return await super().thisRop()
 
-        def thisApi(self)->Bs_ConfigApi:
+        def thisApi(self)->Bc_ConfigApi:
             return super().thisApi()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass

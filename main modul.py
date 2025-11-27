@@ -3,6 +3,8 @@ import sys
 import asyncio
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
+import bc.object.config.Bc_ConfigAvi
+
 from core.createClass.createClass import createTab, createFile
 from core.base.Run import mainProgram
 

@@ -109,7 +109,7 @@ class BaseForm:
         self.UpDown = dpg.add_button(label="", height=self.sizeLineResize, width=width, parent=par, show=False)
         self.tabBar = dpg.add_tab_bar(show=False, parent=par)
 
-        self.afterCreate()
+        await self.afterCreate()
 
         await self.addTools()
 
@@ -119,7 +119,7 @@ class BaseForm:
 
     def createMainForm(self, par)->int|str: pass
 
-    def afterCreate(self)->None: pass 
+    async def afterCreate(self)->None: pass 
 
     async def refresh(self):
         '''Обновление. Пользовательское'''
@@ -145,11 +145,14 @@ class BaseForm:
                 dpg.configure_item(self.mainForm, height=self.offset_y_resize)
 
         def on_mouse_right_down(sender, app_data):
-            if dpg.is_item_hovered(self.LeftRight):
-                self.dragging_resize = 1
-            elif dpg.is_item_hovered(self.UpDown):
-                self.dragging_resize = 2
-            self.last_mouse_pos[:] = dpg.get_mouse_pos(local=False)
+            try:
+                if dpg.is_item_hovered(self.LeftRight):
+                    self.dragging_resize = 1
+                elif dpg.is_item_hovered(self.UpDown):
+                    self.dragging_resize = 2
+                self.last_mouse_pos[:] = dpg.get_mouse_pos(local=False)
+            except:
+                pass
 
         def on_mouse_right_up(sender, app_data):
             self.dragging_resize = 0

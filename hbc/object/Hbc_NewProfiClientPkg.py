@@ -4,7 +4,7 @@ from ..object.studentdata.Hbc_StudentDataApi import Hbc_StudentDataApi
 from ..object.student.Hbc_StudentApi import Hbc_StudentApi
 from ..object.studentlesson.Hbc_StudentLessonApi import Hbc_StudentLessonApi
 
-from bc.object.config.Bs_ConfigApi import Bs_ConfigApi
+from bc.object.config.Bc_ConfigApi import Bc_ConfigApi
 from bc.object.file.Bc_FileApi import Bc_FileApi
 
 class Hbc_NewProfiClientPkg(Core_AiohttpPkg):
@@ -27,8 +27,8 @@ class Hbc_NewProfiClientPkg(Core_AiohttpPkg):
             return None
 
     async def Login(self):
-        await super().Login(await Bs_ConfigApi().getValueByModule('hbc', 'loginNewProfi'), 
-                            await Bs_ConfigApi().getValueByModule('hbc', 'passwordNewProfi'), 
+        await super().Login(await Bc_ConfigApi().getValueByModule('hbc', 'loginNewProfi'), 
+                            await Bc_ConfigApi().getValueByModule('hbc', 'passwordNewProfi'), 
                             withCSRFToken=True)
 
     async def dataInstall(self):

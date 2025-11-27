@@ -26,7 +26,7 @@
             "name": "bEnd",
             "type": "INT",
             "caption": "Чек",
-            "editType": "chek"
+            "editType": "check"
         }
     ]
 }
