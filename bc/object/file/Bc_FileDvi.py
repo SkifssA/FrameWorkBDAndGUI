@@ -4,7 +4,8 @@ from .Bc_FileApi import Bc_FileApi, Bc_FileObj
 
 class Bc_FileDvi(BaseAvi):
     thisApi = Bc_FileApi
-    class DviList(BaseAvi.DefaultList):
+
+    class DviDefault(BaseAvi.DefaultDefault): 
         showAttr = ['gidScr', 'sCaption', 'sSuffix', 'sPath']
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
@@ -15,8 +16,7 @@ class Bc_FileDvi(BaseAvi):
                    t.sCaption,
                    t.sSuffix,
                    t.sPath
-            FROM Bc_File AS t
-                   
+            FROM Bc_File AS t      
             """
 
         async def thisRop(self)->Bc_FileObj:
@@ -24,6 +24,10 @@ class Bc_FileDvi(BaseAvi):
 
         def thisApi(self)->Bc_FileApi:
             return super().thisApi()
+
+    class DviList(DviDefault, BaseAvi.DefaultList): pass
+        
+    class DviDet(DviDefault, BaseAvi.DefaultDet): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

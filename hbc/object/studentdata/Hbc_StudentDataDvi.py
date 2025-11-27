@@ -4,7 +4,7 @@ from .Hbc_StudentDataApi import Hbc_StudentDataApi, Hbc_StudentDataObj
 
 class Hbc_StudentDataDvi(BaseAvi):
     thisApi = Hbc_StudentDataApi
-    class DviList(BaseAvi.DefaultList):
+    class DviDefault(BaseAvi.DefaultDefault):
         showAttr = ['idStudentHL', 'sData']
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
@@ -23,6 +23,8 @@ class Hbc_StudentDataDvi(BaseAvi):
 
         def thisApi(self)->Hbc_StudentDataApi:
             return super().thisApi()
+        
+    class DviList(DviDefault, BaseAvi.DefaultList): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

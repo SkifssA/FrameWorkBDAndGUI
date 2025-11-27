@@ -22,7 +22,7 @@ from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
 
 class {nameClass}Dvi(BaseAvi):
     thisApi = {nameClass}Api
-    class DviList(BaseAvi.DefaultList):
+    class DviDefault(BaseAvi.DefaultDefault):
         showAttr = [{showAttr}]
         selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
@@ -33,6 +33,8 @@ class {nameClass}Dvi(BaseAvi):
 
         def thisApi(self)->{nameClass}Api:
             return super().thisApi()
+
+    class DviList(DviDefault, BaseAvi.DefaultList): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

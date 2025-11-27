@@ -46,14 +46,10 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             super().checwork()
             self.selection().oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
         
-    class List_idStudent(Hbc_StudentLessonDvi.DviDet): 
-        def checwork(self):
-            super().checwork()
-            print(self.getIdMaster())
-
-        def openCh(self, master):
+    class List_idStudent(Hbc_StudentLessonDvi.DviDet):
+        def openCh(self):
             from bc.object.file.Bc_FileAvi import Bc_FileAvi
-            yield Bc_FileAvi.list(right=True)
+            yield Bc_FileAvi.list_gidSrc(right=True)
 
     class LookUp(Hbc_StudentLessonDvi.DviLookUp):
         pass

@@ -3,71 +3,52 @@ from PIL import Image
 import numpy as np
 import os
 import asyncio
+from .BaseForm import BaseForm
 
-class CardFileView:
+class CardFileView(BaseForm):
     MIN_SCALE = 0.1
     MAX_SCALE = 10.0
 
     def __init__(self):
+        super().__init__()
         self.scale = 1
         self.offset_x = 0.0
         self.offset_y = 0.0
         self.dragging = False
         self.last_mouse_pos = [0.0, 0.0]
+        self.previous_size = None
 
-    async def open(self, master, w=-1, h=-1):
-        self.parent = master
+    def createMainForm(self, par):
         with dpg.child_window(width=-1
                                 ,height=-1
                                 , no_scrollbar=True
                                 , no_scroll_with_mouse= True
-                                , parent=self.parent) as image_container:
-            self.image_drawlist = dpg.add_drawlist(width=w, height=h)
-            self.regHandler()
-        self.image_container = image_container
-        dpg.configure_item(dpg.get_item_parent(master), show=True)
-        # Отложенно настроим размер и отрисуем изображение
-        dpg.split_frame()  # ждём следующего кадра (чтобы элементы отрендерились)
-        await asyncio.sleep(0)  # уступаем управление
-
-        # Получаем реальный размер контейнера
-        container_w = dpg.get_item_width(image_container)
-        container_h = dpg.get_item_height(image_container)
-
-        # Обновляем размер drawlist
-        dpg.set_item_width(self.image_drawlist, container_w)
-        dpg.set_item_height(self.image_drawlist, container_h)
-
-        # Сохраняем для последующих обновлений
-        self.container_size = dpg.get_item_rect_size(self.image_drawlist)
-        dpg.set_item_width(self.image_drawlist, self.container_size[0])
-        dpg.set_item_height(self.image_drawlist, self.container_size[1])
-
-        # Теперь можно отрисовать
-        await self.refresh()
-
-        self.update_image_position()
+                                , parent=par) as image_container:
+            self.image_drawlist = dpg.add_drawlist(width=-1, height=-1)
+        return image_container
 
     async def onRefresh(self):
         return ''
 
-    async def refresh(self):
+    async def _refresh(self):
         self.loadFile(await self.onRefresh())
         dpg.delete_item(self.image_drawlist, children_only=True)
         self.offset_x = 0
         self.offset_y = 0
-
+        self.container_size = dpg.get_item_rect_size(self.mainForm)
         scw = self.container_size[0] / self.img_w
         sch = self.container_size[1] / self.img_h
         self.scale = min(scw, sch)
+        dpg.set_item_width(self.image_drawlist, self.container_size[0])
+        dpg.set_item_height(self.image_drawlist, self.container_size[1])
 
-        self.drawnTag = dpg.draw_image(self.textureTag, pmin=(0, 0), pmax=(self.img_w, self.img_h), parent=self.image_drawlist)
+        self.drawnTag = dpg.draw_image(self.textureTag, pmin=(0, 0), pmax=(1000, 1000), parent=self.image_drawlist)
         self.update_image_position()
 
     def loadFile(self, image_path):
         try:
             image_data, self.img_w, self.img_h = self.load_image_as_raw(image_path)
-            with dpg.texture_registry(show=True):
+            with dpg.texture_registry(show=False):
                 self.textureTag = dpg.add_static_texture(width=self.img_w, height=self.img_h, default_value=image_data)
         except Exception as e:
             print(f'{image_path=}')
@@ -89,14 +70,14 @@ class CardFileView:
 
     def on_viewport_resize(self):
         # Получаем реальный размер контейнера
-        container_w, container_h = dpg.get_item_rect_size(self.image_container)
+        container_w, container_h = dpg.get_item_rect_size(self.mainForm)
         # Обновляем размер drawlist
         dpg.set_item_width(self.image_drawlist, container_w)
         dpg.set_item_height(self.image_drawlist, container_h)
         # Сохраняем для последующих обновлений
         self.container_size = dpg.get_item_rect_size(self.image_drawlist)
+
         self.update_image_position()
-        dpg.set_frame_callback(dpg.get_frame_count() + 1, self.on_viewport_resize)
 
     # === Загрузка изображения ===
     def load_image_as_raw(self, path):
@@ -110,7 +91,7 @@ class CardFileView:
     # === Обработчики ===
     def on_mouse_wheel(self, sender, app_data):
         global scale
-        if dpg.is_item_hovered(self.image_container):
+        if dpg.is_item_hovered(self.mainForm):
             delta = app_data
             self.scale += delta * 0.1 * self.scale
             self.scale = max(self.MIN_SCALE, min(self.MAX_SCALE, self.scale))
@@ -128,7 +109,7 @@ class CardFileView:
             self.update_image_position()
 
     def on_mouse_right_down(self, sender, app_data):
-        if dpg.is_item_hovered(self.image_container):
+        if dpg.is_item_hovered(self.mainForm):
             self.dragging = True
             self.last_mouse_pos[:] = dpg.get_mouse_pos(local=False)
 

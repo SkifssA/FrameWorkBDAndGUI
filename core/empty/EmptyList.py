@@ -1,65 +1,32 @@
 import dearpygui.dearpygui as dpg
 from ..package import ASQL
-import inspect
+
 import asyncio
 import re
 
-class EmptyList:
-    def getTag(self):
-        return self.thisApi()._getNameClass() + str(self.parent)
+from .BaseForm import BaseForm
 
-    async def open(self, parent='tab_bar'):
-        dpg.show_tool(dpg.mvTool_ItemRegistry)
-        data = await self.__getDataTab()
-        self.parent = parent
-        self.sTag = self.getTag()
-        self.ch = tuple(self.openCh(self.sTag))
-        if dpg.does_item_exist(self.sTag):
-            dpg.show_item(self.sTag)
-            await self._refresh(data)
-            await self.refreshCh()
-        else:
-            w = 0
-            for i in self.ch:
-                if i is not None:
-                    if hasattr(i, 'right'):
-                        w = -800              
-            master = await self.createTab(self.sTag, parent, w)
-            await self._refresh(data)
-            for i in self.ch:
-                if i is not None:
-                    print(f'{i=}')
-                    if hasattr(i, 'right'):
-                        await i.open(self.right)
-                    else:
-                        with dpg.tab(label='Просмотр файла', parent=master) as tab:
-                            await i.open(tab)
-                            dpg.configure_item(master, show=True)
-            
-
-    async def refreshCh(self):
-        for i in self.ch:
-            if i is not None:
-                await i.refresh()
-
-    def openCh(self, master):
-        yield 
-
+class EmptyList(BaseForm):
     def createTheme(self):
+        '''Создание темы'''
         with dpg.theme() as table_theme:
             with dpg.theme_component(dpg.mvTable):
                 dpg.add_theme_color(dpg.mvThemeCol_HeaderActive, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
                 dpg.add_theme_color(dpg.mvThemeCol_Header, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
         return table_theme
                 
-    async def _refresh(self, data):
+    async def _refresh(self):
+        '''Обнолвение формы'''
+        data = await self.__getDataTab()
         s = True
-        tabl = self.sTag + self.__class__.__name__
+        tabl = self.mainForm
         if dpg.does_item_exist(tabl):
             children = dpg.get_item_children(tabl, slot=1) + dpg.get_item_children(tabl, slot=0) # slot=0 — основной контейнер
             for child in children:
                 dpg.delete_item(child)
-        
+
+            oneRow = None
+
             for i in data['column']:
                     dpg.add_table_column(label=i[1], user_data=i[0], enabled=(i[0] in self.showAttr), parent=tabl)
             for row in data['row']:
@@ -68,7 +35,9 @@ class EmptyList:
                         q = dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl))
                         if s:
                             s=False
-                            self._click(q, tabl)
+                            oneRow = q
+            if oneRow is not None:
+                self._click(oneRow, tabl)
 
     async def __getWhereSql(self):
             res = await self.onRefresh()
@@ -82,15 +51,17 @@ class EmptyList:
             return [res, param if param != [] else None]
 
     async def refresh(self):
-        data = await self.__getDataTab()
-        self.sTag = self.thisApi()._getNameClass()
-        await self._refresh(data)
+        '''Обновление. Пользовательское'''
+        await self._refresh()
+        await self.refreshCh()
 
     def _click(self, tagSelf, tagTable):
+        '''Обработчик выбора строки в таблице'''
         self._oneShow(tagSelf, tagTable)
         self.checwork()
 
     def checwork(self):
+        '''Операция выполняемая при выборе строки'''
         try:
             asyncio.get_running_loop()
             asyncio.create_task(self.refreshCh())
@@ -98,12 +69,14 @@ class EmptyList:
             asyncio.run(self.refreshCh())
 
     def _oneShow(self, tagSelf, tagTable):
+        '''Отвечает только за единичный выбор строки в таблице'''
         for i in dpg.get_item_children(tagTable, slot=1):
             ch = dpg.get_item_children(i, slot=1)
             for j in ch:
                 dpg.set_value(j, tagSelf in ch)
 
     async def _getCollumn(self, column)->tuple[tuple[str]]:
+        '''Получение столбцов'''
         def getNameNotHL(name):
             return name[:-2] if name.endswith('HL') else name
 
@@ -113,6 +86,7 @@ class EmptyList:
         return headRes
     
     async def __getDataTab(self, column=True):
+        '''Получение данных из БД для данной таблицы'''
         res = {}
         res['row'] = await ASQL(await self.onRefresh())
         if column:
@@ -122,47 +96,14 @@ class EmptyList:
                 res['column'] = await self._getCollumn(self.showAttr)
         return res
 
-    async def createTab(self, tabl, parent='tab_bar', width=0):
-        if parent == 'tab_bar':
-            tab = dpg.add_tab(tag=tabl, label=tabl, parent=parent)
-        else:
-            tab = parent
-        dpg.configure_item(parent, show=True)
-        with dpg.group(parent=tab, horizontal=True) as right:
-            with dpg.group() as WWWW:
-                pass
-        self.right = right 
-        return await self.createTable(WWWW, width)
-       
-    async def createTable(self, par, width=0):
-        self.sTag = self.thisApi()._getNameClass()
-        with dpg.group(horizontal=True, parent=par):
-            await self.addTools()
-
-        with dpg.table(header_row=True,
-                       width=width, # ← растягивает колонки
+    def createMainForm(self, par):
+        return dpg.add_table(header_row=True,
+                        height=-1,
                         borders_innerH=True,
                         borders_innerV=True,
                         borders_outerH=True,
                         borders_outerV=True,
-                        tag=self.sTag+self.__class__.__name__,
-                        parent=par): pass
-        with dpg.tab_bar(show=False, parent=par) as e: pass
-        return e
-
-    async def addTools(self):
-        nameApi = self.getTag()
-        q = []
-        for name, obj in inspect.getmembers(self.__class__, predicate=inspect.isfunction):
-            if hasattr(obj, '_is_oper_handler'):
-                q.append((name, obj))
-            
-        for i in sorted(q, key=lambda x: x[-1]._order): 
-            dpg.add_button(label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]), tag=f"{nameApi}_{i[-1]._oper_id}")
-
-    def appendAction(self, obj, name):
-        bound_method = getattr(self, name)
-        if obj._is_long:
-            return self.__createRunning(bound_method)
-        else:
-            return lambda: asyncio.run(bound_method())
+                        parent=par,
+                        scrollY=True)
+        
+    

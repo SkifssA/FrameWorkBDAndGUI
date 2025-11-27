@@ -83,9 +83,10 @@ class BaseApi:
         return rop
 
     async def load(self, id):
-        t = self._getNameClass()
-        data = await ASQL(f"SELECT * FROM {t} WHERE id = ?", [id])
-        return await self._createRop(data=data[0])
+        if id is not None:
+            t = self._getNameClass()
+            data = await ASQL(f"SELECT * FROM {t} WHERE id = ?", [id])
+            return await self._createRop(data=data[0])
 
 
     

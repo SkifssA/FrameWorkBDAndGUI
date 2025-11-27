@@ -14,7 +14,7 @@ class Hbc_StudentAvi(Hbc_StudentDvi):
             await (await self.thisApi()).delete(await self.thisRop())
             await self.refresh()
 
-        def openCh(self, master):
+        def openCh(self):
             from ..studentdata.Hbc_StudentDataAvi import Hbc_StudentDataAvi
             from ..studentlesson.Hbc_StudentLessonAvi import Hbc_StudentLessonAvi
             yield Hbc_StudentDataAvi.List_idStudent()

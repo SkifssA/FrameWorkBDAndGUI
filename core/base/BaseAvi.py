@@ -6,15 +6,24 @@ from ..empty.EmptyList import EmptyList
 from .BaseOper import SetOper
 
 class BaseAvi:
+
+    @classmethod
+    def typeMeta(cls, subClass, **kwargs):
+        instance = subClass()
+        # Устанавливаем атрибуты из kwargs
+        for key, value in kwargs.items():
+            setattr(instance, key, value)
+        return instance
+
     class DefaultDefault():
         def getAttr(self, name:str):
             if name.split('$', maxsplit=1)[0] == 'super':
                 if self.parent != 'tab_bar':
-                    master = dpg.get_item_parent(self.parent)
-                    master = dpg.get_item_parent(master)
-                    for i in dpg.get_item_children(master, slot=1):
-                        if dpg.get_item_type(i) == 'mvAppItemType::mvTable':
-                            return self.get_any_row(i)[name.split('$')[-1]]
+                    w = self.get_any_row(self.parentTable)
+                    if w is not None and w != {}:
+                        return w[name.split('$')[-1]]     
+                    else:
+                        return None                           
             else:
                 row = self.get_row()
                 if name in row:
@@ -48,11 +57,10 @@ class BaseAvi:
     class DefaultList(DefaultDefault, EmptyList):
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
-            dpg.hide_item(self.getTag())
+            dpg.hide_item(self.tab)
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):
             return self.getAttr('super$id')
 
-    class DefaultLookUp:
-        pass
+    class DefaultLookUp: pass

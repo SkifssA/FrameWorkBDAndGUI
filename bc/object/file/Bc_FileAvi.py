@@ -6,23 +6,29 @@ from core.base.BaseAvi import BaseAvi
 class Bc_FileAvi(Bc_FileDvi):
     @classmethod
     def list(cls, **kwargs):
-        #Создаём экземпляр вложенного класса List
-        instance = cls.List()
-        
-        # Устанавливаем атрибуты из kwargs
-        for key, value in kwargs.items():
-            setattr(instance, key, value)
+        return cls.typeMeta(cls.List, **kwargs)
     
-        return instance
+    @classmethod
+    def list_gidSrc(cls, **kwargs):
+        return cls.typeMeta(cls.List_gidSrc, **kwargs)
 
     class List(Bc_FileDvi.DviList):
         showAttr = ['sCaption', 'sSuffix']
-        def openCh(self, master):
+        def openCh(self):
             yield Bc_FileAvi.CardFileView()
 
+        def onRefresh(self):
+            return super().onRefresh()
 
-    class LookUp(Bc_FileDvi.DviLookUp):
-        pass
+    class List_gidSrc(Bc_FileDvi.DviDet):
+        showAttr = ['sCaption', 'sSuffix']
+        def openCh(self):
+            yield Bc_FileAvi.CardFileView()
+
+        async def onRefresh(self):
+            return await super().onRefresh() + f"WHERE t.gidScr = '{self.getAttr("super$gid")}'"
+
+    class LookUp(Bc_FileDvi.DviLookUp): pass
 
     class CardFileView(CardFileView, BaseAvi.DefaultDefault):
         async def onRefresh(self):
