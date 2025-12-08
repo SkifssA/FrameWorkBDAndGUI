@@ -5,7 +5,6 @@ from .Core_AttrApi import Core_AttrApi, Core_AttrObj
 class Core_AttrDvi(BaseAvi):
     thisApi = Core_AttrApi
     class DviDefault(BaseAvi.DefaultDefault):
-        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,

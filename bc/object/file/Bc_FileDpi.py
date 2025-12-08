@@ -1,8 +1,8 @@
 # Системный файл для логики
 import asyncio
-from core.base import BaseApi, gid
+from core.base import BaseApi, BaseObj, gid
 
-class Bc_FileObj:
+class Bc_FileObj(BaseObj):
     def __init__(self):
         self.id:int = None
         self.gid:gid = None

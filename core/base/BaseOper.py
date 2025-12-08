@@ -17,7 +17,8 @@ class Oper:
     @isDisabled.setter
     def isDisabled(self, value):
         for i in self.oper:
-            dpg.configure_item(i, enabled=not value)
+            if (dpg.does_item_exist(i)):
+                dpg.configure_item(i, enabled=not value)
 
 
 def SetOper(label: str = None, order:int=0, headOper:str=None):

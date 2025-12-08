@@ -5,7 +5,6 @@ from .Core_ScriptApi import Core_ScriptApi, Core_ScriptObj
 class Core_ScriptDvi(BaseAvi):
     thisApi = Core_ScriptApi
     class DviDefault(BaseAvi.DefaultDefault):
-        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,

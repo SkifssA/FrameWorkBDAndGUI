@@ -2,6 +2,7 @@ import dearpygui.dearpygui as dpg
 import inspect
 import asyncio
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
+from ..base.BaseSelection import Selection
 
 class BaseForm:
     def __init__(self):
@@ -33,9 +34,11 @@ class BaseForm:
             await self.refreshCh()
         else:    
             await self.createTab(parent, self.getW())
+            self.selection = Selection(self.selfgroup)
             await self._refresh()
             await self._openCh()
         dpg.show_item(self.tab)
+        
             
     async def getMeta(self):
         mod, clas = self.thisApi()._getNameClass().split("_")
@@ -104,7 +107,7 @@ class BaseForm:
 
         with dpg.child_window(show=False, parent=par, height=40, border=False) as upToolBar:
             self.upToolBar = upToolBar
-            self.toolBar = dpg.add_group(show=False, horizontal=True)
+            self.toolBar = dpg.add_group(show=False, horizontal=True, tag=f'{par}_ToolBar')
         self.mainForm = self.createMainForm(par)
         self.UpDown = dpg.add_button(label="", height=self.sizeLineResize, width=width, parent=par, show=False)
         self.tabBar = dpg.add_tab_bar(show=False, parent=par)
@@ -164,16 +167,16 @@ class BaseForm:
 
     async def addTools(self):
         '''Обработка и создание операций'''
-        nameApi = self.getTag()
         q = []
         for name, obj in inspect.getmembers(self.__class__, predicate=inspect.isfunction):
             if hasattr(obj, '_is_oper_handler'):
                 q.append((name, obj))
             
-        for i in sorted(q, key=lambda x: x[-1]._order): 
-            dpg.add_button(parent=self.toolBar, label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]))
-            dpg.configure_item(self.toolBar, show=True)
-            dpg.configure_item(self.upToolBar, show=True)
+        for i in sorted(q, key=lambda x: x[-1]._order):
+            if not dpg.does_item_exist(f'{self.selfgroup}_{i[0]}'):
+                dpg.add_button(tag=f'{self.selfgroup}_{i[0]}', parent=self.toolBar, label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]))
+                dpg.configure_item(self.toolBar, show=True)
+                dpg.configure_item(self.upToolBar, show=True)
 
     def appendAction(self, obj, name):
         '''Создание обработчиков для операций'''

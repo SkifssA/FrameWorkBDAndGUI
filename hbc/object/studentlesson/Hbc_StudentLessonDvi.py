@@ -5,7 +5,6 @@ from .Hbc_StudentLessonApi import Hbc_StudentLessonApi, Hbc_StudentLessonObj
 class Hbc_StudentLessonDvi(BaseAvi):
     thisApi = Hbc_StudentLessonApi
     class DviDefault(BaseAvi.DefaultDefault):
-        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -28,6 +27,8 @@ class Hbc_StudentLessonDvi(BaseAvi):
             return super().thisApi()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
+
+    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

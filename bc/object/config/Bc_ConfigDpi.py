@@ -1,8 +1,8 @@
 # Системный файл для логики
 import asyncio
-from core.base import BaseApi, gid
+from core.base import BaseApi, BaseObj, gid
 
-class Bc_ConfigObj:
+class Bc_ConfigObj(BaseObj):
     def __init__(self):
         self.id:int = None
         self.gid:gid = None
@@ -14,7 +14,7 @@ class Bc_ConfigDpi(BaseApi):
     _classObj = Bc_ConfigObj
 
     def _getNameClass(self):
-        return "Bs_Config"
+        return "Bc_Config"
 
     def calcHeadLine(self, rop:Bc_ConfigObj)->str:
         return f'{rop.id}'

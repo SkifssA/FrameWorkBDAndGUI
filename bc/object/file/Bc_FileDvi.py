@@ -5,7 +5,6 @@ from .Bc_FileApi import Bc_FileApi, Bc_FileObj
 class Bc_FileDvi(BaseAvi):
     thisApi = Bc_FileApi
     class DviDefault(BaseAvi.DefaultDefault):
-        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
@@ -25,6 +24,8 @@ class Bc_FileDvi(BaseAvi):
             return super().thisApi()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
+
+    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):

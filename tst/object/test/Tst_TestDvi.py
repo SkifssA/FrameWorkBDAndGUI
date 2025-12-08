@@ -5,7 +5,6 @@ from .Tst_TestApi import Tst_TestApi, Tst_TestObj
 class Tst_TestDvi(BaseAvi):
     thisApi = Tst_TestApi
     class DviDefault(BaseAvi.DefaultDefault):
-        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,

@@ -5,7 +5,6 @@ from .Tst_TestLookUpApi import Tst_TestLookUpApi, Tst_TestLookUpObj
 class Tst_TestLookUpDvi(BaseAvi):
     thisApi = Tst_TestLookUpApi
     class DviDefault(BaseAvi.DefaultDefault):
-        selection = lambda self: Selection(self.getTag())
         async def onRefresh(self):
             return """
             SELECT t.id,
