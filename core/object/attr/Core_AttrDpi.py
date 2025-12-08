@@ -36,3 +36,9 @@ class Core_AttrDpi(BaseApi):
     
     async def load(self, id: int)->Core_AttrObj:
         return await super().load(id)
+
+    def setidTab(self, obj:Core_AttrObj, value): obj.idTab = value
+    def setsCode(self, obj:Core_AttrObj, value): obj.sCode = value
+    def setsCaption(self, obj:Core_AttrObj, value): obj.sCaption = value
+    def setsType(self, obj:Core_AttrObj, value): obj.sType = value
+    def setsRefClass(self, obj:Core_AttrObj, value): obj.sRefClass = value

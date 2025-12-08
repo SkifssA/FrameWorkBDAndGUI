@@ -36,3 +36,9 @@ class Tst_TestDpi(BaseApi):
     
     async def load(self, id: int)->Tst_TestObj:
         return await super().load(id)
+
+    def setsName(self, obj:Tst_TestObj, value): obj.sName = value
+    def setnQty(self, obj:Tst_TestObj, value): obj.nQty = value
+    def setidConfig(self, obj:Tst_TestObj, value): obj.idConfig = value
+    def setidConfigLook(self, obj:Tst_TestObj, value): obj.idConfigLook = value
+    def setbEnd(self, obj:Tst_TestObj, value): obj.bEnd = value

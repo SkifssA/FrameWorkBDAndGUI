@@ -43,3 +43,11 @@ class Hbc_StudentDpi(BaseApi):
     
     async def load(self, id: int)->Hbc_StudentObj:
         return await super().load(id)
+
+    def setsName(self, obj:Hbc_StudentObj, value): obj.sName = value
+    def setsContact(self, obj:Hbc_StudentObj, value): obj.sContact = value
+    def setsIpVM(self, obj:Hbc_StudentObj, value): obj.sIpVM = value
+    def setsLoginVM(self, obj:Hbc_StudentObj, value): obj.sLoginVM = value
+    def setsPassworVM(self, obj:Hbc_StudentObj, value): obj.sPassworVM = value
+    def setsIdNew(self, obj:Hbc_StudentObj, value): obj.sIdNew = value
+    def setbEnd(self, obj:Hbc_StudentObj, value): obj.bEnd = value

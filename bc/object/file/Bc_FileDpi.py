@@ -35,3 +35,8 @@ class Bc_FileDpi(BaseApi):
     
     async def load(self, id: int)->Bc_FileObj:
         return await super().load(id)
+
+    def setgidScr(self, obj:Bc_FileObj, value): obj.gidScr = value
+    def setsCaption(self, obj:Bc_FileObj, value): obj.sCaption = value
+    def setsSuffix(self, obj:Bc_FileObj, value): obj.sSuffix = value
+    def setsPath(self, obj:Bc_FileObj, value): obj.sPath = value

@@ -33,3 +33,6 @@ class Core_ScriptDpi(BaseApi):
     
     async def load(self, id: int)->Core_ScriptObj:
         return await super().load(id)
+
+    def setsAction(self, obj:Core_ScriptObj, value): obj.sAction = value
+    def setnVersion(self, obj:Core_ScriptObj, value): obj.nVersion = value

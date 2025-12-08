@@ -65,14 +65,20 @@ class BaseAvi:
 
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
+            await self.thisApi().delete(self.obj)
             dpg.hide_item(self.tab)
 
         @SetOper(label='Сохранить', order=1)
         async def saveForm(self):
+            await self.thisApi().update(self.obj)
             dpg.hide_item(self.tab)
 
         async def initInput(self):
+            self.obj = await self.thisApi().insert()
+            data = self.thisApi()._getDataRop(self.obj)
             for i in self.tagInput:
+                if i in data:
+                    dpg.configure_item(self.tagInput[i], default_value=data[i] if data[i] is not None else '')
                 if dpg.get_item_type(self.tagInput[i]) == "mvAppItemType::mvCombo":
                     nameClass = self.meta['attr'][i]['refTab']
                     nameLook = self.meta['attr'][i]['display']

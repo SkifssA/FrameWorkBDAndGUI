@@ -32,3 +32,5 @@ class Tst_TestLookUpDpi(BaseApi):
     
     async def load(self, id: int)->Tst_TestLookUpObj:
         return await super().load(id)
+
+    def setsName(self, obj:Tst_TestLookUpObj, value): obj.sName = value

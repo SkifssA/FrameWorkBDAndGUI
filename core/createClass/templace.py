@@ -79,4 +79,6 @@ class {nameClass}Dpi(BaseApi):
     
     async def load(self, id: int)->{nameClass}Obj:
         return await super().load(id)
+
+    {setter}
 """

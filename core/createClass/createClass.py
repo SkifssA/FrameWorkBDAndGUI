@@ -121,11 +121,14 @@ async def __createAvi(path, data):
 
 async def __createDpi(path, data):
     pathWhitFile = f'{path}/{data['name']}Dpi.py'
+    tempSet = 'def set{nameAttr}(self, obj:{nameClass}Obj, value): obj.{nameAttr} = value'
+    listTepmSet = tuple(tempSet.format(nameAttr=i['name'], nameClass=data['name']) for i in data['attr'])
     f = Dpi.format(nameClass=data['name'],
                    attr=f' = None\n{' '*8}self.'.join(data['attrRop']), 
                    isHeadLine=data['isHeadLine'],
                    isMnemoCode=data['isMnemoCode'],
-                   deleteDetails=data['deleteDetails'])
+                   deleteDetails=data['deleteDetails'],
+                   setter='\n    '.join(listTepmSet))
     await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
 
 async def __createDvi(path, data):

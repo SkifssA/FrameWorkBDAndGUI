@@ -44,7 +44,7 @@ class BaseApi:
         w = await self._findAllByAttr(attr, value)
         return w[0] if w is not None else w
 
-    def __getDataRop(self, rop)->dict:
+    def _getDataRop(self, rop)->dict:
         return rop.__dict__
 
     def calcHeadLine(self, rop):
@@ -60,7 +60,7 @@ class BaseApi:
         return rop
     
     async def update(self, rop):
-        value = self.__getDataRop(rop)
+        value = self._getDataRop(rop)
         keys = [k for k in value.keys() if k != 'id']
         value['gid'] = f'{await self.idClass()}/{rop.id}'
         value['sHeadLine'] = self.calcHeadLine(rop)
@@ -77,7 +77,7 @@ class BaseApi:
 
     async def _createRop(self, data):
         rop = self._classObj()
-        value = self.__getDataRop(rop)
+        value = self._getDataRop(rop)
         for k, v in {i:data[i] for i in value.keys()}.items():
             setattr(rop, k, v)
         return rop

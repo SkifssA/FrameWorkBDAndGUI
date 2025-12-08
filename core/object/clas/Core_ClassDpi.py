@@ -35,3 +35,6 @@ class Core_ClassDpi(BaseApi):
     
     async def load(self, id: int)->Core_ClassObj:
         return await super().load(id)
+
+    def setsCode(self, obj:Core_ClassObj, value): obj.sCode = value
+    def setsCaption(self, obj:Core_ClassObj, value): obj.sCaption = value
