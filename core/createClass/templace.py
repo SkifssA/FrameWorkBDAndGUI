@@ -35,6 +35,8 @@ class {nameClass}Dvi(BaseAvi):
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
+    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):
             return \"\"\"
@@ -46,9 +48,9 @@ class {nameClass}Dvi(BaseAvi):
 
 Dpi = """# Системный файл для логики
 import asyncio
-from core.base import BaseApi, gid
+from core.base import BaseApi, BaseObj, gid
 
-class {nameClass}Obj:
+class {nameClass}Obj(BaseObj):
     def __init__(self):
         self.id:int = None
         self.gid:gid = None

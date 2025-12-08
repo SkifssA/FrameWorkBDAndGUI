@@ -15,12 +15,12 @@
             "name": "idConfig",
             "type": "INT",
             "caption": "Сыылка",
-            "refTab": "Bc_Config"
+            "refTab": "Tst_TestLookUp"
         },{
             "name": "idConfigLook",
             "type": "INT",
             "caption": "Выпадающий список",
-            "refTab": "Bc_Config",
+            "refTab": "Tst_TestLookUp",
             "editType": "lookUp"
         },{
             "name": "bEnd",

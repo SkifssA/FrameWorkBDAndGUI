@@ -62,11 +62,20 @@ class BaseAvi:
             dpg.hide_item(self.tab)
 
     class DefaultCard(DefaultDefault, EmptyCard): 
-        async def initLookUp(self):
+
+        @SetOper(label='Закрыть', order=10000)
+        async def closeForm(self):
+            dpg.hide_item(self.tab)
+
+        @SetOper(label='Сохранить', order=1)
+        async def saveForm(self):
+            dpg.hide_item(self.tab)
+
+        async def initInput(self):
             for i in self.tagInput:
                 if dpg.get_item_type(self.tagInput[i]) == "mvAppItemType::mvCombo":
-                    nameClass = 'Hbc_Student'
-                    nameLook = 'LookUp'
+                    nameClass = self.meta['attr'][i]['refTab']
+                    nameLook = self.meta['attr'][i]['display']
                     look = await Core_ActionDispatcherPkg().action(f"{nameClass}Avi.{nameLook}")
                     data = await look.getData()
                     dataLook = list(i['sHeadLine'] for i in data)
@@ -79,7 +88,7 @@ class BaseAvi:
             print(f'{idLook=}')
 
         async def afterCreate(self):
-            await self.initLookUp()
+            await self.initInput()
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):

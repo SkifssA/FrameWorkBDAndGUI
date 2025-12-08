@@ -95,6 +95,10 @@ async def _createFileMeta(path, data):
                 "edit": i['editType'] if 'editType' in i else 'edit',
                 'isVisible': i['name']+'HL' in data['showAttr']
             }
+        if  'editType' in i:
+            if i['editType'] == 'lookUp':
+               attr[i['name']+'HL']['display'] = 'LookUp'
+               attr[i['name']+'HL']['refTab'] = i['refTab']
         
 
     fD = {'Default':{

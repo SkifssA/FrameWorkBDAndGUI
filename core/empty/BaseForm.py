@@ -102,7 +102,7 @@ class BaseForm:
         '''Создание основного фрейма'''
         height = height if height is not None else self.defaultHeight
 
-        with dpg.child_window(show=False, parent=par, height=40) as upToolBar:
+        with dpg.child_window(show=False, parent=par, height=40, border=False) as upToolBar:
             self.upToolBar = upToolBar
             self.toolBar = dpg.add_group(show=False, horizontal=True)
         self.mainForm = self.createMainForm(par)

@@ -40,7 +40,9 @@
       "idConfigLookHL": {
         "caption": "Выпадающий список",
         "edit": "lookUp",
-        "isVisible": true
+        "isVisible": true,
+        "display": "LookUp",
+        "refTab": "Tst_TestLookUp"
       },
       "bEnd": {
         "caption": "Чек",

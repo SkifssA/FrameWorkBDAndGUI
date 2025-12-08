@@ -1,0 +1,22 @@
+{
+  "Default": {
+    "caption": "Тест",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sName": {
+        "caption": "Название",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

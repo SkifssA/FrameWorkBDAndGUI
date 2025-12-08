@@ -28,6 +28,8 @@ class Core_AttrDvi(BaseAvi):
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
+    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+
     class DviLookUp(BaseAvi.DefaultLookUp):
         async def onRefresh(self):
             return """
