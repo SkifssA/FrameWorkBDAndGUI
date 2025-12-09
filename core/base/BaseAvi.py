@@ -74,27 +74,46 @@ class BaseAvi:
             dpg.hide_item(self.tab)
 
         async def initInput(self):
-            self.obj = await self.thisApi().insert()
             data = self.thisApi()._getDataRop(self.obj)
-            for i in self.tagInput:
-                if i in data:
-                    dpg.configure_item(self.tagInput[i], default_value=data[i] if data[i] is not None else '')
-                if dpg.get_item_type(self.tagInput[i]) == "mvAppItemType::mvCombo":
-                    nameClass = self.meta['attr'][i]['refTab']
-                    nameLook = self.meta['attr'][i]['display']
-                    look = await Core_ActionDispatcherPkg().action(f"{nameClass}Avi.{nameLook}")
-                    data = await look.getData()
-                    dataLook = list(i['sHeadLine'] for i in data)
-                    dpg.configure_item(self.tagInput[i], items=dataLook)
-                    dpg.configure_item(self.tagInput[i], user_data=look)
-                    dpg.configure_item(self.tagInput[i], callback=self.w)
 
-        def w(self, sender, app_data, user_data):
-            idLook = user_data.getId(app_data)
-            print(f'{idLook=}')
+            """Костыть для проверки"""
+            data['idConfigHL'] = None
+            data['idConfigLookHL'] = 3
+
+            for i in self.tagInput:
+                dpg.configure_item(self.tagInput[i], callback=getattr(self, f'set{i}', None))
+                typeW = dpg.get_item_type(self.tagInput[i])
+                if typeW == "mvAppItemType::mvCombo":
+                    await self._initLookUp(i, data[i])
+                elif typeW == "mvAppItemType::mvCheckbox":
+                    await self._initCheck(i, data[i])
+                else:
+                    await self._initAll(i, data[i])
+
+        async def getObj(self):
+            if getattr(self, f'idItem', None) is None:
+                return await self.thisApi().insert()
+            return await self.thisApi().load(getattr(self, f'idItem', None))
 
         async def afterCreate(self):
+            self.obj = await self.getObj()
             await self.initInput()
+
+        async def _initLookUp(self, i, defValue):
+            dpg.configure_item(self.tagInput[i], default_value=defValue if defValue is not None else '')
+            nameClass = self.meta['attr'][i]['refTab']
+            nameLook = self.meta['attr'][i]['display']
+            look = await Core_ActionDispatcherPkg().action(f"{nameClass}Avi.{nameLook}")
+            data = await look.getData()
+            dataLook = list(i['sHeadLine'] for i in data)
+            dpg.configure_item(self.tagInput[i], items=dataLook)
+            dpg.configure_item(self.tagInput[i], user_data=look)
+
+        async def _initCheck(self, i, defValue):
+            dpg.configure_item(self.tagInput[i], default_value=bool(defValue) if defValue is not None else False)
+
+        async def _initAll(self, i, defValue):
+            dpg.configure_item(self.tagInput[i], default_value=defValue if defValue is not None else '')
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):

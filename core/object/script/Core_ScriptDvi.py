@@ -20,6 +20,9 @@ class Core_ScriptDvi(BaseAvi):
 
         def thisApi(self)->Core_ScriptApi:
             return super().thisApi()
+        
+        def setsAction(self, sender, app_data, user_data): self.thisApi().setsAction(self.obj, app_data)
+        def setnVersion(self, sender, app_data, user_data): self.thisApi().setnVersion(self.obj, app_data)
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

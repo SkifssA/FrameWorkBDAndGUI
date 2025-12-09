@@ -6,7 +6,6 @@ class Core_ActionDispatcherPkg:
         sNameClass, sNameMetod = sAction.split('.')
         sNameModule = f'{sNameClass[:sNameClass.find('_')].lower()}.object.{sNameClass[sNameClass.find('_')+1:-3].lower()}.{sNameClass}'
         try:
-            print(sNameModule)
             module = importlib.import_module(sNameModule)
             if not hasattr(module, sNameClass):
                 raise AttributeError(f"Класс {sNameClass} не найден в модуле {sNameModule}")

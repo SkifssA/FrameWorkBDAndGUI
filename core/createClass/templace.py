@@ -31,6 +31,8 @@ class {nameClass}Dvi(BaseAvi):
 
         def thisApi(self)->{nameClass}Api:
             return super().thisApi()
+        
+        {setter}
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

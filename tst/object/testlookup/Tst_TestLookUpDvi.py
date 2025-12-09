@@ -19,6 +19,8 @@ class Tst_TestLookUpDvi(BaseAvi):
 
         def thisApi(self)->Tst_TestLookUpApi:
             return super().thisApi()
+        
+        def setsName(self, sender, app_data, user_data): self.thisApi().setsName(self.obj, app_data)
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

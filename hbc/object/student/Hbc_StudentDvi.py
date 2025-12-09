@@ -25,6 +25,14 @@ class Hbc_StudentDvi(BaseAvi):
 
         def thisApi(self)->Hbc_StudentApi:
             return super().thisApi()
+        
+        def setsName(self, sender, app_data, user_data): self.thisApi().setsName(self.obj, app_data)
+        def setsContact(self, sender, app_data, user_data): self.thisApi().setsContact(self.obj, app_data)
+        def setsIpVM(self, sender, app_data, user_data): self.thisApi().setsIpVM(self.obj, app_data)
+        def setsLoginVM(self, sender, app_data, user_data): self.thisApi().setsLoginVM(self.obj, app_data)
+        def setsPassworVM(self, sender, app_data, user_data): self.thisApi().setsPassworVM(self.obj, app_data)
+        def setsIdNew(self, sender, app_data, user_data): self.thisApi().setsIdNew(self.obj, app_data)
+        def setbEnd(self, sender, app_data, user_data): self.thisApi().setbEnd(self.obj, app_data)
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

@@ -58,11 +58,6 @@ async def _createFileProg(path, data):
      await __createAvi(path, data)
 
 async def _createFileMeta(path, data):
-    print(data['name'])
-    print(data['caption'])
-    print(data['attr'])
-    print(data['showAttr'])
-
     pathWhitFileD = f'{path}/{data['name']}.Dmeta.json'
     pathWhitFileA = f'{path}/{data['name']}.Ameta.json'
 
@@ -133,7 +128,17 @@ async def __createDpi(path, data):
 
 async def __createDvi(path, data):
     pathWhitFile = f'{path}/{data['name']}Dvi.py'
-    f = Dvi.format(nameClass=data['name'], sqlList=data['sqlList'], showAttr='\''+'\', \''.join(data['showAttr'])+'\'')
+
+    tempSet = 'def set{nameAttr}(self, sender, app_data, user_data): self.thisApi().set{nameAttr}(self.obj, app_data)'
+    tempSetLookUp = 'def set{nameAttr}HL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().set{nameAttr}(self.obj, idLook)'
+    listTepmSet = []
+    for i in data['attr']:
+        listTepmSet.append(tempSet.format(nameAttr=i['name']))
+        if  'editType' in i:
+            if i['editType'] == 'lookUp':
+                listTepmSet.append(tempSetLookUp.format(nameAttr=i['name']))
+                
+    f = Dvi.format(nameClass=data['name'], sqlList=data['sqlList'], setter='\n        '.join(listTepmSet))
     await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
 
 async def __initMetaTab():

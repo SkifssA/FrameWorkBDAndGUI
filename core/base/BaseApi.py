@@ -45,7 +45,7 @@ class BaseApi:
         return w[0] if w is not None else w
 
     def _getDataRop(self, rop)->dict:
-        return rop.__dict__
+        return rop.__dict__.copy()
 
     def calcHeadLine(self, rop):
         return ' '
@@ -66,6 +66,7 @@ class BaseApi:
         value['sHeadLine'] = self.calcHeadLine(rop)
         value['sMnemoCode'] = self.calcMnemoCode(rop)
         keys = [k for k in value.keys() if k != 'id']
+        print(f'UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?', tuple(value[i] for i in keys) + (rop.id,))
         await ATQSL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (rop.id,))
         
     async def delete(self, rop):

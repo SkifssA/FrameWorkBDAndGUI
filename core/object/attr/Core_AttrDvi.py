@@ -24,6 +24,12 @@ class Core_AttrDvi(BaseAvi):
 
         def thisApi(self)->Core_AttrApi:
             return super().thisApi()
+        
+        def setidTab(self, sender, app_data, user_data): self.thisApi().setidTab(self.obj, app_data)
+        def setsCode(self, sender, app_data, user_data): self.thisApi().setsCode(self.obj, app_data)
+        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data)
+        def setsType(self, sender, app_data, user_data): self.thisApi().setsType(self.obj, app_data)
+        def setsRefClass(self, sender, app_data, user_data): self.thisApi().setsRefClass(self.obj, app_data)
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
