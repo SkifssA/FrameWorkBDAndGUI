@@ -23,10 +23,10 @@ class Bc_FileDvi(BaseAvi):
         def thisApi(self)->Bc_FileApi:
             return super().thisApi()
         
-        def setgidScr(self, sender, app_data, user_data): self.thisApi().setgidScr(self.obj, app_data)
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data)
-        def setsSuffix(self, sender, app_data, user_data): self.thisApi().setsSuffix(self.obj, app_data)
-        def setsPath(self, sender, app_data, user_data): self.thisApi().setsPath(self.obj, app_data)
+        def setgidScr(self, sender, app_data, user_data): self.thisApi().setgidScr(self.obj, app_data); self.afterSetter()
+        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
+        def setsSuffix(self, sender, app_data, user_data): self.thisApi().setsSuffix(self.obj, app_data); self.afterSetter()
+        def setsPath(self, sender, app_data, user_data): self.thisApi().setsPath(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

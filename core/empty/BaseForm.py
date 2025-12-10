@@ -17,6 +17,7 @@ class BaseForm:
         self.parent = None
         self.parentTable = None
         self.ch = None
+        self.mod = False
 
     def getTag(self):
         '''формирование тега формы'''

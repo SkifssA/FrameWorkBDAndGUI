@@ -5,6 +5,7 @@ from ..package import ASQL, Core_ActionDispatcherPkg
 from ..empty.EmptyList import EmptyList
 from ..empty.EmptyCard import EmptyCard
 from .BaseOper import SetOper
+from .BaseModal import BaseModal
 
 
 class BaseAvi:
@@ -37,13 +38,15 @@ class BaseAvi:
             return await self.thisApi()._createRop(row)
 
         def thisApi(self):
+            return self._getAvi().thisApi()
+        
+        def _getAvi(self):
             outer_class_name = self.__class__.__qualname__.rsplit('.', 1)[0]
             # Получаем имя модуля, где определён класс
             module_name = self.__class__.__module__
             module = importlib.import_module(module_name)
-            outer_class = getattr(module, outer_class_name)
-            return outer_class.thisApi()
-        
+            return getattr(module, outer_class_name)
+
         def get_row(self):
             return self.get_any_row(self.mainForm)
     
@@ -54,24 +57,42 @@ class BaseAvi:
                 for j in dpg.get_item_children(i, slot=1):
                     if dpg.get_value(j):
                         return dpg.get_item_user_data(j)
-
-        
+      
     class DefaultList(DefaultDefault, EmptyList):
+
+        @SetOper(label='Обновить', order=1)
+        async def refreshForm(self):
+            await self.refresh()
+
+        @SetOper(label='Открыть', order=2)
+        async def openForm(self):
+            await self._getAvi().card(idItem=self.getAttr('id')).open()
+        
+        @SetOper(label='Создать', order=10)
+        async def insert(self):
+            await self._getAvi().card().open()
+
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
             dpg.hide_item(self.tab)
 
     class DefaultCard(DefaultDefault, EmptyCard): 
-
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
-            await self.thisApi().delete(self.obj)
+            if self.mod:
+                BaseModal("Сохранить перед выходом?", self.handle_confirmation)
+            else:
+                dpg.hide_item(self.tab)
+
+        async def handle_confirmation(self, result: bool):
+            if result:
+                await self.saveForm()
             dpg.hide_item(self.tab)
 
         @SetOper(label='Сохранить', order=1)
         async def saveForm(self):
             await self.thisApi().update(self.obj)
-            dpg.hide_item(self.tab)
+            self.mod = False
 
         async def initInput(self):
             data = self.thisApi()._getDataRop(self.obj)
@@ -89,6 +110,9 @@ class BaseAvi:
                     await self._initCheck(i, data[i])
                 else:
                     await self._initAll(i, data[i])
+
+        def afterSetter(self):
+            self.mod = True
 
         async def getObj(self):
             if getattr(self, f'idItem', None) is None:

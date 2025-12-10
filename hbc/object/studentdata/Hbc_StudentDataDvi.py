@@ -22,8 +22,8 @@ class Hbc_StudentDataDvi(BaseAvi):
         def thisApi(self)->Hbc_StudentDataApi:
             return super().thisApi()
         
-        def setidStudent(self, sender, app_data, user_data): self.thisApi().setidStudent(self.obj, app_data)
-        def setsData(self, sender, app_data, user_data): self.thisApi().setsData(self.obj, app_data)
+        def setidStudent(self, sender, app_data, user_data): self.thisApi().setidStudent(self.obj, app_data); self.afterSetter()
+        def setsData(self, sender, app_data, user_data): self.thisApi().setsData(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

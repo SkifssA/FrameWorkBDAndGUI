@@ -27,12 +27,12 @@ class Tst_TestDvi(BaseAvi):
         def thisApi(self)->Tst_TestApi:
             return super().thisApi()
         
-        def setsName(self, sender, app_data, user_data): self.thisApi().setsName(self.obj, app_data)
-        def setnQty(self, sender, app_data, user_data): self.thisApi().setnQty(self.obj, app_data)
-        def setidConfig(self, sender, app_data, user_data): self.thisApi().setidConfig(self.obj, app_data)
-        def setidConfigLook(self, sender, app_data, user_data): self.thisApi().setidConfigLook(self.obj, app_data)
-        def setidConfigLookHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidConfigLook(self.obj, idLook)
-        def setbEnd(self, sender, app_data, user_data): self.thisApi().setbEnd(self.obj, app_data)
+        def setsName(self, sender, app_data, user_data): self.thisApi().setsName(self.obj, app_data); self.afterSetter()
+        def setnQty(self, sender, app_data, user_data): self.thisApi().setnQty(self.obj, app_data); self.afterSetter()
+        def setidConfig(self, sender, app_data, user_data): self.thisApi().setidConfig(self.obj, app_data); self.afterSetter()
+        def setidConfigLook(self, sender, app_data, user_data): self.thisApi().setidConfigLook(self.obj, app_data); self.afterSetter()
+        def setidConfigLookHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidConfigLook(self.obj, idLook); self.afterSetter()
+        def setbEnd(self, sender, app_data, user_data): self.thisApi().setbEnd(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

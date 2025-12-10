@@ -129,8 +129,8 @@ async def __createDpi(path, data):
 async def __createDvi(path, data):
     pathWhitFile = f'{path}/{data['name']}Dvi.py'
 
-    tempSet = 'def set{nameAttr}(self, sender, app_data, user_data): self.thisApi().set{nameAttr}(self.obj, app_data)'
-    tempSetLookUp = 'def set{nameAttr}HL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().set{nameAttr}(self.obj, idLook)'
+    tempSet = 'def set{nameAttr}(self, sender, app_data, user_data): self.thisApi().set{nameAttr}(self.obj, app_data); self.afterSetter()'
+    tempSetLookUp = 'def set{nameAttr}HL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().set{nameAttr}(self.obj, idLook); self.afterSetter()'
     listTepmSet = []
     for i in data['attr']:
         listTepmSet.append(tempSet.format(nameAttr=i['name']))

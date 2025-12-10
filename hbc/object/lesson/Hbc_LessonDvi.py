@@ -21,8 +21,8 @@ class Hbc_LessonDvi(BaseAvi):
         def thisApi(self)->Hbc_LessonApi:
             return super().thisApi()
         
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data)
-        def setsIdExit(self, sender, app_data, user_data): self.thisApi().setsIdExit(self.obj, app_data)
+        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
+        def setsIdExit(self, sender, app_data, user_data): self.thisApi().setsIdExit(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

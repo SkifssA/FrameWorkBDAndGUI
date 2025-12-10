@@ -22,9 +22,9 @@ class Bc_ConfigDvi(BaseAvi):
         def thisApi(self)->Bc_ConfigApi:
             return super().thisApi()
         
-        def setsModule(self, sender, app_data, user_data): self.thisApi().setsModule(self.obj, app_data)
-        def setsCaprionSetting(self, sender, app_data, user_data): self.thisApi().setsCaprionSetting(self.obj, app_data)
-        def setsValue(self, sender, app_data, user_data): self.thisApi().setsValue(self.obj, app_data)
+        def setsModule(self, sender, app_data, user_data): self.thisApi().setsModule(self.obj, app_data); self.afterSetter()
+        def setsCaprionSetting(self, sender, app_data, user_data): self.thisApi().setsCaprionSetting(self.obj, app_data); self.afterSetter()
+        def setsValue(self, sender, app_data, user_data): self.thisApi().setsValue(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

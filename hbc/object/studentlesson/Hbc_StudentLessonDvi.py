@@ -26,10 +26,10 @@ class Hbc_StudentLessonDvi(BaseAvi):
         def thisApi(self)->Hbc_StudentLessonApi:
             return super().thisApi()
         
-        def setidStudent(self, sender, app_data, user_data): self.thisApi().setidStudent(self.obj, app_data)
-        def setidLesson(self, sender, app_data, user_data): self.thisApi().setidLesson(self.obj, app_data)
-        def setbUploadFile(self, sender, app_data, user_data): self.thisApi().setbUploadFile(self.obj, app_data)
-        def setbFillScore(self, sender, app_data, user_data): self.thisApi().setbFillScore(self.obj, app_data)
+        def setidStudent(self, sender, app_data, user_data): self.thisApi().setidStudent(self.obj, app_data); self.afterSetter()
+        def setidLesson(self, sender, app_data, user_data): self.thisApi().setidLesson(self.obj, app_data); self.afterSetter()
+        def setbUploadFile(self, sender, app_data, user_data): self.thisApi().setbUploadFile(self.obj, app_data); self.afterSetter()
+        def setbFillScore(self, sender, app_data, user_data): self.thisApi().setbFillScore(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

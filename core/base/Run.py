@@ -37,7 +37,7 @@ async def mainProgram():
     await Core_SelectApp().open()
 
     # Создаём viewport и запускаем
-    dpg.create_viewport(title='Dear PyGui Таблица', width=800, height=600)
+    dpg.create_viewport(title='FrameWorkBDAndGUI', width=800, height=600)
     dpg.setup_dearpygui()
     dpg.set_primary_window("main_window", True)
     dpg.maximize_viewport()
