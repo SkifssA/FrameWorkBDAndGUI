@@ -26,16 +26,24 @@ class EmptyList(BaseForm):
                 dpg.delete_item(child)
 
             oneRow = None
-
             for i in data['column']:
                     dpg.add_table_column(label=i[1], user_data=i[0], enabled=i[2], parent=tabl)
             for row in data['row']:
                 with dpg.table_row(parent=tabl):
-                    for j in row:
-                        q = dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl))
-                        if s:
-                            s=False
-                            oneRow = q
+                    w = True
+                    for z, j in enumerate(row):
+                        if data['column'][z][3] == 'check':
+                            dpg.set_value(dpg.add_checkbox(enabled=False), bool(row[j]) if row[j] is not None else False)
+                        else:
+                            if w and data['column'][z][2]:
+                                q = dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl), height=21)
+                                w = False
+                                if s:
+                                    s=False
+                                    oneRow = q
+                            else:
+                                dpg.add_text(row[j])
+                        
             if oneRow is not None:
                 self._click(oneRow, tabl)
 
@@ -73,12 +81,13 @@ class EmptyList(BaseForm):
         for i in dpg.get_item_children(tagTable, slot=1):
             ch = dpg.get_item_children(i, slot=1)
             for j in ch:
-                dpg.set_value(j, tagSelf in ch)
+                if dpg.get_item_type(j) == "mvAppItemType::mvSelectable":
+                    dpg.set_value(j, tagSelf in ch)
 
     async def _getCollumn(self)->tuple[tuple[str]]:
         '''Получение столбцов'''
         attrs = self.meta['attr']
-        headRes = tuple((col, attrs[col]['caption'], attrs[col]['isVisible']) for col in attrs)
+        headRes = tuple((col, attrs[col]['caption'], attrs[col]['isVisible'], attrs[col]['edit']) for col in attrs)
         return headRes
     
     async def __getDataTab(self, column=True):

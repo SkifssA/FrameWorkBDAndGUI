@@ -7,8 +7,6 @@ from ..empty.EmptyCard import EmptyCard
 from .BaseOper import SetOper
 from .BaseModal import BaseModal
 
-
-
 class BaseAvi:
 
     @classmethod
@@ -56,7 +54,7 @@ class BaseAvi:
                 return {}
             for i in dpg.get_item_children(tagTable, slot=1):
                 for j in dpg.get_item_children(i, slot=1):
-                    if dpg.get_value(j):
+                    if dpg.get_value(j) and dpg.get_item_user_data(j):
                         return dpg.get_item_user_data(j)
       
     class DefaultList(DefaultDefault, EmptyList):
