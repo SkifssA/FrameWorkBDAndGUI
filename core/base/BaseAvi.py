@@ -61,38 +61,46 @@ class BaseAvi:
     class DefaultList(DefaultDefault, EmptyList):
 
         @SetOper(label='Обновить', order=1)
-        async def refreshForm(self):
-            await self.refresh()
+        async def refreshForm(self): await self.refresh()
 
         @SetOper(label='Открыть', order=2)
-        async def openForm(self):
-            await self._getAvi().card(idItem=self.getAttr('id')).open()
+        async def openForm(self): await self._getAvi().card(idItem=self.getAttr('id')).open()
         
         @SetOper(label='Создать', order=10)
-        async def insert(self):
-            await self._getAvi().card().open()
+        async def insert(self): await self._getAvi().card(isInsert=True).open()
+
+        @SetOper(label='Удалить', order=20)
+        async def delete(self):
+            await self.thisApi()._deleteById(self.getAttr('id'))
+            await self.refresh()
 
         @SetOper(label='Закрыть', order=10000)
-        async def closeForm(self):
-            dpg.hide_item(self.tab)
+        async def closeForm(self): dpg.hide_item(self.tab)
 
     class DefaultCard(DefaultDefault, EmptyCard): 
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
-            if self.mod:
+            if self.isMod or self.isInsert:
                 BaseModal("Сохранить перед выходом?", self.handle_confirmation)
             else:
                 dpg.hide_item(self.tab)
 
         async def handle_confirmation(self, result: bool):
-            if result:
-                await self.saveForm()
+            if self.isInsert:
+                if not result:
+                    await self.thisApi().delete(self.obj)
+                else:
+                    await self.saveForm()
+            else:
+                if result:
+                    await self.saveForm()
             dpg.hide_item(self.tab)
 
         @SetOper(label='Сохранить', order=1)
         async def saveForm(self):
             await self.thisApi().update(self.obj)
-            self.mod = False
+            self.isInsert = False
+            self.isMod = False
 
         async def initInput(self):
             data = self.thisApi()._getDataRop(self.obj)
@@ -112,7 +120,7 @@ class BaseAvi:
                     await self._initAll(i, data[i])
 
         def afterSetter(self):
-            self.mod = True
+            self.isMod = True
 
         async def getObj(self):
             if getattr(self, f'idItem', None) is None:

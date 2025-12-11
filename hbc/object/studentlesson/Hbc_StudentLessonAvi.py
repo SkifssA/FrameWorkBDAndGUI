@@ -5,9 +5,19 @@ from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
 from core.base.BaseOper import SetOper
 
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
-    class List(Hbc_StudentLessonDvi.DviList):
-        showAttr = ['idStudentHL', 'idLessonHL']
+    @classmethod
+    def list(cls, **kwargs):
+        return cls.typeMeta(cls.List, **kwargs)
+    
+    @classmethod
+    def list_idStudent(cls, **kwargs):
+        return cls.typeMeta(cls.List_idStudent, **kwargs)
+    
+    @classmethod
+    def card(cls, **kwargs):
+        return cls.typeMeta(cls.Card, **kwargs)
 
+    class List(Hbc_StudentLessonDvi.DviList):
         @SetOper(label='Обновить практические', order=-1)
         async def uploadlessonAll(self):
             sHeadLineListt = []
@@ -55,5 +65,6 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             from bc.object.file.Bc_FileAvi import Bc_FileAvi
             yield Bc_FileAvi.list_gidSrc(right=True)
 
-    class LookUp(Hbc_StudentLessonDvi.DviLookUp):
-        pass
+    class Card(Hbc_StudentLessonDvi.DviCard): pass
+
+    class LookUp(Hbc_StudentLessonDvi.DviLookUp): pass

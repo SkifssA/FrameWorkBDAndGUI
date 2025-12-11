@@ -11,6 +11,10 @@ class Bc_FileAvi(Bc_FileDvi):
     @classmethod
     def list_gidSrc(cls, **kwargs):
         return cls.typeMeta(cls.List_gidSrc, **kwargs)
+    
+    @classmethod
+    def card(cls, **kwargs):
+        return cls.typeMeta(cls.Card, **kwargs)
 
     class List(Bc_FileDvi.DviList):
         showAttr = ['sCaption', 'sSuffix']
@@ -27,6 +31,8 @@ class Bc_FileAvi(Bc_FileDvi):
 
         async def onRefresh(self):
             return await super().onRefresh() + f"WHERE t.gidScr = '{self.getAttr("super$gid")}'"
+
+    class Card(Bc_FileDvi.DviCard): pass
 
     class LookUp(Bc_FileDvi.DviLookUp): pass
 

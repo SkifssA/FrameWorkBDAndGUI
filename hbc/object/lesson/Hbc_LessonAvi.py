@@ -1,10 +1,17 @@
 # Пользовательский файл для интерфейса
 from .Hbc_LessonDvi import Hbc_LessonDvi
-from core.base.BaseOper import SetOper
 
 class Hbc_LessonAvi(Hbc_LessonDvi):
-    class List(Hbc_LessonDvi.DviList):
-        showAttr = ['sCaption']
+    @classmethod
+    def list(cls, **kwargs):
+        return cls.typeMeta(cls.List, **kwargs)
+    
+    @classmethod
+    def card(cls, **kwargs):
+        return cls.typeMeta(cls.Card, **kwargs)
 
-    class LookUp(Hbc_LessonDvi.DviLookUp):
-        pass
+    class List(Hbc_LessonDvi.DviList): pass
+
+    class Card(Hbc_LessonDvi.DviCard): pass
+
+    class LookUp(Hbc_LessonDvi.DviLookUp): pass

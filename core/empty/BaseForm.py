@@ -17,7 +17,8 @@ class BaseForm:
         self.parent = None
         self.parentTable = None
         self.ch = None
-        self.mod = False
+        self.isMod = False
+        self.isInsert = False
 
     def getTag(self):
         '''формирование тега формы'''
@@ -39,6 +40,7 @@ class BaseForm:
             await self._refresh()
             await self._openCh()
         dpg.show_item(self.tab)
+        dpg.set_value(parent, self.tab)
         
             
     async def getMeta(self):
