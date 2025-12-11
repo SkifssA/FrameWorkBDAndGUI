@@ -1,6 +1,7 @@
 {
   "List_gidSrc": {
     "caption": "Файлы",
+    "isVisibleToolBar": false,
     "attr": {
       "id": {
         "caption": "id",

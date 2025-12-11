@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Скрипты",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

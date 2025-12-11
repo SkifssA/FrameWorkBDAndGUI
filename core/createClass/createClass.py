@@ -99,6 +99,7 @@ async def _createFileMeta(path, data):
 
     fD = {'Default':{
             'caption': data['caption'],
+            'isVisibleToolBar': True,
             'attr': attr
         }}
     await Core_FileManagerPkg.CreateFile(pathWhitFileD, fD)

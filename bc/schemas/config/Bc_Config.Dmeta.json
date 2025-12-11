@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Настройки",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

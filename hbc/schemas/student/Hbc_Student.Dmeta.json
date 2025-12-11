@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Студенты",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

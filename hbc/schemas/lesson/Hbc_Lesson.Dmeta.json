@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Практические",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

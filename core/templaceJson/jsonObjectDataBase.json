@@ -13,6 +13,11 @@
       "type": "string",
       "description": "Отображаемое название сущности"
     },
+    "isVisibleToolBar": {
+      "type": "boolean",
+      "enum": [true, false],
+      "description": "Отображаемое название сущности"
+    },
     "attr": {
       "type": "array",
       "description": "Список атрибутов сущности",
@@ -50,12 +55,35 @@
             "type": "boolean",
             "enum": [true, false],
             "description": "Будет ли отображаться атр в стандартной выборке"
+          },
+          "editType": {
+            "type": "string",
+            "enum": ["check", "lookUp", "edit"],
+            "description": "Тип отображения input"
           }
         },
         "required": ["name", "type", "caption"],
         "additionalProperties": false
       },
       "minItems": 0
+    },
+    "oper": {
+      "type": "array",
+      "description": "Список операции сущности",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Имя атрибута (используется в коде)"
+          },
+          "isVisible": {
+            "type": "boolean",
+            "enum": [true, false],
+            "description": "Будет ли отображаться операция в стандартной выборке"
+          }
+        }
+      }
     },
     "collections": {
       "type": "array",

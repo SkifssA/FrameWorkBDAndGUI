@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Время начала студента",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

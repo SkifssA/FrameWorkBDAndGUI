@@ -1,6 +1,7 @@
 {
   "List_idStudent": {
     "caption": "Время начала студента",
+    "isVisibleToolBar": false,
     "attr": {
       "id": {
         "caption": "id",

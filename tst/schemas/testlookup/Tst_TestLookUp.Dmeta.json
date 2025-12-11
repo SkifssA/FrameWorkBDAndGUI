@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Тест",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

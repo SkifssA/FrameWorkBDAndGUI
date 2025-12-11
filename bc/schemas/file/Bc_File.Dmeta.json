@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Файлы",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

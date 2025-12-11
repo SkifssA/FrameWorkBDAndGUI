@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Выполненые практические студента",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",

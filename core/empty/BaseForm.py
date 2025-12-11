@@ -119,6 +119,8 @@ class BaseForm:
 
         await self.addTools()
 
+        dpg.configure_item(self.upToolBar, show=self.meta['isVisibleToolBar'])
+
         dpg.configure_item(par, width=width)
         self.offset_x_resize = width
         self.offset_y_resize = height
@@ -175,9 +177,15 @@ class BaseForm:
             if hasattr(obj, '_is_oper_handler'):
                 q.append((name, obj))
             
+        oper = self.meta['oper'] if 'oper' in self.meta else {}
+
         for i in sorted(q, key=lambda x: x[-1]._order):
             if not dpg.does_item_exist(f'{self.selfgroup}_{i[0]}'):
-                dpg.add_button(tag=f'{self.selfgroup}_{i[0]}', parent=self.toolBar, label=i[-1]._oper_label, callback=self.appendAction(i[-1], i[0]))
+                dpg.add_button(tag=f'{self.selfgroup}_{i[0]}', 
+                               parent=self.toolBar, label=i[-1]._oper_label, 
+                               callback=self.appendAction(i[-1], i[0]),
+                               show=oper[i[0]]['isVisible'] if i[0] in oper else True
+                               )
                 dpg.configure_item(self.toolBar, show=True)
                 dpg.configure_item(self.upToolBar, show=True)
 

@@ -1,6 +1,7 @@
 {
   "List_idStudent": {
     "caption": "Выполненые практические студента",
+    "isVisibleToolBar": false,
     "attr": {
       "id": {
         "caption": "id",

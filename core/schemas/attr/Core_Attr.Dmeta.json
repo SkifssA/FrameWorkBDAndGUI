@@ -1,6 +1,7 @@
 {
   "Default": {
     "caption": "Атрибуты класса",
+    "isVisibleToolBar": true,
     "attr": {
       "id": {
         "caption": "id",
