@@ -23,10 +23,12 @@
         },{
             "name": "bUploadFile",
             "type": "INT",
+            "editType": "check",
             "caption": "Скачены файлы"
         },{
             "name": "bFillScore",
             "type": "INT",
+            "editType": "check",
             "caption": "Оценено"
         }
     ]

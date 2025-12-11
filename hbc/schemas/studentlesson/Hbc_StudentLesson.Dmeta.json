@@ -34,12 +34,12 @@
       },
       "bUploadFile": {
         "caption": "Скачены файлы",
-        "edit": "edit",
+        "edit": "check",
         "isVisible": true
       },
       "bFillScore": {
         "caption": "Оценено",
-        "edit": "edit",
+        "edit": "check",
         "isVisible": true
       }
     }

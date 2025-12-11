@@ -1,1 +1,32 @@
-{}
+{
+  "List_idStudent": {
+    "caption": "Время начала студента",
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idStudent": {
+        "caption": "Студент",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idStudentHL": {
+        "caption": "Студент",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sData": {
+        "caption": "Начал в",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}
