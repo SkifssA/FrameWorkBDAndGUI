@@ -32,13 +32,12 @@ class BaseForm:
         self.ch = tuple(self.openCh())
         self.meta = await self.getMeta()
         if self.tab is not None:
-            await self._refresh()
-            await self.refreshCh()
+            await self.refresh()
         else:    
             await self.createTab(parent, self.getW())
             self.selection = Selection(self.selfgroup)
-            await self._refresh()
             await self._openCh()
+            await self._refresh()
         dpg.show_item(self.tab)
         dpg.set_value(parent, self.tab)
         
@@ -67,6 +66,7 @@ class BaseForm:
         '''Обновление форм'''
         for i in self.ch:
             if i is not None:
+                print(f'i.refresh() = {i}')
                 await i.refresh()
 
     def openCh(self):

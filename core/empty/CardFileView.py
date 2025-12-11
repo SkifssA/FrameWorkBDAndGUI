@@ -4,6 +4,7 @@ import numpy as np
 import os
 import asyncio
 from .BaseForm import BaseForm
+import traceback
 
 class CardFileView(BaseForm):
     MIN_SCALE = 0.1
@@ -17,6 +18,8 @@ class CardFileView(BaseForm):
         self.dragging = False
         self.last_mouse_pos = [0.0, 0.0]
         self.previous_size = None
+        self.image_drawlist = None
+        self.mainForm = None
 
     def createMainForm(self, par):
         with dpg.child_window(width=-1
@@ -46,6 +49,8 @@ class CardFileView(BaseForm):
         self.update_image_position()
 
     def loadFile(self, image_path):
+        print("Текущий стек вызовов:")
+        traceback.print_stack()
         try:
             image_data, self.img_w, self.img_h = self.load_image_as_raw(image_path)
             with dpg.texture_registry(show=False):
