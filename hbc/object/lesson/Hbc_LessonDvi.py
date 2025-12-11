@@ -12,7 +12,17 @@ class Hbc_LessonDvi(BaseAvi):
                    t.sCaption,
                    t.sIdExit
             FROM Hbc_Lesson AS t
-                   
+                
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                
+              )
+            select 
+            from t
+                
             """
 
         async def thisRop(self)->Hbc_LessonObj:

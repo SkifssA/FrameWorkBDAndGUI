@@ -1,11 +1,12 @@
 import dearpygui.dearpygui as dpg
 import importlib
 
-from ..package import ASQL, Core_ActionDispatcherPkg
+from ..package import ASQL
 from ..empty.EmptyList import EmptyList
 from ..empty.EmptyCard import EmptyCard
 from .BaseOper import SetOper
 from .BaseModal import BaseModal
+
 
 
 class BaseAvi:
@@ -102,50 +103,14 @@ class BaseAvi:
             self.isInsert = False
             self.isMod = False
 
-        async def initInput(self):
-            data = self.thisApi()._getDataRop(self.obj)
-
-            """Костыть для проверки"""
-            data['idConfigHL'] = None
-            data['idConfigLookHL'] = 3
-
-            for i in self.tagInput:
-                dpg.configure_item(self.tagInput[i], callback=getattr(self, f'set{i}', None))
-                typeW = dpg.get_item_type(self.tagInput[i])
-                if typeW == "mvAppItemType::mvCombo":
-                    await self._initLookUp(i, data[i])
-                elif typeW == "mvAppItemType::mvCheckbox":
-                    await self._initCheck(i, data[i])
-                else:
-                    await self._initAll(i, data[i])
-
-        def afterSetter(self):
-            self.isMod = True
+        async def afterCreate(self):
+            self.obj = await self.getObj()
+            await self.initInput()
 
         async def getObj(self):
             if getattr(self, f'idItem', None) is None:
                 return await self.thisApi().insert()
             return await self.thisApi().load(getattr(self, f'idItem', None))
-
-        async def afterCreate(self):
-            self.obj = await self.getObj()
-            await self.initInput()
-
-        async def _initLookUp(self, i, defValue):
-            dpg.configure_item(self.tagInput[i], default_value=defValue if defValue is not None else '')
-            nameClass = self.meta['attr'][i]['refTab']
-            nameLook = self.meta['attr'][i]['display']
-            look = await Core_ActionDispatcherPkg().action(f"{nameClass}Avi.{nameLook}")
-            data = await look.getData()
-            dataLook = list(i['sHeadLine'] for i in data)
-            dpg.configure_item(self.tagInput[i], items=dataLook)
-            dpg.configure_item(self.tagInput[i], user_data=look)
-
-        async def _initCheck(self, i, defValue):
-            dpg.configure_item(self.tagInput[i], default_value=bool(defValue) if defValue is not None else False)
-
-        async def _initAll(self, i, defValue):
-            dpg.configure_item(self.tagInput[i], default_value=defValue if defValue is not None else '')
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):

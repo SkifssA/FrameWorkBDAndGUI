@@ -90,6 +90,7 @@ async def _createFileMeta(path, data):
                 "edit": i['editType'] if 'editType' in i else 'edit',
                 'isVisible': i['name']+'HL' in data['showAttr']
             }
+            attr[i['name']]['edit'] = 'edit'
         if  'editType' in i:
             if i['editType'] == 'lookUp':
                attr[i['name']+'HL']['display'] = 'LookUp'
@@ -138,7 +139,7 @@ async def __createDvi(path, data):
             if i['editType'] == 'lookUp':
                 listTepmSet.append(tempSetLookUp.format(nameAttr=i['name']))
                 
-    f = Dvi.format(nameClass=data['name'], sqlList=data['sqlList'], setter='\n        '.join(listTepmSet))
+    f = Dvi.format(nameClass=data['name'], sqlList=data['sqlList'][0], sqlListExt=data['sqlList'][1], setter='\n        '.join(listTepmSet))
     await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
 
 async def __initMetaTab():
@@ -217,11 +218,22 @@ async def __getSqlList(dataAttr, nameTabl)->str:
             sqlstr['join'].append(f"LEFT JOIN {i['refTab']} t{sqlstr['int']} ON t{sqlstr['int']}.id = t.{i['name']}")
             sqlstr['int'] += 1
 
-    return f"""
+    if(sqlstr['int'] > 1):
+        print()
+
+    return [f"""
             SELECT {',\n                   '.join(sqlstr['attr'])}
             FROM {nameTabl} AS t
-                   {'\n                   '.join(sqlstr['join'])}
-            """
+                {'\n                '.join(sqlstr['join'])}
+            """,
+            f"""
+            with t as ( select 
+                {',\n                '.join(f":{i[i.rfind('.')+1:]} as {i[i.rfind('.')+1:]}" for i in sqlstr['join'])}
+              )
+            select {',\n                   '.join(i for i in sqlstr['attr'] if i.endswith("HL"))}
+            from t
+                {'\n                '.join(sqlstr['join'])}
+            """]
 
 async def __getRopAttr(dataAttr):
     rop = []

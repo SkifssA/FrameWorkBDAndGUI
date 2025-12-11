@@ -16,7 +16,17 @@ class Core_AttrDvi(BaseAvi):
                    t.sType,
                    t.sRefClass
             FROM Core_Attr AS t
-                   LEFT JOIN Core_Class t1 ON t1.id = t.idTab
+                LEFT JOIN Core_Class t1 ON t1.id = t.idTab
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                :idTab as idTab
+              )
+            select t1.sHeadLine as idTabHL
+            from t
+                LEFT JOIN Core_Class t1 ON t1.id = t.idTab
             """
 
         async def thisRop(self)->Core_AttrObj:

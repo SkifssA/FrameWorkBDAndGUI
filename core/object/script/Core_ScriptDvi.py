@@ -12,7 +12,17 @@ class Core_ScriptDvi(BaseAvi):
                    t.sAction,
                    t.nVersion
             FROM Core_Script AS t
-                   
+                
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                
+              )
+            select 
+            from t
+                
             """
 
         async def thisRop(self)->Core_ScriptObj:

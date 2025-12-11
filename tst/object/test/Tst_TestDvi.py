@@ -17,8 +17,21 @@ class Tst_TestDvi(BaseAvi):
                    t2.sHeadLine as idConfigLookHL,
                    t.bEnd
             FROM Tst_Test AS t
-                   LEFT JOIN Tst_TestLookUp t1 ON t1.id = t.idConfig
-                   LEFT JOIN Tst_TestLookUp t2 ON t2.id = t.idConfigLook
+                LEFT JOIN Tst_TestLookUp t1 ON t1.id = t.idConfig
+                LEFT JOIN Tst_TestLookUp t2 ON t2.id = t.idConfigLook
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                :idConfig as idConfig,
+                :idConfigLook as idConfigLook
+              )
+            select t1.sHeadLine as idConfigHL,
+                   t2.sHeadLine as idConfigLookHL
+            from t
+                LEFT JOIN Tst_TestLookUp t1 ON t1.id = t.idConfig
+                LEFT JOIN Tst_TestLookUp t2 ON t2.id = t.idConfigLook
             """
 
         async def thisRop(self)->Tst_TestObj:

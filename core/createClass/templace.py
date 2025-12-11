@@ -34,6 +34,9 @@ class {nameClass}Dvi(BaseAvi):
         async def onRefresh(self):
             return \"\"\"{sqlList}\"\"\"
 
+        def onRefreshExt(self):
+            return \"\"\"{sqlListExt}\"\"\"
+
         async def thisRop(self)->{nameClass}Obj:
             return await super().thisRop()
 

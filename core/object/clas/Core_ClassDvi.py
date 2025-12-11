@@ -12,7 +12,17 @@ class Core_ClassDvi(BaseAvi):
                    t.sCode,
                    t.sCaption
             FROM Core_Class AS t
-                   
+                
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                
+              )
+            select 
+            from t
+                
             """
 
         async def thisRop(self)->Core_ClassObj:

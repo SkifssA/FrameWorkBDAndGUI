@@ -13,7 +13,17 @@ class Bc_ConfigDvi(BaseAvi):
                    t.sCaprionSetting,
                    t.sValue
             FROM Bc_Config AS t
-                   
+                
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                
+              )
+            select 
+            from t
+                
             """
 
         async def thisRop(self)->Bc_ConfigObj:

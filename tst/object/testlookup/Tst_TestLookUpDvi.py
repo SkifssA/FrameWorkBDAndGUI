@@ -11,7 +11,17 @@ class Tst_TestLookUpDvi(BaseAvi):
                    t.gid,
                    t.sName
             FROM Tst_TestLookUp AS t
-                   
+                
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                
+              )
+            select 
+            from t
+                
             """
 
         async def thisRop(self)->Tst_TestLookUpObj:

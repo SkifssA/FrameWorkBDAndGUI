@@ -34,7 +34,7 @@
       },
       "idConfigLook": {
         "caption": "Выпадающий список",
-        "edit": "lookUp",
+        "edit": "edit",
         "isVisible": false
       },
       "idConfigLookHL": {

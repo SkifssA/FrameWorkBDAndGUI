@@ -17,7 +17,17 @@ class Hbc_StudentDvi(BaseAvi):
                    t.sIdNew,
                    t.bEnd
             FROM Hbc_Student AS t
-                   
+                
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                
+              )
+            select 
+            from t
+                
             """
 
         async def thisRop(self)->Hbc_StudentObj:

@@ -16,8 +16,21 @@ class Hbc_StudentLessonDvi(BaseAvi):
                    t.bUploadFile,
                    t.bFillScore
             FROM Hbc_StudentLesson AS t
-                   LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
-                   LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
+                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+                LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                :idStudent as idStudent,
+                :idLesson as idLesson
+              )
+            select t1.sHeadLine as idStudentHL,
+                   t2.sHeadLine as idLessonHL
+            from t
+                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+                LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
             """
 
         async def thisRop(self)->Hbc_StudentLessonObj:

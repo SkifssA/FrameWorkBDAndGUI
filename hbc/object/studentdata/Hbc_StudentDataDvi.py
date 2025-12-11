@@ -13,7 +13,17 @@ class Hbc_StudentDataDvi(BaseAvi):
                    t1.sHeadLine as idStudentHL,
                    t.sData
             FROM Hbc_StudentData AS t
-                   LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                :idStudent as idStudent
+              )
+            select t1.sHeadLine as idStudentHL
+            from t
+                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
             """
 
         async def thisRop(self)->Hbc_StudentDataObj:

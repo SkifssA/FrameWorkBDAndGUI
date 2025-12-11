@@ -14,7 +14,17 @@ class Bc_FileDvi(BaseAvi):
                    t.sSuffix,
                    t.sPath
             FROM Bc_File AS t
-                   
+                
+            """
+
+        def onRefreshExt(self):
+            return """
+            with t as ( select 
+                
+              )
+            select 
+            from t
+                
             """
 
         async def thisRop(self)->Bc_FileObj:
