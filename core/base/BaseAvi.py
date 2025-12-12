@@ -109,6 +109,10 @@ class BaseAvi:
             if getattr(self, f'idItem', None) is None:
                 return await self.thisApi().insert()
             return await self.thisApi().load(getattr(self, f'idItem', None))
+        
+        def checwork(self):
+            super().checwork()
+            self.selection.oper("saveForm").isDisabled = self.isMod
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):

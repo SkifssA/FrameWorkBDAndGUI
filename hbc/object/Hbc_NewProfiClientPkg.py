@@ -40,7 +40,7 @@ class Hbc_NewProfiClientPkg(Core_AiohttpPkg):
 
     async def fillConfigName(self, text):
         userName = (await self.findAll(text, 'span', class_='usertext mr-1'))[0].get_text().strip()
-        await Bs_ConfigApi().insertByModule('hbc', 'firstNameLastName', ' '.join(userName.split(' ')[:-1]))
+        await Bc_ConfigApi().insertByModule('hbc', 'firstNameLastName', ' '.join(userName.split(' ')[:-1]))
 
     async def _createDataLesson(self, html):
         divs = await self.findAll(html, 'div', class_='progressEventInfo',
@@ -115,34 +115,8 @@ class Hbc_NewProfiClientPkg(Core_AiohttpPkg):
                     content = await responseFile.read()
                     await Bc_FileApi().insertBygidSrc(rop.gid, a.get_text(), content)
             
-            await self.createCodeWorkspace(rop)
             rop.bUploadFile = 1
             await Hbc_StudentLessonApi().update(rop)
-        
-    async def createCodeWorkspace(self, rop:Hbc_StudentLessonApi._classObj):
-        sHeadLIneLesson = Hbc_LessonApi().calcHeadLine(await Hbc_LessonApi().load(rop.idLesson))
-        workspace_data = {
-            "folders": [
-                {
-                    "path": f"../{rop.id}",
-                    "name": sHeadLIneLesson
-                }
-            ],
-            "settings": {
-                "files.exclude": {
-                "**/*.code-workspace": True
-                },
-                "chat.disableAIFeatures": True,
-                "files.autoSave": "onFocusChange",
-                "workbench.colorTheme": "Default Dark Modern",
-                "editor.fontFamily": "Fira Code, Consolas, monospace",
-                "editor.fontSize": 14,
-                "security.workspace.trust.enabled": False,
-                "extensions.ignoreRecommendations": True,
-                "workbench.activityBar.location": "hidden"
-            }
-        }
-        await Bc_FileApi().insertBygidSrc(rop.gid, f'{sHeadLIneLesson}.code-workspace', workspace_data)
 
     async def fillScore(self, rop):
         info = {'idAssign': (await Hbc_LessonApi().load(rop.idLesson)).sIdExit, 

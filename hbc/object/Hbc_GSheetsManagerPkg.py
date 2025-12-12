@@ -16,8 +16,8 @@ class Hbc_GSheetsManagerPkg:
         nameCurator = await Bc_ConfigApi().getValueByModule('hbc', 'firstNameLastName')
         df = await asyncio.to_thread(pd.read_csv, self._url.format(idGS, idMainList))
         filtered_df = df[df['Куратор'] == nameCurator].to_dict()  # Замените 'Столбец' на нужное имя
-        for idS in filtered_df['Unnamed: 0'].keys():
-            id = await Hbc_StudentApi().register(filtered_df['Unnamed: 0'][idS]
+        for idS in filtered_df['ФИО'].keys():
+            id = await Hbc_StudentApi().register(filtered_df['ФИО'][idS]
                                             ,filtered_df['Контакт'][idS]
                                             ,filtered_df['Виртуалка'][idS]
                                             ,filtered_df['Unnamed: 11'][idS]
