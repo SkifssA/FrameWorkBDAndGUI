@@ -10,7 +10,7 @@ class EmptyCard(BaseForm):
 
     def createMainForm(self, par):
         self.sizeBefore = self.getMaxHeightTitle()
-        with dpg.group(parent=par) as group:
+        with dpg.child_window(parent=par) as group:
             for i in self.meta['attr']:
                 self.createGroupInput(i)
         return group
@@ -25,16 +25,16 @@ class EmptyCard(BaseForm):
     def createGroupInput(self, nameAttr:str):
         dataAttr = self.meta['attr'][nameAttr]
         if (dataAttr['isVisible']):
-            with dpg.child_window(border=False, height=20):
+            with dpg.child_window(border=False, height=20, width=-1):
                 with dpg.group(horizontal=True):
                     with dpg.child_window(width=self.sizeBefore, border=False):
                         dpg.add_text(dataAttr['caption'])
                     if dataAttr['edit'] == 'edit':
-                        self.tagInput[nameAttr] = dpg.add_input_text()
+                        self.tagInput[nameAttr] = dpg.add_input_text(width=-1)
                     elif dataAttr['edit'] == 'check':
                         self.tagInput[nameAttr] = dpg.add_checkbox()
                     elif dataAttr['edit'] == 'lookUp':
-                        self.tagInput[nameAttr] = dpg.add_combo()
+                        self.tagInput[nameAttr] = dpg.add_combo(width=-1)
 
     async def initInput(self):
         self.data = self.thisApi()._getDataRop(self.obj)

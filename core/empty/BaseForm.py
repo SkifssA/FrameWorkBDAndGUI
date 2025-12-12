@@ -26,7 +26,6 @@ class BaseForm:
         
     async def open(self, parent='tab_bar', parentTable=None):
         '''Открытие выборки'''
-        # dpg.show_tool(dpg.mvTool_ItemRegistry)
         self.parent = parent
         self.parentTable = parentTable
         self.ch = tuple(self.openCh())
