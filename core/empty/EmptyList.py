@@ -45,7 +45,7 @@ class EmptyList(BaseForm):
                                 dpg.add_text(row[j])
                         
             if oneRow is not None:
-                self._click(oneRow, tabl)
+                self._oneShow(oneRow, tabl)
 
     async def __getWhereSql(self):
             res = await self.onRefresh()
@@ -57,11 +57,6 @@ class EmptyList(BaseForm):
             if self.flt != []:
                 res += f'where {' and '.join(where)}'
             return [res, param if param != [] else None]
-
-    async def refresh(self):
-        '''Обновление. Пользовательское'''
-        await self._refresh()
-        await self.refreshCh()
 
     def _click(self, tagSelf, tagTable):
         '''Обработчик выбора строки в таблице'''

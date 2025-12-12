@@ -15,19 +15,21 @@ class Bc_FileAvi(Bc_FileDvi):
     @classmethod
     def card(cls, **kwargs):
         return cls.typeMeta(cls.Card, **kwargs)
+    
+    @classmethod
+    def сardFileView(cls, **kwargs):
+        return cls.typeMeta(cls.CardFileView, **kwargs)
 
     class List(Bc_FileDvi.DviList):
-        showAttr = ['sCaption', 'sSuffix']
         def openCh(self):
-            yield Bc_FileAvi.CardFileView()
+            yield Bc_FileAvi.сardFileView()
 
         def onRefresh(self):
             return super().onRefresh()
 
     class List_gidSrc(Bc_FileDvi.DviList):
-        showAttr = ['sCaption', 'sSuffix']
         def openCh(self):
-            yield Bc_FileAvi.CardFileView()
+            yield Bc_FileAvi.сardFileView()
 
         async def onRefresh(self):
             return await super().onRefresh() + f"WHERE t.gidScr = '{self.getAttr("super$gid")}'"

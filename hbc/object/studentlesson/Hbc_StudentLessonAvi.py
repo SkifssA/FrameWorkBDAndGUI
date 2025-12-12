@@ -65,6 +65,9 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             from bc.object.file.Bc_FileAvi import Bc_FileAvi
             yield Bc_FileAvi.list_gidSrc(right=True)
 
+        def refreshCh(self):
+            return super().refreshCh()
+
     class Card(Hbc_StudentLessonDvi.DviCard): pass
 
     class LookUp(Hbc_StudentLessonDvi.DviLookUp): pass

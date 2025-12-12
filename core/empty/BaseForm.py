@@ -36,8 +36,8 @@ class BaseForm:
         else:    
             await self.createTab(parent, self.getW())
             self.selection = Selection(self.selfgroup)
-            await self._openCh()
             await self._refresh()
+            await self._openCh()
         dpg.show_item(self.tab)
         dpg.set_value(parent, self.tab)
         
@@ -63,10 +63,9 @@ class BaseForm:
         return w
     
     async def refreshCh(self):
-        '''Обновление форм'''
+        '''Обновление дочерних форм'''
         for i in self.ch:
             if i is not None:
-                print(f'i.refresh() = {i}')
                 await i.refresh()
 
     def openCh(self):
