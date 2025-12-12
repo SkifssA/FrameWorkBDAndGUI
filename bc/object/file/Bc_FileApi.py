@@ -21,4 +21,4 @@ class Bc_FileApi(Bc_FileDpi):
     async def getRealPath(self, id):
         rop = await self.load(id)
         if rop is not None:
-            return Core_FileManagerPkg._getObjPath(rop.sPath)['real_path']
+            return Core_FileManagerPkg._getObjPath(rop.sPath)
