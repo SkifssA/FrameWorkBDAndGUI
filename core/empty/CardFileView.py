@@ -87,7 +87,7 @@ class CardFileView(BaseForm):
     # === Работа с различными файлами изображения ===
 
     def workImage(self, objPath):
-        if objPath['type'] in ('sql', 'scala'):
+        if objPath['type'] in ('sql', 'scala', 'xml'):
             img = self.text_file_to_highlighted_image(objPath['real_path'])
         else:
             img = self.load_image_as_raw(objPath['real_path'])
