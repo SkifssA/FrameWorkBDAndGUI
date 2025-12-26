@@ -7,6 +7,7 @@ class EmptyCard(BaseForm):
     def __init__(self):
         super().__init__()
         self.tagInput = {}
+        self.obj = None
 
     def createMainForm(self, par):
         self.sizeBefore = self.getMaxHeightTitle()

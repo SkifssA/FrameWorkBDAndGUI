@@ -81,7 +81,6 @@ class BaseAvi:
             super().checwork()
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
 
-
     class DefaultCard(DefaultDefault, EmptyCard): 
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
@@ -107,14 +106,25 @@ class BaseAvi:
             self.isInsert = False
             self.isMod = False
 
+        @SetOper(label='Обновить', order=-1)
+        async def refreshForm(self):
+            await self.refresh()
+
         async def afterCreate(self):
+            await self.refresh()
+
+        async def refresh(self):
             self.obj = await self.getObj()
             await self.initInput()
 
         async def getObj(self):
-            if getattr(self, f'idItem', None) is None:
-                return await self.thisApi().insert()
-            return await self.thisApi().load(getattr(self, f'idItem', None))
+            if self.obj is None:
+                if getattr(self, f'idItem', None) is None:
+                    obj = await self.thisApi().insert()
+                    setattr(self, f'idItem', obj.id)
+                    return obj
+                return await self.thisApi().load(getattr(self, f'idItem', None))
+            return self.obj
         
         def checwork(self):
             super().checwork()
