@@ -14,11 +14,11 @@ class Core_DbManager:
     async def connect(self):
         self.client = create_client(url=self.url, auth_token=self.auth_token)
 
-    async def ATSQL(self, SQLstr, parameters=None):
+    async def ATSQL(self, SQLstr: str, parameters=None):
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             if 'insert'.upper() in SQLstr.upper():
                 SQLstr += "RETURNING id"
-            print(SQLstr, parameters or [])
+            print(' '.join(SQLstr.replace('\n', ' ').strip().split()),parameters or [])
             c = await db.execute(SQLstr, parameters or [])
             if c.rows != []:
                 d = c.rows[0][0]
@@ -26,10 +26,10 @@ class Core_DbManager:
                 d = None
             return d
 
-    async def ASQL(self, SQLstr, parameters=None):
+    async def ASQL(self, SQLstr: str, parameters=None):
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             try:
-                print(SQLstr, parameters or [])
+                print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
                 result = await db.execute(SQLstr, parameters or [])
                 if result.columns:
                     return [dict(zip(result.columns, row)) for row in result.rows]

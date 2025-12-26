@@ -1,0 +1,31 @@
+{
+    "name": "Bc_ScriptScheduler",
+    "caption": "Планировщик сценариев",
+    "attr":[
+        {
+            "name": "sNameScript",
+            "type": "TEXT",
+            "caption": "Скрипт"
+        },{
+            "name": "sNameModule",
+            "type": "TEXT",
+            "caption": "Наименование модуля"
+        },{
+            "name": "bRepeat",
+            "type": "INT",
+            "caption": "Повторять"
+        },{
+            "name": "nHour",
+            "type": "INT",
+            "caption": "Час"
+        },{
+            "name": "nMinute",
+            "type": "INT",
+            "caption": "Минута"
+        },{
+            "name": "nSec",
+            "type": "INT",
+            "caption": "Секунда"
+        }
+    ]
+}

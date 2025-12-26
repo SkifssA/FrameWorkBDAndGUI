@@ -1,0 +1,48 @@
+{
+  "Default": {
+    "caption": "Планировщик сценариев",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sNameScript": {
+        "caption": "Скрипт",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sNameModule": {
+        "caption": "Наименование модуля",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "bRepeat": {
+        "caption": "Повторять",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "nHour": {
+        "caption": "Час",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "nMinute": {
+        "caption": "Минута",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "nSec": {
+        "caption": "Секунда",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}
