@@ -21,7 +21,6 @@ class BaseApi:
 
     async def _findDataBase(self, attr:str, value):
         if value:
-            print(f'SELECT * FROM {self._getNameClass()} WHERE {attr} = ?', [value,])
             w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} = ?', [value,])
         else:
             w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} IS NULL')
@@ -66,7 +65,6 @@ class BaseApi:
         value['sHeadLine'] = self.calcHeadLine(rop)
         value['sMnemoCode'] = self.calcMnemoCode(rop)
         keys = [k for k in value.keys() if k != 'id']
-        print(f'UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?', tuple(value[i] for i in keys) + (rop.id,))
         await ATQSL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (rop.id,))
         
     async def delete(self, rop):

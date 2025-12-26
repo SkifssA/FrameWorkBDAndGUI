@@ -5,6 +5,10 @@ import os
 
 from ..object.Core_SelectApp import Core_SelectApp
 
+def my_recurring_function():
+    print("Выполняется на каждом кадре!")
+    dpg.set_frame_callback(dpg.get_frame_count()+10, my_recurring_function)
+
 async def mainProgram():
     dpg.create_context()
 
@@ -39,6 +43,11 @@ async def mainProgram():
     # Создаём viewport и запускаем
     dpg.create_viewport(title='FrameWorkBDAndGUI', width=800, height=600)
     dpg.setup_dearpygui()
+
+    conf = await Core_FileManagerPkg.ReadFile('../config/config.json')
+    if (conf['isScriptScheduler']):
+        dpg.set_frame_callback(50, my_recurring_function)
+
     dpg.set_primary_window("main_window", True)
     dpg.maximize_viewport()
     dpg.show_viewport()

@@ -39,6 +39,7 @@ class BaseForm:
             await self._openCh()
         dpg.show_item(self.tab)
         dpg.set_value(parent, self.tab)
+        dpg.show_item(parent)
         
             
     async def getMeta(self):

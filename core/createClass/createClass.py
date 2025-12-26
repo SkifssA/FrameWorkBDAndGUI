@@ -158,7 +158,6 @@ async def __initMetaTab():
 
 async def __insertMetaTable(sName, sCaption):
     from ..object.clas.Core_ClassApi import Core_ClassApi
-    print(sName, sCaption)
     rop = await Core_ClassApi().register(sName, sCaption)
     return rop.id
 
@@ -191,7 +190,7 @@ async def __insertTab(data):
         new_col_names = [i['name'] for i in data['attr']] + ['id', 'gid', 'sHeadLine', 'sMnemoCode']
 
         if Counter(old_col_names) == Counter(new_col_names):
-            print("Новых столбчов нет")
+            print("Новых столбцов нет")
             return data
 
     # Вставляем в meta_tables
@@ -287,7 +286,7 @@ async def __createOrUpdateTable(q, dataAttr, nameTable, isExisted):
         new_col_names = [i['name'] for i in dataAttr] + ['id', 'gid', 'sHeadLine', 'sMnemoCode']
 
         if Counter(old_col_names) == Counter(new_col_names):
-            print("Новых столбчов нет")
+            print("Новых столбцов нет")
             return
 
         # Создаём новую таблицу с новой структурой
@@ -318,7 +317,7 @@ async def __actionScripts(datas:list[dict]):
         await __actionScripts([w])
 
     for data in datas:
-        d = await ASQL(f"SELECT nVersion FROM Core_Script WHERE sAction = '{data['name']}'")
+        d = await ASQL(f"SELECT nVersion FROM Core_Script WHERE sAction = ?", (data['name'], ))
         if d == [] or d[0]['nVersion'] < data['version']:
             if 'dependence' in data.keys():
                 if isinstance(data['dependence'], list):

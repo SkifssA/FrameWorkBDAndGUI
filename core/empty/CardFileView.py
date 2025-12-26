@@ -56,7 +56,6 @@ class CardFileView(BaseForm):
             with dpg.texture_registry(show=False):
                 self.textureTag = dpg.add_static_texture(width=self.img_w, height=self.img_h, default_value=image_data)
         except Exception as e:
-            print(f'{objPath=}')
             print("Ошибка:", e)
             self.img_w, self.img_h = 200, 150
             pixel_data = [0.0, 0.0, 0.0, 0.0] * (self.img_w * self.img_h)  # чёрный + прозрачный

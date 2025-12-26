@@ -18,6 +18,7 @@ class Core_DbManager:
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             if 'insert'.upper() in SQLstr.upper():
                 SQLstr += "RETURNING id"
+            print(SQLstr, parameters or [])
             c = await db.execute(SQLstr, parameters or [])
             if c.rows != []:
                 d = c.rows[0][0]
@@ -28,6 +29,7 @@ class Core_DbManager:
     async def ASQL(self, SQLstr, parameters=None):
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             try:
+                print(SQLstr, parameters or [])
                 result = await db.execute(SQLstr, parameters or [])
                 if result.columns:
                     return [dict(zip(result.columns, row)) for row in result.rows]
