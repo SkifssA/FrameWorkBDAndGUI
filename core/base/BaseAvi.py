@@ -27,7 +27,7 @@ class BaseAvi:
                     else:
                         return None                           
             else:
-                row = self.get_row()
+                row = self.get_row() or {}
                 if name in row:
                     return row[name]
             return None
@@ -75,6 +75,12 @@ class BaseAvi:
 
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self): dpg.hide_item(self.tab)
+
+
+        def checwork(self):
+            super().checwork()
+            self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
+
 
     class DefaultCard(DefaultDefault, EmptyCard): 
         @SetOper(label='Закрыть', order=10000)
