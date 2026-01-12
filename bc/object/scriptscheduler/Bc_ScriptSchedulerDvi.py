@@ -14,7 +14,8 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
                    t.bRepeat,
                    t.nHour,
                    t.nMinute,
-                   t.nSec
+                   t.nSec,
+                   t.bUsed
             FROM Bc_ScriptScheduler AS t
                 
             """
@@ -41,6 +42,7 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
         def setnHour(self, sender, app_data, user_data): self.thisApi().setnHour(self.obj, app_data); self.afterSetter()
         def setnMinute(self, sender, app_data, user_data): self.thisApi().setnMinute(self.obj, app_data); self.afterSetter()
         def setnSec(self, sender, app_data, user_data): self.thisApi().setnSec(self.obj, app_data); self.afterSetter()
+        def setbUsed(self, sender, app_data, user_data): self.thisApi().setbUsed(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

@@ -13,7 +13,8 @@
         },{
             "name": "bRepeat",
             "type": "INT",
-            "caption": "Повторять"
+            "caption": "Повторять",
+            "editType": "check"
         },{
             "name": "nHour",
             "type": "INT",
@@ -26,6 +27,11 @@
             "name": "nSec",
             "type": "INT",
             "caption": "Секунда"
+        },{
+            "name": "bUsed",
+            "type": "INT",
+            "caption": "Использовать",
+            "editType": "check"
         }
     ]
 }

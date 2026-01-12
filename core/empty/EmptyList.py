@@ -42,7 +42,7 @@ class EmptyList(BaseForm):
                                     s=False
                                     oneRow = q
                             else:
-                                dpg.add_text(row[j])
+                                dpg.add_text(row[j] if row[j] is not None else "")
                         
             if oneRow is not None:
                 self._oneShow(oneRow, tabl)

@@ -6,3 +6,6 @@ class Bc_ScriptSchedulerApi(Bc_ScriptSchedulerDpi):
         super().setsNameScript(obj, value)
         if (value is not None):
             self.setsNameModule(obj, value[:value.find('_')].lower())
+
+    def test(self):
+        print("TEST из Bc_ScriptSchedulerApi")

@@ -12,6 +12,7 @@ class Bc_ScriptSchedulerObj(BaseObj):
         self.nHour:int = None
         self.nMinute:int = None
         self.nSec:int = None
+        self.bUsed:int = None
 
 class Bc_ScriptSchedulerDpi(BaseApi):
     _classObj = Bc_ScriptSchedulerObj
@@ -44,3 +45,4 @@ class Bc_ScriptSchedulerDpi(BaseApi):
     def setnHour(self, obj:Bc_ScriptSchedulerObj, value): obj.nHour = value
     def setnMinute(self, obj:Bc_ScriptSchedulerObj, value): obj.nMinute = value
     def setnSec(self, obj:Bc_ScriptSchedulerObj, value): obj.nSec = value
+    def setbUsed(self, obj:Bc_ScriptSchedulerObj, value): obj.bUsed = value

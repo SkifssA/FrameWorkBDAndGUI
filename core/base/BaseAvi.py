@@ -128,7 +128,7 @@ class BaseAvi:
         
         def checwork(self):
             super().checwork()
-            self.selection.oper("saveForm").isDisabled = self.isMod
+            self.selection.oper("saveForm").isDisabled = not self.isMod
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):

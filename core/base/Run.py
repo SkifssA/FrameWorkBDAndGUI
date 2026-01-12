@@ -1,15 +1,19 @@
 import dearpygui.dearpygui as dpg
 from core.object.Core_SelectApp import Core_SelectApp 
 from core.package.Core_FileManagerPkg import Core_FileManagerPkg
+from core.package.Core_ActionDispatcherPkg import Core_ActionDispatcherPkg
+import asyncio
 import os
 
 from ..object.Core_SelectApp import Core_SelectApp
 
-def my_recurring_function():
-    print("Выполняется на каждом кадре!")
-    dpg.set_frame_callback(dpg.get_frame_count()+10, my_recurring_function)
+def my_recurring_function(script: tuple):
+    for i in script:
+        asyncio.run(Core_ActionDispatcherPkg().action(i.sNameScript))
+    dpg.set_frame_callback(dpg.get_frame_count()+10, lambda: my_recurring_function(script))
 
 async def mainProgram():
+    from bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi
     dpg.create_context()
 
     # Тема для корректного отображения отключённых кнопок
@@ -46,7 +50,10 @@ async def mainProgram():
 
     conf = await Core_FileManagerPkg.ReadFile('../config/config.json')
     if (conf['isScriptScheduler']):
-        dpg.set_frame_callback(50, my_recurring_function)
+        data = await Bc_ScriptSchedulerApi()._getAllByAttr('bUsed', 1) or []
+        dpg.set_frame_callback(50, lambda: my_recurring_function(
+            data
+            ))
 
     dpg.set_primary_window("main_window", True)
     dpg.maximize_viewport()

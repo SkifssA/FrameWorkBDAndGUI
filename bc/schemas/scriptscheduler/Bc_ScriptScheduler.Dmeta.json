@@ -25,7 +25,7 @@
       },
       "bRepeat": {
         "caption": "Повторять",
-        "edit": "edit",
+        "edit": "check",
         "isVisible": true
       },
       "nHour": {
@@ -41,6 +41,11 @@
       "nSec": {
         "caption": "Секунда",
         "edit": "edit",
+        "isVisible": true
+      },
+      "bUsed": {
+        "caption": "Использовать",
+        "edit": "check",
         "isVisible": true
       }
     }
