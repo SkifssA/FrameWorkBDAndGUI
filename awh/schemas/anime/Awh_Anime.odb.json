@@ -1,0 +1,25 @@
+{
+    "name": "Awh_Anime",
+    "caption": "Аниме",
+    "collections": [
+        {
+            "name": "Awh_AnimeGenre",
+            "attr": "idAnime"
+        }
+    ],
+    "attr":[
+        {
+            "name": "sCaption",
+            "type": "TEXT",
+            "caption": "Название"
+        },{
+            "name": "nSeries",
+            "type": "INT",
+            "caption": "Кол-во серий"
+        },{
+            "name": "sPath",
+            "type": "TEXT",
+            "caption": "Путь до файла"
+        }
+    ]
+}

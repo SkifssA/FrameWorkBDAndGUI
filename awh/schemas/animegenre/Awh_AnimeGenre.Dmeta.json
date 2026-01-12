@@ -1,0 +1,38 @@
+{
+  "Default": {
+    "caption": "Жарны аниме",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idAnime": {
+        "caption": "Аниме",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idAnimeHL": {
+        "caption": "Аниме",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "idGenre": {
+        "caption": "Жанр",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idGenreHL": {
+        "caption": "Жанр",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

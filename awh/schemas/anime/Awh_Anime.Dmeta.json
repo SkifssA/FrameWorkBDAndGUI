@@ -1,0 +1,33 @@
+{
+  "Default": {
+    "caption": "Аниме",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sCaption": {
+        "caption": "Название",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "nSeries": {
+        "caption": "Кол-во серий",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sPath": {
+        "caption": "Путь до файла",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}
