@@ -22,11 +22,6 @@
         "caption": "Кол-во серий",
         "edit": "edit",
         "isVisible": true
-      },
-      "sPath": {
-        "caption": "Путь до файла",
-        "edit": "edit",
-        "isVisible": true
       }
     }
   }

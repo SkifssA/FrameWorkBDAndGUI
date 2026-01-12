@@ -8,7 +8,6 @@ class Awh_AnimeObj(BaseObj):
         self.gid:gid = None
         self.sCaption:str = None
         self.nSeries:int = None
-        self.sPath:str = None
 
 class Awh_AnimeDpi(BaseApi):
     _classObj = Awh_AnimeObj
@@ -39,4 +38,3 @@ class Awh_AnimeDpi(BaseApi):
 
     def setsCaption(self, obj:Awh_AnimeObj, value): obj.sCaption = value
     def setnSeries(self, obj:Awh_AnimeObj, value): obj.nSeries = value
-    def setsPath(self, obj:Awh_AnimeObj, value): obj.sPath = value

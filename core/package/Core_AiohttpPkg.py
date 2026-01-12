@@ -46,8 +46,8 @@ class Core_AiohttpPkg:
         try:
             w = (self._domen + self._url[nameUrl]).format(**self.info)
             return w
-        except KeyError:
-            return None
+        except:
+            return nameUrl
          
     async def _getCSRFToken(self):
         async with self.get('login') as response:

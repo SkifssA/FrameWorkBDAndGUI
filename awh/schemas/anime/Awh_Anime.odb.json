@@ -16,10 +16,6 @@
             "name": "nSeries",
             "type": "INT",
             "caption": "Кол-во серий"
-        },{
-            "name": "sPath",
-            "type": "TEXT",
-            "caption": "Путь до файла"
         }
     ]
 }
