@@ -276,6 +276,11 @@ async def __createTable(q, nameTable, isNew):
                 {',\n    '.join(q['attr'])}
             )
         """)
+    
+    await ATQSL(f"""
+        CREATE INDEX IF NOT EXISTS index_{nameTable}_mnemocode ON {nameTable} (sMnemoCode);
+        """)
+    print(f'Генерация index_{nameTable}_mnemocode прошла успешно')
 
 async def __createOrUpdateTable(q, dataAttr, nameTable, isExisted):
     # Если таблица уже существовала, нужно перенести данные
@@ -287,7 +292,7 @@ async def __createOrUpdateTable(q, dataAttr, nameTable, isExisted):
 
         if Counter(old_col_names) == Counter(new_col_names):
             print("Новых столбцов нет")
-            return
+            # return
 
         # Создаём новую таблицу с новой структурой
         await __createTable(q, nameTable, True)
