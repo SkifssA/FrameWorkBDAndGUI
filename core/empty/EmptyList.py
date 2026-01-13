@@ -7,6 +7,7 @@ import re
 from .BaseForm import BaseForm
 
 class EmptyList(BaseForm):
+
     def createTheme(self):
         '''Создание темы'''
         with dpg.theme() as table_theme:
@@ -106,5 +107,19 @@ class EmptyList(BaseForm):
                              borders_outerV=True,
                              parent=par,
                              scrollY=True)
+    
+    def _getAttr(self, nameAttr:str):
+        return self.get_row()[nameAttr]
+
+    def get_row(self):
+        return self.get_any_row(self.mainForm)
+    
+    def get_any_row(self, tagTable):
+        if not dpg.does_item_exist(tagTable):
+            return {}
+        for i in dpg.get_item_children(tagTable, slot=1):
+            for j in dpg.get_item_children(i, slot=1):
+                if dpg.get_value(j) and dpg.get_item_user_data(j):
+                    return dpg.get_item_user_data(j)
         
     

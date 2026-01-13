@@ -21,16 +21,11 @@ class BaseAvi:
         def getAttr(self, name:str):
             if name.split('$', maxsplit=1)[0] == 'super':
                 if self.parent != 'tab_bar':
-                    w = self.get_any_row(self.parentTable)
-                    if w is not None and w != {}:
-                        return w[name.split('$')[-1]]     
-                    else:
-                        return None                           
+                    w = dpg.get_item_user_data(self.parentTable)
+                    return w._getAttr([name.split('$')[-1]])                             
             else:
-                row = self.get_row() or {}
-                if name in row:
-                    return row[name]
-            return None
+                row = self._getAttr(name)
+                return row
 
         async def thisRop(self):
             row = self.get_row()
@@ -45,23 +40,15 @@ class BaseAvi:
             module_name = self.__class__.__module__
             module = importlib.import_module(module_name)
             return getattr(module, outer_class_name)
-
-        def get_row(self):
-            return self.get_any_row(self.mainForm)
-    
-        def get_any_row(self, tagTable):
-            if not dpg.does_item_exist(tagTable):
-                return {}
-            for i in dpg.get_item_children(tagTable, slot=1):
-                for j in dpg.get_item_children(i, slot=1):
-                    if dpg.get_value(j) and dpg.get_item_user_data(j):
-                        return dpg.get_item_user_data(j)
       
     class DefaultList(DefaultDefault, EmptyList):
 
         @SetOper(label='Вернуть', order=-1, isVisible=False)
-        async def returnResult(self): 
-            self.callback(self.getAttr('id'))
+        async def returnResult(self):
+            d = {}
+            for i in self.returnAttr:
+                d[i] = self.getAttr(i) 
+            self.callback(**d)
             dpg.hide_item(self.tab)
 
         @SetOper(label='Обновить', order=1)
@@ -84,15 +71,30 @@ class BaseAvi:
 
         def checwork(self):
             super().checwork()
+            print(self.getAttr('id'))
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
             self.selection.oper('returnResult').isVisible = self.isModal
 
     class DefaultCard(DefaultDefault, EmptyCard): 
+
+        @SetOper(label='Вернуть', order=-1, isVisible=False)
+        async def returnResult(self):
+            d = {}
+            for i in self.returnAttr:
+                d[i] = self.getAttr(i) 
+            await self.callback(**d)
+            dpg.hide_item(self.tab)
+
         @SetOper(label='Закрыть', order=10000)
         async def closeForm(self):
-            if self.isMod or self.isInsert:
-                BaseModal("Сохранить перед выходом?", self.handle_confirmation)
+            if not self.isModal:
+                if self.isMod or self.isInsert:
+                    BaseModal("Сохранить перед выходом?", self.handle_confirmation)
+                else:
+                    dpg.hide_item(self.tab)
             else:
+                if self.isInsert:
+                    await self.thisApi().delete(self.obj)
                 dpg.hide_item(self.tab)
 
         async def handle_confirmation(self, result: bool):
@@ -117,12 +119,14 @@ class BaseAvi:
             await self.refresh()
 
         async def afterCreate(self):
-            await self.refresh()
+            # await self.refresh()
+            pass
 
-        async def refresh(self):
+        async def _refresh(self):
             self.obj = await self.getObj()
             await self.initInput()
-
+            self.checwork()
+            
         async def getObj(self):
             if self.obj is None:
                 if getattr(self, f'idItem', None) is None:
@@ -135,6 +139,7 @@ class BaseAvi:
         def checwork(self):
             super().checwork()
             self.selection.oper("saveForm").isDisabled = not self.isMod
+            self.selection.oper('returnResult').isVisible = self.isModal
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):

@@ -25,21 +25,21 @@ class EmptyCard(BaseForm):
 
     def createGroupInput(self, nameAttr:str):
         dataAttr = self.meta['attr'][nameAttr]
-        if (dataAttr['isVisible']):
-            with dpg.child_window(border=False, height=20, width=-1):
-                with dpg.group(horizontal=True):
-                    with dpg.child_window(width=self.sizeBefore, border=False):
-                        dpg.add_text(dataAttr['caption'])
-                    if dataAttr['edit'] == 'edit':
-                        self.tagInput[nameAttr] = dpg.add_input_text(width=-1)
-                    elif dataAttr['edit'] == 'check':
-                        self.tagInput[nameAttr] = dpg.add_checkbox()
-                    elif dataAttr['edit'] == 'lookUp':
-                        self.tagInput[nameAttr] = dpg.add_combo(width=-1)
+        with dpg.child_window(border=False, height=20, width=-1, show=dataAttr['isVisible']):
+            with dpg.group(horizontal=True):
+                with dpg.child_window(width=self.sizeBefore, border=False):
+                    dpg.add_text(dataAttr['caption'])
+                if dataAttr['edit'] == 'edit':
+                    self.tagInput[nameAttr] = dpg.add_input_text(width=-1)
+                elif dataAttr['edit'] == 'check':
+                    self.tagInput[nameAttr] = dpg.add_checkbox()
+                elif dataAttr['edit'] == 'lookUp':
+                    self.tagInput[nameAttr] = dpg.add_combo(width=-1)
 
     async def initInput(self):
         self.data = self.thisApi()._getDataRop(self.obj)
-        dpg.configure_item(self.tab, label=self.thisApi().calcHeadLine(self.obj))
+        print(self.obj.__dict__.copy())
+        dpg.configure_item(self.tab, label=self.meta['caption'] if 'caption' in self.meta else self.thisApi().calcHeadLine(self.obj))
         self.data = self.data | await self.getDataExt()
         for i in self.tagInput:
             dpg.configure_item(self.tagInput[i], callback=getattr(self, f'set{i}', None))
@@ -82,3 +82,6 @@ class EmptyCard(BaseForm):
 
     async def _initAll(self, i, defValue):
         dpg.set_value(self.tagInput[i], defValue if defValue is not None else '')
+
+    def _getAttr(self, nameAttr:str):
+        return dpg.get_value(self.tagInput[nameAttr])

@@ -21,6 +21,7 @@ class BaseForm:
         self.isInsert = False
         self.isModal = False
         self.callback = None
+        self.returnAttr = []
 
     def getTag(self):
         '''формирование тега формы'''
@@ -42,16 +43,23 @@ class BaseForm:
         dpg.show_item(self.tab)
         dpg.set_value(self.parent, self.tab)
 
-    async def openModal(self, callback):
+    async def openModal(self, callback, returnAttr:list=['id']):
         self.isModal = True
+        wd = dpg.get_viewport_width() * 0.5
+        hg = dpg.get_viewport_height() * 0.5
         w = dpg.add_window(modal=True
                            , no_close=True
                            , popup=True
                            , no_title_bar=True
-                           , width=dpg.get_viewport_width() * 0.5
-                           , height=dpg.get_viewport_height() * 0.5
-                           , show=False)
+                           , width=wd
+                           , height=hg
+                           , show=False
+                           , pos=[
+                                dpg.get_viewport_width() * 0.5 - (wd//2),
+                                dpg.get_viewport_height() * 0.5 - (hg//2)
+                               ])
         self.callback = callback
+        self.returnAttr = returnAttr
         await self.open(parent=w)
         dpg.show_item(w)
                 
@@ -124,6 +132,7 @@ class BaseForm:
             self.upToolBar = upToolBar
             self.toolBar = dpg.add_group(show=False, horizontal=True, tag=f'{par}_ToolBar')
         self.mainForm = self.createMainForm(par)
+        dpg.set_item_user_data(self.mainForm, self)
         self.UpDown = dpg.add_button(label="", height=self.sizeLineResize, width=width, parent=par, show=False)
         self.tabBar = dpg.add_tab_bar(show=False, parent=par)
 
