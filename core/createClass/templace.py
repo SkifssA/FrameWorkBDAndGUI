@@ -2,19 +2,19 @@ Avi = """# Пользовательский файл для интерфейса
 from .{nameClass}Dvi import {nameClass}Dvi
 
 class {nameClass}Avi({nameClass}Dvi):
-    @classmethod
-    def list(cls, **kwargs):
-        return cls.typeMeta(cls.List, **kwargs)
-    
-    @classmethod
-    def card(cls, **kwargs):
-        return cls.typeMeta(cls.Card, **kwargs)
-
     class List({nameClass}Dvi.DviList): pass
 
     class Card({nameClass}Dvi.DviCard): pass
 
     class LookUp({nameClass}Dvi.DviLookUp): pass
+
+    @classmethod
+    def list(cls, **kwargs)->List:
+        return cls.typeMeta(cls.List, **kwargs)
+    
+    @classmethod
+    def card(cls, **kwargs)->Card:
+        return cls.typeMeta(cls.Card, **kwargs)
 """
 
 Api = """# Пользовательский файл для логики
