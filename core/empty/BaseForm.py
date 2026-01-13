@@ -45,8 +45,9 @@ class BaseForm:
 
     async def openModal(self, callback, returnAttr:list=['id']):
         self.isModal = True
-        wd = dpg.get_viewport_width() * 0.5
-        hg = dpg.get_viewport_height() * 0.5
+        self.meta = await self.getMeta()
+        wd = self.meta['width'] if 'width' in self.meta else (dpg.get_viewport_width() * 0.5)
+        hg = self.meta['height'] if 'height' in self.meta else (dpg.get_viewport_height() * 0.5)
         w = dpg.add_window(modal=True
                            , no_close=True
                            , popup=True
