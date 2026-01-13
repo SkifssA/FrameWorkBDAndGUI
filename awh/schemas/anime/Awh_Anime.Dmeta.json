@@ -22,6 +22,11 @@
         "caption": "Кол-во серий",
         "edit": "edit",
         "isVisible": true
+      },
+      "bReleased": {
+        "caption": "Вышло",
+        "edit": "check",
+        "isVisible": true
       }
     }
   }

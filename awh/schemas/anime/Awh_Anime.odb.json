@@ -16,6 +16,11 @@
             "name": "nSeries",
             "type": "INT",
             "caption": "Кол-во серий"
+        },{
+            "name": "bReleased",
+            "type": "INT",
+            "caption": "Вышло",
+            "editType": "check"
         }
     ]
 }

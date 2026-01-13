@@ -1,1 +1,24 @@
-{}
+{
+  "CardSetUrlAnime": {
+    "caption": "Аниме",
+    "isVisibleToolBar": true,
+    "attr": {
+      "sUrl": {
+        "caption": "Ссылка на аниме",
+        "edit": "edit",
+        "isVisible": true
+      }
+    },
+    "oper": {
+      "insert": {
+        "isVisible": false
+      },
+      "refreshForm": {
+        "isVisible": false
+      },
+      "saveForm": {
+        "isVisible": false
+      }
+    }
+  }
+}

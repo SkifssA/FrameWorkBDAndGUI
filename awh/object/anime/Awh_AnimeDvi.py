@@ -10,7 +10,8 @@ class Awh_AnimeDvi(BaseAvi):
             SELECT t.id,
                    t.gid,
                    t.sCaption,
-                   t.nSeries
+                   t.nSeries,
+                   t.bReleased
             FROM Awh_Anime AS t
                 
             """
@@ -33,6 +34,7 @@ class Awh_AnimeDvi(BaseAvi):
         
         def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
         def setnSeries(self, sender, app_data, user_data): self.thisApi().setnSeries(self.obj, app_data); self.afterSetter()
+        def setbReleased(self, sender, app_data, user_data): self.thisApi().setbReleased(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

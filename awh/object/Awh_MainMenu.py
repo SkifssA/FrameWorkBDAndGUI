@@ -9,10 +9,10 @@ class Awh_MainMenu(mainMenu):
     def mm_respo(self): pass
 
     @SetOper(label='Аниме', order=1, headOper='mm_respo')
-    async def Bc_Config(self):
+    async def Awh_Anime(self):
         await Awh_AnimeAvi.list().open()
 
     @SetOper(label='Жанры', order=2, headOper='mm_respo')
-    async def Bc_ScriptScheduler(self):
+    async def Awh_Genre(self):
         await Awh_GenreAvi.list().open()
         
