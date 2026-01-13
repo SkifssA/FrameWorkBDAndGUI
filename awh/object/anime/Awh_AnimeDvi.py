@@ -11,7 +11,8 @@ class Awh_AnimeDvi(BaseAvi):
                    t.gid,
                    t.sCaption,
                    t.nSeries,
-                   t.bReleased
+                   t.bReleased,
+                   t.sUrl
             FROM Awh_Anime AS t
                 
             """
@@ -35,6 +36,7 @@ class Awh_AnimeDvi(BaseAvi):
         def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
         def setnSeries(self, sender, app_data, user_data): self.thisApi().setnSeries(self.obj, app_data); self.afterSetter()
         def setbReleased(self, sender, app_data, user_data): self.thisApi().setbReleased(self.obj, app_data); self.afterSetter()
+        def setsUrl(self, sender, app_data, user_data): self.thisApi().setsUrl(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

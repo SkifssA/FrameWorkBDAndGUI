@@ -27,6 +27,11 @@
         "caption": "Вышло",
         "edit": "check",
         "isVisible": true
+      },
+      "sUrl": {
+        "caption": "Ссылка",
+        "edit": "edit",
+        "isVisible": true
       }
     }
   }

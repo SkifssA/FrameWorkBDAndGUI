@@ -42,6 +42,9 @@ class BaseApi:
     async def _findByAttr(self, attr: str, value):
         w = await self._findAllByAttr(attr, value)
         return w[0] if w is not None else w
+    
+    async def findByMnemocode(self, value)->int:
+        return await self._findByAttr('sMnemoCode', value=value)
 
     def _getDataRop(self, rop)->dict:
         return rop.__dict__.copy()

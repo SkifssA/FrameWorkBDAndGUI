@@ -11,6 +11,7 @@ class Awh_AnimeLoadPkg(Core_AiohttpPkg):
             d['genre'] = await self.__getGenre(text)
             d['released'] = int(series.find('/') == -1)
             d['series'] = self.__convSeriesInInt(series)
+            d['url'] = urlAnime
         return d
     
     async def __getName(self, text)->str:

@@ -20,7 +20,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
         @SetOper(label='Тест открытия веб')
         async def openWeb(self):
-            webbrowser.open("https://animego.me/anime/podzemele-vkusnostey-2481")
+            webbrowser.open(self.getAttr('sUrl'))
 
     class Card(Awh_AnimeDvi.DviCard): pass
 

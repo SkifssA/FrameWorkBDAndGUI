@@ -21,6 +21,11 @@
             "type": "INT",
             "caption": "Вышло",
             "editType": "check"
+        },{
+            "name": "sUrl",
+            "type": "TEXT",
+            "caption": "Ссылка",
+            "isMnemoCode": true 
         }
     ]
 }
