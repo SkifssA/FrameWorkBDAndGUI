@@ -19,6 +19,8 @@ class BaseForm:
         self.ch = None
         self.isMod = False
         self.isInsert = False
+        self.isModal = False
+        self.callback = None
 
     def getTag(self):
         '''формирование тега формы'''
@@ -33,13 +35,26 @@ class BaseForm:
         if self.tab is not None:
             await self.refresh()
         else:    
-            await self.createTab(parent, self.getW())
+            await self.createTab(self.parent, self.getW())
             self.selection = Selection(self.selfgroup)
             await self._refresh()
             await self._openCh()
         dpg.show_item(self.tab)
-        dpg.set_value(parent, self.tab)
-                 
+        dpg.set_value(self.parent, self.tab)
+
+    async def openModal(self, callback):
+        self.isModal = True
+        w = dpg.add_window(modal=True
+                           , no_close=True
+                           , popup=True
+                           , no_title_bar=True
+                           , width=dpg.get_viewport_width() * 0.5
+                           , height=dpg.get_viewport_height() * 0.5
+                           , show=False)
+        self.callback = callback
+        await self.open(parent=w)
+        dpg.show_item(w)
+                
     async def getMeta(self):
         mod, clas = self.thisApi()._getNameClass().split("_")
         path = f"../../{mod.lower()}/schemas/{clas.lower()}/{self.thisApi()._getNameClass()}"
@@ -181,7 +196,7 @@ class BaseForm:
                 dpg.add_button(tag=f'{self.selfgroup}_{i[0]}', 
                                parent=self.toolBar, label=i[-1]._oper_label, 
                                callback=self.appendAction(i[-1], i[0]),
-                               show=oper[i[0]]['isVisible'] if i[0] in oper else True
+                               show=oper[i[0]]['isVisible'] if i[0] in oper else i[-1].isVisible
                                )
                 dpg.configure_item(self.toolBar, show=True)
                 dpg.configure_item(self.upToolBar, show=True)

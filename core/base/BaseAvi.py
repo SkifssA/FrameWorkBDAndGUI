@@ -59,6 +59,11 @@ class BaseAvi:
       
     class DefaultList(DefaultDefault, EmptyList):
 
+        @SetOper(label='Вернуть', order=-1, isVisible=False)
+        async def returnResult(self): 
+            self.callback(self.getAttr('id'))
+            dpg.hide_item(self.tab)
+
         @SetOper(label='Обновить', order=1)
         async def refreshForm(self): await self.refresh()
 
@@ -80,6 +85,7 @@ class BaseAvi:
         def checwork(self):
             super().checwork()
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
+            self.selection.oper('returnResult').isVisible = self.isModal
 
     class DefaultCard(DefaultDefault, EmptyCard): 
         @SetOper(label='Закрыть', order=10000)
