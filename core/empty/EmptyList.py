@@ -109,7 +109,10 @@ class EmptyList(BaseForm):
                              scrollY=True)
     
     def _getAttr(self, nameAttr:str):
-        return self.get_row()[nameAttr]
+        row = self.get_row()
+        if nameAttr in row:
+            return row[nameAttr]
+        return None
 
     def get_row(self):
         return self.get_any_row(self.mainForm)
@@ -121,5 +124,6 @@ class EmptyList(BaseForm):
             for j in dpg.get_item_children(i, slot=1):
                 if dpg.get_value(j) and dpg.get_item_user_data(j):
                     return dpg.get_item_user_data(j)
+        return {}
         
     
