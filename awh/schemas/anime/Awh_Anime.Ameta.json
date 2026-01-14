@@ -22,5 +22,46 @@
         "isVisible": false
       }
     }
+  },
+  "List": {
+    "caption": "Аниме",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sCaption": {
+        "caption": "Название",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "nSeries": {
+        "caption": "Кол-во серий",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "bReleased": {
+        "caption": "Вышло",
+        "edit": "check",
+        "isVisible": true
+      },
+      "sUrl": {
+        "caption": "Ссылка",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "lGenres": {
+        "caption": "Жанры",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
   }
 }

@@ -15,10 +15,10 @@ class Awh_GenreDpi(BaseApi):
         return "Awh_Genre"
 
     def calcHeadLine(self, rop:Awh_GenreObj)->str:
-        return f'{rop.id}'
+        return f'{rop.sCaption}'
 
     def calcMnemoCode(self, rop:Awh_GenreObj)->str:
-        return f'{rop.id}'
+        return f'{rop.sCaption}'
 
     async def insert(self)->Awh_GenreObj:
         return await super().insert()

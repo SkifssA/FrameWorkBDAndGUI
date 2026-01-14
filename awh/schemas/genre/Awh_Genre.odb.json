@@ -5,7 +5,9 @@
         {
             "name": "sCaption",
             "type": "TEXT",
-            "caption": "Название"
+            "caption": "Название",
+            "isHeadLine": true,
+            "isMnemoCode": true
         }
     ]
 }

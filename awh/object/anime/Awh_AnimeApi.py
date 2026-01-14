@@ -1,5 +1,6 @@
 # Пользовательский файл для логики
 from .Awh_AnimeDpi import Awh_AnimeDpi, Awh_AnimeObj
+from ..animegenre.Awh_AnimeGenreApi import Awh_AnimeGenreApi
 
 class Awh_AnimeApi(Awh_AnimeDpi):
     async def register(self, data):
@@ -12,4 +13,5 @@ class Awh_AnimeApi(Awh_AnimeDpi):
         obj.nSeries = data['series']
         obj.sUrl = data['url']
         await self.update(obj)
+        await Awh_AnimeGenreApi().fillGenreByAnime(obj.id, data['genre'])
         return obj.id
