@@ -22,7 +22,7 @@ class BaseAvi:
             if name.split('$', maxsplit=1)[0] == 'super':
                 if self.parent != 'tab_bar':
                     w = dpg.get_item_user_data(self.parentTable)
-                    return w._getAttr([name.split('$')[-1]])                             
+                    return w._getAttr(name.split('$')[-1])                             
             else:
                 row = self._getAttr(name)
                 return row
