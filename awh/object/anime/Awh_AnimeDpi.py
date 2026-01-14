@@ -10,6 +10,7 @@ class Awh_AnimeObj(BaseObj):
         self.nSeries:int = None
         self.bReleased:int = None
         self.sUrl:str = None
+        self.sUrlImg:str = None
 
 class Awh_AnimeDpi(BaseApi):
     _classObj = Awh_AnimeObj
@@ -21,7 +22,7 @@ class Awh_AnimeDpi(BaseApi):
         return f'{rop.sCaption}'
 
     def calcMnemoCode(self, rop:Awh_AnimeObj)->str:
-        return f'{rop.sUrl}'
+        return f'{rop.sUrl} {rop.sUrlImg}'
 
     async def insert(self)->Awh_AnimeObj:
         return await super().insert()
@@ -42,3 +43,4 @@ class Awh_AnimeDpi(BaseApi):
     def setnSeries(self, obj:Awh_AnimeObj, value): obj.nSeries = value
     def setbReleased(self, obj:Awh_AnimeObj, value): obj.bReleased = value
     def setsUrl(self, obj:Awh_AnimeObj, value): obj.sUrl = value
+    def setsUrlImg(self, obj:Awh_AnimeObj, value): obj.sUrlImg = value

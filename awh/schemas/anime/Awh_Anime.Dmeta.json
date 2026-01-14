@@ -32,6 +32,11 @@
         "caption": "Ссылка",
         "edit": "edit",
         "isVisible": true
+      },
+      "sUrlImg": {
+        "caption": "Ссылка",
+        "edit": "edit",
+        "isVisible": true
       }
     }
   }

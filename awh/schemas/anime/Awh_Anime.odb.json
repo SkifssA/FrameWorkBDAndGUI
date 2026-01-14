@@ -27,6 +27,11 @@
             "type": "TEXT",
             "caption": "Ссылка",
             "isMnemoCode": true 
+        },{
+            "name": "sUrlImg",
+            "type": "TEXT",
+            "caption": "Ссылка",
+            "isMnemoCode": true 
         }
     ]
 }

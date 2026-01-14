@@ -61,6 +61,19 @@
         "caption": "Жанры",
         "edit": "edit",
         "isVisible": true
+      },
+      "sUrlImg": {
+        "caption": "ww",
+        "edit": "edit",
+        "isVisible": false
+      }
+    },
+    "oper": {
+      "insert": {
+            "isVisible": false
+      },
+      "openForm": {
+            "isVisible": false
       }
     }
   }

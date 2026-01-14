@@ -7,6 +7,7 @@ import numpy as np
 import io
 import os
 from .BaseForm import BaseForm
+from io import BytesIO
 
 class CardFileView(BaseForm):
     MIN_SCALE = 0.1
@@ -36,7 +37,7 @@ class CardFileView(BaseForm):
         return ''
 
     async def _refresh(self):
-        self.loadFile(await self.onRefresh())
+        await self.loadFile(await self.onRefresh())
         dpg.delete_item(self.image_drawlist, children_only=True)
         self.offset_x = 0
         self.offset_y = 0
@@ -50,9 +51,9 @@ class CardFileView(BaseForm):
         self.drawnTag = dpg.draw_image(self.textureTag, pmin=(0, 0), pmax=(1000, 1000), parent=self.image_drawlist)
         self.update_image_position()
 
-    def loadFile(self, objPath):
+    async def loadFile(self, objPath):
         try:
-            image_data, self.img_w, self.img_h = self.workImage(objPath)
+            image_data, self.img_w, self.img_h = await self.workImage(objPath)
             with dpg.texture_registry(show=False):
                 self.textureTag = dpg.add_static_texture(width=self.img_w, height=self.img_h, default_value=image_data)
         except Exception as e:
@@ -85,9 +86,11 @@ class CardFileView(BaseForm):
 
     # === Работа с различными файлами изображения ===
 
-    def workImage(self, objPath):
+    async def workImage(self, objPath):
         if objPath['type'] in ('sql', 'scala', 'xml'):
             img = self.text_file_to_highlighted_image(objPath['real_path'])
+        elif objPath['type'] in ('http'):
+            img = await self.load_image_as_url(objPath['real_path'])
         else:
             img = self.load_image_as_raw(objPath['real_path'])
         newImg = img.convert("RGBA")
@@ -100,6 +103,14 @@ class CardFileView(BaseForm):
         if not os.path.exists(path):
             raise FileNotFoundError(f"Изображение не найдено: {path}")
         return Image.open(path)
+    
+    async def load_image_as_url(self, url):
+        from ..package.Core_AiohttpPkg import Core_AiohttpPkg
+        if url is not None:
+            async with Core_AiohttpPkg().get(url) as response:
+                content = await response.read()
+        return Image.open(BytesIO(content))
+        
     
     def text_file_to_highlighted_image(self, input_path):
         '''Работа с текстовыми файлами'''

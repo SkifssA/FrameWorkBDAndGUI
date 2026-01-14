@@ -12,6 +12,7 @@ class Awh_AnimeApi(Awh_AnimeDpi):
         obj.sCaption = data['name']
         obj.nSeries = data['series']
         obj.sUrl = data['url']
+        obj.sUrlImg = data['urlImg']
         await self.update(obj)
         await Awh_AnimeGenreApi().fillGenreByAnime(obj.id, data['genre'])
         return obj.id
