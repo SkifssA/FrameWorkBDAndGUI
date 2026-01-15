@@ -26,6 +26,7 @@
   "List": {
     "caption": "Аниме",
     "isVisibleToolBar": true,
+    "width": 1400,
     "attr": {
       "id": {
         "caption": "id",

@@ -31,6 +31,8 @@ class CardFileView(BaseForm):
                                 , no_scroll_with_mouse= True
                                 , parent=par) as image_container:
             self.image_drawlist = dpg.add_drawlist(width=-1, height=-1)
+            print(dpg.get_frame_count())
+            dpg.set_frame_callback(dpg.get_frame_count() + 10, self.on_viewport_resize)
         return image_container
 
     async def onRefresh(self):
@@ -64,7 +66,7 @@ class CardFileView(BaseForm):
             with dpg.texture_registry(show=False):
                 self.textureTag = dpg.add_static_texture(self.img_w, self.img_h, pixel_data)
 
-    def regHandler(self):
+    def regHandler(self) -> None:
         with dpg.handler_registry():
             dpg.add_mouse_wheel_handler(callback=self.on_mouse_wheel)
             dpg.add_mouse_drag_handler(button=dpg.mvMouseButton_Right, callback=self.on_mouse_drag)
@@ -73,9 +75,10 @@ class CardFileView(BaseForm):
     
         dpg.set_viewport_resize_callback(lambda: dpg.set_frame_callback(dpg.get_frame_count() + 1, self.on_viewport_resize))
 
-    def on_viewport_resize(self):
+    def on_viewport_resize(self) -> None:
         # Получаем реальный размер контейнера
         container_w, container_h = dpg.get_item_rect_size(self.mainForm)
+        print(container_w, container_h)
         # Обновляем размер drawlist
         dpg.set_item_width(self.image_drawlist, container_w)
         dpg.set_item_height(self.image_drawlist, container_h)
@@ -111,7 +114,6 @@ class CardFileView(BaseForm):
                 content = await response.read()
         return Image.open(BytesIO(content))
         
-    
     def text_file_to_highlighted_image(self, input_path):
         '''Работа с текстовыми файлами'''
         lexer = get_lexer_for_filename(input_path)
