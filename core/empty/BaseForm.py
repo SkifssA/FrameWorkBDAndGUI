@@ -77,11 +77,15 @@ class BaseForm:
     def getW(self):
         '''Получение ширины'''
         w = -1
+        wScreen = dpg.get_viewport_width()
         for i in self.ch:
             if i is not None:
                 if hasattr(i, 'right'):
                     if i.right:
-                        w = dpg.get_viewport_width() * 0.5   
+                        if 'width' in self.meta:
+                            w = self.meta['width']
+                        else:
+                            w = wScreen * 0.5   
         return w
     
     async def refreshCh(self):
@@ -134,7 +138,7 @@ class BaseForm:
             self.toolBar = dpg.add_group(show=False, horizontal=True, tag=f'{par}_ToolBar')
         self.mainForm = self.createMainForm(par)
         dpg.set_item_user_data(self.mainForm, self)
-        self.UpDown = dpg.add_button(label="", height=self.sizeLineResize, width=width, parent=par, show=False)
+        self.UpDown = dpg.add_button(label="", height=self.sizeLineResize, parent=par, show=False)
         self.tabBar = dpg.add_tab_bar(show=False, parent=par)
 
         await self.afterCreate()
