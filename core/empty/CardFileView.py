@@ -31,8 +31,6 @@ class CardFileView(BaseForm):
                                 , no_scroll_with_mouse= True
                                 , parent=par) as image_container:
             self.image_drawlist = dpg.add_drawlist(width=-1, height=-1)
-            print(dpg.get_frame_count())
-            dpg.set_frame_callback(dpg.get_frame_count() + 10, self.on_viewport_resize)
         return image_container
 
     async def onRefresh(self):
@@ -53,6 +51,7 @@ class CardFileView(BaseForm):
         self.drawnTag = dpg.draw_image(self.textureTag, pmin=(0, 0), pmax=(1000, 1000), parent=self.image_drawlist)
         self.update_image_position()
 
+
     async def loadFile(self, objPath):
         try:
             image_data, self.img_w, self.img_h = await self.workImage(objPath)
@@ -67,25 +66,39 @@ class CardFileView(BaseForm):
                 self.textureTag = dpg.add_static_texture(self.img_w, self.img_h, pixel_data)
 
     def regHandler(self) -> None:
-        with dpg.handler_registry():
+        with dpg.handler_registry() as handler_reg:
+            self.handler_reg = handler_reg
             dpg.add_mouse_wheel_handler(callback=self.on_mouse_wheel)
             dpg.add_mouse_drag_handler(button=dpg.mvMouseButton_Right, callback=self.on_mouse_drag)
             dpg.add_mouse_click_handler(button=dpg.mvMouseButton_Right, callback=self.on_mouse_right_down)
             dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Right, callback=self.on_mouse_right_up)
-    
-        dpg.set_viewport_resize_callback(lambda: dpg.set_frame_callback(dpg.get_frame_count() + 1, self.on_viewport_resize))
+
+        with dpg.item_handler_registry() as item_handler_reg:
+            self.item_handler_reg = item_handler_reg
+            dpg.add_item_visible_handler(callback=self.on_viewport_resize)
+        
+        dpg.bind_item_handler_registry(self.image_drawlist, self.item_handler_reg)
+
+
+    def deleteItem(self):
+        dpg.delete_item(self.handler_reg)
+        dpg.delete_item(self.item_handler_reg)
+        super().deleteItem()
 
     def on_viewport_resize(self) -> None:
         # Получаем реальный размер контейнера
-        container_w, container_h = dpg.get_item_rect_size(self.mainForm)
-        print(container_w, container_h)
-        # Обновляем размер drawlist
-        dpg.set_item_width(self.image_drawlist, container_w)
-        dpg.set_item_height(self.image_drawlist, container_h)
-        # Сохраняем для последующих обновлений
-        self.container_size = dpg.get_item_rect_size(self.image_drawlist)
-
-        self.update_image_position()
+        if dpg.does_item_exist(self.mainForm):
+            w = dpg.get_item_rect_size(self.mainForm)
+            if (self.container_size != w):
+                self.container_size = w
+                scw = self.container_size[0] / self.img_w
+                sch = self.container_size[1] / self.img_h
+                self.scale = min(scw, sch)
+                # Обновляем размер drawlist
+                dpg.set_item_width(self.image_drawlist, self.container_size[0])
+                dpg.set_item_height(self.image_drawlist, self.container_size[1])
+                # Сохраняем для последующих обновлений
+                self.update_image_position()
 
     # === Работа с различными файлами изображения ===
 
@@ -140,28 +153,30 @@ class CardFileView(BaseForm):
 
     # === Обработчики ===
     def on_mouse_wheel(self, sender, app_data):
-        global scale
-        if dpg.is_item_hovered(self.mainForm):
-            delta = app_data
-            self.scale += delta * 0.1 * self.scale
-            self.scale = max(self.MIN_SCALE, min(self.MAX_SCALE, self.scale))
-            self.update_image_position()
+        if dpg.does_item_exist(self.mainForm):
+            if dpg.is_item_hovered(self.mainForm):
+                delta = app_data
+                self.scale += delta * 0.1 * self.scale
+                self.scale = max(self.MIN_SCALE, min(self.MAX_SCALE, self.scale))
+                self.update_image_position()
 
     def on_mouse_drag(self, sender, app_data):
-        if self.dragging and dpg.is_item_hovered(self.image_drawlist):
-            mouse_x, mouse_y = dpg.get_mouse_pos(local=False)
-            dx = mouse_x - self.last_mouse_pos[0]
-            dy = mouse_y - self.last_mouse_pos[1]
-            self.offset_x += dx
-            self.offset_y += dy
-            self.last_mouse_pos[0] = mouse_x
-            self.last_mouse_pos[1] = mouse_y
-            self.update_image_position()
+        if dpg.does_item_exist(self.mainForm):
+            if self.dragging and dpg.is_item_hovered(self.image_drawlist):
+                mouse_x, mouse_y = dpg.get_mouse_pos(local=False)
+                dx = mouse_x - self.last_mouse_pos[0]
+                dy = mouse_y - self.last_mouse_pos[1]
+                self.offset_x += dx
+                self.offset_y += dy
+                self.last_mouse_pos[0] = mouse_x
+                self.last_mouse_pos[1] = mouse_y
+                self.update_image_position()
 
     def on_mouse_right_down(self, sender, app_data):
-        if dpg.is_item_hovered(self.mainForm):
-            self.dragging = True
-            self.last_mouse_pos[:] = dpg.get_mouse_pos(local=False)
+        if dpg.does_item_exist(self.mainForm):
+            if dpg.is_item_hovered(self.mainForm):
+                self.dragging = True
+                self.last_mouse_pos[:] = dpg.get_mouse_pos(local=False)
 
     def on_mouse_right_up(self, sender, app_data):
         self.dragging = False

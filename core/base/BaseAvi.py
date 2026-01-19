@@ -66,7 +66,7 @@ class BaseAvi:
             await self.refresh()
 
         @SetOper(label='Закрыть', order=10000)
-        async def closeForm(self): dpg.hide_item(self.tab)
+        async def closeForm(self): self.deleteItem()
 
 
         def checwork(self):
@@ -91,7 +91,7 @@ class BaseAvi:
                 if self.isMod or self.isInsert:
                     BaseModal("Сохранить перед выходом?", self.handle_confirmation)
                 else:
-                    dpg.hide_item(self.tab)
+                    self.delete()
             else:
                 if self.isInsert:
                     await self.thisApi().delete(self.obj)

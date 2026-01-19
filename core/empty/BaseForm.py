@@ -223,4 +223,6 @@ class BaseForm:
         else:
             return lambda: asyncio.run(bound_method())
 
+    def deleteItem(self):
+        dpg.delete_item(self.tab)
     

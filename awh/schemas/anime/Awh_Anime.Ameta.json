@@ -72,9 +72,6 @@
     "oper": {
       "insert": {
             "isVisible": false
-      },
-      "openForm": {
-            "isVisible": false
       }
     }
   }

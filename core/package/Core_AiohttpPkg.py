@@ -32,11 +32,12 @@ class Core_AiohttpPkg:
         match = await asyncio.to_thread(re.search, pattern, text)
         return match.group(1) if match else None
     
-    def get(self, nameUrl):
+    def get(self, nameUrl, headers=None):
         fullUrl = self.GetUrl(nameUrl)
         if fullUrl is None:
             fullUrl = nameUrl
-        return self.session.get(fullUrl, headers=self._getHeaders())
+        h = self._getHeaders() if headers is None else headers
+        return self.session.get(fullUrl, headers=h)
     
     def post(self, nameUrl, data):
         fullUrl = self.GetUrl(nameUrl)

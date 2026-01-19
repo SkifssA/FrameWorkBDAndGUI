@@ -17,26 +17,26 @@ class Awh_AnimeLoadPkg(Core_AiohttpPkg):
         return self.d
     
     async def __getName(self, text)->str:
-        return (await self.find(text, 'div', class_='anime-title')).find('h1').get_text()
+        return (await self.find(text, 'div', class_='entity__title mb-4')).find('h1').get_text()
     
     async def __getGenre(self, text)->list:
-        d = []
-        for i in (await self.find(text, 'dd', class_='col-6 col-sm-8 mb-1 overflow-h')).find_all('a'):
-            d.append(i.get_text())
-        return d
+        return (i.get_text() for i in (await self.find(text, 'div', class_='entity-field__genres')).find_all('a'))
     
     async def __getSeries(self, text)->str:
-        return (await self.findAll(text, 'dd', class_='col-6 col-sm-8 mb-1'))[1].get_text()
+        w = (await self.findAll(text, 'div', class_='g-col-7 g-col-sm-12 g-col-md-8 g-col-lg-9 g-col-xl-9 text-break'))
+        if str(w[1]).isalnum:
+            return w[1].get_text()
+        return w[2].get_text()
     
     async def __getUrlImg(self, text)->str:
-        return (await self.find(text, 'img', title= self.d['name'])).get('src')
+        return (await self.find(text, 'img', class_='image__img rounded', title= self.d['name'])).get('src')
 
     def __convSeriesInInt(self, series:str):
         if series.find('/') == -1:
             return int(series)
         else:
-            w = series[series.find('/')+1:]
-            if w.strip().isalpha():
+            w = series[series.find('/')+1:].strip()
+            if w.isalnum():
                 return int(w)
             else:
                 return 0
