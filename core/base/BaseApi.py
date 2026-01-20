@@ -5,7 +5,7 @@ class BaseApi:
     _classObj = None
     _all_instances = {}
 
-    async def _getNameClass(self)->str:
+    def _getNameClass(self)->str:
         return ' '
 
     async def idClass(self):

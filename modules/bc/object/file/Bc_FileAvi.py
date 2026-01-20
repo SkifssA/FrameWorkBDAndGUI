@@ -16,7 +16,7 @@ class Bc_FileAvi(Bc_FileDvi):
             yield Bc_FileAvi.cardFileView_idFile()
 
         async def onRefresh(self):
-            return await super().onRefresh() + f"WHERE t.gidScr = '{self.getAttr("super$gid")}'"
+            return await super().onRefresh() + f"WHERE t.gidScr = :super$gid"
 
     class Card(Bc_FileDvi.DviCard): pass
 

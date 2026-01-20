@@ -1,5 +1,4 @@
 modules:
-  - core
   - bc
   - hbc
   - awh

@@ -64,8 +64,6 @@ class EmptyCard(BaseForm):
     def afterSetter(self):
         self.isMod = True
         self.checwork()
-        
-    def checwork(self): pass
 
     async def _initLookUp(self, i, defValue):
         dpg.set_value(self.tagInput[i], defValue if defValue is not None else '')

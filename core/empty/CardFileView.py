@@ -35,6 +35,12 @@ class CardFileView(BaseForm):
 
     async def onRefresh(self):
         return ''
+    
+    async def onRefreshExt(self):
+        return ''
+    
+    async def _getAttr(self):
+        return ''
 
     async def _refresh(self):
         await self.loadFile(await self.onRefresh())

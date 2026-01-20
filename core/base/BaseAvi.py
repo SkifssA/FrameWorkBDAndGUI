@@ -2,6 +2,7 @@ import dearpygui.dearpygui as dpg
 import importlib
 
 from ..package import ASQL
+from ..empty.BaseForm import BaseForm
 from ..empty.EmptyList import EmptyList
 from ..empty.EmptyCard import EmptyCard
 from .BaseOper import SetOper
@@ -17,11 +18,11 @@ class BaseAvi:
             setattr(instance, key, value)
         return instance
 
-    class DefaultDefault():
+    class DefaultDefault(BaseForm):
         def getAttr(self, name:str):
             if name.split('$', maxsplit=1)[0] == 'super':
                 if self.parent != 'tab_bar':
-                    w = dpg.get_item_user_data(self.parentTable)
+                    w:BaseForm = dpg.get_item_user_data(self.parentTable)
                     return w._getAttr(name.split('$')[-1])                             
             else:
                 row = self._getAttr(name)

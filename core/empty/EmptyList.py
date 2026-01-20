@@ -65,8 +65,6 @@ class EmptyList(BaseForm):
         self._oneShow(tagSelf, tagTable)
         self._checwork()
 
-    def checwork(self): pass
-
     def _checwork(self):
         '''Операция выполняемая при выборе строки'''
         try:
@@ -93,7 +91,9 @@ class EmptyList(BaseForm):
     async def __getDataTab(self, column=True):
         '''Получение данных из БД для данной таблицы'''
         res = {}
-        res['row'] = await ASQL(await self.onRefresh())
+        par = [self.getAttr(i) for i in re.findall(r':([^ ]*)', await self.onRefresh())]
+        sql = re.sub(r':[^ ]*', '?', await self.onRefresh())
+        res['row'] = await ASQL(sql, par)
         res['column'] = await self._getCollumn()
         return res
 
@@ -117,7 +117,7 @@ class EmptyList(BaseForm):
     def get_row(self):
         return self.get_any_row(self.mainForm)
     
-    def get_any_row(self, tagTable):
+    def get_any_row(self, tagTable)->dict:
         if not dpg.does_item_exist(tagTable):
             return {}
         for i in dpg.get_item_children(tagTable, slot=1):

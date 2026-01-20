@@ -3,8 +3,9 @@ import inspect
 import asyncio
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
 from ..base.BaseSelection import Selection
+from .AbstractForm import AbstractForm
 
-class BaseForm:
+class BaseForm(AbstractForm):
     def __init__(self):
         self.sizeLineResize = 5
         self.defaultHeight = 300
@@ -16,14 +17,15 @@ class BaseForm:
         self.tab = None
         self.parent = None
         self.parentTable = None
-        self.ch = None
+        self.ch:list[BaseForm] = None
         self.isMod = False
         self.isInsert = False
         self.isModal = False
         self.callback = None
         self.returnAttr = []
+        self.right = False
 
-    def getTag(self):
+    def getTag(self)->str:
         '''формирование тега формы'''
         return self.thisApi()._getNameClass() + str(self.parent)
         
@@ -92,17 +94,13 @@ class BaseForm:
         '''Обновление дочерних форм'''
         for i in self.ch:
             if i is not None:
-                await i.refresh()
-
-    def openCh(self):
-        '''Открытие дочерних форм. Пользовательский'''
-        yield 
+                await i.refresh() 
 
     async def _openCh(self):
         '''Открытие дочерних форм. Системный'''
         for i in self.ch:
             if i is not None:
-                if hasattr(i, 'right'):
+                if i.right:
                     await i.open(self.rightGroup, parentTable=self.mainForm)
                     dpg.configure_item(self.LeftRight, show=True)
                 else:
@@ -151,17 +149,10 @@ class BaseForm:
         self.offset_x_resize = width
         self.offset_y_resize = height
 
-    def createMainForm(self, par)->int|str: pass
-
-    async def afterCreate(self)->None: pass 
-
     async def refresh(self):
         '''Обновление. Пользовательское'''
         await self._refresh()
         await self.refreshCh()
-
-    async def _refresh(self):
-        pass
 
     def regHandler(self):
         """Регистрация обработчиков и событий"""
