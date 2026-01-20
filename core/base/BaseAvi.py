@@ -91,7 +91,7 @@ class BaseAvi:
                 if self.isMod or self.isInsert:
                     BaseModal("Сохранить перед выходом?", self.handle_confirmation)
                 else:
-                    self.delete()
+                    self.deleteItem()
             else:
                 if self.isInsert:
                     await self.thisApi().delete(self.obj)
