@@ -4,5 +4,5 @@
 Система работае на модулях:
 - [Core](core/README.md)
 - [Bc](bc/README.md)
-- [Hbc](Hbc/README.md)
+- [Hbc](hbc/README.md)
 - [Awh](awh/README.md)
