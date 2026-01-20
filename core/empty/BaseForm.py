@@ -66,7 +66,7 @@ class BaseForm:
                 
     async def getMeta(self):
         mod, clas = self.thisApi()._getNameClass().split("_")
-        path = f"../../{mod.lower()}/schemas/{clas.lower()}/{self.thisApi()._getNameClass()}"
+        path = f"../../modules/{mod.lower()}/schemas/{clas.lower()}/{self.thisApi()._getNameClass()}"
         w = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
         if (self.__class__.__name__ in w):
             return w[self.__class__.__name__]

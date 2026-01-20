@@ -1,0 +1,33 @@
+{
+  "Default": {
+    "caption": "Время начала студента",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idStudent": {
+        "caption": "Студент",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "idStudentHL": {
+        "caption": "Студент",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sData": {
+        "caption": "Начал в",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

@@ -9,8 +9,8 @@ class Core_SelectApp:
             self.mainMenuApp = mainMenuApp
             listApp = await Core_FileManagerPkg.ReadFile("../../project.yaml")
             for app in listApp['modules']:
-                if await Core_FileManagerPkg.Exists(f"../../{app}/config/configApp.json"):
-                    data = await Core_FileManagerPkg.ReadFile(f"../../{app}/config/configApp.json")
+                if await Core_FileManagerPkg.Exists(f"../../modules/{app}/config/configApp.json"):
+                    data = await Core_FileManagerPkg.ReadFile(f"../../modules/{app}/config/configApp.json")
                     self.createBlocApp(app, data)
 
     def createBlocApp(self, module, data):

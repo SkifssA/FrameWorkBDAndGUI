@@ -13,7 +13,7 @@ def my_recurring_function(script: tuple):
     dpg.set_frame_callback(dpg.get_frame_count()+10, lambda: my_recurring_function(script))
 
 async def mainProgram():
-    from bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi
+    from modules.bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi
     dpg.create_context()
 
     # Тема для корректного отображения отключённых кнопок
