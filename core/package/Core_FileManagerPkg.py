@@ -62,13 +62,18 @@ class Core_AsyncFileManager:
     async def getFilesWithExtension(self, directory: str, extension: str) -> list[Path]:
         """Асинхронно возвращает список файлов с заданным расширением."""
         obj = self._getObjPath(directory)
-        def _sync_scan():
-            path = Path(obj['real_path'])
+        def _sync_scan(path=None):
+            if path is None:
+                path = Path(obj['real_path'])
             q = extension.split('.')
             if len(q) > 2:
-                return [f for f in path.iterdir() if f.is_file() and f.suffix == f'.{q[-1]}' and f.stem.endswith(q[-2])]
+                w =  [f for f in path.iterdir() if f.is_file() and f.suffix == f'.{q[-1]}' and f.stem.endswith(q[-2])]
             else:
-                return [f for f in path.iterdir() if f.is_file() and f.suffix == f'.{q[-1]}']
+                w =  [f for f in path.iterdir() if f.is_file() and f.suffix == f'.{q[-1]}']
+            for d in path.iterdir():
+                if d.is_dir():
+                    w += _sync_scan(d)
+            return w
         
         return await asyncio.to_thread(_sync_scan)
 

@@ -1,7 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Hbc_StudentLessonDvi import Hbc_StudentLessonDvi
-from ..student.Hbc_StudentApi import Hbc_StudentApi
-from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
+from ... import Hbc_StudentApi, Hbc_NewProfiClientPkg
 from core.base.BaseOper import SetOper
 
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):

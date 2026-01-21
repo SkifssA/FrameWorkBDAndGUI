@@ -1,6 +1,7 @@
 from ..package import Core_FileManagerPkg, ASQL, ATQSL, Core_ActionDispatcherPkg
-from .templace import Api, Avi, Dpi, Dvi
+from .bilders import BilderApi, BilderAvi, BilderDvi, BilderDpi, BildersAmeta, BildersDmeta
 from collections import Counter
+from pathlib import Path
 
 TYPE_MAPPING = {
     "TEXT": "TEXT",
@@ -39,109 +40,44 @@ async def createTab():
 
 async def createFile():
     listApp = await Core_FileManagerPkg.ReadFile("../../project.yaml")
-    script = []
     for app in listApp['modules']:
-        pathClass = f"../../{app}/schemas"
+        pathClass = f"../../modules/{app}/schemas"
         if await Core_FileManagerPkg.Exists(pathClass):
-                for cl in await Core_FileManagerPkg.GetFoldersList(pathClass):
-                    lFiles = await Core_FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json')
-                    for File in lFiles:
-                        data = await Core_FileManagerPkg.ReadFile(File.__str__())
-                        await _createFileProg(f'../../{app}/object/{cl}', data)
-                        await _createFileMeta(f'../../{app}/schemas/{cl}', data)
+            for cl in await Core_FileManagerPkg.GetFoldersList(pathClass):
+                lFiles = await Core_FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json')
+                for File in lFiles:
+                    data = await Core_FileManagerPkg.ReadFile(File.__str__())
+                    await BilderDpi(data).createFile(f'../../../modules/{app}/object/{cl}')
+                    await BilderDvi(data).createFile(f'../../../modules/{app}/object/{cl}')
+                    await BilderApi(data).createFile(f'../../../modules/{app}/object/{cl}')
+                    await BilderAvi(data).createFile(f'../../../modules/{app}/object/{cl}')
 
-async def _createFileProg(path, data):
-     data = await _createDataForFile(data)
-     await __createDpi(path, data)
-     await __createApi(path, data)
-     await __createDvi(path, data)
-     await __createAvi(path, data)
+                    await BildersDmeta(data).createFile(f'../{pathClass}/{cl}')
+                    await BildersAmeta(data).createFile(f'../{pathClass}/{cl}')
 
-async def _createFileMeta(path, data):
-    pathWhitFileD = f'{path}/{data['name']}.Dmeta.json'
-    pathWhitFileA = f'{path}/{data['name']}.Ameta.json'
+            print(await _test(app))
 
-    if not await Core_FileManagerPkg.Exists(pathWhitFileA):
-        fA = {}
-        await Core_FileManagerPkg.CreateFile(pathWhitFileA, fA)
 
-    attr = {
-        'id': {
-                'caption': 'id',
-                'edit': 'edit',
-                'isVisible': False
-            },
-        'gid': {
-                'caption': 'gid',
-                'edit': 'edit',
-                'isVisible': False
-            }
-        }
+async def _test(app):
+    dir = f"../../modules/{app}/object"
+    w = await Core_FileManagerPkg.getFilesWithExtension(dir, '.py')
+    paths = [f for f in w if not (f.stem.endswith('Dvi') or f.stem.endswith('Dpi'))]
+    base_path = Path(Core_FileManagerPkg._getObjPath(f"../../modules/{app}")['real_path'])
+    imports = []
+    for p in paths:
+        # Относительный путь от base_path (без расширения .py)
+        rel_path = p.relative_to(base_path).with_suffix('')
+        # Преобразуем в строку и заменяем '/' или '\' на '.'
+        module_path = str(rel_path).replace('/', '.').replace('\\', '.')
+        # Имя класса — последняя часть имени файла
+        class_name = p.stem  # то же, что и rel_path.name
+        # Формируем строку импорта
+        import_line = f'from .{module_path} import {class_name}'
+        imports.append(import_line)
     
-    for i in data['attr']:
-        attr[i['name']] = {
-                "caption": i['caption'],
-                "edit": i['editType'] if 'editType' in i else 'edit',
-                'isVisible': i['name'] in data['showAttr']
-            }
-        if i['name'].startswith('id'):
-            attr[i['name']+'HL'] = {
-                "caption": i['caption'],
-                "edit": i['editType'] if 'editType' in i else 'edit',
-                'isVisible': i['name']+'HL' in data['showAttr']
-            }
-            attr[i['name']]['edit'] = 'edit'
-        if  'editType' in i:
-            if i['editType'] == 'lookUp':
-               attr[i['name']+'HL']['display'] = 'LookUp'
-               attr[i['name']+'HL']['refTab'] = i['refTab']
-        
+    await Core_FileManagerPkg.CreateFile(f"../../modules/{app}/__init__.py", '\n'.join(imports))
 
-    fD = {'Default':{
-            'caption': data['caption'],
-            'isVisibleToolBar': True,
-            'attr': attr
-        }}
-    await Core_FileManagerPkg.CreateFile(pathWhitFileD, fD)
-
-async def __createApi(path, data):
-     pathWhitFile = f'{path}/{data['name']}Api.py'
-     if not await Core_FileManagerPkg.Exists(pathWhitFile):
-        f = Api.format(nameClass=data['name'])
-        await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
-
-async def __createAvi(path, data):
-     pathWhitFile = f'{path}/{data['name']}Avi.py'
-     if not await Core_FileManagerPkg.Exists(pathWhitFile):
-        f = Avi.format(nameClass=data['name'])
-        await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
-
-async def __createDpi(path, data):
-    pathWhitFile = f'{path}/{data['name']}Dpi.py'
-    tempSet = 'def set{nameAttr}(self, obj:{nameClass}Obj, value): obj.{nameAttr} = value'
-    listTepmSet = tuple(tempSet.format(nameAttr=i['name'], nameClass=data['name']) for i in data['attr'])
-    f = Dpi.format(nameClass=data['name'],
-                   attr=f' = None\n{' '*8}self.'.join(data['attrRop']), 
-                   isHeadLine=data['isHeadLine'],
-                   isMnemoCode=data['isMnemoCode'],
-                   deleteDetails=data['deleteDetails'],
-                   setter='\n    '.join(listTepmSet))
-    await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
-
-async def __createDvi(path, data):
-    pathWhitFile = f'{path}/{data['name']}Dvi.py'
-
-    tempSet = 'def set{nameAttr}(self, sender, app_data, user_data): self.thisApi().set{nameAttr}(self.obj, app_data); self.afterSetter()'
-    tempSetLookUp = 'def set{nameAttr}HL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().set{nameAttr}(self.obj, idLook); self.afterSetter()'
-    listTepmSet = []
-    for i in data['attr']:
-        listTepmSet.append(tempSet.format(nameAttr=i['name']))
-        if  'editType' in i:
-            if i['editType'] == 'lookUp':
-                listTepmSet.append(tempSetLookUp.format(nameAttr=i['name']))
-                
-    f = Dvi.format(nameClass=data['name'], sqlList=data['sqlList'][0], sqlListExt=data['sqlList'][1], setter='\n        '.join(listTepmSet))
-    await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
+    return imports
 
 async def __initMetaTab():
     for i in await Core_FileManagerPkg.getFilesWithExtension(f'../../core/schemas/clas', '.odb.json'):
@@ -164,15 +100,6 @@ async def __insertMetaTable(sName, sCaption):
 async def __insertMetaColumn(idTab, sName, sType, sCaption, sNameRefTab=None):
     from ..object.attr.Core_AttrApi import Core_AttrApi
     await Core_AttrApi().register(idTab, sName, sType, sCaption, sNameRefTab)
-
-async def _createDataForFile(data):
-    data['sqlList'] = await __getSqlList(data['attr'], data['name'])
-    data['attrRop'] = await __getRopAttr(data['attr'])
-    data['isHeadLine'] = await __getHeadLine(data['attr'])
-    data['isMnemoCode'] = await __getMnemoCode(data['attr'])
-    data['showAttr'] = await __getShowAttr(data['attr'])
-    data['deleteDetails'] = await __getDelete(data)
-    return data
 
 async def __insertTab(data):
     from ..object.clas.Core_ClassApi import Core_ClassApi
@@ -204,51 +131,6 @@ async def __insertTab(data):
     await __createOrUpdateTable(q, data['attr'], data['name'], table_existed)
 
     return data
-
-async def __getSqlList(dataAttr, nameTabl)->str:
-    sqlstr = {
-        'int': 1,
-        'attr': ['t.id', 't.gid'],
-        'join': []
-    }
-    for i in dataAttr:
-        sqlstr['attr'].append(f"t.{i['name']}")
-        if 'refTab' in i:
-            sqlstr['attr'].append(f"t{sqlstr['int']}.sHeadLine as {i['name']}HL")
-            sqlstr['join'].append(f"LEFT JOIN {i['refTab']} t{sqlstr['int']} ON t{sqlstr['int']}.id = t.{i['name']}")
-            sqlstr['int'] += 1
-
-    if(sqlstr['int'] > 1):
-        print()
-
-    return [f"""
-            SELECT {',\n                   '.join(sqlstr['attr'])}
-            FROM {nameTabl} AS t
-                {'\n                '.join(sqlstr['join'])}
-            """,
-            f"""
-            with t as ( select 
-                {',\n                '.join(f":{i[i.rfind('.')+1:]} as {i[i.rfind('.')+1:]}" for i in sqlstr['join'])}
-              )
-            select {',\n                   '.join(i for i in sqlstr['attr'] if i.endswith("HL"))}
-            from t
-                {'\n                '.join(sqlstr['join'])}
-            """]
-
-async def __getRopAttr(dataAttr):
-    rop = []
-    for i in dataAttr:
-        
-        if i['name'].startswith('id') or i['name'].startswith('n') or i['name'].startswith('b'):
-            typeAttr = 'int'
-        elif i['name'].startswith('gid'):
-            typeAttr = 'gid'
-        else:
-            typeAttr = 'str'
-
-
-        rop.append(f'{i['name']}:{typeAttr}')
-    return rop
 
 async def __getQ(idTabl, dataAttr):
     q = {
@@ -336,40 +218,3 @@ async def __actionScripts(datas:list[dict]):
             else:
                 s = f"UPDATE Core_Script SET nVersion = ? WHERE sAction = ?"
             await ATQSL(s, (data['version'], data['name']))
-
-async def __getHeadLine(dataAttr):
-    rop = []
-    for i in dataAttr:
-        if 'isHeadLine' in i:
-            rop.append(f'rop.{i['name']}')
-    return '{' + ('} {'.join(rop) if rop != [] else 'rop.id') + '}'
-
-async def __getMnemoCode(dataAttr):
-    rop = []
-    for i in dataAttr:
-        if 'isMnemoCode' in i:
-            rop.append(f'rop.{i['name']}')
-    return '{' + ('} {'.join(rop) if rop != [] else 'rop.id') + '}'
-
-async def __getShowAttr(dataAttr):
-    res = []
-    for i in dataAttr:
-        if 'isVisible' in i:
-            if not i['isVisible']:
-                continue
-        res.append(i['name']+('HL' if i['name'].startswith('id') else ''))
-    return res
-
-async def __getDelete(data):
-    res = []
-    if 'collections' in data.keys():
-        mM = data['name'][:data['name'].find('_')].lower()
-        for i in data['collections']:
-            w:str = i['name']
-            m = i['name'][:i['name'].find('_')].lower()
-            mtemp = '...' if mM == m else f'{m}.'
-            res.append(f'from {mtemp}object.{w.split('_')[-1].lower()}.{w}Api import {w}Api')
-            res.append(f'd = await {w}Api()._getAllByAttr(\'{i['attr']}\', rop.{'id' if i['attr'].startswith('id') else 'gid'})')
-            res.append(f'if d: asyncio.gather(*({w}Api().delete(i) for i in d))')
-            
-    return '\n        '.join(res)

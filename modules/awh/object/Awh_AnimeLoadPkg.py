@@ -24,7 +24,7 @@ class Awh_AnimeLoadPkg(Core_AiohttpPkg):
     
     async def __getSeries(self, text)->str:
         w = (await self.findAll(text, 'div', class_='g-col-7 g-col-sm-12 g-col-md-8 g-col-lg-9 g-col-xl-9 text-break'))
-        if str(w[1]).isalnum:
+        if str(w[1]).isalnum():
             return w[1].get_text()
         return w[2].get_text()
     
@@ -32,7 +32,7 @@ class Awh_AnimeLoadPkg(Core_AiohttpPkg):
         return (await self.find(text, 'img', class_='image__img rounded', title= self.d['name'])).get('src')
 
     def __convSeriesInInt(self, series:str):
-        if series.find('/') == -1:
+        if series.isalnum():
             return int(series)
         else:
             w = series[series.find('/')+1:].strip()
