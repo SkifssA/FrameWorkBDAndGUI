@@ -24,7 +24,7 @@ class Awh_AnimeLoadPkg(Core_AiohttpPkg):
     
     async def __getSeries(self, text)->str:
         w = (await self.findAll(text, 'div', class_='g-col-7 g-col-sm-12 g-col-md-8 g-col-lg-9 g-col-xl-9 text-break'))
-        if str(w[1]).isalnum():
+        if w[1].get_text().isalnum():
             return w[1].get_text()
         return w[2].get_text()
     
