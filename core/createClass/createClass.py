@@ -55,15 +55,16 @@ async def createFile():
                     await BildersDmeta(data).createFile(f'../{pathClass}/{cl}')
                     await BildersAmeta(data).createFile(f'../{pathClass}/{cl}')
 
-            print(await _test(app))
+            await _getInitModule(app)
 
 
-async def _test(app):
+async def _getInitModule(app):
     dir = f"../../modules/{app}/object"
     w = await Core_FileManagerPkg.getFilesWithExtension(dir, '.py')
     paths = [f for f in w if not (f.stem.endswith('Dvi') or f.stem.endswith('Dpi'))]
     base_path = Path(Core_FileManagerPkg._getObjPath(f"../../modules/{app}")['real_path'])
     imports = []
+    classApi = []
     for p in paths:
         # Относительный путь от base_path (без расширения .py)
         rel_path = p.relative_to(base_path).with_suffix('')
@@ -73,11 +74,10 @@ async def _test(app):
         class_name = p.stem  # то же, что и rel_path.name
         # Формируем строку импорта
         import_line = f'from .{module_path} import {class_name}'
+        classApi.append(f'\'{class_name}\'')
         imports.append(import_line)
     
-    await Core_FileManagerPkg.CreateFile(f"../../modules/{app}/__init__.py", '\n'.join(imports))
-
-    return imports
+    await Core_FileManagerPkg.CreateFile(f"../../modules/{app}/__init__.py", '\n'.join(imports) + f'\n\n__all__ = [\n    {'\n    '.join(classApi)}\n]')
 
 async def __initMetaTab():
     for i in await Core_FileManagerPkg.getFilesWithExtension(f'../../core/schemas/clas', '.odb.json'):

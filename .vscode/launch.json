@@ -5,11 +5,34 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Запуск основного файла",
+            "name": "Запуск генератора таблиц",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "createClass"
+            ]
+        },
+        {
+            "name": "Запуск генератора исходников",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "createSours"
+            ]
+        },
+        {
+            "name": "Запуск основного приложения",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "args": [
+                "launchApp"
+            ]
         }
     ]
 }

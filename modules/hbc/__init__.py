@@ -10,3 +10,18 @@ from .object.studentdata.Hbc_StudentDataApi import Hbc_StudentDataApi
 from .object.studentdata.Hbc_StudentDataAvi import Hbc_StudentDataAvi
 from .object.studentlesson.Hbc_StudentLessonApi import Hbc_StudentLessonApi
 from .object.studentlesson.Hbc_StudentLessonAvi import Hbc_StudentLessonAvi
+
+__all__ = [
+    'Hbc_DataInstallPkg'
+    'Hbc_GSheetsManagerPkg'
+    'Hbc_MainMenu'
+    'Hbc_NewProfiClientPkg'
+    'Hbc_LessonApi'
+    'Hbc_LessonAvi'
+    'Hbc_StudentApi'
+    'Hbc_StudentAvi'
+    'Hbc_StudentDataApi'
+    'Hbc_StudentDataAvi'
+    'Hbc_StudentLessonApi'
+    'Hbc_StudentLessonAvi'
+]
