@@ -52,11 +52,7 @@ class EmptyCard(BaseForm):
                 await self._initAll(i, self.data[i])
 
     async def getDataExt(self):
-        nameAttrSqlExt = re.findall(r':([a-zA-Z_][a-zA-Z0-9_]*)', self.onRefreshExt())
-        attraExt = {}
-        for i in nameAttrSqlExt:
-            attraExt[i] = self.data[i]
-        dataEx = await ASQL(self.onRefreshExt(), attraExt)
+        dataEx = await ASQL(*self.getSqlAndParam(self.onRefreshExt()))
         if dataEx != []:
             return dataEx[0]
         return {}
@@ -82,4 +78,4 @@ class EmptyCard(BaseForm):
         dpg.set_value(self.tagInput[i], defValue if defValue is not None else '')
 
     def _getAttr(self, nameAttr:str):
-        return dpg.get_value(self.tagInput[nameAttr])
+        return dpg.get_value(self.tagInput[nameAttr]) or self.data[nameAttr]

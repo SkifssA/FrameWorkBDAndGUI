@@ -1,6 +1,7 @@
 import dearpygui.dearpygui as dpg
 import inspect
 import asyncio
+import re
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
 from ..base.BaseSelection import Selection
 from .AbstractForm import AbstractForm
@@ -216,4 +217,16 @@ class BaseForm(AbstractForm):
 
     def deleteItem(self):
         dpg.delete_item(self.tab)
+
+    def getSqlAndParam(self, sql:str)->tuple[str, list]:
+        par = [self.getAttr(i) for i in re.findall(r':([^ ]*)', sql)]
+        sql = re.sub(r':[^ ]*', '?', sql)
+        return (sql, par)
     
+    def openCh(self):
+        '''Открытие дочерних форм. Пользовательский'''
+        yield
+
+    async def afterCreate(self)->None: pass
+
+    def checwork(self): pass

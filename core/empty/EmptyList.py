@@ -2,7 +2,7 @@ import dearpygui.dearpygui as dpg
 from ..package import ASQL
 
 import asyncio
-import re
+
 
 from .BaseForm import BaseForm
 
@@ -91,9 +91,7 @@ class EmptyList(BaseForm):
     async def __getDataTab(self, column=True):
         '''Получение данных из БД для данной таблицы'''
         res = {}
-        par = [self.getAttr(i) for i in re.findall(r':([^ ]*)', await self.onRefresh())]
-        sql = re.sub(r':[^ ]*', '?', await self.onRefresh())
-        res['row'] = await ASQL(sql, par)
+        res['row'] = await ASQL(*self.getSqlAndParam(await self.onRefresh()))
         res['column'] = await self._getCollumn()
         return res
 

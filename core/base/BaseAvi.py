@@ -146,9 +146,10 @@ class BaseAvi:
         def getIdMaster(self):
             return self.getAttr('super$id')
 
-    class DefaultLookUp: 
-        async def getData(self):
-            self.data = await ASQL(await self.onRefresh())
+    class DefaultLookUp(DefaultDefault): 
+        async def getData(self, tagMaster):
+            self.parentTable = tagMaster
+            self.data = await ASQL(*self.getSqlAndParam(await self.onRefresh()))
             return self.data
         
         def getId(self, value:str)->int:

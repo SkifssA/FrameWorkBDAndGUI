@@ -35,12 +35,6 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             await w.Login()
             await w.uploadFilesAssign(await self.thisRop())
 
-        @SetOper(label='Загрузить файлы по всем урокам')
-        async def uploadAlllesson(self):
-            w = Hbc_NewProfiClientPkg()
-            await w.Login()
-            await w.uploadFilesAssign(await self.thisRop())
-
         @SetOper(label='Оценить')
         async def fillScore(self):
             w = Hbc_NewProfiClientPkg()
@@ -57,9 +51,8 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             self.selection.oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
 
     class List_idStudent(Hbc_StudentLessonDvi.DviList):
-        showAttr = ['idLessonHL', 'bUploadFile', 'bFillScore']
         async def onRefresh(self):
-            return await super().onRefresh() + f"WHERE t.idStudent = {self.getAttr('super$id')}"
+            return await super().onRefresh() + f"WHERE t.idStudent = :super$id"
         
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi

@@ -24,11 +24,3 @@ class AbstractForm(ABC):
 
     @abstractmethod
     async def _refresh(self): pass
-    
-    def openCh(self):
-        '''Открытие дочерних форм. Пользовательский'''
-        yield
-
-    async def afterCreate(self)->None: pass
-
-    def checwork(self): pass
