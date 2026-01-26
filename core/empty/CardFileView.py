@@ -106,7 +106,7 @@ class CardFileView(BaseForm):
                 # Сохраняем для последующих обновлений
                 self.update_image_position()
 
-    # === Работа с различными файлами изображения ===
+    # === Работа с различными файлами ===
 
     async def workImage(self, objPath):
         if objPath['type'] in ('sql', 'scala', 'xml'):

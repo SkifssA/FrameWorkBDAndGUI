@@ -1,15 +1,13 @@
 import dearpygui.dearpygui as dpg
-from core.object.Core_SelectApp import Core_SelectApp 
-from core.package.Core_FileManagerPkg import Core_FileManagerPkg
-from core.package.Core_ActionDispatcherPkg import Core_ActionDispatcherPkg
 import asyncio
 import os
 
-from ..object.Core_SelectApp import Core_SelectApp
+from core.package import Core_FileManagerPkg, Core_ActionDispatcher
+from core.object.Core_SelectApp import Core_SelectApp
 
 def my_recurring_function(script: tuple):
     for i in script:
-        asyncio.run(Core_ActionDispatcherPkg().action(i.sNameScript))
+        asyncio.run(Core_ActionDispatcher().action(i.sNameScript))
     dpg.set_frame_callback(dpg.get_frame_count()+10, lambda: my_recurring_function(script))
 
 async def mainProgram():

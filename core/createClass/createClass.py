@@ -1,4 +1,4 @@
-from ..package import Core_FileManagerPkg, ASQL, ATQSL, Core_ActionDispatcherPkg
+from ..package import Core_FileManagerPkg, ASQL, ATQSL, Core_ActionDispatcher
 from .bilders import BilderApi, BilderAvi, BilderDvi, BilderDpi, BildersAmeta, BildersDmeta
 from collections import Counter
 from pathlib import Path
@@ -212,7 +212,7 @@ async def __actionScripts(datas:list[dict]):
                         await actionDependence(depe)
                 else:
                     await actionDependence(data['dependence'])
-            await Core_ActionDispatcherPkg().action(data['name'])
+            await Core_ActionDispatcher().action(data['name'])
             if d == []:
                 s = f"INSERT INTO Core_Script (nVersion, sAction) VALUES (?, ?)"
             else:

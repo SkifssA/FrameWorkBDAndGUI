@@ -1,5 +1,5 @@
 import dearpygui.dearpygui as dpg
-from ..package import ASQL, Core_ActionDispatcherPkg
+from ..package import ASQL, Core_ActionDispatcher
 from .BaseForm import BaseForm
 import re
 
@@ -69,7 +69,7 @@ class EmptyCard(BaseForm):
         dpg.set_value(self.tagInput[i], defValue if defValue is not None else '')
         nameClass = self.meta['attr'][i]['refTab']
         nameLook = self.meta['attr'][i]['display']
-        look = await Core_ActionDispatcherPkg().action(f"{nameClass}Avi.{nameLook}")
+        look = await Core_ActionDispatcher().action(f"{nameClass}Avi.{nameLook}")
         data = await look.getData()
         dataLook = list(i['sHeadLine'] for i in data)
         dpg.configure_item(self.tagInput[i], items=dataLook)

@@ -1,7 +1,7 @@
 import dearpygui.dearpygui as dpg
 import asyncio
 from ..package import Core_FileManagerPkg
-from ..package import Core_ActionDispatcherPkg
+from ..package import Core_ActionDispatcher
 
 class Core_SelectApp:
     async def open(self):
@@ -11,9 +11,9 @@ class Core_SelectApp:
             for app in listApp['modules']:
                 if await Core_FileManagerPkg.Exists(f"../../modules/{app}/config/configApp.json"):
                     data = await Core_FileManagerPkg.ReadFile(f"../../modules/{app}/config/configApp.json")
-                    self.createBlocApp(app, data)
+                    self.createBlocApp(data)
 
-    def createBlocApp(self, module, data):
+    def createBlocApp(self, data):
          with dpg.child_window(
                 width=-1,
                 height=150,
@@ -21,11 +21,11 @@ class Core_SelectApp:
                 no_scrollbar=True
             ):
                 dpg.add_text(data['name'])
-                dpg.add_button(label='Открыть', callback=lambda: self.openMainMenuModule(module, data))
+                dpg.add_button(label='Открыть', callback=lambda: self.openMainMenuModule(data))
 
-    def openMainMenuModule(self, module, data):
+    def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}.open"
         dpg.delete_item(self.mainMenuApp)
-        asyncio.run(Core_ActionDispatcherPkg().action(module_name))
+        asyncio.run(Core_ActionDispatcher().action(module_name))
 
         
