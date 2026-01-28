@@ -28,7 +28,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             webbrowser.open(temp.format(name=name))
 
         async def onRefresh(self):
-            return """
+            return f"""
             SELECT t.id,
                    t.gid,
                    t.sCaption,
@@ -40,12 +40,16 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             FROM Awh_Anime AS t
             LEFT JOIN Awh_AnimeGenre t1 on t1.idAnime = t.id
             LEFT JOIN Awh_Genre t2 on t2.id = t1.idGenre
-            GROUP BY t.id, t.gid, t.sCaption, t.nSeries, t.bReleased, t.sUrl;
+            WHERE {self.filter.getWhere()}
+            GROUP BY t.id, t.gid, t.sCaption, t.nSeries, t.bReleased, t.sUrl
             """
 
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
             yield Bc_FileAvi.cardFileView_sUrl(right=True)
+
+        async def setflt_sName(self):
+            await self.refresh()
 
     class Card(Awh_AnimeDvi.DviCard): pass
 

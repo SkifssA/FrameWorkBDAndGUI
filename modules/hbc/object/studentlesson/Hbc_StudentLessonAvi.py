@@ -40,11 +40,11 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             w = Hbc_NewProfiClientPkg()
             await w.Login()
             await w.fillScore(await self.thisRop())
-            await self._refresh()
+            await self.refresh()
 
         # @SetFilter('t.bFillScore is Null or :filter$flt_NotScore = 1')
         # async def flt_NotScore(self):
-        #     await self._refresh()
+        #     await self.refresh()
 
         def checwork(self):
             super().checwork()

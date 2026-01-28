@@ -20,13 +20,17 @@ class BaseAvi:
 
     class DefaultDefault(BaseForm):
         def getAttr(self, name:str):
-            if name.split('$', maxsplit=1)[0] == 'super':
+            w = name.split('$', maxsplit=1)
+            n, p = w[0], '$'.join(w[1:])
+            if n == 'super':
                 if self.parent != 'tab_bar':
                     w:BaseForm = dpg.get_item_user_data(self.parentTable)
-                    return w._getAttr(name.split('$')[-1])                             
+                    return w.getAttr(p)  
+            elif n == 'filter':
+                return self.filter._getAttr(p)                           
             else:
-                row = self._getAttr(name)
-                return row
+                return self._getAttr(name)
+                 
 
         async def thisRop(self):
             row = self.get_row()

@@ -4,6 +4,7 @@ import asyncio
 import re
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
 from ..base.BaseSelection import Selection
+from ..base.BaseFilter import Filter
 from .AbstractForm import AbstractForm
 
 class BaseForm(AbstractForm):
@@ -25,6 +26,7 @@ class BaseForm(AbstractForm):
         self.callback = None
         self.returnAttr = []
         self.right = False
+        self.filter = None
 
     def getTag(self)->str:
         '''формирование тега формы'''
@@ -116,6 +118,8 @@ class BaseForm(AbstractForm):
             self.tab = dpg.add_tab(label=self.meta['caption'], parent=parent, show=False)
         else:
             self.tab = parent
+
+        self.filter = Filter(self)
 
         with dpg.group(parent=self.tab, horizontal=True) as rightGroup:
             with dpg.group() as mainGroup: pass
