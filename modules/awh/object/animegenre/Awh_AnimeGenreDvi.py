@@ -7,29 +7,29 @@ class Awh_AnimeGenreDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.idAnime,
-                   t1.sHeadLine as idAnimeHL,
-                   t.idGenre,
-                   t2.sHeadLine as idGenreHL
-            FROM Awh_AnimeGenre AS t
-                LEFT JOIN Awh_Anime t1 ON t1.id = t.idAnime
-                LEFT JOIN Awh_Genre t2 ON t2.id = t.idGenre
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.idAnime,
+                    t1.sHeadLine as idAnimeHL,
+                    t.idGenre,
+                    t2.sHeadLine as idGenreHL
+                FROM Awh_AnimeGenre AS t
+                    LEFT JOIN Awh_Anime t1 ON t1.id = t.idAnime
+                    LEFT JOIN Awh_Genre t2 ON t2.id = t.idGenre
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                :idAnime as idAnime,
-                :idGenre as idGenre
-              )
-            select t1.sHeadLine as idAnimeHL,
-                   t2.sHeadLine as idGenreHL
-            from t
-                LEFT JOIN Awh_Anime t1 ON t1.id = t.idAnime
-                LEFT JOIN Awh_Genre t2 ON t2.id = t.idGenre
-            """
+                with t as ( select 
+                    :idAnime as idAnime,
+            :idGenre as idGenre
+                )
+                select t1.sHeadLine as idAnimeHL,
+                    t2.sHeadLine as idGenreHL
+                from t
+                    LEFT JOIN Awh_Anime t1 ON t1.id = t.idAnime
+            LEFT JOIN Awh_Genre t2 ON t2.id = t.idGenre
+                """
 
         async def thisRop(self)->Awh_AnimeGenreObj:
             return await super().thisRop()
@@ -48,6 +48,6 @@ class Awh_AnimeGenreDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Awh_AnimeGenre AS t
             """

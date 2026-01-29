@@ -20,7 +20,7 @@ class BaseApi:
         return await ASQL(f"select {columns} from Core_Attr t where t.idTab = ? and t.sCode <> 'id'", (await self.idClass(),))
 
     async def _findDataBase(self, attr:str, value):
-        if value:
+        if value is not None:
             w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} = ?', [value,])
         else:
             w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} IS NULL')

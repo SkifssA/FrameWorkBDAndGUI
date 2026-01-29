@@ -5,7 +5,8 @@
         {
             "name": "sNameScript",
             "type": "TEXT",
-            "caption": "Скрипт"
+            "caption": "Скрипт",
+            "isMnemoCode": true 
         },{
             "name": "sNameModule",
             "type": "TEXT",

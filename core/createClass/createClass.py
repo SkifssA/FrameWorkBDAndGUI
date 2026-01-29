@@ -47,10 +47,10 @@ async def createFile():
                 lFiles = await Core_FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json')
                 for File in lFiles:
                     data = await Core_FileManagerPkg.ReadFile(File.__str__())
-                    await BilderDpi(data).createFile(f'../../../modules/{app}/object/{cl}')
-                    await BilderDvi(data).createFile(f'../../../modules/{app}/object/{cl}')
-                    await BilderApi(data).createFile(f'../../../modules/{app}/object/{cl}')
-                    await BilderAvi(data).createFile(f'../../../modules/{app}/object/{cl}')
+                    await BilderDpi(data).createFileD(f'../../../modules/{app}/object/{cl}')
+                    await BilderDvi(data).createFileD(f'../../../modules/{app}/object/{cl}')
+                    await BilderApi(data).createFileA(f'../../../modules/{app}/object/{cl}')
+                    await BilderAvi(data).createFileA(f'../../../modules/{app}/object/{cl}')
 
                     await BildersDmeta(data).createFile(f'../{pathClass}/{cl}')
                     await BildersAmeta(data).createFile(f'../{pathClass}/{cl}')

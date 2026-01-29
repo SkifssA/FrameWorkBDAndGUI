@@ -1,4 +1,5 @@
 from .object.Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
+from .object.Awh_DataInstallPkg import Awh_DataInstallPkg
 from .object.Awh_MainMenu import Awh_MainMenu
 from .object.anime.Awh_AnimeApi import Awh_AnimeApi
 from .object.anime.Awh_AnimeAvi import Awh_AnimeAvi
@@ -9,6 +10,7 @@ from .object.genre.Awh_GenreAvi import Awh_GenreAvi
 
 __all__ = [
     'Awh_AnimeLoadPkg'
+    'Awh_DataInstallPkg'
     'Awh_MainMenu'
     'Awh_AnimeApi'
     'Awh_AnimeAvi'

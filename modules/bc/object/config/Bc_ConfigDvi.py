@@ -7,24 +7,24 @@ class Bc_ConfigDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.sModule,
-                   t.sCaprionSetting,
-                   t.sValue
-            FROM Bc_Config AS t
-                
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.sModule,
+                    t.sCaprionSetting,
+                    t.sValue
+                FROM Bc_Config AS t
+                    
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                
-              )
-            select 
-            from t
-                
-            """
+                with t as ( select 
+                    
+                )
+                select 
+                from t
+                    
+                """
 
         async def thisRop(self)->Bc_ConfigObj:
             return await super().thisRop()
@@ -44,6 +44,6 @@ class Bc_ConfigDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Bc_Config AS t
             """

@@ -7,31 +7,31 @@ class Hbc_StudentLessonDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.idStudent,
-                   t1.sHeadLine as idStudentHL,
-                   t.idLesson,
-                   t2.sHeadLine as idLessonHL,
-                   t.bUploadFile,
-                   t.bFillScore
-            FROM Hbc_StudentLesson AS t
-                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
-                LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.idStudent,
+                    t1.sHeadLine as idStudentHL,
+                    t.idLesson,
+                    t2.sHeadLine as idLessonHL,
+                    t.bUploadFile,
+                    t.bFillScore
+                FROM Hbc_StudentLesson AS t
+                    LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+                    LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                :idStudent as idStudent,
-                :idLesson as idLesson
-              )
-            select t1.sHeadLine as idStudentHL,
-                   t2.sHeadLine as idLessonHL
-            from t
-                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
-                LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
-            """
+                with t as ( select 
+                    :idStudent as idStudent,
+            :idLesson as idLesson
+                )
+                select t1.sHeadLine as idStudentHL,
+                    t2.sHeadLine as idLessonHL
+                from t
+                    LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+            LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
+                """
 
         async def thisRop(self)->Hbc_StudentLessonObj:
             return await super().thisRop()
@@ -52,6 +52,6 @@ class Hbc_StudentLessonDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Hbc_StudentLesson AS t
             """

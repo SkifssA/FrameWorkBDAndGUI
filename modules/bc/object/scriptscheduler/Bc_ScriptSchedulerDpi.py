@@ -24,7 +24,7 @@ class Bc_ScriptSchedulerDpi(BaseApi):
         return f'{rop.id}'
 
     def calcMnemoCode(self, rop:Bc_ScriptSchedulerObj)->str:
-        return f'{rop.id}'
+        return f'{rop.sNameScript}'
 
     async def insert(self)->Bc_ScriptSchedulerObj:
         return await super().insert()

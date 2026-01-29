@@ -7,25 +7,25 @@ class Bc_FileDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.gidScr,
-                   t.sCaption,
-                   t.sSuffix,
-                   t.sPath
-            FROM Bc_File AS t
-                
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.gidScr,
+                    t.sCaption,
+                    t.sSuffix,
+                    t.sPath
+                FROM Bc_File AS t
+                    
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                
-              )
-            select 
-            from t
-                
-            """
+                with t as ( select 
+                    
+                )
+                select 
+                from t
+                    
+                """
 
         async def thisRop(self)->Bc_FileObj:
             return await super().thisRop()
@@ -46,6 +46,6 @@ class Bc_FileDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Bc_File AS t
             """

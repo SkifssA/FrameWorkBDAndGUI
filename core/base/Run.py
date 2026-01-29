@@ -1,14 +1,28 @@
 import dearpygui.dearpygui as dpg
 import asyncio
 import os
+import datetime
+import threading
+import time
 
 from core.package import Core_FileManagerPkg, Core_ActionDispatcher
 from core.object.Core_SelectApp import Core_SelectApp
 
 def my_recurring_function(script: tuple):
-    for i in script:
-        asyncio.run(Core_ActionDispatcher().action(i.sNameScript))
-    dpg.set_frame_callback(dpg.get_frame_count()+10, lambda: my_recurring_function(script))
+    def k(name):
+        asyncio.run(Core_ActionDispatcher().action(name))
+    
+    while True:
+        t = datetime.datetime.now()
+        print(f"{t.hour}:{t.minute}:{t.second}")
+        for i in script:
+            h = i.nHour if i.nHour is not None else ""
+            m = i.nMinute if i.nMinute is not None else ""
+            s = i.nSec if i.nSec is not None else ""
+
+            if str(t.hour) in h.split(',') or str(t.minute) in m.split(',') or str(t.second) in s.split(','):
+                threading.Thread(target=k, args=(i.sNameScript, )).start()
+        time.sleep(0.99)
 
 async def mainProgram():
     from modules.bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi
@@ -49,9 +63,7 @@ async def mainProgram():
     conf = await Core_FileManagerPkg.ReadFile('../config/config.json')
     if (conf['isScriptScheduler']):
         data = await Bc_ScriptSchedulerApi()._getAllByAttr('bUsed', 1) or []
-        dpg.set_frame_callback(50, lambda: my_recurring_function(
-            data
-            ))
+        threading.Thread(target=my_recurring_function, args=(data, )).start()
 
     dpg.set_primary_window("main_window", True)
     dpg.maximize_viewport()

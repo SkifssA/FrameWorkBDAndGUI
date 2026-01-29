@@ -7,24 +7,24 @@ class Hbc_StudentDataDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.idStudent,
-                   t1.sHeadLine as idStudentHL,
-                   t.sData
-            FROM Hbc_StudentData AS t
-                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.idStudent,
+                    t1.sHeadLine as idStudentHL,
+                    t.sData
+                FROM Hbc_StudentData AS t
+                    LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                :idStudent as idStudent
-              )
-            select t1.sHeadLine as idStudentHL
-            from t
-                LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
-            """
+                with t as ( select 
+                    :idStudent as idStudent
+                )
+                select t1.sHeadLine as idStudentHL
+                from t
+                    LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
+                """
 
         async def thisRop(self)->Hbc_StudentDataObj:
             return await super().thisRop()
@@ -43,6 +43,6 @@ class Hbc_StudentDataDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Hbc_StudentData AS t
             """

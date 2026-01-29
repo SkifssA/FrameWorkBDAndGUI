@@ -7,28 +7,28 @@ class Hbc_StudentDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.sName,
-                   t.sContact,
-                   t.sIpVM,
-                   t.sLoginVM,
-                   t.sPassworVM,
-                   t.sIdNew,
-                   t.bEnd
-            FROM Hbc_Student AS t
-                
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.sName,
+                    t.sContact,
+                    t.sIpVM,
+                    t.sLoginVM,
+                    t.sPassworVM,
+                    t.sIdNew,
+                    t.bEnd
+                FROM Hbc_Student AS t
+                    
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                
-              )
-            select 
-            from t
-                
-            """
+                with t as ( select 
+                    
+                )
+                select 
+                from t
+                    
+                """
 
         async def thisRop(self)->Hbc_StudentObj:
             return await super().thisRop()
@@ -52,6 +52,6 @@ class Hbc_StudentDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Hbc_Student AS t
             """

@@ -7,23 +7,23 @@ class Hbc_LessonDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.sCaption,
-                   t.sIdExit
-            FROM Hbc_Lesson AS t
-                
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.sCaption,
+                    t.sIdExit
+                FROM Hbc_Lesson AS t
+                    
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                
-              )
-            select 
-            from t
-                
-            """
+                with t as ( select 
+                    
+                )
+                select 
+                from t
+                    
+                """
 
         async def thisRop(self)->Hbc_LessonObj:
             return await super().thisRop()
@@ -42,6 +42,6 @@ class Hbc_LessonDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Hbc_Lesson AS t
             """

@@ -7,22 +7,22 @@ class Awh_GenreDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.sCaption
-            FROM Awh_Genre AS t
-                
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.sCaption
+                FROM Awh_Genre AS t
+                    
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                
-              )
-            select 
-            from t
-                
-            """
+                with t as ( select 
+                    
+                )
+                select 
+                from t
+                    
+                """
 
         async def thisRop(self)->Awh_GenreObj:
             return await super().thisRop()
@@ -40,6 +40,6 @@ class Awh_GenreDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Awh_Genre AS t
             """

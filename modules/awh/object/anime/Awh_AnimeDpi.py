@@ -22,7 +22,7 @@ class Awh_AnimeDpi(BaseApi):
         return f'{rop.sCaption}'
 
     def calcMnemoCode(self, rop:Awh_AnimeObj)->str:
-        return f'{rop.sUrl} {rop.sUrlImg}'
+        return f'{rop.sUrl}'
 
     async def insert(self)->Awh_AnimeObj:
         return await super().insert()

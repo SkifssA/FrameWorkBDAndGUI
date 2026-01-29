@@ -12,8 +12,13 @@ class BilderBase:
     def _getPathAndFile(self, path):
         return f'{path}/{self.data['name']}{self.suffixFile}'
     
-    async def createFile(self, path):
+    async def createFileA(self, path):
         pathWhitFile = self._getPathAndFile(path)
         if not await Core_FileManagerPkg.Exists(pathWhitFile):
             f = self.temp.format(**self.data)
             await Core_FileManagerPkg.CreateFile(pathWhitFile, f)
+
+    async def createFileD(self, path):
+        pathWhitFile = self._getPathAndFile(path)
+        f = self.temp.format(**self.data)
+        await Core_FileManagerPkg.CreateFile(pathWhitFile, f)

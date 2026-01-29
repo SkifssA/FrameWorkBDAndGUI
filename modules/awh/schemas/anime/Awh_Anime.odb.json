@@ -32,7 +32,6 @@
             "name": "sUrlImg",
             "type": "TEXT",
             "caption": "Ссылка на постер",
-            "isMnemoCode": true,
             "isVisible": false
         }
     ]

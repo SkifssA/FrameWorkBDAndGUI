@@ -7,28 +7,28 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
-            SELECT t.id,
-                   t.gid,
-                   t.sNameScript,
-                   t.sNameModule,
-                   t.bRepeat,
-                   t.nHour,
-                   t.nMinute,
-                   t.nSec,
-                   t.bUsed
-            FROM Bc_ScriptScheduler AS t
-                
-            """
+                SELECT t.id,
+                    t.gid,
+                    t.sNameScript,
+                    t.sNameModule,
+                    t.bRepeat,
+                    t.nHour,
+                    t.nMinute,
+                    t.nSec,
+                    t.bUsed
+                FROM Bc_ScriptScheduler AS t
+                    
+                """
 
         def onRefreshExt(self):
             return """
-            with t as ( select 
-                
-              )
-            select 
-            from t
-                
-            """
+                with t as ( select 
+                    
+                )
+                select 
+                from t
+                    
+                """
 
         async def thisRop(self)->Bc_ScriptSchedulerObj:
             return await super().thisRop()
@@ -52,6 +52,6 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
         async def onRefresh(self):
             return """
             SELECT t.id
-                  ,t.sHeadLine 
+                ,t.sHeadLine 
             FROM Bc_ScriptScheduler AS t
             """

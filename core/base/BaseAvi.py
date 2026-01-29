@@ -118,6 +118,7 @@ class BaseAvi:
             await self.thisApi().update(self.obj)
             self.isInsert = False
             self.isMod = False
+            await self.refresh()
 
         @SetOper(label='Обновить', order=-1)
         async def refreshForm(self):
