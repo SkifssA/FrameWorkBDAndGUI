@@ -28,15 +28,16 @@ class EmptyList(BaseForm):
 
             oneRow = None
             for i in data['column']:
-                    dpg.add_table_column(label=i[1], user_data=i[0], enabled=i[2], parent=tabl)
+                q = data['column'][i]
+                dpg.add_table_column(label=q[0], user_data=i, enabled=q[1], parent=tabl)
             for row in data['row']:
                 with dpg.table_row(parent=tabl):
                     w = True
-                    for z, j in enumerate(row):
-                        if data['column'][z][3] == 'check':
+                    for j in data['column']:
+                        if data['column'][j][2] == 'check':
                             dpg.set_value(dpg.add_checkbox(enabled=False), bool(row[j]) if row[j] is not None else False)
                         else:
-                            if w and data['column'][z][2]:
+                            if w and data['column'][j][1]:
                                 q = dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl), height=21)
                                 w = False
                                 if s:
@@ -48,17 +49,6 @@ class EmptyList(BaseForm):
             if oneRow is not None:
                 self._oneShow(oneRow, tabl)
             self.checwork()
-
-    async def __getWhereSql(self):
-            res = await self.onRefresh()
-            param = []
-            for i in self.flt:
-                for j in re.findall(r':([^ ]*)', i):
-                    param.append(self.getAttr(j))
-            where = [re.sub(r':[^ ]*', '?', i) for i in self.flt]
-            if self.flt != []:
-                res += f'where {' and '.join(where)}'
-            return [res, param if param != [] else None]
 
     def _click(self, tagSelf, tagTable):
         '''Обработчик выбора строки в таблице'''
@@ -84,8 +74,8 @@ class EmptyList(BaseForm):
 
     async def _getCollumn(self)->tuple[tuple[str]]:
         '''Получение столбцов'''
-        attrs = self.meta['attr']
-        headRes = tuple((col, attrs[col]['caption'], attrs[col]['isVisible'], attrs[col]['edit']) for col in attrs)
+        attrs:dict = self.meta['attr']
+        headRes = {col: (attrs[col]['caption'], attrs[col]['isVisible'], attrs[col]['edit']) for col in dict(sorted(attrs.items(), key=lambda x: x[1].get('order', 0)))}
         return headRes
     
     async def __getDataTab(self, column=True):

@@ -57,5 +57,4 @@ async def mainProgram():
     dpg.maximize_viewport()
     dpg.show_viewport()
     dpg.start_dearpygui()
-    dpg.show_debug()
     dpg.destroy_context()

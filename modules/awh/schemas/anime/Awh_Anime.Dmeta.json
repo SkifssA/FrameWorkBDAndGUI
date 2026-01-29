@@ -31,12 +31,12 @@
       "sUrl": {
         "caption": "Ссылка",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": false
       },
       "sUrlImg": {
-        "caption": "Ссылка",
+        "caption": "Ссылка на постер",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": false
       }
     }
   }

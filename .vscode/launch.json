@@ -8,7 +8,7 @@
             "name": "Запуск генератора таблиц",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "args": [
                 "createClass"
@@ -18,7 +18,7 @@
             "name": "Запуск генератора исходников",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "args": [
                 "createSours"

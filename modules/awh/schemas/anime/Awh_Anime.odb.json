@@ -26,12 +26,14 @@
             "name": "sUrl",
             "type": "TEXT",
             "caption": "Ссылка",
-            "isMnemoCode": true 
+            "isMnemoCode": true,
+            "isVisible": false
         },{
             "name": "sUrlImg",
             "type": "TEXT",
-            "caption": "Ссылка",
-            "isMnemoCode": true 
+            "caption": "Ссылка на постер",
+            "isMnemoCode": true,
+            "isVisible": false
         }
     ]
 }

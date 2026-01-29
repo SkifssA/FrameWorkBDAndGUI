@@ -72,12 +72,29 @@ class BaseForm(AbstractForm):
     async def getMeta(self):
         mod, clas = self.thisApi()._getNameClass().split("_")
         path = f"../../modules/{mod.lower()}/schemas/{clas.lower()}/{self.thisApi()._getNameClass()}"
-        w = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
-        if (self.__class__.__name__ in w):
-            return w[self.__class__.__name__]
+        a = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
+        d = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
+        if (self.__class__.__name__ in a):
+            return self.__fillByDefault(a[self.__class__.__name__], d['Default'])
         else:
-            w = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
-            return w['Default']
+            return d['Default']
+
+    def __fillByDefault(self, a, d):
+        self.__w(a, d, 'caption')
+        self.__w(a, d, 'isVisibleToolBar')
+        self.__w(a, d, 'attr')
+
+        for i in d['attr']:
+            self.__w(a['attr'], d['attr'], i)
+            self.__w(a['attr'][i], d['attr'][i], 'caption')
+            self.__w(a['attr'][i], d['attr'][i], 'edit')
+            self.__w(a['attr'][i], d['attr'][i], 'isVisible')
+            
+        return a
+
+    def __w(self, a, d, sNAme):
+        if(sNAme not in a):
+            a[sNAme] = d[sNAme]
 
     def getW(self):
         '''Получение ширины'''

@@ -51,8 +51,8 @@ class CardFileView(BaseForm):
         scw = self.container_size[0] / self.img_w
         sch = self.container_size[1] / self.img_h
         self.scale = min(scw, sch)
-        dpg.set_item_width(self.image_drawlist, self.container_size[0])
-        dpg.set_item_height(self.image_drawlist, self.container_size[1])
+        dpg.set_item_width(self.image_drawlist, self.container_size[0]-17)
+        dpg.set_item_height(self.image_drawlist, self.container_size[1]-17)
 
         self.drawnTag = dpg.draw_image(self.textureTag, pmin=(0, 0), pmax=(1000, 1000), parent=self.image_drawlist)
         self.update_image_position()
@@ -101,8 +101,8 @@ class CardFileView(BaseForm):
                 sch = self.container_size[1] / self.img_h
                 self.scale = min(scw, sch)
                 # Обновляем размер drawlist
-                dpg.set_item_width(self.image_drawlist, self.container_size[0])
-                dpg.set_item_height(self.image_drawlist, self.container_size[1])
+                dpg.set_item_width(self.image_drawlist, self.container_size[0]-17)
+                dpg.set_item_height(self.image_drawlist, self.container_size[1]-17)
                 # Сохраняем для последующих обновлений
                 self.update_image_position()
 
