@@ -17,15 +17,15 @@
             "editType": "check"
         },{
             "name": "nHour",
-            "type": "INT",
+            "type": "TEXT",
             "caption": "Час"
         },{
             "name": "nMinute",
-            "type": "INT",
+            "type": "TEXT",
             "caption": "Минута"
         },{
             "name": "nSec",
-            "type": "INT",
+            "type": "TEXT",
             "caption": "Секунда"
         },{
             "name": "bUsed",

@@ -18,7 +18,7 @@ async def createTab():
     listApp = await Core_FileManagerPkg.ReadFile("../../project.yaml")
     script = []
     for app in listApp['modules']:
-        pathClass = f"../../{app}/schemas"
+        pathClass = f"../../modules/{app}/schemas"
         if await Core_FileManagerPkg.Exists(pathClass):
                 for cl in await Core_FileManagerPkg.GetFoldersList(pathClass):
                     lFiles = await Core_FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json')
@@ -160,9 +160,9 @@ async def __createTable(q, nameTable, isNew):
         """)
     
     await ATQSL(f"""
-        CREATE INDEX IF NOT EXISTS index_{nameTable}_mnemocode ON {nameTable} (sMnemoCode);
+        CREATE INDEX IF NOT EXISTS index_{nameTable}{'_new' if isNew else ''}_mnemocode ON {nameTable}{'_new' if isNew else ''} (sMnemoCode);
         """)
-    print(f'Генерация index_{nameTable}_mnemocode прошла успешно')
+    print(f'Генерация index_{nameTable}{'_new' if isNew else ''}_mnemocode прошла успешно')
 
 async def __createOrUpdateTable(q, dataAttr, nameTable, isExisted):
     # Если таблица уже существовала, нужно перенести данные
@@ -189,10 +189,14 @@ async def __createOrUpdateTable(q, dataAttr, nameTable, isExisted):
             """)
 
         # Удаляем старую таблицу
-        await ATQSL(f"DROP TABLE {nameTable}")
+        await ATQSL(f"DROP TABLE IF EXISTS {nameTable}")
+        await ATQSL(f"DROP INDEX IF EXISTS {nameTable}_new_mnemocode")
 
         # Переименовываем новую
         await ATQSL(f"ALTER TABLE {nameTable}_new RENAME TO {nameTable}")
+        await ATQSL(f"""
+            CREATE INDEX IF NOT EXISTS index_{nameTable}_mnemocode ON {nameTable} (sMnemoCode);
+        """)
     else:
         # Если таблицы не было — создаём её как обычно
         await __createTable(q, nameTable, False)
