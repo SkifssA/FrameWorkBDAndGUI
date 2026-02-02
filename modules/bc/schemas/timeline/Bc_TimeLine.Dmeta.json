@@ -1,0 +1,28 @@
+{
+  "Default": {
+    "caption": "Эдиница измерения времени",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "sCode": {
+        "caption": "Код",
+        "edit": "edit",
+        "isVisible": true
+      },
+      "sName": {
+        "caption": "Наименование",
+        "edit": "edit",
+        "isVisible": true
+      }
+    }
+  }
+}

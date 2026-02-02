@@ -9,9 +9,8 @@ class Bc_ScriptSchedulerObj(BaseObj):
         self.sNameScript:str = None
         self.sNameModule:str = None
         self.bRepeat:int = None
-        self.nHour:int = None
-        self.nMinute:int = None
-        self.nSec:int = None
+        self.nTime:int = None
+        self.idTimeLine:int = None
         self.bUsed:int = None
 
 class Bc_ScriptSchedulerDpi(BaseApi):
@@ -42,7 +41,6 @@ class Bc_ScriptSchedulerDpi(BaseApi):
     def setsNameScript(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameScript = value
     def setsNameModule(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameModule = value
     def setbRepeat(self, obj:Bc_ScriptSchedulerObj, value): obj.bRepeat = value
-    def setnHour(self, obj:Bc_ScriptSchedulerObj, value): obj.nHour = value
-    def setnMinute(self, obj:Bc_ScriptSchedulerObj, value): obj.nMinute = value
-    def setnSec(self, obj:Bc_ScriptSchedulerObj, value): obj.nSec = value
+    def setnTime(self, obj:Bc_ScriptSchedulerObj, value): obj.nTime = value
+    def setidTimeLine(self, obj:Bc_ScriptSchedulerObj, value): obj.idTimeLine = value
     def setbUsed(self, obj:Bc_ScriptSchedulerObj, value): obj.bUsed = value

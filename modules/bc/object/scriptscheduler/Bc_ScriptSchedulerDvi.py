@@ -12,22 +12,22 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
                     t.sNameScript,
                     t.sNameModule,
                     t.bRepeat,
-                    t.nHour,
-                    t.nMinute,
-                    t.nSec,
+                    t.nTime,
+                    t.idTimeLine,
+                    t1.sHeadLine as idTimeLineHL,
                     t.bUsed
                 FROM Bc_ScriptScheduler AS t
-                    
+                    LEFT JOIN Bc_TimeLine t1 ON t1.id = t.idTimeLine
                 """
 
         def onRefreshExt(self):
             return """
                 with t as ( select 
-                    
+                    :idTimeLine as idTimeLine
                 )
-                select 
+                select t1.sHeadLine as idTimeLineHL
                 from t
-                    
+                    LEFT JOIN Bc_TimeLine t1 ON t1.id = t.idTimeLine
                 """
 
         async def thisRop(self)->Bc_ScriptSchedulerObj:
@@ -39,9 +39,9 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
         def setsNameScript(self, sender, app_data, user_data): self.thisApi().setsNameScript(self.obj, app_data); self.afterSetter()
         def setsNameModule(self, sender, app_data, user_data): self.thisApi().setsNameModule(self.obj, app_data); self.afterSetter()
         def setbRepeat(self, sender, app_data, user_data): self.thisApi().setbRepeat(self.obj, app_data); self.afterSetter()
-        def setnHour(self, sender, app_data, user_data): self.thisApi().setnHour(self.obj, app_data); self.afterSetter()
-        def setnMinute(self, sender, app_data, user_data): self.thisApi().setnMinute(self.obj, app_data); self.afterSetter()
-        def setnSec(self, sender, app_data, user_data): self.thisApi().setnSec(self.obj, app_data); self.afterSetter()
+        def setnTime(self, sender, app_data, user_data): self.thisApi().setnTime(self.obj, app_data); self.afterSetter()
+        def setidTimeLine(self, sender, app_data, user_data): self.thisApi().setidTimeLine(self.obj, app_data); self.afterSetter()
+        def setidTimeLineHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidTimeLine(self.obj, idLook); self.afterSetter()
         def setbUsed(self, sender, app_data, user_data): self.thisApi().setbUsed(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass

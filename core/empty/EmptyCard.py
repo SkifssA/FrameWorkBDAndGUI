@@ -41,7 +41,7 @@ class EmptyCard(BaseForm):
         print(self.obj.__dict__.copy())
         dpg.configure_item(self.tab, label=self.meta['caption'] if 'caption' in self.meta else self.thisApi().calcHeadLine(self.obj))
         self.data = self.data | await self.getDataExt()
-        for i in self.tagInput:
+        for i in self.data:
             dpg.configure_item(self.tagInput[i], callback=getattr(self, f'set{i}', None))
             typeW = dpg.get_item_type(self.tagInput[i])
             if typeW == "mvAppItemType::mvCombo":
@@ -66,7 +66,7 @@ class EmptyCard(BaseForm):
         nameClass = self.meta['attr'][i]['refTab']
         nameLook = self.meta['attr'][i]['display']
         look = await Core_ActionDispatcher().action(f"{nameClass}Avi.{nameLook}")
-        data = await look.getData()
+        data = await look.getData(self.mainForm)
         dataLook = list(i['sHeadLine'] for i in data)
         dpg.configure_item(self.tagInput[i], items=dataLook)
         dpg.configure_item(self.tagInput[i], user_data=look)

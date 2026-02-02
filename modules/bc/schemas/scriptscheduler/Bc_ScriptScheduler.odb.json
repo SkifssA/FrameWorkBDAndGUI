@@ -17,17 +17,15 @@
             "caption": "Повторять",
             "editType": "check"
         },{
-            "name": "nHour",
+            "name": "nTime",
             "type": "TEXT",
-            "caption": "Час"
+            "caption": "Время"
         },{
-            "name": "nMinute",
-            "type": "TEXT",
-            "caption": "Минута"
-        },{
-            "name": "nSec",
-            "type": "TEXT",
-            "caption": "Секунда"
+            "name": "idTimeLine",
+            "type": "INT",
+            "caption": "Временой промежуток",
+            "editType": "lookUp",
+            "refTab": "Bc_TimeLine"
         },{
             "name": "bUsed",
             "type": "INT",

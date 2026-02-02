@@ -1,0 +1,23 @@
+{
+    "name": "Bc_TimeLine",
+    "caption": "Эдиница измерения времени",
+    "attr":[
+        {
+            "name": "sCode",
+            "type": "TEXT",
+            "caption": "Код",
+            "isMnemoCode": true 
+        },{
+            "name": "sName",
+            "type": "TEXT",
+            "caption": "Наименование",
+            "isHeadLine": true
+        }
+    ],
+    "dbData": [
+        {
+            "name": "Bc_TimeLineApi.dataInstall",
+            "version": 4
+        }
+    ]
+}

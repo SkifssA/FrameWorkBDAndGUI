@@ -28,20 +28,22 @@
         "edit": "check",
         "isVisible": true
       },
-      "nHour": {
-        "caption": "Час",
+      "nTime": {
+        "caption": "Время",
         "edit": "edit",
         "isVisible": true
       },
-      "nMinute": {
-        "caption": "Минута",
+      "idTimeLine": {
+        "caption": "Временой промежуток",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": false
       },
-      "nSec": {
-        "caption": "Секунда",
-        "edit": "edit",
-        "isVisible": true
+      "idTimeLineHL": {
+        "caption": "Временой промежуток",
+        "edit": "lookUp",
+        "isVisible": true,
+        "display": "LookUp",
+        "refTab": "Bc_TimeLine"
       },
       "bUsed": {
         "caption": "Использовать",

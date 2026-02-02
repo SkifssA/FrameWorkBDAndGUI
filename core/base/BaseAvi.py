@@ -159,3 +159,11 @@ class BaseAvi:
         
         def getId(self, value:str)->int:
             return tuple(i['id'] for i in self.data if i['sHeadLine'] == value)[0]
+        
+        def _refresh(self):pass
+
+        def _getAttr(self):pass
+
+        def onRefreshExt(self):pass
+
+        def createMainForm(self, par):pass
