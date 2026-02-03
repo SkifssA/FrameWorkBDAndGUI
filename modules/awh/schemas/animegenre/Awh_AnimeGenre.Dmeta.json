@@ -6,32 +6,38 @@
       "id": {
         "caption": "id",
         "edit": "edit",
-        "isVisible": false
+        "isVisible": false,
+        "order": -2
       },
       "gid": {
         "caption": "gid",
         "edit": "edit",
-        "isVisible": false
+        "isVisible": false,
+        "order": -1
       },
       "idAnime": {
         "caption": "Аниме",
         "edit": "edit",
-        "isVisible": false
+        "isVisible": false,
+        "order": 0
       },
       "idAnimeHL": {
         "caption": "Аниме",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": true,
+        "order": 0
       },
       "idGenre": {
         "caption": "Жанр",
         "edit": "edit",
-        "isVisible": false
+        "isVisible": false,
+        "order": 0
       },
       "idGenreHL": {
         "caption": "Жанр",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": true,
+        "order": 0
       }
     }
   }

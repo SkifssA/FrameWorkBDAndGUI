@@ -1,1 +1,16 @@
-{}
+{
+    "Card": {
+        "attr": {
+            "nTime": {
+                "isLastLine": false
+            },
+            "bRepeat": {
+                "isLastLine": false,
+                "order": 60.1
+            },
+            "bUsed": {
+                "order": 60.2
+            }
+        }
+    }
+}

@@ -8,12 +8,14 @@ class BildersDmeta(BilderBase):
         'id': {
                 'caption': 'id',
                 'edit': 'edit',
-                'isVisible': False
+                'isVisible': False,
+                'order': -2
             },
         'gid': {
                 'caption': 'gid',
                 'edit': 'edit',
-                'isVisible': False
+                'isVisible': False,
+                'order': -1
             }
         }
     
@@ -35,20 +37,23 @@ class BildersDmeta(BilderBase):
         for i in self.data['attr']:
             attr[i['name']] = {
                     "caption": i['caption'],
-                    "edit": i['editType'] if 'editType' in i else 'edit',
-                    'isVisible': i['name'] in self.data['showAttr']
+                    "edit": i.get('editType', 'edit'),
+                    'isVisible': i['name'] in self.data['showAttr'],
+                    'order': i.get('order', 0)
                 }
             if i['name'].startswith('id'):
                 attr[i['name']+'HL'] = {
                     "caption": i['caption'],
                     "edit": i['editType'] if 'editType' in i else 'edit',
-                    'isVisible': i['name']+'HL' in self.data['showAttr']
+                    'isVisible': i['name']+'HL' in self.data['showAttr'],
+                    'order': i.get('order', 0)
                 }
                 attr[i['name']]['edit'] = 'edit'
             if  'editType' in i:
                 if i['editType'] == 'lookUp':
                     attr[i['name']+'HL']['display'] = 'LookUp'
                     attr[i['name']+'HL']['refTab'] = i['refTab']
+                    attr[i['name']+'HL']['order'] = i.get('order', 0)+0.1
 
         self.form['Default']['attr'] = {**self.baseAttr, **attr} 
 

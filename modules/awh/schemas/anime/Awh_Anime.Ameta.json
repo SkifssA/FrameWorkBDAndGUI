@@ -9,6 +9,21 @@
         "caption": "Ссылка на аниме",
         "edit": "edit",
         "isVisible": true
+      },
+      "sCaption": {
+        "caption": "Название",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "nSeries": {
+        "caption": "Кол-во серий",
+        "edit": "edit",
+        "isVisible": false
+      },
+      "bReleased": {
+        "caption": "Вышло",
+        "edit": "check",
+        "isVisible": false
       }
     },
     "oper": {

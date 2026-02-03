@@ -86,9 +86,8 @@ class BaseForm(AbstractForm):
 
         for i in d['attr']:
             self.__w(a['attr'], d['attr'], i)
-            self.__w(a['attr'][i], d['attr'][i], 'caption')
-            self.__w(a['attr'][i], d['attr'][i], 'edit')
-            self.__w(a['attr'][i], d['attr'][i], 'isVisible')
+            for j in d['attr'][i]:
+                self.__w(a['attr'][i], d['attr'][i], j)
             
         return a
 

@@ -12,9 +12,35 @@ class EmptyCard(BaseForm):
     def createMainForm(self, par):
         self.sizeBefore = self.getMaxHeightTitle()
         with dpg.child_window(parent=par) as group:
-            for i in self.meta['attr']:
-                self.createGroupInput(i)
+            w = dpg.add_group(horizontal=True)
+            backLastLine = True
+            row = [[]]
+            for i in sorted(self.meta['attr'], key=lambda x: self.meta['attr'][x]['order']):
+                self.createGroupInput(i, w, backLastLine)
+                if self.meta['attr'][i]['isVisible']:
+                    if (self.meta['attr'][i].get('isLastLine', True)):
+                        row[-1].append(self.tagInput[i])
+                        w = dpg.add_group(horizontal=True)
+                        row.append([])
+                    else:
+                        row[-1].append(self.tagInput[i])
+                    backLastLine = self.meta['attr'][i].get('isLastLine', True)
+        current_frame = dpg.get_frame_count()
+        dpg.set_frame_callback(current_frame+60, lambda: self.w(row[:-1]))
         return group
+
+    def w(self, rows):
+        for row in rows:
+            q = dpg.get_item_rect_size(self.mainForm)[0] - 20
+            s = q // len(row)
+            maxW = q - s * len(row)
+            for j in row:
+                p = dpg.get_item_parent(j)
+                p = dpg.get_item_parent(p)
+                if j == row[-1]:
+                    dpg.set_item_width(p, s + maxW)
+                else:
+                    dpg.set_item_width(p, s)
     
     def getMaxHeightTitle(self):
         w = 0
@@ -23,11 +49,11 @@ class EmptyCard(BaseForm):
                 w = len(self.meta['attr'][i]['caption'])
         return w * 11
 
-    def createGroupInput(self, nameAttr:str):
+    def createGroupInput(self, nameAttr:str, groupParent, selfSizeName=False):
         dataAttr = self.meta['attr'][nameAttr]
-        with dpg.child_window(border=False, height=20, width=-1, show=dataAttr['isVisible']):
+        with dpg.child_window(border=False, height=20, width=-1, show=dataAttr['isVisible'], parent=groupParent):
             with dpg.group(horizontal=True):
-                with dpg.child_window(width=self.sizeBefore, border=False):
+                with dpg.child_window(width=self.sizeBefore if selfSizeName else (len(dataAttr['caption'])*11), border=False):
                     dpg.add_text(dataAttr['caption'])
                 if dataAttr['edit'] == 'edit':
                     self.tagInput[nameAttr] = dpg.add_input_text(width=-1)
@@ -38,7 +64,6 @@ class EmptyCard(BaseForm):
 
     async def initInput(self):
         self.data = self.thisApi()._getDataRop(self.obj)
-        print(self.obj.__dict__.copy())
         dpg.configure_item(self.tab, label=self.meta['caption'] if 'caption' in self.meta else self.thisApi().calcHeadLine(self.obj))
         self.data = self.data | await self.getDataExt()
         for i in self.data:

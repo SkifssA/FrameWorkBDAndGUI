@@ -6,49 +6,58 @@
       "id": {
         "caption": "id",
         "edit": "edit",
-        "isVisible": false
+        "isVisible": false,
+        "order": -2
       },
       "gid": {
         "caption": "gid",
         "edit": "edit",
-        "isVisible": false
+        "isVisible": false,
+        "order": -1
       },
       "sNameScript": {
         "caption": "Скрипт",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": true,
+        "order": 10
       },
       "sNameModule": {
         "caption": "Наименование модуля",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": true,
+        "order": 20
       },
       "bRepeat": {
         "caption": "Повторять",
         "edit": "check",
-        "isVisible": true
+        "isVisible": true,
+        "order": 30
       },
       "nTime": {
         "caption": "Время",
         "edit": "edit",
-        "isVisible": true
+        "isVisible": true,
+        "order": 40
       },
       "idTimeLine": {
         "caption": "Временой промежуток",
         "edit": "edit",
-        "isVisible": false
+        "isVisible": false,
+        "order": 50
       },
       "idTimeLineHL": {
         "caption": "Временой промежуток",
         "edit": "lookUp",
         "isVisible": true,
+        "order": 50.1,
         "display": "LookUp",
         "refTab": "Bc_TimeLine"
       },
       "bUsed": {
         "caption": "Использовать",
         "edit": "check",
-        "isVisible": true
+        "isVisible": true,
+        "order": 60
       }
     }
   }
