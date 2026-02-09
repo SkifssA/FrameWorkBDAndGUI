@@ -7,7 +7,7 @@ class Core_DbManager:
     _pathConfig = '../config/config.json'
 
     async def setConf(self):
-        conf = await Core_FileManagerPkg.ReadFile(self._pathConfig)
+        conf = (await Core_FileManagerPkg.ReadFile(self._pathConfig))['database']
         self.url = conf['url']
         self.auth_token = conf['auth_token']
 

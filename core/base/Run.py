@@ -49,10 +49,11 @@ async def mainProgram():
 
     conf = await Core_FileManagerPkg.ReadFile('../config/config.json')
     if (conf['isScriptScheduler']):
-        await Bc_ScriptSchedulerPkg.run()
+        scriptScheduler = await Bc_ScriptSchedulerPkg.run()
 
     dpg.set_primary_window("main_window", True)
     dpg.maximize_viewport()
     dpg.show_viewport()
     dpg.start_dearpygui()
+    scriptScheduler.runMe = False
     dpg.destroy_context()

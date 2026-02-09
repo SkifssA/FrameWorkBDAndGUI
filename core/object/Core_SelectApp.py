@@ -1,7 +1,6 @@
 import dearpygui.dearpygui as dpg
 import asyncio
-from ..package import Core_FileManagerPkg
-from ..package import Core_ActionDispatcher
+from ..package import Core_FileManagerPkg, Core_ActionDispatcher
 
 class Core_SelectApp:
     async def open(self):
@@ -9,8 +8,8 @@ class Core_SelectApp:
             self.mainMenuApp = mainMenuApp
             listApp = await Core_FileManagerPkg.ReadFile("../../project.yaml")
             for app in listApp['modules']:
-                if await Core_FileManagerPkg.Exists(f"../../modules/{app}/config/configApp.json"):
-                    data = await Core_FileManagerPkg.ReadFile(f"../../modules/{app}/config/configApp.json")
+                if await Core_FileManagerPkg.Exists(f"../../modules/{app}/config/app.json"):
+                    data = await Core_FileManagerPkg.ReadFile(f"../../modules/{app}/config/app.json")
                     self.createBlocApp(data)
 
     def createBlocApp(self, data):

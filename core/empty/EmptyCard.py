@@ -10,7 +10,7 @@ class EmptyCard(BaseForm):
         self.obj = None
 
     def createMainForm(self, par):
-        self.sizeBefore = self.getMaxHeightTitle()
+        self.sizeBefore = 100
         with dpg.child_window(parent=par) as group:
             w = dpg.add_group(horizontal=True)
             backLastLine = True
@@ -19,35 +19,56 @@ class EmptyCard(BaseForm):
                 self.createGroupInput(i, w, backLastLine)
                 if self.meta['attr'][i]['isVisible']:
                     if (self.meta['attr'][i].get('isLastLine', True)):
-                        row[-1].append(self.tagInput[i])
+                        # row[-1].append(self.tagInput[i])
                         w = dpg.add_group(horizontal=True)
                         row.append([])
                     else:
                         row[-1].append(self.tagInput[i])
                     backLastLine = self.meta['attr'][i].get('isLastLine', True)
-        current_frame = dpg.get_frame_count()
-        dpg.set_frame_callback(current_frame+60, lambda: self.w(row[:-1]))
+        row = row[:-1]
+        self.k(row, par)
+        dpg.set_viewport_resize_callback(lambda: self.w(row))
         return group
+
+    def k(self, row, mainForm):
+        """Работает не идеально, надо что-то придумать"""
+        print(dpg.is_item_hovered(mainForm))
+        if not dpg.is_item_hovered(mainForm):
+            dpg.set_frame_callback(dpg.get_frame_count()+60, lambda: self.k(row, mainForm))
+        else:
+            self.w(row)
+            self.MaxHeightTitle(row)
 
     def w(self, rows):
         for row in rows:
-            q = dpg.get_item_rect_size(self.mainForm)[0] - 20
-            s = q // len(row)
-            maxW = q - s * len(row)
-            for j in row:
-                p = dpg.get_item_parent(j)
-                p = dpg.get_item_parent(p)
-                if j == row[-1]:
-                    dpg.set_item_width(p, s + maxW)
-                else:
-                    dpg.set_item_width(p, s)
+            if row != []:
+                r = len(row) + 1
+                q = dpg.get_item_rect_size(self.mainForm)[0] - 20
+                s = q // r
+                maxW = q - s * r
+                for j in row:
+                    p = dpg.get_item_parent(j)
+                    p = dpg.get_item_parent(p)
+                    if j == row[-1]:
+                        dpg.set_item_width(p, s + maxW)
+                    else:
+                        dpg.set_item_width(p, s)
     
-    def getMaxHeightTitle(self):
+    def MaxHeightTitle(self, row):
         w = 0
-        for i in self.meta['attr']:
-            if w < len(self.meta['attr'][i]['caption']):
-                w = len(self.meta['attr'][i]['caption'])
-        return w * 11
+        r = [i[0] for i in row if i != []]
+        cw = []
+        for i in r:
+            p = dpg.get_item_parent(i)
+            cw.append(dpg.get_item_children(p)[1][0])
+            l = dpg.get_item_children(cw[-1])[1][0]
+            value = dpg.get_value(l)
+            if w < len(value):
+                w = len(value)
+        sizeLable = w * 11
+        for i in cw:
+            dpg.set_item_width(i, sizeLable)
+        
 
     def createGroupInput(self, nameAttr:str, groupParent, selfSizeName=False):
         dataAttr = self.meta['attr'][nameAttr]
@@ -63,6 +84,7 @@ class EmptyCard(BaseForm):
                     self.tagInput[nameAttr] = dpg.add_combo(width=-1)
 
     async def initInput(self):
+        w = dpg.get_item_rect_size(self.mainForm)[0]
         self.data = self.thisApi()._getDataRop(self.obj)
         dpg.configure_item(self.tab, label=self.meta['caption'] if 'caption' in self.meta else self.thisApi().calcHeadLine(self.obj))
         self.data = self.data | await self.getDataExt()

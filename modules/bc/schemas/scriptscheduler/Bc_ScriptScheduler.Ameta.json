@@ -4,12 +4,18 @@
             "nTime": {
                 "isLastLine": false
             },
+            "idTimeLineHL": {
+                "isLastLine": true
+            },
             "bRepeat": {
                 "isLastLine": false,
                 "order": 60.1
             },
             "bUsed": {
                 "order": 60.2
+            },
+            "sNameModule": {
+                "isVisible": false
             }
         }
     }

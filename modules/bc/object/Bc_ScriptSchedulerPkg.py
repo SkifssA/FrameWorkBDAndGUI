@@ -11,6 +11,7 @@ class Bc_ScriptSchedulerPkg:
     nHour = -1
     nMinute = -1
     nSec = -1
+    runMe = False
     script = {
         'hour': {}
         ,'minute' : {}
@@ -22,8 +23,9 @@ class Bc_ScriptSchedulerPkg:
         await Bc_TimeLineApi().fill()
         data = await Bc_ScriptSchedulerApi()._getAllByAttr('bUsed', 1) or []
         obj = Bc_ScriptSchedulerPkg(data)
-        print(obj.script)
+        obj.runMe = True
         threading.Thread(target=obj._run).start()
+        return obj
 
     def __init__(self, objScript:tuple[Bc_ScriptSchedulerObj]):
         for obj in objScript:
@@ -43,7 +45,7 @@ class Bc_ScriptSchedulerPkg:
 
 
     def _run(self):
-        while True:
+        while self.runMe:
             t = datetime.datetime.now()
             if self.nSec != t.second:
                 self.nSec = t.second
