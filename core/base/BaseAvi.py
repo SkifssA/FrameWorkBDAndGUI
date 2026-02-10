@@ -56,21 +56,21 @@ class BaseAvi:
             self.callback(**d)
             dpg.hide_item(self.tab)
 
-        @SetOper(label='Обновить', order=1)
+        @SetOper(label='Обновить', order=1, img='2')
         async def refreshForm(self): await self.refresh()
 
-        @SetOper(label='Открыть', order=2)
+        @SetOper(label='Открыть', order=2, img='4')
         async def openForm(self): await self._getAvi().card(idItem=self.getAttr('id')).open()
         
-        @SetOper(label='Создать', order=10)
+        @SetOper(label='Создать', order=10, img='0')
         async def insert(self): await self._getAvi().card(isInsert=True).open()
 
-        @SetOper(label='Удалить', order=20)
+        @SetOper(label='Удалить', order=20, img='3')
         async def delete(self):
             await self.thisApi()._deleteById(self.getAttr('id'))
             await self.refresh()
 
-        @SetOper(label='Закрыть', order=10000)
+        @SetOper(label='Закрыть', order=10000, img='1')
         async def closeForm(self): self.deleteItem()
 
 
@@ -90,7 +90,7 @@ class BaseAvi:
             await self.callback(**d)
             dpg.hide_item(self.tab)
 
-        @SetOper(label='Закрыть', order=10000)
+        @SetOper(label='Закрыть', order=10000, img='1')
         async def closeForm(self):
             if not self.isModal:
                 if self.isMod or self.isInsert:
@@ -113,14 +113,14 @@ class BaseAvi:
                     await self.saveForm()
             dpg.hide_item(self.tab)
 
-        @SetOper(label='Сохранить', order=1)
+        @SetOper(label='Сохранить', order=1, img='5')
         async def saveForm(self):
             await self.thisApi().update(self.obj)
             self.isInsert = False
             self.isMod = False
             await self.refresh()
 
-        @SetOper(label='Обновить', order=-1)
+        @SetOper(label='Обновить', order=-1, img='2')
         async def refreshForm(self):
             await self.refresh()
 

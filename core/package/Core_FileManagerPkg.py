@@ -59,9 +59,13 @@ class Core_AsyncFileManager:
         except Exception as e:
             return []
         
-    async def getFilesWithExtension(self, directory: str, extension: str) -> list[Path]:
+    async def getFilesWithExtension(self, directory: str| dict, extension: str) -> list[Path]:
         """Асинхронно возвращает список файлов с заданным расширением."""
-        obj = self._getObjPath(directory)
+        if (type(directory) == str):
+            obj = self._getObjPath(directory)
+        else:
+            obj = directory
+            
         def _sync_scan(path=None):
             if path is None:
                 path = Path(obj['real_path'])

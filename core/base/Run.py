@@ -6,7 +6,6 @@ from core.object.Core_SelectApp import Core_SelectApp
 from modules.bc import Bc_ScriptSchedulerPkg
 
 async def mainProgram():
-    from modules.bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi
     dpg.create_context()
 
     # Тема для корректного отображения отключённых кнопок
@@ -40,7 +39,7 @@ async def mainProgram():
     # Создаём viewport и запускаем
     dpg.create_viewport(title='NecoTab', width=800, height=600)
 
-    icon_path = Core_FileManagerPkg._getObjPath("../img/icon2.png", index=1)
+    icon_path = Core_FileManagerPkg._getObjPath("../img/icon/icons8-закрыть-40.png", index=1)
     print(icon_path['real_path'])
     dpg.set_viewport_small_icon(icon_path['real_path'])  # 16x16 или 32x32
     dpg.set_viewport_large_icon(icon_path['real_path'])  # 128x128 или больше

@@ -3,7 +3,7 @@
     "caption": "Аниме",
     "isVisibleToolBar": true,
     "width": 700,
-    "height": 100,
+    "height": 116,
     "attr": {
       "sUrl": {
         "caption": "Ссылка на аниме",
@@ -42,7 +42,7 @@
     "width": 1400,
     "filter":[
       {
-        "where": "t.sCaption like :filter$flt_sName || '%'",
+        "where": "t.sCaption like '%' || :filter$flt_sName || '%'",
         "attr":{
           "flt_sName": {
             "caption": "Название",

@@ -6,6 +6,7 @@ from ..package.Core_FileManagerPkg import Core_FileManagerPkg
 from ..base.BaseSelection import Selection
 from ..base.BaseFilter import Filter
 from .AbstractForm import AbstractForm
+from ..package.Core_ImageManagerPkg import Core_ImageManagerPkg
 
 class BaseForm(AbstractForm):
     def __init__(self):
@@ -27,6 +28,7 @@ class BaseForm(AbstractForm):
         self.returnAttr = []
         self.right = False
         self.filter = None
+        self.imgManager = Core_ImageManagerPkg()
 
     def getTag(self)->str:
         '''формирование тега формы'''
@@ -152,7 +154,7 @@ class BaseForm(AbstractForm):
         '''Создание основного фрейма'''
         height = height if height is not None else self.defaultHeight
 
-        with dpg.child_window(show=False, parent=par, height=40) as upToolBar:
+        with dpg.child_window(show=False, parent=par, height=52) as upToolBar:
             self.upToolBar = upToolBar
             self.toolBar = dpg.add_group(show=False, horizontal=True, tag=f'{par}_ToolBar')
         self.mainForm = self.createMainForm(par)
@@ -219,13 +221,29 @@ class BaseForm(AbstractForm):
 
         for i in sorted(q, key=lambda x: x[-1]._order):
             if not dpg.does_item_exist(f'{self.selfgroup}_{i[0]}'):
-                dpg.add_button(tag=f'{self.selfgroup}_{i[0]}', 
-                               parent=self.toolBar, label=i[-1]._oper_label, 
-                               callback=self.appendAction(i[-1], i[0]),
-                               show=oper[i[0]]['isVisible'] if i[0] in oper else i[-1].isVisible
-                               )
+                await self.addButton(
+                    tag = f'{self.selfgroup}_{i[0]}',
+                    objPath=i[-1].img, 
+                    parent=self.toolBar, 
+                    label=i[-1]._oper_label, 
+                    callback=self.appendAction(i[-1], i[0]),
+                    show=oper[i[0]]['isVisible'] if i[0] in oper else i[-1].isVisible
+                )
                 dpg.configure_item(self.toolBar, show=True)
                 dpg.configure_item(self.upToolBar, show=True)
+
+    async def addButton(self, tag, objPath, parent, label, callback, show): 
+        dpg.add_image_button(
+            tag = tag,
+            texture_tag = await Core_ImageManagerPkg().loadFile(objPath),
+            parent = parent,
+            width=30,
+            height=30,
+            callback=callback,
+            show=show
+        )
+        with dpg.tooltip(parent=tag, show=show):
+            dpg.add_text(label)
 
     def appendAction(self, obj, name):
         '''Создание обработчиков для операций'''

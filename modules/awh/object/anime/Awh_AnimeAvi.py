@@ -8,7 +8,7 @@ from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 
 class Awh_AnimeAvi(Awh_AnimeDvi):
     class List(Awh_AnimeDvi.DviList):
-        @SetOper(label='Загрузить')
+        @SetOper(label='Загрузить', img='7')
         async def uploadlesson(self):
             async def registerAnime(**kattr):
                 a = await Awh_AnimeLoadPkg().getData(kattr['sUrl'])
@@ -17,11 +17,11 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             
             await Awh_AnimeAvi.cardSetUrlAnime().openModal(registerAnime, ['sUrl'])
 
-        @SetOper(label='Cайт')
+        @SetOper(label='Cайт', img='8')
         async def openWeb(self):
             webbrowser.open(self.getAttr('sUrl'))
 
-        @SetOper(label='Cайт вк')
+        @SetOper(label='Cайт вк', img='8')
         async def openWebVk(self):
             temp = 'https://vkvideo.ru/?hd=1&q=аниме%20{name}%20все%20серии%20Anime%20➤%20AniPlanet'
             name = self.getAttr('sCaption').replace(' ', '%20')
