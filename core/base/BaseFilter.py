@@ -24,7 +24,6 @@ class Filter:
                                                        border=False):
                                     dpg.add_text(i['attr'][j]['caption'])
                                 if i['attr'][j]['edit'] == 'edit':
-                                    print(f'{getattr(parent, f'set{j}', None)=}')
                                     self.tagInput[j] = dpg.add_input_text(width=-1, 
                                                                           callback=self.__getMetod(getattr(parent, f'set{j}', None)), 
                                                                           on_enter=True)

@@ -76,7 +76,6 @@ class BaseAvi:
 
         def checwork(self):
             super().checwork()
-            print(self.getAttr('id'))
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
             self.selection.oper('returnResult').isVisible = self.isModal
 

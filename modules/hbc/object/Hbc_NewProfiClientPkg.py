@@ -63,7 +63,6 @@ class Hbc_NewProfiClientPkg(Core_AiohttpPkg):
         labelUser = (await self.findAll(html, 'label', attrs={'for': lambda x: x and x.startswith('user')}))[0]
         userName = labelUser.get_text(strip=True).replace('Select', '').replace('\'', '').strip()
         if userName in students:
-            print('Ученик найден')
             id = labelUser['for'].replace('user', '')
             ropStudent = await Hbc_StudentApi().getByName(userName)
             await Hbc_StudentApi().setsIdNew(ropStudent, id)

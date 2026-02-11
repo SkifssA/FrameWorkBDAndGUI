@@ -40,7 +40,6 @@ async def mainProgram():
     dpg.create_viewport(title='NecoTab', width=800, height=600)
 
     icon_path = Core_FileManagerPkg._getObjPath("../img/icon/icons8-закрыть-40.png", index=1)
-    print(icon_path['real_path'])
     dpg.set_viewport_small_icon(icon_path['real_path'])  # 16x16 или 32x32
     dpg.set_viewport_large_icon(icon_path['real_path'])  # 128x128 или больше
 

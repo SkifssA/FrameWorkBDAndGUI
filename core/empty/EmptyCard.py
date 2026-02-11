@@ -32,7 +32,6 @@ class EmptyCard(BaseForm):
 
     def k(self, row, mainForm):
         """Работает не идеально, надо что-то придумать"""
-        print(dpg.is_item_hovered(mainForm))
         if not dpg.is_item_hovered(mainForm):
             dpg.set_frame_callback(dpg.get_frame_count()+60, lambda: self.k(row, mainForm))
         else:
