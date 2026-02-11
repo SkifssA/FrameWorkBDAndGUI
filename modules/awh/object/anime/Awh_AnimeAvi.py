@@ -8,7 +8,7 @@ from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 
 class Awh_AnimeAvi(Awh_AnimeDvi):
     class List(Awh_AnimeDvi.DviList):
-        @SetOper(label='Загрузить', img='7')
+        @SetOper(label='Загрузить', img='9')
         async def uploadlesson(self):
             async def registerAnime(**kattr):
                 a = await Awh_AnimeLoadPkg().getData(kattr['sUrl'])

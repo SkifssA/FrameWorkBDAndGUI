@@ -48,7 +48,7 @@ class BaseAvi:
       
     class DefaultList(DefaultDefault, EmptyList):
 
-        @SetOper(label='Выбрать', order=-1, isVisible=False)
+        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
         async def returnResult(self):
             d = {}
             for i in self.returnAttr:
@@ -82,7 +82,7 @@ class BaseAvi:
 
     class DefaultCard(DefaultDefault, EmptyCard): 
 
-        @SetOper(label='Выбрать', order=-1, isVisible=False)
+        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
         async def returnResult(self):
             d = {}
             for i in self.returnAttr:

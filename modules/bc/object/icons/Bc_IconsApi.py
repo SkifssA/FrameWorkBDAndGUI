@@ -28,6 +28,7 @@ class Bc_IconsApi(Bc_IconsDpi):
             ,"upload"
             ,"open_in_web"
             ,"add_link"
+            ,"selected"
         ]
         for i, path in enumerate(beginPath.format(name=i) for i in nameIcon):
             await self.register(i, str(path))

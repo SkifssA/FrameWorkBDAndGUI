@@ -242,7 +242,7 @@ class BaseForm(AbstractForm):
             callback=callback,
             show=show
         )
-        with dpg.tooltip(parent=tag, show=show):
+        with dpg.tooltip(tag=f'{tag}_tooltip', parent=tag, show=show):
             dpg.add_text(label)
 
     def appendAction(self, obj, name):

@@ -47,6 +47,8 @@ class Oper:
         for i in self.oper:
             if (dpg.does_item_exist(i)):
                 dpg.configure_item(i, show=value)
+            if (dpg.does_item_exist(f'{i}_tooltip')):
+                dpg.configure_item(f'{i}_tooltip', show=value)
 
 
 def SetOper(label: str = None, order:int=0, headOper:str=None, isVisible:bool=True, img:str=None):
