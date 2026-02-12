@@ -7,6 +7,7 @@ from ..base.BaseSelection import Selection
 from ..base.BaseFilter import Filter
 from .AbstractForm import AbstractForm
 from ..package.Core_ImageManagerPkg import Core_ImageManagerPkg
+from ..base.BaseModal import FormModal
 
 class BaseForm(AbstractForm):
     def __init__(self):
@@ -29,6 +30,7 @@ class BaseForm(AbstractForm):
         self.right = False
         self.filter = None
         self.imgManager = Core_ImageManagerPkg()
+        self.modal = None
 
     def getTag(self)->str:
         '''формирование тега формы'''
@@ -55,21 +57,10 @@ class BaseForm(AbstractForm):
         self.meta = await self.getMeta()
         wd = self.meta['width'] if 'width' in self.meta else (dpg.get_viewport_width() * 0.5)
         hg = self.meta['height'] if 'height' in self.meta else (dpg.get_viewport_height() * 0.5)
-        w = dpg.add_window(modal=True
-                           , no_close=True
-                           , popup=True
-                           , no_title_bar=True
-                           , width=wd
-                           , height=hg
-                           , show=False
-                           , pos=[
-                                dpg.get_viewport_width() * 0.5 - (wd//2),
-                                dpg.get_viewport_height() * 0.5 - (hg//2)
-                               ])
-        self.callback = callback
-        self.returnAttr = returnAttr
-        await self.open(parent=w)
-        dpg.show_item(w)
+        self.modal = FormModal(wd, hg)
+        await self.modal.createMainContexWithFuc(self.open)
+        dpg.split_frame()
+        self.modal.show()
                 
     async def getMeta(self):
         mod, clas = self.thisApi()._getNameClass().split("_")
@@ -174,8 +165,11 @@ class BaseForm(AbstractForm):
 
     async def refresh(self):
         '''Обновление. Пользовательское'''
+        await self.validateClass()
         await self._refresh()
         await self.refreshCh()
+
+    async def validateClass(self): pass
 
     def regHandler(self):
         """Регистрация обработчиков и событий"""
@@ -253,8 +247,10 @@ class BaseForm(AbstractForm):
         else:
             return lambda: asyncio.run(bound_method())
 
-    def deleteItem(self):
+    def closeForm(self):
         dpg.delete_item(self.tab)
+        if self.modal is not None:
+            self.modal.hide_overlay()
 
     def getSqlAndParam(self, sql:str)->tuple[str, list]:
         par = [self.getAttr(i) for i in re.findall(r':([^ ]*)', sql)]

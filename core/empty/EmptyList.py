@@ -48,21 +48,24 @@ class EmptyList(BaseForm):
                         
             if oneRow is not None:
                 self._oneShow(oneRow, tabl)
+                self.tagRow = oneRow
             self.checwork()
 
     def _click(self, tagSelf, tagTable):
         '''Обработчик выбора строки в таблице'''
         self._oneShow(tagSelf, tagTable)
-        self._checwork()
+        self._checwork(tagSelf)
 
-    def _checwork(self):
-        '''Операция выполняемая при выборе строки'''
-        try:
-            asyncio.get_running_loop()
-            asyncio.create_task(self.refreshCh())
-        except:
-            asyncio.run(self.refreshCh())
-        self.checwork()
+    def _checwork(self, tagRow:str):
+        if tagRow != self.tagRow:
+            self.tagRow = tagRow
+            '''Операция выполняемая при выборе строки'''
+            try:
+                asyncio.get_running_loop()
+                asyncio.create_task(self.refreshCh())
+            except:
+                asyncio.run(self.refreshCh())
+            self.checwork()
 
     def _oneShow(self, tagSelf, tagTable):
         '''Отвечает только за единичный выбор строки в таблице'''

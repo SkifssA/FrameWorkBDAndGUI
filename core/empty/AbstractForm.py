@@ -24,3 +24,6 @@ class AbstractForm(ABC):
 
     @abstractmethod
     async def _refresh(self): pass
+
+    @abstractmethod
+    async def validateClass(self): pass

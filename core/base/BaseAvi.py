@@ -6,7 +6,7 @@ from ..empty.BaseForm import BaseForm
 from ..empty.EmptyList import EmptyList
 from ..empty.EmptyCard import EmptyCard
 from .BaseOper import SetOper
-from .BaseModal import BaseModal
+from .BaseModal import DialogModal
 
 class BaseAvi:
 
@@ -30,7 +30,6 @@ class BaseAvi:
                 return self.filter._getAttr(p)                           
             else:
                 return self._getAttr(name)
-                 
 
         async def thisRop(self):
             row = self.get_row()
@@ -46,19 +45,12 @@ class BaseAvi:
             module = importlib.import_module(module_name)
             return getattr(module, outer_class_name)
       
-    class DefaultList(DefaultDefault, EmptyList):
-
-        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
-        async def returnResult(self):
-            d = {}
-            for i in self.returnAttr:
-                d[i] = self.getAttr(i) 
-            self.callback(**d)
-            dpg.hide_item(self.tab)
-
+        
         @SetOper(label='Обновить', order=1, img='2')
         async def refreshForm(self): await self.refresh()
 
+    class DefaultList(DefaultDefault, EmptyList):
+        
         @SetOper(label='Открыть', order=2, img='4')
         async def openForm(self): await self._getAvi().card(idItem=self.getAttr('id')).open()
         
@@ -71,7 +63,7 @@ class BaseAvi:
             await self.refresh()
 
         @SetOper(label='Закрыть', order=10000, img='1')
-        async def closeForm(self): self.deleteItem()
+        async def closeForm(self): dpg.delete_item(self.tab)
 
 
         def checwork(self):
@@ -80,26 +72,26 @@ class BaseAvi:
             self.selection.oper('returnResult').isVisible = self.isModal
 
     class DefaultCard(DefaultDefault, EmptyCard): 
-
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
         async def returnResult(self):
             d = {}
             for i in self.returnAttr:
                 d[i] = self.getAttr(i) 
             await self.callback(**d)
-            dpg.hide_item(self.tab)
+            self.closeForm()
+
 
         @SetOper(label='Закрыть', order=10000, img='1')
-        async def closeForm(self):
+        async def closeFormCancel(self):
             if not self.isModal:
                 if self.isMod or self.isInsert:
-                    BaseModal("Сохранить перед выходом?", self.handle_confirmation)
+                    DialogModal("Сохранить перед выходом?", self.handle_confirmation).show()
                 else:
-                    self.deleteItem()
+                    self.closeForm()
             else:
                 if self.isInsert:
                     await self.thisApi().delete(self.obj)
-                dpg.hide_item(self.tab)
+                self.closeForm()
 
         async def handle_confirmation(self, result: bool):
             if self.isInsert:
@@ -110,14 +102,13 @@ class BaseAvi:
             else:
                 if result:
                     await self.saveForm()
-            dpg.hide_item(self.tab)
+            self.closeForm()
 
         @SetOper(label='Сохранить', order=1, img='5')
         async def saveForm(self):
             await self.thisApi().update(self.obj)
             self.isInsert = False
             self.isMod = False
-            await self.refresh()
 
         @SetOper(label='Обновить', order=-1, img='2')
         async def refreshForm(self):

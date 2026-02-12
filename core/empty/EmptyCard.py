@@ -1,7 +1,8 @@
 import dearpygui.dearpygui as dpg
 from ..package import ASQL, Core_ActionDispatcher
 from .BaseForm import BaseForm
-import re
+import threading
+import time
 
 class EmptyCard(BaseForm):
     def __init__(self):
@@ -19,29 +20,31 @@ class EmptyCard(BaseForm):
                 self.createGroupInput(i, w, backLastLine)
                 if self.meta['attr'][i]['isVisible']:
                     if (self.meta['attr'][i].get('isLastLine', True)):
-                        # row[-1].append(self.tagInput[i])
+                        row[-1].append(self.tagInput[i])
                         w = dpg.add_group(horizontal=True)
                         row.append([])
                     else:
                         row[-1].append(self.tagInput[i])
                     backLastLine = self.meta['attr'][i].get('isLastLine', True)
         row = row[:-1]
-        self.k(row, par)
+        threading.Thread(target=self.k, args=(row, par)).start()
         dpg.set_viewport_resize_callback(lambda: self.w(row))
         return group
 
     def k(self, row, mainForm):
-        """Работает не идеально, надо что-то придумать"""
-        if not dpg.is_item_hovered(mainForm):
-            dpg.set_frame_callback(dpg.get_frame_count()+60, lambda: self.k(row, mainForm))
-        else:
-            self.w(row)
-            self.MaxHeightTitle(row)
+        q = True
+        while q:
+            if dpg.does_item_exist(mainForm):
+                if dpg.get_item_rect_size(mainForm)[0] != 0:
+                    q = False
+                    self.w(row)
+                    self.MaxHeightTitle(row)
+                    time.sleep(0.5)
 
     def w(self, rows):
         for row in rows:
             if row != []:
-                r = len(row) + 1
+                r = len(row)
                 q = dpg.get_item_rect_size(self.mainForm)[0] - 20
                 s = q // r
                 maxW = q - s * r
@@ -68,7 +71,6 @@ class EmptyCard(BaseForm):
         for i in cw:
             dpg.set_item_width(i, sizeLable)
         
-
     def createGroupInput(self, nameAttr:str, groupParent, selfSizeName=False):
         dataAttr = self.meta['attr'][nameAttr]
         with dpg.child_window(border=False, height=20, width=-1, show=dataAttr['isVisible'], parent=groupParent):

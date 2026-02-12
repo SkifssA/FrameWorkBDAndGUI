@@ -1,8 +1,9 @@
 # Пользовательский файл для интерфейса
+import dearpygui.dearpygui as dpg
 from core.base.BaseOper import SetOper
 from .Awh_AnimeDvi import Awh_AnimeDvi
 import webbrowser
-from core.base.BaseAvi import BaseAvi
+from core.base.BaseModal import *
 
 from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 
@@ -60,6 +61,13 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
         async def getObj(self):
             return self.addData()
+        
+        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
+        async def returnResult(self):
+            if self.getAttr("sUrl") is None or self.getAttr("sUrl").strip() == '':
+                ErrorModal('Значение атрибута \"Ссылка на аниме\" не может быть пустым').show()
+            else:
+                return await super().returnResult()
 
     class LookUp(Awh_AnimeDvi.DviLookUp): pass
 

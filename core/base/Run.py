@@ -53,5 +53,6 @@ async def mainProgram():
     dpg.maximize_viewport()
     dpg.show_viewport()
     dpg.start_dearpygui()
-    scriptScheduler.runMe = False
+    if (conf['isScriptScheduler']):
+        scriptScheduler.runMe = False
     dpg.destroy_context()
