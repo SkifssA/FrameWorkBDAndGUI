@@ -19,12 +19,10 @@ class EmptyCard(BaseForm):
             for i in sorted(self.meta['attr'], key=lambda x: self.meta['attr'][x]['order']):
                 self.createGroupInput(i, w, backLastLine)
                 if self.meta['attr'][i]['isVisible']:
+                    row[-1].append(self.tagInput[i])
                     if (self.meta['attr'][i].get('isLastLine', True)):
-                        row[-1].append(self.tagInput[i])
                         w = dpg.add_group(horizontal=True)
                         row.append([])
-                    else:
-                        row[-1].append(self.tagInput[i])
                     backLastLine = self.meta['attr'][i].get('isLastLine', True)
         row = row[:-1]
         threading.Thread(target=self.k, args=(row, par)).start()

@@ -53,6 +53,8 @@ class BaseForm(AbstractForm):
         dpg.set_value(self.parent, self.tab)
 
     async def openModal(self, callback, returnAttr:list=['id']):
+        self.returnAttr = returnAttr
+        self.callback = callback
         self.isModal = True
         self.meta = await self.getMeta()
         wd = self.meta['width'] if 'width' in self.meta else (dpg.get_viewport_width() * 0.5)
