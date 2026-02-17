@@ -86,3 +86,19 @@ class FormModal(BaseModal):
 
     async def createMainContexWithFuc(self, fun):
         await fun(self.tag)
+
+class LoadModal(BaseModal):
+    def __init__(self, fun, mess):
+        super().__init__(mess, 500, 200)
+        self.fun = fun
+
+    def createMainContex(self):
+        with dpg.group(parent=self.tag):
+            with dpg.child_window(width=480, height=150):
+                dpg.add_text(self.mess, wrap=300)
+                dpg.add_loading_indicator(circle_count=10)
+
+    def show(self):
+        super().show()
+        asyncio.run(self.fun())
+        self.hide_overlay()

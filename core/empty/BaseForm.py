@@ -7,7 +7,7 @@ from ..base.BaseSelection import Selection
 from ..base.BaseFilter import Filter
 from .AbstractForm import AbstractForm
 from ..package.Core_ImageManagerPkg import Core_ImageManagerPkg
-from ..base.BaseModal import FormModal
+from ..base.BaseModal import FormModal, LoadModal
 
 class BaseForm(AbstractForm):
     def __init__(self):
@@ -245,7 +245,7 @@ class BaseForm(AbstractForm):
         '''Создание обработчиков для операций'''
         bound_method = getattr(self, name)
         if obj._is_long:
-            return self.__createRunning(bound_method)
+            return lambda: LoadModal(bound_method, f'Выполнение задачи \'{obj._oper_label}\'').show()
         else:
             return lambda: asyncio.run(bound_method())
 
