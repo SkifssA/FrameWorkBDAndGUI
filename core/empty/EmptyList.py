@@ -1,12 +1,13 @@
 import dearpygui.dearpygui as dpg
-from ..package import ASQL
-
 import asyncio
 
-
+from ..package import ASQL
 from .BaseForm import BaseForm
 
 class EmptyList(BaseForm):
+    def __init__(self):
+        super().__init__()
+        self.column = None
 
     def createTheme(self):
         '''Создание темы'''
@@ -16,35 +17,42 @@ class EmptyList(BaseForm):
                 dpg.add_theme_color(dpg.mvThemeCol_Header, (0, 0, 0, 0), category=dpg.mvThemeCat_Core)
         return table_theme
                 
+    async def _createColumn(self, tabl):
+        '''Создание столбцов'''
+        self.column = []
+        data = await self._getCollumn()
+        for i in data:
+            q = data[i]
+            self.column.append(dpg.add_table_column(label=q[0]
+                                                    , user_data=(i, q[2], q[1])
+                                                    , enabled=q[1]
+                                                    , parent=tabl))
+
     async def _refresh(self):
         '''Обнолвение формы'''
-        data = await self.__getDataTab()
-        s = True
+        rows = await self.__getDataTab()
         tabl = self.mainForm
         if dpg.does_item_exist(tabl):
-            children = dpg.get_item_children(tabl, slot=1) + dpg.get_item_children(tabl, slot=0) # slot=0 — основной контейнер
+            children = dpg.get_item_children(tabl, slot=1) # slot=0 — основной контейнер
             for child in children:
                 dpg.delete_item(child)
 
             oneRow = None
-            for i in data['column']:
-                q = data['column'][i]
-                dpg.add_table_column(label=q[0], user_data=i, enabled=q[1], parent=tabl)
-            for row in data['row']:
+            for row in rows:
                 with dpg.table_row(parent=tabl):
                     w = True
-                    for j in data['column']:
-                        if data['column'][j][2] == 'check':
-                            dpg.set_value(dpg.add_checkbox(enabled=False), bool(row[j]) if row[j] is not None else False)
+                    for j in self.column:
+                        tagCol, edit, isVis = dpg.get_item_user_data(j)
+                        valueRow = row[tagCol]
+                        if edit == 'check':
+                            dpg.set_value(dpg.add_checkbox(enabled=False), bool(valueRow) if valueRow is not None else False)
+                        elif w and isVis:
+                            q = dpg.add_selectable(label=valueRow, span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl), height=21)
+                            w = False
+                            if oneRow is None:
+                                oneRow = q
                         else:
-                            if w and data['column'][j][1]:
-                                q = dpg.add_selectable(label=row[j], span_columns=True, user_data=row, callback=lambda x, y, z: self._click(x, tabl), height=21)
-                                w = False
-                                if s:
-                                    s=False
-                                    oneRow = q
-                            else:
-                                dpg.add_text(row[j] if row[j] is not None else "")
+                            dpg.add_text(valueRow if valueRow is not None else "")
                         
             if oneRow is not None:
                 self._oneShow(oneRow, tabl)
@@ -57,9 +65,9 @@ class EmptyList(BaseForm):
         self._checwork(tagSelf)
 
     def _checwork(self, tagRow:str):
+        '''Операция выполняемая при выборе строки'''
         if tagRow != self.tagRow:
             self.tagRow = tagRow
-            '''Операция выполняемая при выборе строки'''
             try:
                 asyncio.get_running_loop()
                 asyncio.create_task(self.refreshCh())
@@ -81,15 +89,12 @@ class EmptyList(BaseForm):
         headRes = {col: (attrs[col]['caption'], attrs[col]['isVisible'], attrs[col]['edit']) for col in dict(sorted(attrs.items(), key=lambda x: x[1].get('order', 0)))}
         return headRes
     
-    async def __getDataTab(self, column=True):
+    async def __getDataTab(self):
         '''Получение данных из БД для данной таблицы'''
-        res = {}
-        res['row'] = await ASQL(*self.getSqlAndParam(await self.onRefresh()))
-        res['column'] = await self._getCollumn()
-        return res
-
+        return await ASQL(*self.getSqlAndParam(await self.onRefresh()))
+    
     def createMainForm(self, par):
-        return dpg.add_table(header_row=True,
+        w = dpg.add_table(header_row=True,
                              resizable=True,
                              height=-1,
                              borders_innerH=True,
@@ -98,7 +103,11 @@ class EmptyList(BaseForm):
                              borders_outerV=True,
                              parent=par,
                              scrollY=True)
+        return w
     
+    async def afterCreate(self):
+        await self._createColumn(self.mainForm)
+
     def _getAttr(self, nameAttr:str):
         row = self.get_row()
         if nameAttr in row:

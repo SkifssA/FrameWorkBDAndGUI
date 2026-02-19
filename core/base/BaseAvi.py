@@ -49,6 +49,18 @@ class BaseAvi:
         @SetOper(label='Обновить', order=1, img='2')
         async def refreshForm(self): await self.refresh()
 
+        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
+        async def returnResult(self):
+            d = {}
+            for i in self.returnAttr:
+                d[i] = self.getAttr(i) 
+            await self.callback(**d)
+            self.closeForm()
+
+        def checwork(self):
+            super().checwork()
+            self.selection.oper('returnResult').isVisible = self.isModal
+
     class DefaultList(DefaultDefault, EmptyList):
         
         @SetOper(label='Открыть', order=2, img='4')
@@ -69,18 +81,8 @@ class BaseAvi:
         def checwork(self):
             super().checwork()
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
-            self.selection.oper('returnResult').isVisible = self.isModal
 
     class DefaultCard(DefaultDefault, EmptyCard): 
-        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
-        async def returnResult(self):
-            d = {}
-            for i in self.returnAttr:
-                d[i] = self.getAttr(i) 
-            await self.callback(**d)
-            self.closeForm()
-
-
         @SetOper(label='Закрыть', order=10000, img='1')
         async def closeFormCancel(self):
             if not self.isModal:
@@ -135,7 +137,6 @@ class BaseAvi:
         def checwork(self):
             super().checwork()
             self.selection.oper("saveForm").isDisabled = not self.isMod
-            self.selection.oper('returnResult').isVisible = self.isModal
 
     class DefaultDet(DefaultDefault, EmptyList):
         def getIdMaster(self):
@@ -157,3 +158,5 @@ class BaseAvi:
         def onRefreshExt(self):pass
 
         def createMainForm(self, par):pass
+
+        

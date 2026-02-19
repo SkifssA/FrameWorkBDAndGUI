@@ -51,8 +51,10 @@ class mainMenu:
         return to_dict(menuDict)
     
     def appendAction(self, obj, name):
+        '''Создание обработчиков для операций'''
+        from .BaseModal import LoadModal
         bound_method = getattr(self, name)
         if obj._is_long:
-            return self.__createRunning(bound_method)
+            return lambda: LoadModal(bound_method, f'Выполнение задачи \'{obj._oper_label}\'').show()
         else:
             return lambda: asyncio.run(bound_method())
