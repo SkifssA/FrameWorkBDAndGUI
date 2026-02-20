@@ -20,13 +20,13 @@ class EmptyCard(BaseForm):
                 self.createGroupInput(i, w, backLastLine)
                 if self.meta['attr'][i]['isVisible']:
                     row[-1].append(self.tagInput[i])
-                    if (self.meta['attr'][i].get('isLastLine', True)):
+                    isLastLine = self.meta['attr'][i].get('isLastLine', True)
+                    if isLastLine:
                         w = dpg.add_group(horizontal=True)
                         row.append([])
-                    backLastLine = self.meta['attr'][i].get('isLastLine', True)
+                    backLastLine = isLastLine
         row = row[:-1]
         threading.Thread(target=self.k, args=(row, par)).start()
-        dpg.set_viewport_resize_callback(lambda: self.w(row))
         return group
 
     def k(self, row, mainForm):
