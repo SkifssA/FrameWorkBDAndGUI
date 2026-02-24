@@ -14,24 +14,25 @@
         },{
             "name": "nHeadMax",
             "type": "INT",
-            "caption": "Вышло"
+            "caption": "Лимит жизни"
         },{
             "name": "nStrong",
             "type": "INT",
-            "caption": "Вышло"
+            "caption": "Сила"
         },{
             "name": "nMind",
             "type": "INT",
-            "caption": "Вышло"
+            "caption": "Интелект"
         },{
             "name": "nDexterit",
             "type": "INT",
-            "caption": "Вышло"
+            "caption": "Ловкость"
         },{
             "name": "idType",
             "type": "INT",
             "caption": "Класс героя",
-            "refTab": "Ir_HeroType"
+            "refTab": "Ir_HeroType",
+            "editType": "lookUp"
         }
     ]
 }

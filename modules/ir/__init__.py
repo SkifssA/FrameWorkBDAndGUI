@@ -1,8 +1,8 @@
 from .object.Ir_MainMenu import Ir_MainMenu
+from .object.defa.Ir_DefaApi import Ir_DefaApi
+from .object.defa.Ir_DefaAvi import Ir_DefaAvi
 from .object.deftype.Ir_DefTypeApi import Ir_DefTypeApi
 from .object.deftype.Ir_DefTypeAvi import Ir_DefTypeAvi
-from .object.def_.Ir_DefApi import Ir_DefApi
-from .object.def_.Ir_DefAvi import Ir_DefAvi
 from .object.hero.Ir_HeroApi import Ir_HeroApi
 from .object.hero.Ir_HeroAvi import Ir_HeroAvi
 from .object.herotype.Ir_HeroTypeApi import Ir_HeroTypeApi
@@ -20,10 +20,10 @@ from .object.weapontype.Ir_WeaponTypeAvi import Ir_WeaponTypeAvi
 
 __all__ = [
     'Ir_MainMenu'
+    'Ir_DefaApi'
+    'Ir_DefaAvi'
     'Ir_DefTypeApi'
     'Ir_DefTypeAvi'
-    'Ir_DefApi'
-    'Ir_DefAvi'
     'Ir_HeroApi'
     'Ir_HeroAvi'
     'Ir_HeroTypeApi'

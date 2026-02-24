@@ -29,9 +29,11 @@
       },
       "idTypeHL": {
         "caption": "Тип",
-        "edit": "edit",
+        "edit": "lookUp",
         "isVisible": true,
-        "order": 0
+        "order": 0.1,
+        "display": "LookUp",
+        "refTab": "Ir_WeaponType"
       },
       "idRare": {
         "caption": "Редкость",
@@ -41,9 +43,11 @@
       },
       "idRareHL": {
         "caption": "Редкость",
-        "edit": "edit",
+        "edit": "lookUp",
         "isVisible": true,
-        "order": 0
+        "order": 0.1,
+        "display": "LookUp",
+        "refTab": "Ir_Rare"
       },
       "nScore": {
         "caption": "Стоймость",

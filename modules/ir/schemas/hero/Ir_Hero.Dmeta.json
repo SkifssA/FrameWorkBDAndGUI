@@ -28,25 +28,25 @@
         "order": 0
       },
       "nHeadMax": {
-        "caption": "Вышло",
+        "caption": "Лимит жизни",
         "edit": "edit",
         "isVisible": true,
         "order": 0
       },
       "nStrong": {
-        "caption": "Вышло",
+        "caption": "Сила",
         "edit": "edit",
         "isVisible": true,
         "order": 0
       },
       "nMind": {
-        "caption": "Вышло",
+        "caption": "Интелект",
         "edit": "edit",
         "isVisible": true,
         "order": 0
       },
       "nDexterit": {
-        "caption": "Вышло",
+        "caption": "Ловкость",
         "edit": "edit",
         "isVisible": true,
         "order": 0
@@ -59,9 +59,11 @@
       },
       "idTypeHL": {
         "caption": "Класс героя",
-        "edit": "edit",
+        "edit": "lookUp",
         "isVisible": true,
-        "order": 0
+        "order": 0.1,
+        "display": "LookUp",
+        "refTab": "Ir_HeroType"
       }
     }
   }

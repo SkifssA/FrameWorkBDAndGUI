@@ -41,7 +41,9 @@ class Ir_WeaponDvi(BaseAvi):
         
         def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
         def setidType(self, sender, app_data, user_data): self.thisApi().setidType(self.obj, app_data); self.afterSetter()
+        def setidTypeHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidType(self.obj, idLook); self.afterSetter()
         def setidRare(self, sender, app_data, user_data): self.thisApi().setidRare(self.obj, app_data); self.afterSetter()
+        def setidRareHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidRare(self.obj, idLook); self.afterSetter()
         def setnScore(self, sender, app_data, user_data): self.thisApi().setnScore(self.obj, app_data); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass

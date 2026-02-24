@@ -44,6 +44,7 @@ class Ir_HeroDvi(BaseAvi):
         def setnMind(self, sender, app_data, user_data): self.thisApi().setnMind(self.obj, app_data); self.afterSetter()
         def setnDexterit(self, sender, app_data, user_data): self.thisApi().setnDexterit(self.obj, app_data); self.afterSetter()
         def setidType(self, sender, app_data, user_data): self.thisApi().setidType(self.obj, app_data); self.afterSetter()
+        def setidTypeHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidType(self.obj, idLook); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

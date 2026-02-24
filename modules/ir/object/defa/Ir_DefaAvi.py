@@ -1,12 +1,12 @@
 # Пользовательский файл для интерфейса
-from .Ir_DefDvi import Ir_DefDvi
+from .Ir_DefaDvi import Ir_DefaDvi
 
-class Ir_DefAvi(Ir_DefDvi):
-    class List(Ir_DefDvi.DviList): pass
+class Ir_DefaAvi(Ir_DefaDvi):
+    class List(Ir_DefaDvi.DviList): pass
 
-    class Card(Ir_DefDvi.DviCard): pass
+    class Card(Ir_DefaDvi.DviCard): pass
 
-    class LookUp(Ir_DefDvi.DviLookUp): pass
+    class LookUp(Ir_DefaDvi.DviLookUp): pass
 
     @classmethod
     def list(cls, **kwargs)->List:
