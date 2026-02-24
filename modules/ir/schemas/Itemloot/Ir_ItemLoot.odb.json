@@ -1,0 +1,21 @@
+{
+    "name": "Ir_ItemLoot",
+    "caption": "Броня",
+    "attr":[
+        {
+            "name": "sCaption",
+            "type": "TEXT",
+            "caption": "Название",
+            "isHeadLine": true
+        },{
+            "name": "idRare",
+            "type": "INT",
+            "caption": "Редкость",
+            "refTab": "Ir_Rare"
+        },{
+            "name": "nScore",
+            "type": "INT",
+            "caption": "Стоймость"
+        }
+    ]
+}

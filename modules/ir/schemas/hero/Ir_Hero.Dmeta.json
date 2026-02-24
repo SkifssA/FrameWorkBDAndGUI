@@ -1,0 +1,68 @@
+{
+  "Default": {
+    "caption": "Герои",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false,
+        "order": -2
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false,
+        "order": -1
+      },
+      "sCaption": {
+        "caption": "Имя",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "nHead": {
+        "caption": "Очки жизни",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "nHeadMax": {
+        "caption": "Вышло",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "nStrong": {
+        "caption": "Вышло",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "nMind": {
+        "caption": "Вышло",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "nDexterit": {
+        "caption": "Вышло",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "idType": {
+        "caption": "Класс героя",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
+      },
+      "idTypeHL": {
+        "caption": "Класс героя",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      }
+    }
+  }
+}

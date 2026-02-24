@@ -1,0 +1,26 @@
+{
+    "name": "Ir_Weapon",
+    "caption": "Оружие",
+    "attr":[
+        {
+            "name": "sCaption",
+            "type": "TEXT",
+            "caption": "Название",
+            "isHeadLine": true
+        },{
+            "name": "idType",
+            "type": "INT",
+            "caption": "Тип",
+            "refTab": "Ir_WeaponType"
+        },{
+            "name": "idRare",
+            "type": "INT",
+            "caption": "Редкость",
+            "refTab": "Ir_Rare"
+        },{
+            "name": "nScore",
+            "type": "INT",
+            "caption": "Стоймость"
+        }
+    ]
+}

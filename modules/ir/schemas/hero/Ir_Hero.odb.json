@@ -1,0 +1,37 @@
+{
+    "name": "Ir_Hero",
+    "caption": "Герои",
+    "attr":[
+        {
+            "name": "sCaption",
+            "type": "TEXT",
+            "caption": "Имя",
+            "isHeadLine": true
+        },{
+            "name": "nHead",
+            "type": "INT",
+            "caption": "Очки жизни"
+        },{
+            "name": "nHeadMax",
+            "type": "INT",
+            "caption": "Вышло"
+        },{
+            "name": "nStrong",
+            "type": "INT",
+            "caption": "Вышло"
+        },{
+            "name": "nMind",
+            "type": "INT",
+            "caption": "Вышло"
+        },{
+            "name": "nDexterit",
+            "type": "INT",
+            "caption": "Вышло"
+        },{
+            "name": "idType",
+            "type": "INT",
+            "caption": "Класс героя",
+            "refTab": "Ir_HeroType"
+        }
+    ]
+}

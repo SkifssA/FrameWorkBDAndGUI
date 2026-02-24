@@ -1,0 +1,11 @@
+{
+    "name": "Ir_Item",
+    "caption": "Предметы",
+    "attr":[
+        {
+            "name": "gidScr",
+            "type": "TEXT",
+            "caption": "Предмет"
+        }
+    ]
+}
