@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Hbc_LessonApi import Hbc_LessonApi, Hbc_LessonObj
 
 class Hbc_LessonDvi(BaseAvi):
     thisApi = Hbc_LessonApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -25,14 +26,14 @@ class Hbc_LessonDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Hbc_LessonObj:
-            return await super().thisRop()
+        def thisRop(self)->Hbc_LessonObj:
+            return super().thisRop()
 
         def thisApi(self)->Hbc_LessonApi:
             return super().thisApi()
         
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
-        def setsIdExit(self, sender, app_data, user_data): self.thisApi().setsIdExit(self.obj, app_data); self.afterSetter()
+        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
+        def setsIdExit(self, event:Event.SetterEvent): self.thisApi().setsIdExit(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

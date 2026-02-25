@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Bc_TimeLineApi import Bc_TimeLineApi, Bc_TimeLineObj
 
 class Bc_TimeLineDvi(BaseAvi):
     thisApi = Bc_TimeLineApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -25,14 +26,14 @@ class Bc_TimeLineDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Bc_TimeLineObj:
-            return await super().thisRop()
+        def thisRop(self)->Bc_TimeLineObj:
+            return super().thisRop()
 
         def thisApi(self)->Bc_TimeLineApi:
             return super().thisApi()
         
-        def setsCode(self, sender, app_data, user_data): self.thisApi().setsCode(self.obj, app_data); self.afterSetter()
-        def setsName(self, sender, app_data, user_data): self.thisApi().setsName(self.obj, app_data); self.afterSetter()
+        def setsCode(self, event:Event.SetterEvent): self.thisApi().setsCode(self.thisRop(), event.value); self.afterSetter()
+        def setsName(self, event:Event.SetterEvent): self.thisApi().setsName(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

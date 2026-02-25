@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Ir_HeroApi import Ir_HeroApi, Ir_HeroObj
 
 class Ir_HeroDvi(BaseAvi):
     thisApi = Ir_HeroApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -31,20 +32,20 @@ class Ir_HeroDvi(BaseAvi):
                     LEFT JOIN Ir_HeroType t1 ON t1.id = t.idType
                 """
 
-        async def thisRop(self)->Ir_HeroObj:
-            return await super().thisRop()
+        def thisRop(self)->Ir_HeroObj:
+            return super().thisRop()
 
         def thisApi(self)->Ir_HeroApi:
             return super().thisApi()
         
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
-        def setnHead(self, sender, app_data, user_data): self.thisApi().setnHead(self.obj, app_data); self.afterSetter()
-        def setnHeadMax(self, sender, app_data, user_data): self.thisApi().setnHeadMax(self.obj, app_data); self.afterSetter()
-        def setnStrong(self, sender, app_data, user_data): self.thisApi().setnStrong(self.obj, app_data); self.afterSetter()
-        def setnMind(self, sender, app_data, user_data): self.thisApi().setnMind(self.obj, app_data); self.afterSetter()
-        def setnDexterit(self, sender, app_data, user_data): self.thisApi().setnDexterit(self.obj, app_data); self.afterSetter()
-        def setidType(self, sender, app_data, user_data): self.thisApi().setidType(self.obj, app_data); self.afterSetter()
-        def setidTypeHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidType(self.obj, idLook); self.afterSetter()
+        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
+        def setnHead(self, event:Event.SetterEvent): self.thisApi().setnHead(self.thisRop(), event.value); self.afterSetter()
+        def setnHeadMax(self, event:Event.SetterEvent): self.thisApi().setnHeadMax(self.thisRop(), event.value); self.afterSetter()
+        def setnStrong(self, event:Event.SetterEvent): self.thisApi().setnStrong(self.thisRop(), event.value); self.afterSetter()
+        def setnMind(self, event:Event.SetterEvent): self.thisApi().setnMind(self.thisRop(), event.value); self.afterSetter()
+        def setnDexterit(self, event:Event.SetterEvent): self.thisApi().setnDexterit(self.thisRop(), event.value); self.afterSetter()
+        def setidType(self, event:Event.SetterEvent): self.thisApi().setidType(self.thisRop(), event.value); self.afterSetter()
+        def setidTypeHL(self, event:Event.SetterEvent): idLook = event.user_data.getId(event.value); self.thisApi().setidType(self.thisRop(), idLook); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

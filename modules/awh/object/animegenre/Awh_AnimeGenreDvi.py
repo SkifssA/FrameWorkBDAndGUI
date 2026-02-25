@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Awh_AnimeGenreApi import Awh_AnimeGenreApi, Awh_AnimeGenreObj
 
 class Awh_AnimeGenreDvi(BaseAvi):
     thisApi = Awh_AnimeGenreApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -31,14 +32,16 @@ class Awh_AnimeGenreDvi(BaseAvi):
             LEFT JOIN Awh_Genre t2 ON t2.id = t.idGenre
                 """
 
-        async def thisRop(self)->Awh_AnimeGenreObj:
-            return await super().thisRop()
+        def thisRop(self)->Awh_AnimeGenreObj:
+            return super().thisRop()
 
         def thisApi(self)->Awh_AnimeGenreApi:
             return super().thisApi()
         
-        def setidAnime(self, sender, app_data, user_data): self.thisApi().setidAnime(self.obj, app_data); self.afterSetter()
-        def setidGenre(self, sender, app_data, user_data): self.thisApi().setidGenre(self.obj, app_data); self.afterSetter()
+        def setidAnime(self, event:Event.SetterEvent): self.thisApi().setidAnime(self.thisRop(), event.value); self.afterSetter()
+        def setidAnimeHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idAnime'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidGenre(self, event:Event.SetterEvent): self.thisApi().setidGenre(self.thisRop(), event.value); self.afterSetter()
+        def setidGenreHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idGenre'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Ir_ItemApi import Ir_ItemApi, Ir_ItemObj
 
 class Ir_ItemDvi(BaseAvi):
     thisApi = Ir_ItemApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -24,13 +25,13 @@ class Ir_ItemDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Ir_ItemObj:
-            return await super().thisRop()
+        def thisRop(self)->Ir_ItemObj:
+            return super().thisRop()
 
         def thisApi(self)->Ir_ItemApi:
             return super().thisApi()
         
-        def setgidScr(self, sender, app_data, user_data): self.thisApi().setgidScr(self.obj, app_data); self.afterSetter()
+        def setgidScr(self, event:Event.SetterEvent): self.thisApi().setgidScr(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

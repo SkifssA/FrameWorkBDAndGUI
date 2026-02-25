@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Hbc_StudentLessonApi import Hbc_StudentLessonApi, Hbc_StudentLessonObj
 
 class Hbc_StudentLessonDvi(BaseAvi):
     thisApi = Hbc_StudentLessonApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -33,16 +34,18 @@ class Hbc_StudentLessonDvi(BaseAvi):
             LEFT JOIN Hbc_Lesson t2 ON t2.id = t.idLesson
                 """
 
-        async def thisRop(self)->Hbc_StudentLessonObj:
-            return await super().thisRop()
+        def thisRop(self)->Hbc_StudentLessonObj:
+            return super().thisRop()
 
         def thisApi(self)->Hbc_StudentLessonApi:
             return super().thisApi()
         
-        def setidStudent(self, sender, app_data, user_data): self.thisApi().setidStudent(self.obj, app_data); self.afterSetter()
-        def setidLesson(self, sender, app_data, user_data): self.thisApi().setidLesson(self.obj, app_data); self.afterSetter()
-        def setbUploadFile(self, sender, app_data, user_data): self.thisApi().setbUploadFile(self.obj, app_data); self.afterSetter()
-        def setbFillScore(self, sender, app_data, user_data): self.thisApi().setbFillScore(self.obj, app_data); self.afterSetter()
+        def setidStudent(self, event:Event.SetterEvent): self.thisApi().setidStudent(self.thisRop(), event.value); self.afterSetter()
+        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidLesson(self, event:Event.SetterEvent): self.thisApi().setidLesson(self.thisRop(), event.value); self.afterSetter()
+        def setidLessonHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idLesson'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setbUploadFile(self, event:Event.SetterEvent): self.thisApi().setbUploadFile(self.thisRop(), event.value); self.afterSetter()
+        def setbFillScore(self, event:Event.SetterEvent): self.thisApi().setbFillScore(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

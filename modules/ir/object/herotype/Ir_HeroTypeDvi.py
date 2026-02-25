@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Ir_HeroTypeApi import Ir_HeroTypeApi, Ir_HeroTypeObj
 
 class Ir_HeroTypeDvi(BaseAvi):
     thisApi = Ir_HeroTypeApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -33,16 +34,18 @@ class Ir_HeroTypeDvi(BaseAvi):
             LEFT JOIN Ir_DefType t2 ON t2.id = t.idDefType
                 """
 
-        async def thisRop(self)->Ir_HeroTypeObj:
-            return await super().thisRop()
+        def thisRop(self)->Ir_HeroTypeObj:
+            return super().thisRop()
 
         def thisApi(self)->Ir_HeroTypeApi:
             return super().thisApi()
         
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
-        def setsCode(self, sender, app_data, user_data): self.thisApi().setsCode(self.obj, app_data); self.afterSetter()
-        def setidWeaponType(self, sender, app_data, user_data): self.thisApi().setidWeaponType(self.obj, app_data); self.afterSetter()
-        def setidDefType(self, sender, app_data, user_data): self.thisApi().setidDefType(self.obj, app_data); self.afterSetter()
+        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
+        def setsCode(self, event:Event.SetterEvent): self.thisApi().setsCode(self.thisRop(), event.value); self.afterSetter()
+        def setidWeaponType(self, event:Event.SetterEvent): self.thisApi().setidWeaponType(self.thisRop(), event.value); self.afterSetter()
+        def setidWeaponTypeHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idWeaponType'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidDefType(self, event:Event.SetterEvent): self.thisApi().setidDefType(self.thisRop(), event.value); self.afterSetter()
+        def setidDefTypeHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idDefType'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

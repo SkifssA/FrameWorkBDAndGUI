@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi, Bc_ScriptSchedulerObj
 
 class Bc_ScriptSchedulerDvi(BaseAvi):
     thisApi = Bc_ScriptSchedulerApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -30,19 +31,19 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
                     LEFT JOIN Bc_TimeLine t1 ON t1.id = t.idTimeLine
                 """
 
-        async def thisRop(self)->Bc_ScriptSchedulerObj:
-            return await super().thisRop()
+        def thisRop(self)->Bc_ScriptSchedulerObj:
+            return super().thisRop()
 
         def thisApi(self)->Bc_ScriptSchedulerApi:
             return super().thisApi()
         
-        def setsNameScript(self, sender, app_data, user_data): self.thisApi().setsNameScript(self.obj, app_data); self.afterSetter()
-        def setsNameModule(self, sender, app_data, user_data): self.thisApi().setsNameModule(self.obj, app_data); self.afterSetter()
-        def setbRepeat(self, sender, app_data, user_data): self.thisApi().setbRepeat(self.obj, app_data); self.afterSetter()
-        def setnTime(self, sender, app_data, user_data): self.thisApi().setnTime(self.obj, app_data); self.afterSetter()
-        def setidTimeLine(self, sender, app_data, user_data): self.thisApi().setidTimeLine(self.obj, app_data); self.afterSetter()
-        def setidTimeLineHL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().setidTimeLine(self.obj, idLook); self.afterSetter()
-        def setbUsed(self, sender, app_data, user_data): self.thisApi().setbUsed(self.obj, app_data); self.afterSetter()
+        def setsNameScript(self, event:Event.SetterEvent): self.thisApi().setsNameScript(self.thisRop(), event.value); self.afterSetter()
+        def setsNameModule(self, event:Event.SetterEvent): self.thisApi().setsNameModule(self.thisRop(), event.value); self.afterSetter()
+        def setbRepeat(self, event:Event.SetterEvent): self.thisApi().setbRepeat(self.thisRop(), event.value); self.afterSetter()
+        def setnTime(self, event:Event.SetterEvent): self.thisApi().setnTime(self.thisRop(), event.value); self.afterSetter()
+        def setidTimeLine(self, event:Event.SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter()
+        def setidTimeLineHL(self, event:Event.SetterEvent): idLook = event.user_data.getId(event.value); self.thisApi().setidTimeLine(self.thisRop(), idLook); self.afterSetter()
+        def setbUsed(self, event:Event.SetterEvent): self.thisApi().setbUsed(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

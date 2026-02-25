@@ -2,11 +2,12 @@ from .bilderBase import BilderBase
 
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
 
 class {nameClass}Dvi(BaseAvi):
     thisApi = {nameClass}Api
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return \"\"\"{sqlList}\"\"\"
@@ -14,8 +15,8 @@ class {nameClass}Dvi(BaseAvi):
         def onRefreshExt(self):
             return \"\"\"{sqlListExt}\"\"\"
 
-        async def thisRop(self)->{nameClass}Obj:
-            return await super().thisRop()
+        def thisRop(self)->{nameClass}Obj:
+            return super().thisRop()
 
         def thisApi(self)->{nameClass}Api:
             return super().thisApi()
@@ -44,14 +45,23 @@ class {nameClass}Dvi(BaseAvi):
         self.data['sqlListExt'] = w[1]
 
     def __getSetters(self):
-        tempSet = 'def set{nameAttr}(self, sender, app_data, user_data): self.thisApi().set{nameAttr}(self.obj, app_data); self.afterSetter()'
-        tempSetLookUp = 'def set{nameAttr}HL(self, sender, app_data, user_data): idLook = user_data.getId(app_data); self.thisApi().set{nameAttr}(self.obj, idLook); self.afterSetter()'
+        tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value); self.afterSetter()'
+        tempSetLookUp = '{setHead}idLook = event.user_data.getId(event.value); self.thisApi().set{nameAttr}(self.thisRop(), idLook); self.afterSetter()'
+        tempSetButton = '{setHead}event.user_data._getAvi()().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().setidRare(self.thisRop(), x[\'id\'])); self.afterSetter()'
         listTepmSet = []
+
+        dictAttr = {}
         for i in self.data['attr']:
-            listTepmSet.append(tempSet.format(nameAttr=i['name']))
-            if  'editType' in i:
-                if i['editType'] == 'lookUp':
-                    listTepmSet.append(tempSetLookUp.format(nameAttr=i['name']))
+            dictAttr['nameAttr'] = i['name']
+            dictAttr['setHead'] = 'def set{nameAttr}(self, event:Event.SetterEvent): '.format(**dictAttr)
+            listTepmSet.append(tempSet.format(**dictAttr))
+            editType = i.get('editType', None)
+            dictAttr['setHead'] = 'def set{nameAttr}(self, event:Event.SetterEvent): '.format(nameAttr=i['name']+'HL')
+            if editType == 'lookUp':
+                listTepmSet.append(tempSetLookUp.format(**dictAttr))
+            elif i['name'].startswith('id') and editType is None:
+                listTepmSet.append(tempSetButton.format(**dictAttr))
+
         return f'\n{self.tabSpace*2}'.join(listTepmSet)
     
     def __getSqlList(self)->str:

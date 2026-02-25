@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Hbc_StudentDataApi import Hbc_StudentDataApi, Hbc_StudentDataObj
 
 class Hbc_StudentDataDvi(BaseAvi):
     thisApi = Hbc_StudentDataApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -26,14 +27,15 @@ class Hbc_StudentDataDvi(BaseAvi):
                     LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
                 """
 
-        async def thisRop(self)->Hbc_StudentDataObj:
-            return await super().thisRop()
+        def thisRop(self)->Hbc_StudentDataObj:
+            return super().thisRop()
 
         def thisApi(self)->Hbc_StudentDataApi:
             return super().thisApi()
         
-        def setidStudent(self, sender, app_data, user_data): self.thisApi().setidStudent(self.obj, app_data); self.afterSetter()
-        def setsData(self, sender, app_data, user_data): self.thisApi().setsData(self.obj, app_data); self.afterSetter()
+        def setidStudent(self, event:Event.SetterEvent): self.thisApi().setidStudent(self.thisRop(), event.value); self.afterSetter()
+        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setsData(self, event:Event.SetterEvent): self.thisApi().setsData(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

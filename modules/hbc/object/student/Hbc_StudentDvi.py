@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Hbc_StudentApi import Hbc_StudentApi, Hbc_StudentObj
 
 class Hbc_StudentDvi(BaseAvi):
     thisApi = Hbc_StudentApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -30,19 +31,19 @@ class Hbc_StudentDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Hbc_StudentObj:
-            return await super().thisRop()
+        def thisRop(self)->Hbc_StudentObj:
+            return super().thisRop()
 
         def thisApi(self)->Hbc_StudentApi:
             return super().thisApi()
         
-        def setsName(self, sender, app_data, user_data): self.thisApi().setsName(self.obj, app_data); self.afterSetter()
-        def setsContact(self, sender, app_data, user_data): self.thisApi().setsContact(self.obj, app_data); self.afterSetter()
-        def setsIpVM(self, sender, app_data, user_data): self.thisApi().setsIpVM(self.obj, app_data); self.afterSetter()
-        def setsLoginVM(self, sender, app_data, user_data): self.thisApi().setsLoginVM(self.obj, app_data); self.afterSetter()
-        def setsPassworVM(self, sender, app_data, user_data): self.thisApi().setsPassworVM(self.obj, app_data); self.afterSetter()
-        def setsIdNew(self, sender, app_data, user_data): self.thisApi().setsIdNew(self.obj, app_data); self.afterSetter()
-        def setbEnd(self, sender, app_data, user_data): self.thisApi().setbEnd(self.obj, app_data); self.afterSetter()
+        def setsName(self, event:Event.SetterEvent): self.thisApi().setsName(self.thisRop(), event.value); self.afterSetter()
+        def setsContact(self, event:Event.SetterEvent): self.thisApi().setsContact(self.thisRop(), event.value); self.afterSetter()
+        def setsIpVM(self, event:Event.SetterEvent): self.thisApi().setsIpVM(self.thisRop(), event.value); self.afterSetter()
+        def setsLoginVM(self, event:Event.SetterEvent): self.thisApi().setsLoginVM(self.thisRop(), event.value); self.afterSetter()
+        def setsPassworVM(self, event:Event.SetterEvent): self.thisApi().setsPassworVM(self.thisRop(), event.value); self.afterSetter()
+        def setsIdNew(self, event:Event.SetterEvent): self.thisApi().setsIdNew(self.thisRop(), event.value); self.afterSetter()
+        def setbEnd(self, event:Event.SetterEvent): self.thisApi().setbEnd(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

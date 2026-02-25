@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Bc_FileApi import Bc_FileApi, Bc_FileObj
 
 class Bc_FileDvi(BaseAvi):
     thisApi = Bc_FileApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -27,16 +28,16 @@ class Bc_FileDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Bc_FileObj:
-            return await super().thisRop()
+        def thisRop(self)->Bc_FileObj:
+            return super().thisRop()
 
         def thisApi(self)->Bc_FileApi:
             return super().thisApi()
         
-        def setgidScr(self, sender, app_data, user_data): self.thisApi().setgidScr(self.obj, app_data); self.afterSetter()
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
-        def setsSuffix(self, sender, app_data, user_data): self.thisApi().setsSuffix(self.obj, app_data); self.afterSetter()
-        def setsPath(self, sender, app_data, user_data): self.thisApi().setsPath(self.obj, app_data); self.afterSetter()
+        def setgidScr(self, event:Event.SetterEvent): self.thisApi().setgidScr(self.thisRop(), event.value); self.afterSetter()
+        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
+        def setsSuffix(self, event:Event.SetterEvent): self.thisApi().setsSuffix(self.thisRop(), event.value); self.afterSetter()
+        def setsPath(self, event:Event.SetterEvent): self.thisApi().setsPath(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

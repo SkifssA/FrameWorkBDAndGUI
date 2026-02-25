@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Awh_AnimeApi import Awh_AnimeApi, Awh_AnimeObj
 
 class Awh_AnimeDvi(BaseAvi):
     thisApi = Awh_AnimeApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -28,17 +29,17 @@ class Awh_AnimeDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Awh_AnimeObj:
-            return await super().thisRop()
+        def thisRop(self)->Awh_AnimeObj:
+            return super().thisRop()
 
         def thisApi(self)->Awh_AnimeApi:
             return super().thisApi()
         
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
-        def setnSeries(self, sender, app_data, user_data): self.thisApi().setnSeries(self.obj, app_data); self.afterSetter()
-        def setbReleased(self, sender, app_data, user_data): self.thisApi().setbReleased(self.obj, app_data); self.afterSetter()
-        def setsUrl(self, sender, app_data, user_data): self.thisApi().setsUrl(self.obj, app_data); self.afterSetter()
-        def setsUrlImg(self, sender, app_data, user_data): self.thisApi().setsUrlImg(self.obj, app_data); self.afterSetter()
+        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
+        def setnSeries(self, event:Event.SetterEvent): self.thisApi().setnSeries(self.thisRop(), event.value); self.afterSetter()
+        def setbReleased(self, event:Event.SetterEvent): self.thisApi().setbReleased(self.thisRop(), event.value); self.afterSetter()
+        def setsUrl(self, event:Event.SetterEvent): self.thisApi().setsUrl(self.thisRop(), event.value); self.afterSetter()
+        def setsUrlImg(self, event:Event.SetterEvent): self.thisApi().setsUrlImg(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

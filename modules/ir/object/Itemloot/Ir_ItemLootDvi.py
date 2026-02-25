@@ -2,10 +2,9 @@
 from core.base import BaseAvi, Selection, Event
 from .Ir_ItemLootApi import Ir_ItemLootApi, Ir_ItemLootObj
 
-from ..rare.Ir_RareAvi import Ir_RareAvi
-
 class Ir_ItemLootDvi(BaseAvi):
     thisApi = Ir_ItemLootApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -35,22 +34,10 @@ class Ir_ItemLootDvi(BaseAvi):
         def thisApi(self)->Ir_ItemLootApi:
             return super().thisApi()
         
-        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.obj, event.value); self.afterSetter()
-        def setidRare(self, event:Event.SetterEvent): self.thisApi().setidRare(self.obj, event.value); self.afterSetter()
-        def setidRareHL(self, event:Event.SetterEvent):
-            if (event.type == 'selectValue'):
-                Ir_RareAvi.list().openModal(
-                    callback=lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])
-                    )
-            elif (event.type == 'openCard'):
-                Ir_RareAvi.card(idItem=self.getAttr("idRare")).openModal()
-            elif (event.type == 'deleteValue'):
-                self.thisApi().setidRare(self.thisRop(), None)
-            else:
-                print("Сеттер на ввод значения")
-            self.afterSetter()
-
-        def setnScore(self, event:Event.SetterEvent): self.thisApi().setnScore(self.obj, event.value); self.afterSetter()
+        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
+        def setidRare(self, event:Event.SetterEvent): self.thisApi().setidRare(self.thisRop(), event.value); self.afterSetter()
+        def setidRareHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idRare'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setnScore(self, event:Event.SetterEvent): self.thisApi().setnScore(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

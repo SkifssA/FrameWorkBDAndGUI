@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Bc_ConfigApi import Bc_ConfigApi, Bc_ConfigObj
 
 class Bc_ConfigDvi(BaseAvi):
     thisApi = Bc_ConfigApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -26,15 +27,15 @@ class Bc_ConfigDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Bc_ConfigObj:
-            return await super().thisRop()
+        def thisRop(self)->Bc_ConfigObj:
+            return super().thisRop()
 
         def thisApi(self)->Bc_ConfigApi:
             return super().thisApi()
         
-        def setsModule(self, sender, app_data, user_data): self.thisApi().setsModule(self.obj, app_data); self.afterSetter()
-        def setsCaprionSetting(self, sender, app_data, user_data): self.thisApi().setsCaprionSetting(self.obj, app_data); self.afterSetter()
-        def setsValue(self, sender, app_data, user_data): self.thisApi().setsValue(self.obj, app_data); self.afterSetter()
+        def setsModule(self, event:Event.SetterEvent): self.thisApi().setsModule(self.thisRop(), event.value); self.afterSetter()
+        def setsCaprionSetting(self, event:Event.SetterEvent): self.thisApi().setsCaprionSetting(self.thisRop(), event.value); self.afterSetter()
+        def setsValue(self, event:Event.SetterEvent): self.thisApi().setsValue(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

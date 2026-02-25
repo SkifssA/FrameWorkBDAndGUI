@@ -8,6 +8,7 @@ from ..empty.EmptyList import EmptyList
 from ..empty.EmptyCard import EmptyCard
 from .BaseOper import SetOper
 from .BaseModal import DialogModal
+from .Event import SetterEvent
 
 class BaseAvi:
 
@@ -18,6 +19,24 @@ class BaseAvi:
         for key, value in kwargs.items():
             setattr(instance, key, value)
         return instance
+    
+    @classmethod
+    def list(cls, **kwargs): pass
+
+    @classmethod
+    def card(cls, **kwargs): pass
+
+    def proccessById(self, event:SetterEvent, getAttr, setAttr):
+        if (event.type == 'selectValue'):
+            self.__class__.list().openModal(
+                callback=setAttr
+            )
+        elif (event.type == 'openCard'):
+            self.__class__.card(idItem=getAttr).openModal()
+        elif (event.type == 'deleteValue'):
+            self.thisApi().setidRare(self.thisRop(), None)
+        else:
+            print("Сеттер на ввод значения")
 
     class DefaultDefault(BaseForm):
         def getAttr(self, name:str):

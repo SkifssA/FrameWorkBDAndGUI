@@ -1,9 +1,10 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection
+from core.base import BaseAvi, Selection, Event
 from .Awh_GenreApi import Awh_GenreApi, Awh_GenreObj
 
 class Awh_GenreDvi(BaseAvi):
     thisApi = Awh_GenreApi
+
     class DviDefault(BaseAvi.DefaultDefault):
         async def onRefresh(self):
             return """
@@ -24,13 +25,13 @@ class Awh_GenreDvi(BaseAvi):
                     
                 """
 
-        async def thisRop(self)->Awh_GenreObj:
-            return await super().thisRop()
+        def thisRop(self)->Awh_GenreObj:
+            return super().thisRop()
 
         def thisApi(self)->Awh_GenreApi:
             return super().thisApi()
         
-        def setsCaption(self, sender, app_data, user_data): self.thisApi().setsCaption(self.obj, app_data); self.afterSetter()
+        def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

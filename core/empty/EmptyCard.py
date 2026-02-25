@@ -133,6 +133,8 @@ class EmptyCard(BaseForm):
         dpg.set_item_callback(w[-3], SetterEvent(self, 'selectValue').getEvent(i))
         dpg.set_item_callback(w[-2], SetterEvent(self, 'openCard').getEvent(i))
         dpg.set_item_callback(w[-1], SetterEvent(self, 'deleteValue').getEvent(i))
+        for i in w[1:]:
+            dpg.set_item_user_data(i, sel)
 
     def www(self, sel, n):
         async def q(x): print(n, x)
