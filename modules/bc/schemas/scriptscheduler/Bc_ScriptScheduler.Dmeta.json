@@ -50,8 +50,8 @@
         "edit": "lookUp",
         "isVisible": true,
         "order": 50.1,
-        "display": "LookUp",
-        "refTab": "Bc_TimeLine"
+        "refTab": "Bc_TimeLine",
+        "display": "LookUp"
       },
       "bUsed": {
         "caption": "Использовать",

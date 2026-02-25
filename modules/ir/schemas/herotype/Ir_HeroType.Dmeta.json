@@ -35,9 +35,11 @@
       },
       "idWeaponTypeHL": {
         "caption": "Тип оружия",
-        "edit": "edit",
+        "edit": "button",
         "isVisible": true,
-        "order": 0
+        "order": 0,
+        "refTab": "Ir_WeaponType",
+        "display": "list"
       },
       "idDefType": {
         "caption": "Тип бронин",
@@ -47,9 +49,11 @@
       },
       "idDefTypeHL": {
         "caption": "Тип бронин",
-        "edit": "edit",
+        "edit": "button",
         "isVisible": true,
-        "order": 0
+        "order": 0,
+        "refTab": "Ir_DefType",
+        "display": "list"
       }
     }
   }

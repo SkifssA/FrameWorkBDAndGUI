@@ -42,7 +42,7 @@ class BaseForm(AbstractForm):
         self.parentTable = parentTable
         self.ch = tuple(self.openCh())
         self.meta = await self.getMeta()
-        if self.tab is not None:
+        if dpg.does_item_exist(self.tab):
             await self.refresh()
         else:    
             await self.createTab(self.parent, self.getW())
@@ -52,7 +52,7 @@ class BaseForm(AbstractForm):
         dpg.show_item(self.tab)
         dpg.set_value(self.parent, self.tab)
 
-    async def openModal(self, callback, returnAttr:list=['id']):
+    async def _openModal(self, callback=None, returnAttr:list=['id']):
         self.returnAttr = returnAttr
         self.callback = callback
         self.isModal = True
@@ -63,6 +63,16 @@ class BaseForm(AbstractForm):
         await self.modal.createMainContexWithFuc(self.open)
         dpg.split_frame()
         self.modal.show()
+
+    def openModal(self, callback=None, returnAttr:list=['id']):
+        self.asyncRun(self._openModal(callback, returnAttr))
+
+    def asyncRun(self, coroutine)->None:
+        try:
+            asyncio.get_running_loop()
+            asyncio.create_task(coroutine)
+        except:
+            asyncio.run(coroutine)
                 
     async def getMeta(self):
         mod, clas = self.thisApi()._getNameClass().split("_")

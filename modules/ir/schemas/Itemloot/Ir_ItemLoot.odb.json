@@ -1,6 +1,6 @@
 {
     "name": "Ir_ItemLoot",
-    "caption": "Броня",
+    "caption": "Предметы",
     "attr":[
         {
             "name": "sCaption",

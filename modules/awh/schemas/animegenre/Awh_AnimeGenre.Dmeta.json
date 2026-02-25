@@ -23,9 +23,11 @@
       },
       "idAnimeHL": {
         "caption": "Аниме",
-        "edit": "edit",
+        "edit": "button",
         "isVisible": true,
-        "order": 0
+        "order": 0,
+        "refTab": "Awh_Anime",
+        "display": "list"
       },
       "idGenre": {
         "caption": "Жанр",
@@ -35,9 +37,11 @@
       },
       "idGenreHL": {
         "caption": "Жанр",
-        "edit": "edit",
+        "edit": "button",
         "isVisible": true,
-        "order": 0
+        "order": 0,
+        "refTab": "Awh_Genre",
+        "display": "list"
       }
     }
   }

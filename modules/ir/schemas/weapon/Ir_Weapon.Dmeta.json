@@ -32,8 +32,8 @@
         "edit": "lookUp",
         "isVisible": true,
         "order": 0.1,
-        "display": "LookUp",
-        "refTab": "Ir_WeaponType"
+        "refTab": "Ir_WeaponType",
+        "display": "LookUp"
       },
       "idRare": {
         "caption": "Редкость",
@@ -46,8 +46,8 @@
         "edit": "lookUp",
         "isVisible": true,
         "order": 0.1,
-        "display": "LookUp",
-        "refTab": "Ir_Rare"
+        "refTab": "Ir_Rare",
+        "display": "LookUp"
       },
       "nScore": {
         "caption": "Стоймость",

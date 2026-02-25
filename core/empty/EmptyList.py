@@ -68,11 +68,7 @@ class EmptyList(BaseForm):
         '''Операция выполняемая при выборе строки'''
         if tagRow != self.tagRow:
             self.tagRow = tagRow
-            try:
-                asyncio.get_running_loop()
-                asyncio.create_task(self.refreshCh())
-            except:
-                asyncio.run(self.refreshCh())
+            self.asyncRun(self.refreshCh())
             self.checwork()
 
     def _oneShow(self, tagSelf, tagTable):

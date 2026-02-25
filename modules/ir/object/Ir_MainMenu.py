@@ -4,6 +4,7 @@ from core.base.BaseOper import SetOper
 from .hero.Ir_HeroAvi import Ir_HeroAvi
 from .defa.Ir_DefaAvi import Ir_DefaAvi
 from .weapon.Ir_WeaponAvi import Ir_WeaponAvi
+from .Itemloot.Ir_ItemLootAvi import Ir_ItemLootAvi
 
 class Ir_MainMenu(mainMenu):
     @SetOper(label="Справочники")
@@ -20,3 +21,7 @@ class Ir_MainMenu(mainMenu):
     @SetOper(label='Броня', order=3, headOper='mm_respo')
     async def Ir_Defa(self):
         await Ir_DefaAvi.List().open()
+
+    @SetOper(label='Предметы', order=4, headOper='mm_respo')
+    async def Ir_ItemLootAvi(self):
+        await Ir_ItemLootAvi.List().open()

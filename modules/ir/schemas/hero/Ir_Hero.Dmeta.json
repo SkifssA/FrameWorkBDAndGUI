@@ -62,8 +62,8 @@
         "edit": "lookUp",
         "isVisible": true,
         "order": 0.1,
-        "display": "LookUp",
-        "refTab": "Ir_HeroType"
+        "refTab": "Ir_HeroType",
+        "display": "LookUp"
       }
     }
   }

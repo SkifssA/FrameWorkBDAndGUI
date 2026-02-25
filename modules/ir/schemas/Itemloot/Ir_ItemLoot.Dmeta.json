@@ -1,6 +1,6 @@
 {
   "Default": {
-    "caption": "Броня",
+    "caption": "Предметы",
     "isVisibleToolBar": true,
     "attr": {
       "id": {
@@ -29,9 +29,11 @@
       },
       "idRareHL": {
         "caption": "Редкость",
-        "edit": "edit",
+        "edit": "button",
         "isVisible": true,
-        "order": 0
+        "order": 0,
+        "refTab": "Ir_Rare",
+        "display": "list"
       },
       "nScore": {
         "caption": "Стоймость",

@@ -32,7 +32,7 @@ class BaseApi:
             return None
         results = []
         for i in w:
-            results.append(await self._createRop(i))
+            results.append(self._createRop(i))
         return results
 
     async def _findAllByAttr(self, attr:str, value)->list[int]|None:
@@ -77,7 +77,7 @@ class BaseApi:
         t = self._getNameClass()
         return await ATQSL(f"DELETE FROM {t} WHERE id = ?", [id])
 
-    async def _createRop(self, data):
+    def _createRop(self, data):
         rop = self._classObj()
         value = self._getDataRop(rop)
         for k, v in {i:data[i] for i in value.keys()}.items():
@@ -89,7 +89,7 @@ class BaseApi:
             if id is not None:
                 t = self._getNameClass()
                 data = await ASQL(f"SELECT * FROM {t} WHERE id = ?", [id])
-                return await self._createRop(data=data[0])
+                return self._createRop(data=data[0])
         except IndexError:
             pass
 

@@ -2,7 +2,7 @@ import importlib
 import inspect
 
 class Core_ActionDispatcherPkg:
-    async def action(self, sAction:str):
+    async def action(self, sAction:str, kattr:dict={}):
         sNameClass, sNameMetod = sAction.split('.')
         sNameModule = f'modules.{sNameClass[:sNameClass.find('_')].lower()}'
         try:
@@ -17,10 +17,10 @@ class Core_ActionDispatcherPkg:
             attr = getattr(cls(), sNameMetod)
             if inspect.iscoroutinefunction(attr):
                 # Это async def метод → вызываем и ждём
-                return await attr()
+                return await attr(**kattr)
             elif callable(attr):
                 # Обычный метод
-                return attr()
+                return attr(**kattr)
         except ImportError as e:
             raise ValueError(f"Не удалось импортировать модуль {sNameModule}: {e}")
         

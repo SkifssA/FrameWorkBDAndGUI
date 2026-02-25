@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 import importlib
+import inspect
 
 from ..package import ASQL
 from ..empty.BaseForm import BaseForm
@@ -31,10 +32,6 @@ class BaseAvi:
             else:
                 return self._getAttr(name)
 
-        async def thisRop(self):
-            row = self.get_row()
-            return await self.thisApi()._createRop(row)
-
         def thisApi(self):
             return self._getAvi().thisApi()
         
@@ -54,7 +51,11 @@ class BaseAvi:
             d = {}
             for i in self.returnAttr:
                 d[i] = self.getAttr(i) 
-            await self.callback(**d)
+            if self.callback is not None:
+                if inspect.iscoroutinefunction(self.callback):
+                    await self.callback(d)
+                else:
+                    self.callback(d)
             self.closeForm()
 
         def checwork(self):
@@ -75,8 +76,11 @@ class BaseAvi:
             await self.refresh()
 
         @SetOper(label='Закрыть', order=10000, img='1')
-        async def closeForm(self): dpg.delete_item(self.tab)
+        async def closeFormCancel(self): dpg.delete_item(self.tab)
 
+        def thisRop(self):
+            row = self.get_row()
+            return self.thisApi()._createRop(row)
 
         def checwork(self):
             super().checwork()
@@ -94,6 +98,9 @@ class BaseAvi:
                 if self.isInsert:
                     await self.thisApi().delete(self.obj)
                 self.closeForm()
+
+        def thisRop(self):
+            return self.obj
 
         async def handle_confirmation(self, result: bool):
             if self.isInsert:
@@ -127,11 +134,11 @@ class BaseAvi:
             
         async def getObj(self):
             if self.obj is None:
-                if getattr(self, f'idItem', None) is None:
+                if getattr(self, 'idItem', None) is None:
                     obj = await self.thisApi().insert()
-                    setattr(self, f'idItem', obj.id)
+                    setattr(self, 'idItem', obj.id)
                     return obj
-                return await self.thisApi().load(getattr(self, f'idItem', None))
+                return await self.thisApi().load(getattr(self, 'idItem', None))
             return self.obj
         
         def checwork(self):

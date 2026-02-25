@@ -44,9 +44,11 @@ class BildersDmeta(BilderBase):
             if i['name'].startswith('id'):
                 attr[i['name']+'HL'] = {
                     "caption": i['caption'],
-                    "edit": i['editType'] if 'editType' in i else 'edit',
+                    "edit": i['editType'] if 'editType' in i else 'button',
                     'isVisible': i['name']+'HL' in self.data['showAttr'],
-                    'order': i.get('order', 0)
+                    'order': i.get('order', 0),
+                    'refTab': i['refTab'],
+                    'display': i.get('display', 'list')
                 }
                 attr[i['name']]['edit'] = 'edit'
             if  'editType' in i:

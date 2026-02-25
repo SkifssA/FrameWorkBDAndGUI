@@ -11,7 +11,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
     class List(Awh_AnimeDvi.DviList):
         @SetOper(label='Загрузить', img='9')
         async def uploadlesson(self):
-            async def registerAnime(**kattr):
+            async def registerAnime(kattr):
                 a = await Awh_AnimeLoadPkg().getData(kattr['sUrl'])
                 await self.thisApi().register(a)
                 await self.refresh()
