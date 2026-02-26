@@ -64,6 +64,34 @@
         "order": 0.1,
         "refTab": "Ir_HeroType",
         "display": "LookUp"
+      },
+      "idDefa": {
+        "caption": "Броня",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
+      },
+      "idDefaHL": {
+        "caption": "Броня",
+        "edit": "button",
+        "isVisible": true,
+        "order": 0,
+        "refTab": "Ir_Defa",
+        "display": "list"
+      },
+      "idWeapon": {
+        "caption": "Оружие",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
+      },
+      "idWeaponHL": {
+        "caption": "Оружие",
+        "edit": "button",
+        "isVisible": true,
+        "order": 0,
+        "refTab": "Ir_Weapon",
+        "display": "list"
       }
     }
   }

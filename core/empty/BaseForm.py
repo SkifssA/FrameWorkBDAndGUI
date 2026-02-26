@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 import inspect
+import os
 import asyncio
 import re
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
@@ -31,11 +32,15 @@ class BaseForm(AbstractForm):
         self.filter = None
         self.imgManager = Core_ImageManagerPkg()
         self.modal = None
-
-    def getTag(self)->str:
-        '''формирование тега формы'''
-        return self.thisApi()._getNameClass() + str(self.parent)
         
+    def get_impl_path(self):
+        """Путь к файлу, где определён класс"""
+        file = inspect.getfile(self.__class__)
+        w = file.find('modules')
+        file = file[w:-3].replace('object', 'schemas')
+        return file
+        
+
     async def open(self, parent='tab_bar', parentTable=None):
         '''Открытие выборки'''
         self.parent = parent
@@ -57,8 +62,8 @@ class BaseForm(AbstractForm):
         self.callback = callback
         self.isModal = True
         self.meta = await self.getMeta()
-        wd = self.meta['width'] if 'width' in self.meta else (dpg.get_viewport_width() * 0.5)
-        hg = self.meta['height'] if 'height' in self.meta else (dpg.get_viewport_height() * 0.5)
+        wd = self.meta.get('width', dpg.get_viewport_width() * 0.5)
+        hg = self.meta.get('height', dpg.get_viewport_height() * 0.5)
         self.modal = FormModal(wd, hg)
         await self.modal.createMainContexWithFuc(self.open)
         dpg.split_frame()
@@ -75,14 +80,17 @@ class BaseForm(AbstractForm):
             asyncio.run(coroutine)
                 
     async def getMeta(self):
-        mod, clas = self.thisApi()._getNameClass().split("_")
-        path = f"../../modules/{mod.lower()}/schemas/{clas.lower()}/{self.thisApi()._getNameClass()}"
+        path = f'../../{self.get_impl_path()}'
+        if (path.endswith('Avi')):
+            path = path[:-3]
         a = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
         d = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
         if (self.__class__.__name__ in a):
             return self.__fillByDefault(a[self.__class__.__name__], d['Default'])
-        else:
+        elif ('Default' in d):
             return d['Default']
+        else:
+            return {'isVisibleToolBar': False}
 
     def __fillByDefault(self, a, d):
         self.__w(a, d, 'caption')
@@ -108,10 +116,7 @@ class BaseForm(AbstractForm):
             if i is not None:
                 if hasattr(i, 'right'):
                     if i.right:
-                        if 'width' in self.meta:
-                            w = self.meta['width']
-                        else:
-                            w = wScreen * 0.5   
+                        w = self.meta.get('width', wScreen * 0.5) 
         return w
     
     async def refreshCh(self):
@@ -136,7 +141,7 @@ class BaseForm(AbstractForm):
     async def createTab(self, parent='tab_bar', width=0):
         '''Создание фрейма'''
         if (dpg.get_item_type(parent) == "mvAppItemType::mvTabBar"):
-            self.tab = dpg.add_tab(label=self.meta['caption'], parent=parent, show=False)
+            self.tab = dpg.add_tab(label=self.meta.get('caption', ''), parent=parent, show=False)
         else:
             self.tab = parent
 
@@ -155,7 +160,7 @@ class BaseForm(AbstractForm):
     
     async def createTable(self, par, width=-1, height=None):
         '''Создание основного фрейма'''
-        height = height if height is not None else self.defaultHeight
+        height = height or self.defaultHeight
 
         with dpg.child_window(show=False, parent=par, height=52) as upToolBar:
             self.upToolBar = upToolBar
@@ -167,9 +172,9 @@ class BaseForm(AbstractForm):
 
         await self.afterCreate()
 
-        await self.addTools()
-
-        dpg.configure_item(self.upToolBar, show=self.meta['isVisibleToolBar'])
+        if self.meta.get('isVisibleToolBar', True):
+            await self.addTools()
+            dpg.configure_item(self.upToolBar, show=True)
 
         dpg.configure_item(par, width=width)
         self.offset_x_resize = width
@@ -223,7 +228,7 @@ class BaseForm(AbstractForm):
             if hasattr(obj, '_is_oper_handler'):
                 q.append((name, obj))
             
-        oper = self.meta['oper'] if 'oper' in self.meta else {}
+        oper = self.meta.get('oper', {})
 
         for i in sorted(q, key=lambda x: x[-1]._order):
             if not dpg.does_item_exist(f'{self.selfgroup}_{i[0]}'):

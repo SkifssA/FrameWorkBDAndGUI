@@ -32,7 +32,7 @@ async def mainProgram():
 
     # Устанавливаем шрифт как активный (заменяет устаревший default_font=True)
     dpg.bind_font(font)
-    with dpg.window(label="Главное окно", tag="main_window", menubar=True):
+    with dpg.window(label="Главное окно", tag="main_window", menubar=True, no_scrollbar=True):
         pass
     await Core_SelectApp().open()
 

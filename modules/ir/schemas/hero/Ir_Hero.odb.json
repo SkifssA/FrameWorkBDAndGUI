@@ -33,6 +33,16 @@
             "caption": "Класс героя",
             "refTab": "Ir_HeroType",
             "editType": "lookUp"
+        },{
+            "name": "idDefa",
+            "type": "INT",
+            "caption": "Броня",
+            "refTab": "Ir_Defa"
+        },{
+            "name": "idWeapon",
+            "type": "INT",
+            "caption": "Оружие",
+            "refTab": "Ir_Weapon"
         }
     ]
 }

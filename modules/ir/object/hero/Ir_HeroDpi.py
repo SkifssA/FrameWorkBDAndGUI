@@ -13,6 +13,8 @@ class Ir_HeroObj(BaseObj):
         self.nMind:int = None
         self.nDexterit:int = None
         self.idType:int = None
+        self.idDefa:int = None
+        self.idWeapon:int = None
 
 class Ir_HeroDpi(BaseApi):
     _classObj = Ir_HeroObj
@@ -46,3 +48,5 @@ class Ir_HeroDpi(BaseApi):
     def setnMind(self, obj:Ir_HeroObj, value): obj.nMind = value
     def setnDexterit(self, obj:Ir_HeroObj, value): obj.nDexterit = value
     def setidType(self, obj:Ir_HeroObj, value): obj.idType = value
+    def setidDefa(self, obj:Ir_HeroObj, value): obj.idDefa = value
+    def setidWeapon(self, obj:Ir_HeroObj, value): obj.idWeapon = value

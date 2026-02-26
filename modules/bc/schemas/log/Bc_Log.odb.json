@@ -1,0 +1,11 @@
+{
+    "name": "Bc_Log",
+    "caption": "Лог",
+    "attr":[
+        {
+            "name": "sText",
+            "type": "TEXT",
+            "caption": "Запись"
+        }
+    ]
+}

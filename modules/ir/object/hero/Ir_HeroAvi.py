@@ -1,10 +1,13 @@
 # Пользовательский файл для интерфейса
 from .Ir_HeroDvi import Ir_HeroDvi
+from core.base.BaseOper import SetOper
 
 class Ir_HeroAvi(Ir_HeroDvi):
     class List(Ir_HeroDvi.DviList): pass
 
-    class Card(Ir_HeroDvi.DviCard): pass
+    class Card(Ir_HeroDvi.DviCard): 
+        @SetOper(label='Рейд', img='8')
+        async def raidOne(self): pass
 
     class LookUp(Ir_HeroDvi.DviLookUp): pass
 

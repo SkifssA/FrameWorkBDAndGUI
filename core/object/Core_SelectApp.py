@@ -23,8 +23,8 @@ class Core_SelectApp:
                 dpg.add_button(label='Открыть', callback=lambda: self.openMainMenuModule(data))
 
     def openMainMenuModule(self, data):
-        module_name = f"{data['nameMainScreen']}.open"
+        module_name = f"{data['nameMainScreen']}.default"
         dpg.delete_item(self.mainMenuApp)
-        asyncio.run(Core_ActionDispatcher().action(module_name))
+        asyncio.run(asyncio.run(Core_ActionDispatcher().action(module_name)).open(parent='main_window'))
 
         

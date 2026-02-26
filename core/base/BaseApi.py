@@ -5,9 +5,6 @@ class BaseApi:
     _classObj = None
     _all_instances = {}
 
-    def _getNameClass(self)->str:
-        return ' '
-
     async def idClass(self):
         id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))
         return id[0]['id']

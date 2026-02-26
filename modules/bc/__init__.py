@@ -6,6 +6,8 @@ from .object.file.Bc_FileApi import Bc_FileApi
 from .object.file.Bc_FileAvi import Bc_FileAvi
 from .object.icons.Bc_IconsApi import Bc_IconsApi
 from .object.icons.Bc_IconsAvi import Bc_IconsAvi
+from .object.log.Bc_LogApi import Bc_LogApi
+from .object.log.Bc_LogAvi import Bc_LogAvi
 from .object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi
 from .object.scriptscheduler.Bc_ScriptSchedulerAvi import Bc_ScriptSchedulerAvi
 from .object.timeline.Bc_TimeLineApi import Bc_TimeLineApi
@@ -20,6 +22,8 @@ __all__ = [
     'Bc_FileAvi'
     'Bc_IconsApi'
     'Bc_IconsAvi'
+    'Bc_LogApi'
+    'Bc_LogAvi'
     'Bc_ScriptSchedulerApi'
     'Bc_ScriptSchedulerAvi'
     'Bc_TimeLineApi'
