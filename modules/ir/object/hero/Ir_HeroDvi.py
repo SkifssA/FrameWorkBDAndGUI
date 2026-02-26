@@ -59,9 +59,9 @@ class Ir_HeroDvi(BaseAvi):
         def setidType(self, event:Event.SetterEvent): self.thisApi().setidType(self.thisRop(), event.value); self.afterSetter()
         def setidTypeHL(self, event:Event.SetterEvent): idLook = event.user_data.getId(event.value); self.thisApi().setidType(self.thisRop(), idLook); self.afterSetter()
         def setidDefa(self, event:Event.SetterEvent): self.thisApi().setidDefa(self.thisRop(), event.value); self.afterSetter()
-        def setidDefaHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idDefa'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidDefaHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idDefa'), lambda x: self.thisApi().setidDefa(self.thisRop(), x['id'])); self.afterSetter()
         def setidWeapon(self, event:Event.SetterEvent): self.thisApi().setidWeapon(self.thisRop(), event.value); self.afterSetter()
-        def setidWeaponHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idWeapon'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidWeaponHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idWeapon'), lambda x: self.thisApi().setidWeapon(self.thisRop(), x['id'])); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

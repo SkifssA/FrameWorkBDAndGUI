@@ -47,7 +47,7 @@ class {nameClass}Dvi(BaseAvi):
     def __getSetters(self):
         tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value); self.afterSetter()'
         tempSetLookUp = '{setHead}idLook = event.user_data.getId(event.value); self.thisApi().set{nameAttr}(self.thisRop(), idLook); self.afterSetter()'
-        tempSetButton = '{setHead}event.user_data._getAvi()().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().setidRare(self.thisRop(), x[\'id\'])); self.afterSetter()'
+        tempSetButton = '{setHead}event.user_data._getAvi()().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().set{nameAttr}(self.thisRop(), x[\'id\'])); self.afterSetter()'
         listTepmSet = []
 
         dictAttr = {}

@@ -41,9 +41,9 @@ class Hbc_StudentLessonDvi(BaseAvi):
             return super().thisApi()
         
         def setidStudent(self, event:Event.SetterEvent): self.thisApi().setidStudent(self.thisRop(), event.value); self.afterSetter()
-        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidStudent(self.thisRop(), x['id'])); self.afterSetter()
         def setidLesson(self, event:Event.SetterEvent): self.thisApi().setidLesson(self.thisRop(), event.value); self.afterSetter()
-        def setidLessonHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idLesson'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidLessonHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idLesson'), lambda x: self.thisApi().setidLesson(self.thisRop(), x['id'])); self.afterSetter()
         def setbUploadFile(self, event:Event.SetterEvent): self.thisApi().setbUploadFile(self.thisRop(), event.value); self.afterSetter()
         def setbFillScore(self, event:Event.SetterEvent): self.thisApi().setbFillScore(self.thisRop(), event.value); self.afterSetter()
 

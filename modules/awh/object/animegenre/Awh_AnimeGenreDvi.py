@@ -39,9 +39,9 @@ class Awh_AnimeGenreDvi(BaseAvi):
             return super().thisApi()
         
         def setidAnime(self, event:Event.SetterEvent): self.thisApi().setidAnime(self.thisRop(), event.value); self.afterSetter()
-        def setidAnimeHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idAnime'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidAnimeHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idAnime'), lambda x: self.thisApi().setidAnime(self.thisRop(), x['id'])); self.afterSetter()
         def setidGenre(self, event:Event.SetterEvent): self.thisApi().setidGenre(self.thisRop(), event.value); self.afterSetter()
-        def setidGenreHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idGenre'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidGenreHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idGenre'), lambda x: self.thisApi().setidGenre(self.thisRop(), x['id'])); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

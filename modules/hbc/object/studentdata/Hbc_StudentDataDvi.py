@@ -34,7 +34,7 @@ class Hbc_StudentDataDvi(BaseAvi):
             return super().thisApi()
         
         def setidStudent(self, event:Event.SetterEvent): self.thisApi().setidStudent(self.thisRop(), event.value); self.afterSetter()
-        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidRare(self.thisRop(), x['id'])); self.afterSetter()
+        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidStudent(self.thisRop(), x['id'])); self.afterSetter()
         def setsData(self, event:Event.SetterEvent): self.thisApi().setsData(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
