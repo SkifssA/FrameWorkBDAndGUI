@@ -95,7 +95,7 @@ class BaseAvi:
             await self.refresh()
 
         @SetOper(label='Закрыть', order=10000, img='1')
-        async def closeFormCancel(self): dpg.delete_item(self.tab)
+        async def closeFormCancel(self): self.closeForm()
 
         def thisRop(self):
             row = self.get_row()

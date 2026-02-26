@@ -1,1 +1,18 @@
-{}
+{
+  "List": {
+    "attr": {
+      "gidScrHL": {
+        "caption": "Предмет",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "gidScr": {
+        "caption": "Предмет",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
+      }
+    }
+  }
+}

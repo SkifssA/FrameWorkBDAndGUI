@@ -11,6 +11,9 @@ from ..package.Core_ImageManagerPkg import Core_ImageManagerPkg
 from ..base.BaseModal import FormModal, LoadModal
 
 class BaseForm(AbstractForm):
+
+    allOpenForm = {}
+
     def __init__(self):
         self.sizeLineResize = 5
         self.defaultHeight = 300
@@ -40,8 +43,12 @@ class BaseForm(AbstractForm):
         file = file[w:-3].replace('object', 'schemas')
         return file
         
+    @classmethod
+    def getAllForm(cls):
+        return BaseForm.allOpenForm
 
     async def open(self, parent='tab_bar', parentTable=None):
+        BaseForm.allOpenForm[str(self.__class__)] = self
         '''Открытие выборки'''
         self.parent = parent
         self.parentTable = parentTable
@@ -265,6 +272,7 @@ class BaseForm(AbstractForm):
             return lambda: asyncio.run(bound_method())
 
     def closeForm(self):
+        BaseForm.allOpenForm.pop(str(self.__class__), None)
         dpg.delete_item(self.tab)
         if self.modal is not None:
             self.modal.hide_overlay()

@@ -23,6 +23,9 @@ class BaseApi:
             w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} IS NULL')
         return w
     
+    async def getAll(self):
+        return await ASQL(f'SELECT * FROM {self._getNameClass()}')
+    
     async def _getAllByAttr(self, attr:str, value)->list|None:
         w = await self._findDataBase(attr, value)
         if not w:  # covers both [] and None

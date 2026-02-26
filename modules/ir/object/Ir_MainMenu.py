@@ -7,8 +7,8 @@ from .hero.Ir_HeroAvi import Ir_HeroAvi
 from .defa.Ir_DefaAvi import Ir_DefaAvi
 from .weapon.Ir_WeaponAvi import Ir_WeaponAvi
 from .Itemloot.Ir_ItemLootAvi import Ir_ItemLootAvi
-
 from modules.bc.object.log.Bc_LogAvi import Bc_LogAvi
+from .Item.Ir_ItemAvi import Ir_ItemAvi
 
 class Ir_MainMenu(mainMenu):
     class Default(mainMenu.Default):
@@ -36,3 +36,10 @@ class Ir_MainMenu(mainMenu):
         @SetOper(label='Предметы', order=4, headOper='mm_respo')
         async def Ir_ItemLootAvi(self):
             await Ir_ItemLootAvi.list().open()
+
+        @SetOper(label="Инвентарь")
+        def mm_int(self): pass
+
+        @SetOper(label='Инвентарь', order=1, headOper='mm_int')
+        async def Ir_ItemAvi(self):
+            await Ir_ItemAvi.list().open()
