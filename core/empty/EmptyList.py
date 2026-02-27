@@ -98,7 +98,8 @@ class EmptyList(BaseForm):
                              borders_outerH=True,
                              borders_outerV=True,
                              parent=par,
-                             scrollY=True)
+                             scrollY=True
+                            )
         return w
     
     async def afterCreate(self):

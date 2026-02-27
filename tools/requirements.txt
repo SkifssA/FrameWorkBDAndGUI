@@ -8,3 +8,4 @@ pandas
 pillow 
 numpy
 brotlicffi
+nest-asyncio

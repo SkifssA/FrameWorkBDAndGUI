@@ -24,8 +24,8 @@ class Ir_HeroDvi(BaseAvi):
                     t3.sHeadLine as idWeaponHL
                 FROM Ir_Hero AS t
                     LEFT JOIN Ir_HeroType t1 ON t1.id = t.idType
-                    LEFT JOIN Ir_Defa t2 ON t2.id = t.idDefa
-                    LEFT JOIN Ir_Weapon t3 ON t3.id = t.idWeapon
+                    LEFT JOIN Ir_Item t2 ON t2.id = t.idDefa
+                    LEFT JOIN Ir_Item t3 ON t3.id = t.idWeapon
                 """
 
         def onRefreshExt(self):
@@ -40,8 +40,8 @@ class Ir_HeroDvi(BaseAvi):
                     t3.sHeadLine as idWeaponHL
                 from t
                     LEFT JOIN Ir_HeroType t1 ON t1.id = t.idType
-            LEFT JOIN Ir_Defa t2 ON t2.id = t.idDefa
-            LEFT JOIN Ir_Weapon t3 ON t3.id = t.idWeapon
+            LEFT JOIN Ir_Item t2 ON t2.id = t.idDefa
+            LEFT JOIN Ir_Item t3 ON t3.id = t.idWeapon
                 """
 
         def thisRop(self)->Ir_HeroObj:

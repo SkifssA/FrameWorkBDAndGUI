@@ -37,12 +37,12 @@
             "name": "idDefa",
             "type": "INT",
             "caption": "Броня",
-            "refTab": "Ir_Defa"
+            "refTab": "Ir_Item"
         },{
             "name": "idWeapon",
             "type": "INT",
             "caption": "Оружие",
-            "refTab": "Ir_Weapon"
+            "refTab": "Ir_Item"
         }
     ]
 }

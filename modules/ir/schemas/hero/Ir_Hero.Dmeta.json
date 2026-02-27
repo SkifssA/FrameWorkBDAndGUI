@@ -76,7 +76,7 @@
         "edit": "button",
         "isVisible": true,
         "order": 0,
-        "refTab": "Ir_Defa",
+        "refTab": "Ir_Item",
         "display": "list"
       },
       "idWeapon": {
@@ -90,7 +90,7 @@
         "edit": "button",
         "isVisible": true,
         "order": 0,
-        "refTab": "Ir_Weapon",
+        "refTab": "Ir_Item",
         "display": "list"
       }
     }

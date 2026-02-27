@@ -1,9 +1,14 @@
-from ..package import ATQSL, ASQL
+from ..package.Core_DbManagerPkg import ATQSL, ASQL
+from ..base import asynRun
+from ..base.Type import Gid
 
 class BaseApi:
     _idClass = None
     _classObj = None
     _all_instances = {}
+
+    def asyncRun(self, coroutine):
+        return asynRun.asyncRun(coroutine)
 
     async def idClass(self):
         id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))
@@ -64,7 +69,7 @@ class BaseApi:
     async def update(self, rop):
         value = self._getDataRop(rop)
         keys = [k for k in value.keys() if k != 'id']
-        value['gid'] = f'{await self.idClass()}/{rop.id}'
+        value['gid'] = Gid(f'{await self.idClass()}/{rop.id}')
         value['sHeadLine'] = self.calcHeadLine(rop)
         value['sMnemoCode'] = self.calcMnemoCode(rop)
         keys = [k for k in value.keys() if k != 'id']
@@ -80,7 +85,10 @@ class BaseApi:
     def _createRop(self, data):
         rop = self._classObj()
         value = self._getDataRop(rop)
+        ''.startswith
         for k, v in {i:data[i] for i in value.keys()}.items():
+            if k.startswith('gid'):
+                v = Gid(v)
             setattr(rop, k, v)
         return rop
 

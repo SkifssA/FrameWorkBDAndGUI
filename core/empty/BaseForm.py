@@ -9,6 +9,7 @@ from ..base.BaseFilter import Filter
 from .AbstractForm import AbstractForm
 from ..package.Core_ImageManagerPkg import Core_ImageManagerPkg
 from ..base.BaseModal import FormModal, LoadModal
+from ..base.asynRun import asyncRun
 
 class BaseForm(AbstractForm):
 
@@ -79,12 +80,8 @@ class BaseForm(AbstractForm):
     def openModal(self, callback=None, returnAttr:list=['id']):
         self.asyncRun(self._openModal(callback, returnAttr))
 
-    def asyncRun(self, coroutine)->None:
-        try:
-            asyncio.get_running_loop()
-            asyncio.create_task(coroutine)
-        except:
-            asyncio.run(coroutine)
+    def asyncRun(self, coroutine):
+        return asyncRun(coroutine)
                 
     async def getMeta(self):
         path = f'../../{self.get_impl_path()}'

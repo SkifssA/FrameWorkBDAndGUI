@@ -26,15 +26,17 @@ class BaseAvi:
     @classmethod
     def card(cls, **kwargs): pass
 
-    def proccessById(self, event:SetterEvent, getAttr, setAttr):
+    def proccessById(self, event:SetterEvent, getAttr, setAttr, repList=None, repCard=None):
         if (event.type == 'selectValue'):
-            self.__class__.list().openModal(
+            selList = repList or self.__class__.list
+            selList().openModal(
                 callback=setAttr
             )
         elif (event.type == 'openCard'):
-            self.__class__.card(idItem=getAttr).openModal()
+            selCard = repCard or self.__class__.card
+            selCard(idItem=getAttr).openModal()
         elif (event.type == 'deleteValue'):
-            self.thisApi().setidRare(self.thisRop(), None)
+            setAttr({'id': None})
         else:
             print("Сеттер на ввод значения")
 

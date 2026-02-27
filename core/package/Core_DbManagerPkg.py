@@ -1,6 +1,7 @@
 import asyncio
 from libsql_client import create_client
 
+
 from .Core_FileManagerPkg import Core_FileManagerPkg
 
 class Core_DbManager:
@@ -15,6 +16,7 @@ class Core_DbManager:
         self.client = create_client(url=self.url, auth_token=self.auth_token)
 
     async def ATSQL(self, SQLstr: str, parameters=None):
+        parameters = self.rebaseParameters(parameters)
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             if 'insert'.upper() in SQLstr.upper():
                 SQLstr += "RETURNING id"
@@ -27,6 +29,7 @@ class Core_DbManager:
             return d
 
     async def ASQL(self, SQLstr: str, parameters=None):
+        parameters = self.rebaseParameters(parameters)
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             try:
                 print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
@@ -35,6 +38,14 @@ class Core_DbManager:
                     return [dict(zip(result.columns, row)) for row in result.rows]
             except:
                 return []
+
+    def rebaseParameters(self, parameters):
+        parameters = list(parameters or [])
+        from ..base.Type import Gid
+        for x, i in enumerate(parameters):
+            if type(i) == Gid:
+                parameters[x] = i.get()
+        return parameters
 
 Core_DbManagerPkg = Core_DbManager()
 
