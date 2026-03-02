@@ -49,10 +49,10 @@ class mainMenu(BaseAvi):
                             dpg.add_menu_item(label=s['data'][1]._oper_label, callback=s['data'][-1])
             with dpg.child_window(parent=par) as g:
                 dpg.add_tab_bar(tag="tab_bar")
-            # await self.firstFrame()
+            self.asyncRun(self.firstFrame().open())
             return g
             
-        async def firstFrame(self): pass
+        def firstFrame(self): pass
 
         def _createMenu(self):
             menuDict = make_btn()

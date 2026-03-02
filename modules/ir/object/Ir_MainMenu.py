@@ -12,8 +12,8 @@ from .Item.Ir_ItemAvi import Ir_ItemAvi
 
 class Ir_MainMenu(mainMenu):
     class Default(mainMenu.Default):
-        async def firstFrame(self):
-            await Bc_LogAvi.list().open(parent="main_window")
+        def firstFrame(self):
+            return Ir_HeroAvi.list()
 
         def openCh(self):
             yield  Bc_LogAvi.list()

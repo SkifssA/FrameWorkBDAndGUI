@@ -17,7 +17,7 @@ class BaseForm(AbstractForm):
 
     def __init__(self):
         self.sizeLineResize = 5
-        self.defaultHeight = 300
+        self.defaultHeight = -1
 
         self.last_mouse_pos = [0.0, 0.0]
         self.dragging_resize = False
