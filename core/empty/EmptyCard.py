@@ -2,6 +2,7 @@ import dearpygui.dearpygui as dpg
 from ..package import ASQL, Core_ActionDispatcher
 from .BaseForm import BaseForm
 from ..base.Event import SetterEvent
+from ..base.ThreadWorker import tw
 import threading
 import time
 import asyncio
@@ -29,7 +30,7 @@ class EmptyCard(BaseForm):
                         row.append([])
                     backLastLine = isLastLine
         row = row[:-1]
-        threading.Thread(target=self.k, args=(row, par)).start()
+        tw.submit(self.k, args=(row, par))
         return group
 
     def k(self, row, mainForm):

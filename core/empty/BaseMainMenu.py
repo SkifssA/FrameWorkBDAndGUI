@@ -49,7 +49,8 @@ class mainMenu(BaseAvi):
                             dpg.add_menu_item(label=s['data'][1]._oper_label, callback=s['data'][-1])
             with dpg.child_window(parent=par) as g:
                 dpg.add_tab_bar(tag="tab_bar")
-            self.asyncRun(self.firstFrame().open())
+            if self.firstFrame() is not None:
+                self.asyncRun(self.firstFrame().open())
             return g
             
         def firstFrame(self): pass

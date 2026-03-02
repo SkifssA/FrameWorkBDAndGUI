@@ -16,7 +16,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
                 await self.thisApi().register(a)
                 await self.refresh()
             
-            await Awh_AnimeAvi.cardSetUrlAnime().openModal(registerAnime, ['sUrl'])
+            Awh_AnimeAvi.cardSetUrlAnime().openModal(registerAnime, ['sUrl'])
 
         @SetOper(label='Cайт', img='8')
         async def openWeb(self):
