@@ -1,1 +1,18 @@
-{}
+{
+"Default": {
+    "isVisibleToolBar": false,
+    "filter":[
+      {
+        "where": "1=1",
+        "attr":{
+          "flt_inputMoney": {
+            "caption": "Монеты:",
+            "edit": "edit",
+            "defaultValue": 0,
+            "isReadOnly": true
+          }
+        } 
+      }
+    ]
+  }
+}

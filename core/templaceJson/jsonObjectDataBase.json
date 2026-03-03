@@ -16,7 +16,7 @@
     "isVisibleToolBar": {
       "type": "boolean",
       "enum": [true, false],
-      "description": "Отображаемое название сущности"
+      "description": "Надо ли отображать тулбар"
     },
     "attr": {
       "type": "array",

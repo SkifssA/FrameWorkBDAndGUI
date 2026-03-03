@@ -80,13 +80,13 @@ class EmptyCard(BaseForm):
                 with dpg.child_window(width=self.sizeBefore if selfSizeName else (len(dataAttr['caption'])*11), border=False):
                     dpg.add_text(dataAttr['caption'])
                 if dataAttr['edit'] == 'edit':
-                    self.tagInput[nameAttr] = {'input': dpg.add_input_text(width=-1)}
+                    self.tagInput[nameAttr] = {'input': dpg.add_input_text(width=-1, on_enter=True)}
                 elif dataAttr['edit'] == 'check':
                     self.tagInput[nameAttr] = {'input': dpg.add_checkbox()}
                 elif dataAttr['edit'] == 'lookUp':
                     self.tagInput[nameAttr] = {'input': dpg.add_combo(width=-1)}
                 elif dataAttr['edit'] == 'button':
-                    self.tagInput[nameAttr] = {'input': dpg.add_input_text(width=-1)}
+                    self.tagInput[nameAttr] = {'input': dpg.add_input_text(width=-1, on_enter=True)}
                     dpg.add_button(label='...', parent=g, width=self.sizeButton, callback=lambda: print("Открываю выборку"))
                     dpg.add_button(label=' ^ ', parent=g, width=self.sizeButton, callback=lambda: print("Открываю карточку"))
                     dpg.add_button(label=' X ', parent=g, width=self.sizeButton, callback=lambda: print("Очищаю"))

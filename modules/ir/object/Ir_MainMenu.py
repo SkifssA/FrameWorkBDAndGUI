@@ -18,6 +18,8 @@ class Ir_MainMenu(mainMenu):
         def openCh(self):
             yield  Bc_LogAvi.list()
 
+        def flt_inputMoney():pass
+
         @SetOper(label="Справочники")
         def mm_respo(self): pass
             

@@ -1,6 +1,5 @@
 import dearpygui.dearpygui as dpg
 import inspect
-import os
 import asyncio
 import re
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
@@ -89,12 +88,14 @@ class BaseForm(AbstractForm):
             path = path[:-3]
         a = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
         d = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
-        if (self.__class__.__name__ in a):
+        if self.__class__.__name__ in a and d != 'Файл не найден':
             return self.__fillByDefault(a[self.__class__.__name__], d['Default'])
-        elif ('Default' in d):
+        elif (self.__class__.__name__ in a):
+            return a[self.__class__.__name__]
+        elif 'Default' in d:
             return d['Default']
         else:
-            return {'isVisibleToolBar': False}
+            {'isVisibleToolBar': False}
 
     def __fillByDefault(self, a, d):
         self.__w(a, d, 'caption')

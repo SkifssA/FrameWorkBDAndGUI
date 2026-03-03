@@ -14,19 +14,22 @@ class Filter:
                 for i in flt:
                     self.where.append(i['where'])
                     for j in i['attr']:
-                        show = i['attr'][j]['isVisible'] if 'isVisible' in i['attr'][j] else True
+                        attr:dict = i['attr'][j]
+                        show = attr.get('isVisible', True)
                         with dpg.child_window(border=False, 
                                               height=20, 
                                               width=-1, 
                                               show=show):
                             with dpg.group(horizontal=True):
-                                with dpg.child_window(width=len(i['attr'][j]['caption'])*11,
+                                with dpg.child_window(width=len(attr['caption'])*11,
                                                        border=False):
-                                    dpg.add_text(i['attr'][j]['caption'])
-                                if i['attr'][j]['edit'] == 'edit':
+                                    dpg.add_text(attr['caption'])
+                                if attr['edit'] == 'edit':
                                     self.tagInput[j] = dpg.add_input_text(width=-1, 
                                                                           callback=self.__getMetod(getattr(parent, f'set{j}', None)), 
-                                                                          on_enter=True)
+                                                                          on_enter=True,
+                                                                          default_value=attr.get('defaultValue', ''),
+                                                                          readonly=attr.get('isReadOnly', False))
 
     def getWhere(self):
         return '\n and'.join(self.where)
