@@ -95,7 +95,7 @@ class BaseForm(AbstractForm):
         elif 'Default' in d:
             return d['Default']
         else:
-            {'isVisibleToolBar': False}
+            return {'isVisibleToolBar': False}
 
     def __fillByDefault(self, a, d):
         self.__w(a, d, 'caption')
