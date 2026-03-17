@@ -1,5 +1,5 @@
 from ..package.Core_DbManagerPkg import ATQSL, ASQL
-from . import asynRun
+from ..package import Core_AsynRunPkg
 from .Type import Gid
 
 class BaseApi:
@@ -8,7 +8,7 @@ class BaseApi:
     _all_instances = {}
 
     def asyncRun(self, coroutine):
-        return asynRun.asyncRun(coroutine)
+        return Core_AsynRunPkg.asyncRun(coroutine)
 
     async def idClass(self):
         id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))

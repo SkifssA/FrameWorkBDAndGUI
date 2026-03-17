@@ -7,6 +7,9 @@ from .animegenre.Awh_AnimeGenreAvi import Awh_AnimeGenreAvi
 
 class Awh_MainMenu(mainMenu):
     class Default(mainMenu.Default):
+        def firstFrame(self):
+            return Awh_AnimeAvi.list()
+
         @SetOper(label="Справочники")
         def mm_respo(self): pass
 
