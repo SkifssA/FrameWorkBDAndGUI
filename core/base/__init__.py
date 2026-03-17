@@ -1,5 +1,5 @@
-from .BaseApi import BaseApi
-from .BaseAvi import BaseAvi
-from .BaseObj import BaseObj
-from .BaseSelection import Selection
+from .api import BaseApi
+from .avi import BaseAvi
+from .obj import BaseObj
+from .selection import Selection
 from .Type import Gid as gid

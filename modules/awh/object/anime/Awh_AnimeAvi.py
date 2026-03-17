@@ -1,9 +1,9 @@
 # Пользовательский файл для интерфейса
 import dearpygui.dearpygui as dpg
-from core.base.BaseOper import SetOper
+from core.base.oper import SetOper
 from .Awh_AnimeDvi import Awh_AnimeDvi
 import webbrowser
-from core.base.BaseModal import *
+from core.base.modal import *
 
 from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 

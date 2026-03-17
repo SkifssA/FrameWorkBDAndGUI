@@ -2,10 +2,10 @@ import inspect
 from collections import defaultdict
 import dearpygui.dearpygui as dpg
 import os
-from ..base.BaseOper import SetOper
-from ..object.Core_SelectApp import Core_SelectApp
-from .BaseForm import BaseForm
-from ..base.BaseAvi import BaseAvi
+from ..base.oper import SetOper
+from ..Core_SelectApp import Core_SelectApp
+from .Form import BaseForm
+from ..base.avi import BaseAvi
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})

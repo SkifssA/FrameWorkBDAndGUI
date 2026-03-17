@@ -1,5 +1,5 @@
-from core.empty.BaseMainMenu import mainMenu
-from core.base.BaseOper import SetOper
+from core.empty.MainMenu import mainMenu
+from core.base.oper import SetOper
 
 from ..object.config.Bc_ConfigAvi import Bc_ConfigAvi
 from ..object.scriptscheduler.Bc_ScriptSchedulerAvi import Bc_ScriptSchedulerAvi

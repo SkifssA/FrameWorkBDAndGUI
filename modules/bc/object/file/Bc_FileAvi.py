@@ -1,7 +1,7 @@
 # Пользовательский файл для интерфейса
 from .Bc_FileDvi import Bc_FileDvi
 from core.empty.CardFileView import CardFileView
-from core.base.BaseAvi import BaseAvi
+from core.base.avi import BaseAvi
 
 class Bc_FileAvi(Bc_FileDvi):
     class List(Bc_FileDvi.DviList):

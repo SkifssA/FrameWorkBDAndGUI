@@ -2,7 +2,7 @@
 import random
 
 from .Ir_HeroDvi import Ir_HeroDvi
-from core.base.BaseOper import SetOper
+from core.base.oper import SetOper
 from core.base.Type import Gid
 
 from modules.bc.object.log.Bc_LogApi import Bc_LogApi

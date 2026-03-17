@@ -1,4 +1,4 @@
-from .BaseOper import Oper
+from .oper import Oper
 
 
 class Selection:
@@ -11,5 +11,5 @@ class Selection:
         return self.Oper(self.nameCls, op)
     
     def findSelection(self, aviSelection):
-        from ..empty.BaseForm import BaseForm
+        from ..empty.Form import BaseForm
         return BaseForm.getAllForm().get(str(aviSelection.__class__), None)

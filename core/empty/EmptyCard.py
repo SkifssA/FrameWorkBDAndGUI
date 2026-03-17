@@ -1,6 +1,6 @@
 import dearpygui.dearpygui as dpg
 from ..package import ASQL, Core_ActionDispatcher
-from .BaseForm import BaseForm
+from .Form import BaseForm
 from ..base.Event import SetterEvent
 from ..base.ThreadWorker import tw
 import threading

@@ -1,5 +1,5 @@
-from core.empty.BaseMainMenu import mainMenu
-from core.base.BaseOper import SetOper
+from core.empty.MainMenu import mainMenu
+from core.base.oper import SetOper
 
 from modules.bc.object.log.Bc_LogAvi import Bc_LogAvi
 

@@ -1,5 +1,5 @@
 import dearpygui.dearpygui as dpg
-from .BaseForm import BaseForm
+from .Form import BaseForm
 
 
 

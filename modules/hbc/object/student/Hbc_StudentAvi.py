@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Hbc_StudentDvi import Hbc_StudentDvi
-from core.base.BaseOper import SetOper
+from core.base.oper import SetOper
 
 class Hbc_StudentAvi(Hbc_StudentDvi):
     @classmethod

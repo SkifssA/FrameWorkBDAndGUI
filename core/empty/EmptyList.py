@@ -2,7 +2,7 @@ import dearpygui.dearpygui as dpg
 import asyncio
 
 from ..package import ASQL
-from .BaseForm import BaseForm
+from .Form import BaseForm
 
 class EmptyList(BaseForm):
     def __init__(self):

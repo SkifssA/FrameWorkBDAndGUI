@@ -1,7 +1,7 @@
 # Пользовательский файл для интерфейса
 from .Bc_IconsDvi import Bc_IconsDvi
 from core.empty.CardFileView import CardFileView
-from core.base.BaseAvi import BaseAvi
+from core.base.avi import BaseAvi
 from core.package import Core_FileManagerPkg
 
 class Bc_IconsAvi(Bc_IconsDvi):
