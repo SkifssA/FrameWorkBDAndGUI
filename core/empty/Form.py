@@ -81,21 +81,7 @@ class BaseForm(AbstractForm):
 
     def asyncRun(self, coroutine):
         return asyncRun(coroutine)
-                
-    async def getMeta(self):
-        path = f'../../{self.get_impl_path()}'
-        if (path.endswith('Avi')):
-            path = path[:-3]
-        a = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
-        d = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
-        if self.__class__.__name__ in a and d != 'Файл не найден':
-            return self.__fillByDefault(a[self.__class__.__name__], d['Default'])
-        elif (self.__class__.__name__ in a):
-            return a[self.__class__.__name__]
-        elif 'Default' in d:
-            return d['Default']
-        else:
-            return {'isVisibleToolBar': False}
+            
 
     def __fillByDefault(self, a, d):
         self.__w(a, d, 'caption')
@@ -196,7 +182,7 @@ class BaseForm(AbstractForm):
     def regHandler(self):
         """Регистрация обработчиков и событий"""
         def on_mouse_drag(sender, app_data):
-            mouse_x, mouse_y = dpg.get_mouse_pos(local=False)
+            mouse_x, mouse_y = dpg.get_mouse_pos(locreateMainFormal=False)
             if self.dragging_resize == 1:
                 dx = mouse_x - self.last_mouse_pos[0]
                 self.offset_x_resize += dx
@@ -260,14 +246,6 @@ class BaseForm(AbstractForm):
         )
         with dpg.tooltip(tag=f'{tag}_tooltip', parent=tag, show=show):
             dpg.add_text(label)
-
-    def appendAction(self, obj, name):
-        '''Создание обработчиков для операций'''
-        bound_method = getattr(self, name)
-        if obj._is_long:
-            return lambda: LoadModal(bound_method, f'Выполнение задачи \'{obj._oper_label}\'').show()
-        else:
-            return lambda: asyncio.run(bound_method())
 
     def closeForm(self):
         BaseForm.allOpenForm.pop(str(self.__class__), None)

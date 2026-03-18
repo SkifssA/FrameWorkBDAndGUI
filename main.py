@@ -1,6 +1,7 @@
 ﻿import os
 import sys
 import asyncio
+import flet as ft
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.createClass.createClass import createTab, createFile
@@ -13,4 +14,4 @@ if __name__ == "__main__":
     elif (args[0] == 'createSours'):
         asyncio.run(createFile())
     elif (args[0] == 'launchApp'):
-        asyncio.run(mainProgram())
+        ft.app(target=mainProgram)

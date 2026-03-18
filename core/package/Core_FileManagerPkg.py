@@ -120,4 +120,19 @@ class Core_AsyncFileManager:
         except Exception as e:
             return f"Ошибка: {e}"
 
+    async def getMeta(self, file:str):
+        path = f'../../{file}'
+        if (path.endswith('Avi')):
+            path = path[:-3]
+        a = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
+        d = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
+        if self.__class__.__name__ in a and d != 'Файл не найден':
+            return self.__fillByDefault(a[self.__class__.__name__], d['Default'])
+        elif (self.__class__.__name__ in a):
+            return a[self.__class__.__name__]
+        elif 'Default' in d:
+            return d['Default']
+        else:
+            return {'isVisibleToolBar': False}
+
 Core_FileManagerPkg = Core_AsyncFileManager()

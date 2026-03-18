@@ -1,11 +1,13 @@
 import inspect
+import flet as ft
+
 from collections import defaultdict
-import dearpygui.dearpygui as dpg
-import os
 from ..base.oper import SetOper
 from ..Core_SelectApp import Core_SelectApp
-from .Form import BaseForm
+from .FormFlet import BaseForm
 from ..base.avi import BaseAvi
+from core.Core_Store import store
+from core.package.Core_AsynRunPkg import asyncRun
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -26,10 +28,9 @@ class mainMenu(BaseAvi):
         @SetOper(label="Приложение", order=-10)
         def mm_main_oper(self): pass
 
-
         @SetOper(label='Выйти', headOper='mm_main_oper', order=10000)
         async def exit(self): 
-            dpg.delete_item(self.parent, children_only=True)
+            store.page.clean()
             await Core_SelectApp().open()
 
         def _getAttr(self):pass
@@ -39,19 +40,25 @@ class mainMenu(BaseAvi):
         def onRefreshExt(self):pass
         def thisApi(self):pass
 
-        def createMainForm(self, par):
+        def createMainForm(self):
             w = self._createMenu()
-            with dpg.menu_bar(parent=self.tab):
-                for i in sorted(w, key=lambda x: w[x]['data'][1]._order):
-                    with dpg.menu(label=w[i]['data'][1]._oper_label):
-                        for j in sorted(w[i]['child'], key=lambda x: w[i]['child'][x]['data'][1]._order):
-                            s = w[i]['child'][j]
-                            dpg.add_menu_item(label=s['data'][1]._oper_label, callback=s['data'][-1])
-            with dpg.child_window(parent=par) as g:
-                dpg.add_tab_bar(tag="tab_bar")
+            s = []
+            for i in sorted(w, key=lambda x: w[x]['data'][1]._order):
+                s.append(ft.PopupMenuButton(
+                    icon='menu',  # Иконка кнопки
+                    content=ft.Text(w[i]['data'][1]._oper_label, size=16),  # Текст на кнопке
+                    items=[
+                        ft.PopupMenuItem(content=w[i]['child'][j]['data'][1]._oper_label, on_click=w[i]['child'][j]['data'][-1]) 
+                            for j in sorted(w[i]['child'], key=lambda x: w[i]['child'][x]['data'][1]._order)
+                        ],
+                ))
+            store.page.add(
+                ft.Row(
+                    s
+                    )
+                )
             if self.firstFrame() is not None:
-                self.asyncRun(self.firstFrame().open())
-            return g
+                asyncRun(self.firstFrame().open())
             
         def firstFrame(self): pass
 
