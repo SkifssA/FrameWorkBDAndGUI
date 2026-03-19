@@ -1,7 +1,7 @@
 import asyncio
 import nest_asyncio
 
-def asyncRun(coroutine)->None:
+def asyncRun(coroutine):
     try:
         loop = asyncio.get_running_loop()
     except RuntimeError:

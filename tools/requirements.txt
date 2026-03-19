@@ -1,4 +1,5 @@
-dearpygui
+flet
+flet-datatable2
 aiofiles
 aiohttp
 libsql-client

@@ -1,10 +1,10 @@
 import dearpygui.dearpygui as dpg
-import importlib
+
 import inspect
 
 from ..package import ASQL
-from ..empty.Form import BaseForm
-from ..empty.EmptyList import EmptyList
+from ..empty.FormFlet import BaseForm
+from ..empty.ListFlet import EmptyList
 from ..empty.EmptyCard import EmptyCard
 from .oper import SetOper
 from .modal import DialogModal
@@ -55,17 +55,10 @@ class BaseAvi:
 
         def thisApi(self):
             return self._getAvi().thisApi()
-        
-        def _getAvi(self):
-            outer_class_name = self.__class__.__qualname__.rsplit('.', 1)[0]
-            # Получаем имя модуля, где определён класс
-            module_name = self.__class__.__module__
-            module = importlib.import_module(module_name)
-            return getattr(module, outer_class_name)
       
         
         @SetOper(label='Обновить', order=1, img='2')
-        async def refreshForm(self): await self.refresh()
+        async def refreshForm(self): self.refresh()
 
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
         async def returnResult(self):
@@ -94,10 +87,10 @@ class BaseAvi:
         @SetOper(label='Удалить', order=20, img='3')
         async def delete(self):
             await self.thisApi()._deleteById(self.getAttr('id'))
-            await self.refresh()
+            self.refresh()
 
         @SetOper(label='Закрыть', order=10000, img='1')
-        async def closeFormCancel(self): self.closeForm()
+        async def closeFormCancel(self): self.close()
 
         def thisRop(self):
             row = self.get_row()

@@ -41,7 +41,6 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             FROM Awh_Anime AS t
             LEFT JOIN Awh_AnimeGenre t1 on t1.idAnime = t.id
             LEFT JOIN Awh_Genre t2 on t2.id = t1.idGenre
-            WHERE {self.filter.getWhere()}
             GROUP BY t.id, t.gid, t.sCaption, t.nSeries, t.bReleased, t.sUrl
             """
 

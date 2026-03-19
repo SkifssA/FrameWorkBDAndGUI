@@ -3,7 +3,7 @@ import sys
 import asyncio
 import flet as ft
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
+print(ft.version)
 from core.createClass.createClass import createTab, createFile
 from core import mainProgram
 
@@ -14,4 +14,4 @@ if __name__ == "__main__":
     elif (args[0] == 'createSours'):
         asyncio.run(createFile())
     elif (args[0] == 'launchApp'):
-        ft.app(target=mainProgram)
+        ft.run(mainProgram)

@@ -8,6 +8,7 @@ from .FormFlet import BaseForm
 from ..base.avi import BaseAvi
 from core.Core_Store import store
 from core.package.Core_AsynRunPkg import asyncRun
+from core.empty.TabsFlet import Tabs
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -52,13 +53,36 @@ class mainMenu(BaseAvi):
                             for j in sorted(w[i]['child'], key=lambda x: w[i]['child'][x]['data'][1]._order)
                         ],
                 ))
-            store.page.add(
-                ft.Row(
-                    s
-                    )
-                )
+
+            self.tabs = Tabs(
+                length=1,
+                expand=True,
+                content=ft.Column(
+                    expand=True,
+                    controls=[
+                        tab_bar := ft.TabBar(
+                            tabs=[]
+                        ),
+                        tab_view := ft.TabBarView(
+                            expand=True,
+                            controls=[],
+                        ),
+                    ],
+                ),
+                visible= False
+            )
+            self.tabs.init2(tab_bar, tab_view)
+            store.maintabs = self.tabs
+
             if self.firstFrame() is not None:
-                asyncRun(self.firstFrame().open())
+                asyncRun(self.firstFrame().open(self.tabs))
+
+            return ft.Column(
+                    controls=[
+                        ft.Row(controls=s)
+                        ,self.tabs
+                    ]
+            )
             
         def firstFrame(self): pass
 
