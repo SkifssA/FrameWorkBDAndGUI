@@ -13,23 +13,23 @@ class Hbc_MainMenu(mainMenu):
 
         @SetOper(label='Уроки', order=1, headOper='mm_respo')
         async def Hbc_Lesson(self):
-            await Hbc_LessonAvi.List().open()
+            await Hbc_LessonAvi.List().open(parent=self.locationsChildrens['bottom'])
 
         @SetOper(label='Файлы', order=2, headOper='mm_respo')
         async def Bc_File(self):
-            await Bc_FileAvi.List().open()
+            await Bc_FileAvi.List().open(parent=self.locationsChildrens['bottom'])
 
         @SetOper(label="Ученики")
         def mm_student(self):pass
 
         @SetOper(label='Ученики', order=1, headOper="mm_student")
         async def Hbc_Student(self):
-            await Hbc_StudentAvi.List().open()
+            await Hbc_StudentAvi.List().open(parent=self.locationsChildrens['bottom'])
 
         @SetOper(label='Время учеников', order=2, headOper="mm_student")
         async def Hbc_StudentData(self):
-            await Hbc_StudentDataAvi.List().open()
+            await Hbc_StudentDataAvi.List().open(parent=self.locationsChildrens['bottom'])
 
         @SetOper(label='Выполненые практические', order=3, headOper="mm_student")
         async def Hbc_StudentLesson(self):
-            await Hbc_StudentLessonAvi.List().open()
+            await Hbc_StudentLessonAvi.List().open(parent=self.locationsChildrens['bottom'])

@@ -15,6 +15,7 @@ class BaseAvi:
     @classmethod
     def typeMeta(cls, subClass, **kwargs):
         instance = subClass()
+        setattr(instance, 'locat', 'bottom')
         # Устанавливаем атрибуты из kwargs
         for key, value in kwargs.items():
             setattr(instance, key, value)
@@ -45,8 +46,8 @@ class BaseAvi:
             w = name.split('$', maxsplit=1)
             n, p = w[0], '$'.join(w[1:])
             if n == 'super':
-                if self.parent != 'tab_bar':
-                    w:BaseForm = dpg.get_item_user_data(self.parentTable)
+                if self.parentTabs is not None:
+                    w:BaseForm = self.parentTabs.data
                     return w.getAttr(p)  
             elif n == 'filter':
                 return self.filter._getAttr(p)                           

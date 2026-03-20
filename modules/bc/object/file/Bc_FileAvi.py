@@ -1,12 +1,12 @@
 # Пользовательский файл для интерфейса
 from .Bc_FileDvi import Bc_FileDvi
-from core.empty.CardFileView import CardFileView
+from core.empty.CardFileViewFlet import CardFileView
 from core.base.avi import BaseAvi
 
 class Bc_FileAvi(Bc_FileDvi):
     class List(Bc_FileDvi.DviList):
         def openCh(self):
-            yield Bc_FileAvi.CardFileView_idFile()
+            yield Bc_FileAvi.cardFileView_idFile()
 
         def onRefresh(self):
             return super().onRefresh()

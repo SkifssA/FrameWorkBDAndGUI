@@ -1,5 +1,6 @@
 import flet as ft
 
+
 class Tabs(ft.Tabs):
     def init2(self, tab_bar:ft.TabBar, tab_view:ft.TabBarView):
         self.tab_view = tab_view

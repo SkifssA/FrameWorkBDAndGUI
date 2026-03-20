@@ -46,7 +46,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
-            yield Bc_FileAvi.cardFileView_sUrl(right=True)
+            yield Bc_FileAvi.cardFileView_sUrl(locat='right')
 
         async def setflt_sName(self):
             await self.refresh()

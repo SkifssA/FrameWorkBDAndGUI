@@ -54,37 +54,14 @@ class mainMenu(BaseAvi):
                         ],
                 ))
 
-            self.tabs = Tabs(
-                length=1,
-                expand=True,
-                content=ft.Column(
-                    expand=True,
-                    controls=[
-                        tab_bar := ft.TabBar(
-                            tabs=[]
-                        ),
-                        tab_view := ft.TabBarView(
-                            expand=True,
-                            controls=[],
-                        ),
-                    ],
-                ),
-                visible= False
-            )
-            self.tabs.init2(tab_bar, tab_view)
-            store.maintabs = self.tabs
-
-            if self.firstFrame() is not None:
-                asyncRun(self.firstFrame().open(self.tabs))
-
-            return ft.Column(
-                    controls=[
-                        ft.Row(controls=s)
-                        ,self.tabs
-                    ]
-            )
+            return ft.Row(controls=s)
             
         def firstFrame(self): pass
+        
+        def atrefCreateForm(self):
+            super().atrefCreateForm()
+            if self.firstFrame() is not None:
+                asyncRun(self.firstFrame().open(self.locationsChildrens['bottom']))
 
         def _createMenu(self):
             menuDict = make_btn()

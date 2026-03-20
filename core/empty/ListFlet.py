@@ -1,7 +1,7 @@
-from ..package import ASQL
+from core.package import ASQL
 from .FormFlet import BaseForm
-from core.empty.TabsFlet import Tabs
 from core.package.Core_AsynRunPkg import asyncRun
+from core.Core_Store import store
 import flet as ft
 import flet_datatable2 as fdt
 
@@ -20,41 +20,35 @@ class EmptyList(BaseForm):
     def _getAttr(self, nameAttr:str):
         return self.selectRow.data[nameAttr]
 
-    async def _refresh(self):pass
-
-    def createMainForm(self):
-        self.column = [ft.DataColumn(label=ft.Text(i[1][0]), visible=i[1][1]) for i in self._getCollumn().items()]
-        q = ft.Column(
-            controls=[
-                tabl:=ft.DataTable(
-                    expand=True,
-                    columns= self.column)
-            ],
-            scroll=ft.ScrollMode.ADAPTIVE,
-            )
-        
-        self.tabl=tabl
-        self.refresh()
-        return q
-    
-    def __updageSelectRow(self, control):
-        for i in self.tabl.rows:
-            if i != control:
-                i.color = None
-            else:
-                i.color = ft.Colors.DEEP_ORANGE_300
-                self.selectRow = i
-
-    def refresh(self):
-        self.row = []
+    def _refresh(self, isUpdate:bool=False):
+        row = []
         for i in asyncRun(self.__getDataTab()):
-            self.row.append(ft.DataRow(
+            row.append(ft.DataRow(
                 cells=[ft.DataCell(ft.Text(i[key])) for key, item in self._getCollumn().items() if item[1]]
                 ,data=i
                 ,on_select_change=self.tabRow
             ))
-        self.tabl.rows = self.row
+        self.mainForm.rows = row
+        if (len(row) > 0):
+            self.__updageSelectRow(row[0])
+        if isUpdate: store.page.update()
+
+    def createMainForm(self):
+        column = [ft.DataColumn(label=ft.Text(i[1][0]), visible=i[1][1]) for i in self._getCollumn().items()]
+
+        q = fdt.DataTable2(columns=column, expand=True)
+        return q
+    
+    def __updageSelectRow(self, control):
+        for i in self.mainForm.rows:
+            if i != control:
+                i.color = None
+            else:
+                i.color = ft.Colors.INVERSE_PRIMARY
+                self.selectRow = i
 
     def tabRow(self, e):
         self.__updageSelectRow(e.control)
-        self.page.update()
+        self.refreshChildren()
+
+        store.page.update()

@@ -23,7 +23,7 @@ class AbstractForm(ABC):
     def createMainForm(self, par)->int|str: pass
 
     @abstractmethod
-    async def _refresh(self): pass
+    def _refresh(self, isUpdate:bool=True): pass
 
     @abstractmethod
-    async def validateClass(self): pass
+    def validateClass(self): pass

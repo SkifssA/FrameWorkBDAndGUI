@@ -56,7 +56,7 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
         
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
-            yield Bc_FileAvi.list_gidSrc(right=True)
+            yield Bc_FileAvi.list_gidSrc(locat='right')
 
         def refreshCh(self):
             return super().refreshCh()

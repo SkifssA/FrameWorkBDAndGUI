@@ -7,6 +7,7 @@ from .AbstractForm import AbstractForm
 from ..package import Core_FileManagerPkg, asyncRun
 from core.Core_Store import store
 from core.empty.TabsFlet import Tabs
+from core.empty.ColumnFlet import Column
 
 class BaseForm(AbstractForm): 
     def get_impl_path(self):
@@ -27,25 +28,69 @@ class BaseForm(AbstractForm):
         else:
             return lambda: asyncRun(bound_method())
 
-    async def open(self, parent:Tabs=None):
-        self.page = store.page
+    async def open(self, parent:Tabs|ft.Column=None, isUpdate:bool=True):
         self.parentTabs = parent
         self.meta = await Core_FileManagerPkg.getMeta(self.get_impl_path(), self)
-        self.mainForm = self.createMainForm()
-        c = ft.Column(
-            controls=[
-                self.addTools() if parent is not None else ft.Row()
-                ,self.mainForm   
-            ]
-        )
-        if (parent is None):
-            store.page.add(c)
-        else:
-            parent.add(ft.Tab(label=ft.Text(self.meta['caption']), data={'name':self.__getNameClass()}), c)
-        store.page.update()
+        self.createForm()
+        self.atrefCreateForm()
+        self.createChildren()
+        if isUpdate: store.page.update()
 
     def close(self):
         self.parentTabs.popByName(self.__getNameClass())
+
+    def createTabs(self):
+        t = Tabs(
+                data=self,
+                length=1,
+                expand=True,
+                content=ft.Column(
+                    expand=True,
+                    controls=[
+                        tab_bar := ft.TabBar(
+                            tabs=[]
+                        ),
+                        tab_view := ft.TabBarView(
+                            expand=True,
+                            controls=[],
+                        ),
+                    ],
+                ),
+                visible= False
+            )
+        t.init2(tab_bar, tab_view)
+        return t
+
+    def createForm(self):
+        self.mainForm = self.createMainForm()
+        tabs = self.createTabs()
+        mainCont = ft.Column(
+            expand=True
+            ,controls=[
+                self.addTools() if self.parentTabs is not None else ft.Row()
+                ,self.mainForm   
+                ,tabs
+            ]
+        )
+        conts = ft.Row(
+            expand=True
+            ,controls=[
+                leftCont:=Column(expand=True, visible=False, data=self)
+                ,mainCont
+                ,rightCont:=Column(expand=True, visible=False, data=self)
+            ]
+        )
+        self.locationsChildrens = {
+            'bottom': tabs 
+            ,'left': leftCont
+            ,'right': rightCont
+        }
+        if (self.parentTabs is None):
+            store.page.add(conts)
+        elif type(self.parentTabs) == Tabs:
+            self.parentTabs.add(ft.Tab(label=ft.Text(self.meta['caption']), data={'name':self.__getNameClass()}), conts)
+        elif type(self.parentTabs) == Column:
+            self.parentTabs.add(conts)
 
     def addTools(self):
         '''Обработка и создание операций'''
@@ -84,3 +129,25 @@ class BaseForm(AbstractForm):
             module_name = self.__class__.__module__
             module = importlib.import_module(module_name)
             return getattr(module, outer_class_name)
+    
+    def createChildren(self):
+        self.childrens:tuple[BaseForm] = tuple(self.openCh())
+        for i in self.childrens:
+            if i is not None:
+                asyncRun(i.open(parent=self.locationsChildrens[i.locat], isUpdate=False))
+
+    def openCh(self):
+        '''Открытие дочерних форм.'''
+        yield
+
+    def refresh(self):
+        self._refresh()
+        self.refreshChildren()
+        
+    def refreshChildren(self):
+        for i in self.childrens:
+            if i is not None:
+                i.refresh()
+
+    def atrefCreateForm(self): 
+        self._refresh()
