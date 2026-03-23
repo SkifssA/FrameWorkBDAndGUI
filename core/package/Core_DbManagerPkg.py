@@ -28,14 +28,16 @@ class Core_DbManager:
                 d = None
             return d
 
-    async def ASQL(self, SQLstr: str, parameters=None):
+    async def ASQL(self, SQLstr: str, parameters=None, isReturnColumn: bool = False):
         parameters = self.rebaseParameters(parameters)
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             try:
                 print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
                 result = await db.execute(SQLstr, parameters or [])
-                if result.columns:
+                if result.rows != []:
                     return [dict(zip(result.columns, row)) for row in result.rows]
+                elif result.columns:
+                    return [{i:None for i in result.columns}]
             except:
                 return []
 

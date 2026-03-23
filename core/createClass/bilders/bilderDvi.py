@@ -9,7 +9,7 @@ class {nameClass}Dvi(BaseAvi):
     thisApi = {nameClass}Api
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return \"\"\"{sqlList}\"\"\"
 
         def onRefreshExt(self):

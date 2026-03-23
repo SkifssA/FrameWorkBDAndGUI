@@ -149,5 +149,5 @@ class BaseForm(AbstractForm):
             if i is not None:
                 i.refresh()
 
-    def atrefCreateForm(self): 
+    def atrefCreateForm(self):
         self._refresh()

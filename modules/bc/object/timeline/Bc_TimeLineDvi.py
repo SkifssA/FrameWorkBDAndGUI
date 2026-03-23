@@ -6,7 +6,7 @@ class Bc_TimeLineDvi(BaseAvi):
     thisApi = Bc_TimeLineApi
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
                 SELECT t.id,
                     t.gid,

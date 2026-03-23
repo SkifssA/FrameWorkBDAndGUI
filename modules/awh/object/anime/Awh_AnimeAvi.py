@@ -28,7 +28,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             name = self.getAttr('sCaption').replace(' ', '%20')
             webbrowser.open(temp.format(name=name))
 
-        async def onRefresh(self):
+        def onRefresh(self):
             return f"""
             SELECT t.id,
                    t.gid,

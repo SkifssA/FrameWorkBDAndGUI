@@ -6,7 +6,7 @@ class Awh_AnimeGenreDvi(BaseAvi):
     thisApi = Awh_AnimeGenreApi
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
                 SELECT t.id,
                     t.gid,
