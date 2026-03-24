@@ -33,6 +33,16 @@
             "args": [
                 "launchApp"
             ]
+        },
+        {
+            "name": "Основное приложение в Web",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "launchWeb"
+            ]
         }
     ]
 }

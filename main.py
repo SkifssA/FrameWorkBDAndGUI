@@ -15,3 +15,5 @@ if __name__ == "__main__":
         asyncio.run(createFile())
     elif (args[0] == 'launchApp'):
         ft.run(mainProgram)
+    elif (args[0] == 'launchWeb'):
+        ft.run(mainProgram, host='127.168.0.1', port=8080, view=ft.AppView.WEB_BROWSER)
