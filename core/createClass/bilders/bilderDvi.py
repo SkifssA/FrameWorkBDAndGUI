@@ -23,7 +23,7 @@ class {nameClass}Dvi(BaseAvi):
         
         {setter}
 
-    class DviList(DviDefault, BaseAvi.DefaultList): pass
+    class DviTabl(DviDefault, BaseAvi.DefaultTabl): pass
 
     class DviCard(DviDefault, BaseAvi.DefaultCard): pass
 

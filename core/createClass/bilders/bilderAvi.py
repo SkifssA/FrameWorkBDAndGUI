@@ -1,11 +1,13 @@
 from .bilderBase import BilderBase
+from ...package import Core_FileManagerPkg
 
 class BilderAvi(BilderBase):
     temp = """# Пользовательский файл для интерфейса
+from core.formhandle.FornManeger import FormHandle, FornManeger
 from .{nameClass}Dvi import {nameClass}Dvi
 
 class {nameClass}Avi({nameClass}Dvi):
-    class List({nameClass}Dvi.DviList): pass
+    class Tabl({nameClass}Dvi.DviTabl): pass
 
     class Card({nameClass}Dvi.DviCard): pass
 
@@ -20,3 +22,8 @@ class {nameClass}Avi({nameClass}Dvi):
         return cls.typeMeta(cls.Card, **kwargs)
 """
     suffixFile = 'Avi.py'
+
+    async def createFileA(self, path):
+        pathWhitFile = self._getPathAndFile(path)
+        f = self.temp.format(**self.data)
+        await Core_FileManagerPkg.CreateFile(pathWhitFile, f)

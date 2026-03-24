@@ -3,20 +3,13 @@ import flet as ft
 import re
 import importlib
 
-from .AbstractForm import AbstractForm
+from .AbstractForm import AnyForm
 from ..package import Core_FileManagerPkg, asyncRun
 from core.Core_Store import store
 from core.empty.TabsFlet import Tabs
 from core.empty.ColumnFlet import Column
 
-class BaseForm(AbstractForm): 
-    def get_impl_path(self):
-        """Путь к файлу, где определён класс"""
-        file = inspect.getfile(self.__class__)
-        w = file.find('modules')
-        file = file[w:-3].replace('object', 'schemas')
-        return file
-    
+class BaseForm(AnyForm):     
     async def validateClass(self): pass
 
     def appendAction(self, obj, name):
@@ -130,10 +123,11 @@ class BaseForm(AbstractForm):
             return getattr(module, outer_class_name)
     
     def createChildren(self):
-        self.childrens:tuple[BaseForm] = tuple(self.openCh())
+        from core.formhandle.FornManeger import FormHandle
+        self.childrens:tuple[FormHandle] = tuple(self.openCh())
         for i in self.childrens:
             if i is not None:
-                asyncRun(i.open(parent=self.locationsChildrens[i.locat], isUpdate=False))
+                i.param(parent=self, isUpdate=False).open()
 
     def openCh(self):
         '''Открытие дочерних форм.'''
@@ -146,7 +140,7 @@ class BaseForm(AbstractForm):
     def refreshChildren(self):
         for i in self.childrens:
             if i is not None:
-                i.refresh()
+                i.clsForm.refresh()
 
     def atrefCreateForm(self):
         self._refresh()

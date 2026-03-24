@@ -4,6 +4,7 @@ from core.base.oper import SetOper
 from .Awh_AnimeDvi import Awh_AnimeDvi
 import webbrowser
 from core.base.modal import *
+from core.formhandle.FornManeger import FormHandle, FornManeger
 
 from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 
@@ -46,7 +47,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
-            yield Bc_FileAvi.cardFileView_sUrl(locat='right')
+            yield Bc_FileAvi.cardFileView_sUrl().param(locat='right')
 
         async def setflt_sName(self):
             await self.refresh()
@@ -71,8 +72,8 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
     class LookUp(Awh_AnimeDvi.DviLookUp): pass
 
     @classmethod
-    def list(cls, **kwargs)->List:
-        return cls.typeMeta(cls.List, **kwargs)
+    def list(cls)->FormHandle:
+        return FornManeger.register(cls.List)
     
     @classmethod
     def card(cls, **kwargs)->Card:

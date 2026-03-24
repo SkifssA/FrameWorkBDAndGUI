@@ -9,6 +9,7 @@ from ..base.avi import BaseAvi
 from core.Core_Store import store
 from core.package.Core_AsynRunPkg import asyncRun
 from core.empty.TabsFlet import Tabs
+from core.formhandle.FornManeger import FormHandle
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -34,13 +35,6 @@ class mainMenu(BaseAvi):
             store.page.clean()
             await Core_SelectApp().open()
 
-        def _getAttr(self):pass
-        async def _refresh(self):pass
-        def getAttr(self):pass
-        def onRefresh(self):pass
-        def onRefreshExt(self):pass
-        def thisApi(self):pass
-
         def createMainForm(self):
             w = self._createMenu()
             s = []
@@ -56,12 +50,12 @@ class mainMenu(BaseAvi):
 
             return ft.Row(controls=s)
             
-        def firstFrame(self): pass
+        def firstFrame(self)->FormHandle: pass
         
         def atrefCreateForm(self):
             super().atrefCreateForm()
             if self.firstFrame() is not None:
-                asyncRun(self.firstFrame().open(self.locationsChildrens['bottom']))
+                self.firstFrame().param(parent=self).open()
 
         def _createMenu(self):
             menuDict = make_btn()

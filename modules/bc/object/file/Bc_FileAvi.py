@@ -2,6 +2,7 @@
 from .Bc_FileDvi import Bc_FileDvi
 from core.empty.CardFileViewFlet import CardFileView
 from core.base.avi import BaseAvi
+from core.formhandle.FornManeger import FormHandle, FornManeger
 
 class Bc_FileAvi(Bc_FileDvi):
     class List(Bc_FileDvi.DviList):
@@ -47,5 +48,5 @@ class Bc_FileAvi(Bc_FileDvi):
         return cls.typeMeta(cls.CardFileView_idFile, **kwargs)
     
     @classmethod
-    def cardFileView_sUrl(cls, **kwargs)->CardFileView_sUrl:
-        return cls.typeMeta(cls.CardFileView_sUrl, **kwargs)
+    def cardFileView_sUrl(cls)->FormHandle:
+        return FornManeger.register(cls.CardFileView_sUrl)

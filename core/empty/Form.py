@@ -5,12 +5,12 @@ import re
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
 from ..base.selection import Selection
 from ..base.filter import Filter
-from .AbstractForm import AbstractForm
+from .AbstractForm import AnyForm
 from ..package.Core_ImageManagerPkg import Core_ImageManagerPkg
 from ..base.modal import FormModal, LoadModal
 from ..package.Core_AsynRunPkg import asyncRun
 
-class BaseForm(AbstractForm):
+class BaseForm(AnyForm):
 
     allOpenForm = {}
 
