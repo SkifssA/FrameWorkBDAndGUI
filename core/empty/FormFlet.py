@@ -72,7 +72,7 @@ class BaseForm(AbstractForm):
                 ,tabs
             ]
         )
-        conts = ft.Row(
+        self.mainConts = ft.Row(
             expand=True
             ,controls=[
                 leftCont:=Column(expand=True, visible=False, data=self)
@@ -86,11 +86,11 @@ class BaseForm(AbstractForm):
             ,'right': rightCont
         }
         if (self.parentTabs is None):
-            store.page.add(conts)
+            store.page.add(self.mainConts)
         elif type(self.parentTabs) == Tabs:
-            self.parentTabs.add(ft.Tab(label=ft.Text(self.meta['caption']), data={'name':self.__getNameClass()}), conts)
+            self.parentTabs.add(ft.Tab(label=ft.Text(self.meta['caption']), data={'name':self.__getNameClass()}), self.mainConts)
         elif type(self.parentTabs) == Column:
-            self.parentTabs.add(conts)
+            self.parentTabs.add(self.mainConts)
 
     def addTools(self):
         '''Обработка и создание операций'''
@@ -103,7 +103,6 @@ class BaseForm(AbstractForm):
         b = []
         for i in sorted(q, key=lambda x: x[-1]._order):
             b.append(self.addButton(
-                objPath=i[-1].img,
                 label=i[-1]._oper_label, 
                 callback=self.appendAction(i[-1], i[0]),
                 show=oper[i[0]]['isVisible'] if i[0] in oper else i[-1].isVisible
@@ -112,7 +111,7 @@ class BaseForm(AbstractForm):
             controls=b
             )
 
-    def addButton(self, objPath, label, callback, show): 
+    def addButton(self, label, callback, show): 
         return ft.ElevatedButton(label, on_click=callback, visible=show)
 
     def getSqlAndParam(self, sql:str)->tuple[str, list]:

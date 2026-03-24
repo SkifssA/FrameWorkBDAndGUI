@@ -58,10 +58,10 @@ class BaseAvi:
             return self._getAvi().thisApi()
       
         
-        @SetOper(label='Обновить', order=1, img='2')
+        @SetOper(label='Обновить', order=1)
         async def refreshForm(self): self.refresh()
 
-        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
+        @SetOper(label='Выбрать', order=-1, isVisible=False)
         async def returnResult(self):
             d = {}
             for i in self.returnAttr:
@@ -79,18 +79,18 @@ class BaseAvi:
 
     class DefaultList(DefaultDefault, EmptyList):
         
-        @SetOper(label='Открыть', order=2, img='4')
+        @SetOper(label='Открыть', order=2)
         async def openForm(self): await self._getAvi().card(idItem=self.getAttr('id')).open()
         
-        @SetOper(label='Создать', order=10, img='0')
+        @SetOper(label='Создать', order=10)
         async def insert(self): await self._getAvi().card(isInsert=True).open()
 
-        @SetOper(label='Удалить', order=20, img='3')
+        @SetOper(label='Удалить', order=20)
         async def delete(self):
             await self.thisApi()._deleteById(self.getAttr('id'))
             self.refresh()
 
-        @SetOper(label='Закрыть', order=10000, img='1')
+        @SetOper(label='Закрыть', order=10000)
         async def closeFormCancel(self): self.close()
 
         def thisRop(self):
@@ -102,7 +102,7 @@ class BaseAvi:
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
 
     class DefaultCard(DefaultDefault, EmptyCard): 
-        @SetOper(label='Закрыть', order=10000, img='1')
+        @SetOper(label='Закрыть', order=10000)
         async def closeFormCancel(self):
             if not self.isModal:
                 if self.isMod or self.isInsert:
@@ -128,13 +128,13 @@ class BaseAvi:
                     await self.saveForm()
             self.closeForm()
 
-        @SetOper(label='Сохранить', order=1, img='5')
+        @SetOper(label='Сохранить', order=1)
         async def saveForm(self):
             await self.thisApi().update(self.obj)
             self.isInsert = False
             self.isMod = False
 
-        @SetOper(label='Обновить', order=-1, img='2')
+        @SetOper(label='Обновить', order=-1)
         async def refreshForm(self):
             await self.refresh()
 

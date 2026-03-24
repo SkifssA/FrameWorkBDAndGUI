@@ -9,7 +9,7 @@ from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 
 class Awh_AnimeAvi(Awh_AnimeDvi):
     class List(Awh_AnimeDvi.DviList):
-        @SetOper(label='Загрузить', img='9')
+        @SetOper(label='Загрузить')
         async def uploadlesson(self):
             async def registerAnime(kattr):
                 a = await Awh_AnimeLoadPkg().getData(kattr['sUrl'])
@@ -18,11 +18,11 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             
             Awh_AnimeAvi.cardSetUrlAnime().openModal(registerAnime, ['sUrl'])
 
-        @SetOper(label='Cайт', img='8')
+        @SetOper(label='Cайт')
         async def openWeb(self):
             webbrowser.open(self.getAttr('sUrl'))
 
-        @SetOper(label='ВК', img='8')
+        @SetOper(label='ВК')
         async def openWebVk(self):
             temp = 'https://vkvideo.ru/?hd=1&q=аниме%20{name}%20все%20серии%20Anime%20➤%20AniPlanet'
             name = self.getAttr('sCaption').replace(' ', '%20')
@@ -61,7 +61,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         async def getObj(self):
             return self.addData()
         
-        @SetOper(label='Выбрать', order=-1, isVisible=False, img='10', isLong=True)
+        @SetOper(label='Выбрать', order=-1, isVisible=False, isLong=True)
         async def returnResult(self):
             if self.getAttr("sUrl") is None or self.getAttr("sUrl").strip() == '':
                 ErrorModal('Значение атрибута \"Ссылка на аниме\" не может быть пустым').show()

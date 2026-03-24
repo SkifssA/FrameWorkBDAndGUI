@@ -1,7 +1,7 @@
 {
     "database": {
-        "url": "https://updategui-skifssa.aws-eu-west-1.turso.io"
-        ,"auth_token": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NjExMjU3NjQsImlkIjoiY2YxYzUyODgtYmE3Yi00NzIwLTkzNGQtOGJiYmY2OTgyZDgzIiwicmlkIjoiMGRjNDNkNjItODYwYy00Mjc1LWIyY2EtMjIwYmYyNzM5ZTEzIn0.DatJSTmIBFUjan2zLqLq2VgMSzD380oQi2orTgoGAnzV8S38nHoZxzl3rUehkUh9Os080HQ4QmmnQEncBPWgDA"   
-    }
-    ,"isScriptScheduler": false
+        "url": "https://updategui-skifssa.aws-eu-west-1.turso.io",
+        "auth_token": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NjExMjU3NjQsImlkIjoiY2YxYzUyODgtYmE3Yi00NzIwLTkzNGQtOGJiYmY2OTgyZDgzIiwicmlkIjoiMGRjNDNkNjItODYwYy00Mjc1LWIyY2EtMjIwYmYyNzM5ZTEzIn0.DatJSTmIBFUjan2zLqLq2VgMSzD380oQi2orTgoGAnzV8S38nHoZxzl3rUehkUh9Os080HQ4QmmnQEncBPWgDA"
+    },
+    "isScriptScheduler": false
 }
