@@ -1,4 +1,5 @@
 from typing import TypedDict, Unpack
+import flet as ft
 
 from core.empty.FormFlet import BaseForm
 from core.package.Core_AsynRunPkg import asyncRun
@@ -26,9 +27,12 @@ class FormHandle:
         return self
     
     def open(self):
-        if self.parent is None:
-            raise AttributeError(f"Нельзя открыть форму без родителя")
-        asyncRun(self.clsForm.open(parent=self.parent.locationsChildrens[self.locat]))
+        if type(self.parent) == ft.Page:
+            asyncRun(self.clsForm.open())
+        else:
+            if self.parent is None:
+                raise AttributeError(f"Нельзя открыть форму без родителя")
+            asyncRun(self.clsForm.open(parent=self.parent.locationsChildrens[self.locat]))
 
 class ClsFormManeger:
     allForm = {}

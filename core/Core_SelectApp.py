@@ -17,6 +17,6 @@ class Core_SelectApp:
     def openMainMenuModule(self, data):
         store.page.clean()
         module_name = f"{data['nameMainScreen']}.default"
-        asyncRun(asyncRun(Core_ActionDispatcher().action(module_name)).open())
+        asyncRun(Core_ActionDispatcher().action(module_name)).param(parent=store.page).open()
 
         

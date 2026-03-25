@@ -76,9 +76,9 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         return FornManeger.register(cls.List)
     
     @classmethod
-    def card(cls, **kwargs)->Card:
-        return cls.typeMeta(cls.Card, **kwargs)
+    def card(cls)->FormHandle:
+        return FornManeger.register(cls.Card)
     
     @classmethod
-    def cardSetUrlAnime(cls, **kwargs)->CardSetUrlAnime:
-        return cls.typeMeta(cls.CardSetUrlAnime, **kwargs)
+    def cardSetUrlAnime(cls)->FormHandle:
+        return FornManeger.register(cls.CardSetUrlAnime)

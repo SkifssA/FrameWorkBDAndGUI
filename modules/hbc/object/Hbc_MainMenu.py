@@ -12,24 +12,24 @@ class Hbc_MainMenu(mainMenu):
         def mm_respo(self): pass
 
         @SetOper(label='Уроки', order=1, headOper='mm_respo')
-        async def Hbc_Lesson(self):
-            await Hbc_LessonAvi.List().open(parent=self.locationsChildrens['bottom'])
+        def Hbc_Lesson(self):
+            Hbc_LessonAvi.list().param(parent=self).open()
 
         @SetOper(label='Файлы', order=2, headOper='mm_respo')
-        async def Bc_File(self):
-            await Bc_FileAvi.List().open(parent=self.locationsChildrens['bottom'])
+        def Bc_File(self):
+            Bc_FileAvi.list().param(parent=self).open()
 
         @SetOper(label="Ученики")
         def mm_student(self):pass
 
         @SetOper(label='Ученики', order=1, headOper="mm_student")
-        async def Hbc_Student(self):
-            await Hbc_StudentAvi.List().open(parent=self.locationsChildrens['bottom'])
+        def Hbc_Student(self):
+            Hbc_StudentAvi.list().param(parent=self).open()
 
         @SetOper(label='Время учеников', order=2, headOper="mm_student")
-        async def Hbc_StudentData(self):
-            await Hbc_StudentDataAvi.List().open(parent=self.locationsChildrens['bottom'])
+        def Hbc_StudentData(self):
+            Hbc_StudentDataAvi.list().param(parent=self).open()
 
         @SetOper(label='Выполненые практические', order=3, headOper="mm_student")
-        async def Hbc_StudentLesson(self):
-            await Hbc_StudentLessonAvi.List().open(parent=self.locationsChildrens['bottom'])
+        def Hbc_StudentLesson(self):
+            Hbc_StudentLessonAvi.list().param(parent=self).open()

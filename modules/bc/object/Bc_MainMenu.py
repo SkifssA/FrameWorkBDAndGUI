@@ -12,21 +12,21 @@ class Bc_MainMenu(mainMenu):
         def mm_jurnal(self): pass
 
         @SetOper(label='Еденицы времени', order=1, headOper='mm_jurnal')
-        async def Bc_TimeLine(self):
-            await Bc_TimeLineAvi.list().open(parent=self.locationsChildrens['bottom'])
+        def Bc_TimeLine(self):
+            Bc_TimeLineAvi.list().param(parent=self).open()
 
         @SetOper(label='Иконки', order=2, headOper='mm_jurnal')
-        async def Bc_TimeLine(self):
-            await Bc_IconsAvi().list().open(parent=self.locationsChildrens['bottom'])
+        def Bc_TimeLine(self):
+            Bc_IconsAvi().list().param(parent=self).open()
 
         @SetOper(label="Настройки", order=1)
         def mm_setting(self): pass
 
         @SetOper(label='Конфигурация', order=1, headOper='mm_setting')
-        async def Bc_Config(self):
-            await Bc_ConfigAvi.list().open(parent=self.locationsChildrens['bottom'])
+        def Bc_Config(self):
+            Bc_ConfigAvi.list().param(parent=self).open()
 
         @SetOper(label='Отложеные скритпы', order=2, headOper='mm_setting')
-        async def Bc_ScriptScheduler(self):
-            await Bc_ScriptSchedulerAvi.list().open(parent=self.locationsChildrens['bottom'])
+        def Bc_ScriptScheduler(self):
+            Bc_ScriptSchedulerAvi.list().param(parent=self).open()
         

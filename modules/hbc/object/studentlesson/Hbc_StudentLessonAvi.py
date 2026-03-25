@@ -3,20 +3,9 @@ from .Hbc_StudentLessonDvi import Hbc_StudentLessonDvi
 from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
 from ..student.Hbc_StudentApi import Hbc_StudentApi
 from core.base.oper import SetOper
+from core.formhandle.FornManeger import FormHandle, FornManeger
 
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
-    @classmethod
-    def list(cls, **kwargs):
-        return cls.typeMeta(cls.List, **kwargs)
-    
-    @classmethod
-    def list_idStudent(cls, **kwargs):
-        return cls.typeMeta(cls.List_idStudent, **kwargs)
-    
-    @classmethod
-    def card(cls, **kwargs):
-        return cls.typeMeta(cls.Card, **kwargs)
-
     class List(Hbc_StudentLessonDvi.DviList):
         @SetOper(label='Обновить практические', order=-1)
         async def uploadlessonAll(self):
@@ -51,12 +40,12 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             self.selection.oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
 
     class List_idStudent(Hbc_StudentLessonDvi.DviList):
-        async def onRefresh(self):
-            return await super().onRefresh() + f"WHERE t.idStudent = :super$id"
+        def onRefresh(self):
+            return super().onRefresh() + f"WHERE t.idStudent = :super$id"
         
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
-            yield Bc_FileAvi.list_gidSrc(locat='right')
+            yield Bc_FileAvi.list_gidSrc().param(locat='right')
 
         def refreshCh(self):
             return super().refreshCh()
@@ -64,3 +53,15 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
     class Card(Hbc_StudentLessonDvi.DviCard): pass
 
     class LookUp(Hbc_StudentLessonDvi.DviLookUp): pass
+
+    @classmethod
+    def list(cls)->FormHandle:
+        return FornManeger.register(cls.List)
+    
+    @classmethod
+    def card(cls)->FormHandle:
+        return FornManeger.register(cls.Card)
+    
+    @classmethod
+    def list_idStudent(cls)->FormHandle:
+        return FornManeger.register(cls.List_idStudent)

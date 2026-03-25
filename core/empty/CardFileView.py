@@ -27,13 +27,13 @@ class CardFileView(BaseForm):
             self.image_drawlist = dpg.add_drawlist(width=-1, height=-1)
         return image_container
 
-    async def onRefresh(self):
+    def onRefresh(self):
         return ''
     
-    async def onRefreshExt(self):
+    def onRefreshExt(self):
         return ''
     
-    async def _getAttr(self):
+    def _getAttr(self):
         return ''
 
     async def _refresh(self):

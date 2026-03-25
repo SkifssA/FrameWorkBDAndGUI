@@ -38,7 +38,7 @@ class EmptyList(BaseForm):
 
     def _getControlsByDataCell(self, i, key, edit):
         ifAddTooltip = 30
-        value = i[key]
+        value = i[key] if i[key] is not None else ''
         if edit == 'check':
             return ft.Checkbox(value=bool(value), disabled=True)
 

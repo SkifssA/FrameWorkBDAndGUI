@@ -9,7 +9,7 @@ from ..base.avi import BaseAvi
 from core.Core_Store import store
 from core.package.Core_AsynRunPkg import asyncRun
 from core.empty.TabsFlet import Tabs
-from core.formhandle.FornManeger import FormHandle
+from core.formhandle.FornManeger import FormHandle, FornManeger
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -66,6 +66,7 @@ class mainMenu(BaseAvi):
                     else:
                         menuDict[obj._oper_id]['data'] = (name, obj, self.appendAction(obj, name))
             return to_dict(menuDict)
-            
-    def default(self, **kwargs)->Default:
-        return self.__class__.typeMeta(self.__class__.Default, **kwargs)
+
+    @classmethod
+    def default(cls)->FormHandle:
+        return FornManeger.register(cls.Default)

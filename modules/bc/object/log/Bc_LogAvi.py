@@ -1,5 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_LogDvi import Bc_LogDvi
+from core.formhandle.FornManeger import FormHandle, FornManeger
 
 class Bc_LogAvi(Bc_LogDvi):
     class List(Bc_LogDvi.DviList): pass
@@ -9,9 +10,9 @@ class Bc_LogAvi(Bc_LogDvi):
     class LookUp(Bc_LogDvi.DviLookUp): pass
 
     @classmethod
-    def list(cls, **kwargs)->List:
-        return cls.typeMeta(cls.List, **kwargs)
+    def list(cls)->FormHandle:
+        return FornManeger.register(cls.List)
     
     @classmethod
-    def card(cls, **kwargs)->Card:
-        return cls.typeMeta(cls.Card, **kwargs)
+    def card(cls)->FormHandle:
+        return FornManeger.register(cls.Card)

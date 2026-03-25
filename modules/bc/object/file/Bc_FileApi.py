@@ -1,7 +1,7 @@
 # Пользовательский файл для логики
 from core.package import Core_FileManagerPkg
 from .Bc_FileDpi import Bc_FileDpi, Bc_FileObj
-import asyncio
+from core.package.Core_AsynRunPkg import asyncRun
 
 class Bc_FileApi(Bc_FileDpi):
     async def findBygidSrc(self, gidSrc):
@@ -18,7 +18,7 @@ class Bc_FileApi(Bc_FileDpi):
         await self.update(rop)
         print(f"Сохранёт файл {rop.sCaption} для источника {rop.gidScr}")
 
-    async def getRealPath(self, id):
-        rop = await self.load(id)
+    def getRealPath(self, id):
+        rop = asyncRun(self.load(id))
         if rop is not None:
             return Core_FileManagerPkg._getObjPath(rop.sPath)

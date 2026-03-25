@@ -1,6 +1,8 @@
 # Пользовательский файл для интерфейса
 from .Awh_GenreDvi import Awh_GenreDvi
 
+from core.formhandle.FornManeger import FormHandle, FornManeger
+
 class Awh_GenreAvi(Awh_GenreDvi):
     class List(Awh_GenreDvi.DviList): pass
 
@@ -9,9 +11,9 @@ class Awh_GenreAvi(Awh_GenreDvi):
     class LookUp(Awh_GenreDvi.DviLookUp): pass
 
     @classmethod
-    def list(cls, **kwargs)->List:
-        return cls.typeMeta(cls.List, **kwargs)
+    def list(cls)->FormHandle:
+        return FornManeger.register(cls.List)
     
     @classmethod
-    def card(cls, **kwargs)->Card:
-        return cls.typeMeta(cls.Card, **kwargs)
+    def card(cls)->FormHandle:
+        return FornManeger.register(cls.Card)

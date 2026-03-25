@@ -15,11 +15,10 @@ class BaseForm(AnyForm):
     def appendAction(self, obj, name):
         '''Создание обработчиков для операций'''
         bound_method = getattr(self, name)
+        return bound_method
         if obj._is_long:
             # return lambda: LoadModal(bound_method, f'Выполнение задачи \'{obj._oper_label}\'').show()
             pass
-        else:
-            return lambda: asyncRun(bound_method())
 
     async def open(self, parent:Tabs|ft.Column=None, isUpdate:bool=True):
         self.parentTabs = parent
@@ -108,8 +107,9 @@ class BaseForm(AnyForm):
         return ft.ElevatedButton(label, on_click=callback, visible=show)
 
     def getSqlAndParam(self, sql:str)->tuple[str, list]:
-        par = [self.getAttr(i) for i in re.findall(r':([^ ]*)', sql)]
-        sql = re.sub(r':[^ ]*', '?', sql)
+        paternFind = r':([^ \s]*)'
+        par = [self.getAttr(i) for i in re.findall(paternFind, sql)]
+        sql = re.sub(paternFind, '?', sql)
         return (sql, par)
 
     def __getNameClass(self):

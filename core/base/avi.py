@@ -9,6 +9,7 @@ from ..empty.EmptyCard import EmptyCard
 from .oper import SetOper
 from .modal import DialogModal
 from .Event import SetterEvent
+from core.base.api import BaseApi
 
 class BaseAvi:
 
@@ -54,7 +55,7 @@ class BaseAvi:
             else:
                 return self._getAttr(name)
 
-        def thisApi(self):
+        def thisApi(self)->BaseApi:
             return self._getAvi().thisApi()
       
         
