@@ -1,11 +1,9 @@
-import dearpygui.dearpygui as dpg
-
 import inspect
 
 from ..package import ASQL
-from ..empty.FormFlet import BaseForm
-from ..empty.ListFlet import EmptyList
-from ..empty.EmptyCard import EmptyCard
+from ..form.FormFlet import BaseForm
+from ..form.ListFlet import EmptyList
+from ..form.EmptyCard import EmptyCard
 from .oper import SetOper
 from .modal import DialogModal
 from .Event import SetterEvent

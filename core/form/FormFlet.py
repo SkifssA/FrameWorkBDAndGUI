@@ -6,8 +6,8 @@ import importlib
 from .AbstractForm import AnyForm
 from ..package import Core_FileManagerPkg, asyncRun
 from core.Core_Store import store
-from core.empty.TabsFlet import Tabs
-from core.empty.ColumnFlet import Column
+from core.widgets.TabsFlet import Tabs
+from core.widgets.ColumnFlet import Column
 
 class BaseForm(AnyForm):     
     async def validateClass(self): pass

@@ -11,5 +11,5 @@ class Selection:
         return self.Oper(self.nameCls, op)
     
     def findSelection(self, aviSelection):
-        from ..empty.Form import BaseForm
+        from ..form.Form import BaseForm
         return BaseForm.getAllForm().get(str(aviSelection.__class__), None)

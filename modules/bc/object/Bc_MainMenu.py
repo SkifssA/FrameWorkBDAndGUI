@@ -1,4 +1,4 @@
-from core.empty.MainMenu import mainMenu
+from core.form.MainMenu import mainMenu
 from core.base.oper import SetOper
 
 from ..object.config.Bc_ConfigAvi import Bc_ConfigAvi

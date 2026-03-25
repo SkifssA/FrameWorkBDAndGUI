@@ -8,7 +8,7 @@ from .FormFlet import BaseForm
 from ..base.avi import BaseAvi
 from core.Core_Store import store
 from core.package.Core_AsynRunPkg import asyncRun
-from core.empty.TabsFlet import Tabs
+from core.widgets.TabsFlet import Tabs
 from core.formhandle.FornManeger import FormHandle, FornManeger
 
 def make_btn():

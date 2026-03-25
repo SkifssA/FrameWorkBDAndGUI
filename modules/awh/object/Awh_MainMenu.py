@@ -1,4 +1,4 @@
-from core.empty.MainMenu import mainMenu
+from core.form.MainMenu import mainMenu
 from core.base.oper import SetOper
 
 from .anime.Awh_AnimeAvi import Awh_AnimeAvi

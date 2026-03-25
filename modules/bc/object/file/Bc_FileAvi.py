@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_FileDvi import Bc_FileDvi
-from core.empty.CardFileViewFlet import CardFileView
+from core.form.CardFileViewFlet import CardFileView
 from core.base.avi import BaseAvi
 from core.formhandle.FornManeger import FormHandle, FornManeger
 

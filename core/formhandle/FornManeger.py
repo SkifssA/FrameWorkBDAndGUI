@@ -1,7 +1,7 @@
 from typing import TypedDict, Unpack
 import flet as ft
 
-from core.empty.FormFlet import BaseForm
+from core.form.FormFlet import BaseForm
 from core.package.Core_AsynRunPkg import asyncRun
 
 class FormConfig(TypedDict, total=False):
