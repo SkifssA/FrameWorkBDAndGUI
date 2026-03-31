@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_FileDvi import Bc_FileDvi
-from core.empty.CardFileView import CardFileView
+from core.form.CardFileView import CardFileView
 from core.base.avi import BaseAvi
 
 class Bc_FileAvi(Bc_FileDvi):
@@ -15,19 +15,19 @@ class Bc_FileAvi(Bc_FileDvi):
         def openCh(self):
             yield Bc_FileAvi.cardFileView_idFile()
 
-        async def onRefresh(self):
-            return await super().onRefresh() + f"WHERE t.gidScr = :super$gid"
+        def onRefresh(self):
+            return super().onRefresh() + f"WHERE t.gidScr = :super$gid"
 
     class Card(Bc_FileDvi.DviCard): pass
 
     class LookUp(Bc_FileDvi.DviLookUp): pass
 
     class CardFileView_idFile(CardFileView, BaseAvi.DefaultDefault):
-        async def onRefresh(self):
-            return await self.thisApi().getRealPath(self.getAttr('super$id'))
+        def onRefresh(self):
+            return self.thisApi().getRealPath(self.getAttr('super$id'))
         
     class CardFileView_sUrl(CardFileView, BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return {'real_path':self.getAttr("super$sUrlImg"), 'type':'http'}
         
     @classmethod

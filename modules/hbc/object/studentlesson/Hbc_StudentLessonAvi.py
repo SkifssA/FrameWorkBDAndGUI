@@ -51,8 +51,8 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
             self.selection.oper('fillScore').isDisabled = self.getAttr('bUploadFile') is None
 
     class List_idStudent(Hbc_StudentLessonDvi.DviList):
-        async def onRefresh(self):
-            return await super().onRefresh() + f"WHERE t.idStudent = :super$id"
+        def onRefresh(self):
+            return super().onRefresh() + f"WHERE t.idStudent = :super$id"
         
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi

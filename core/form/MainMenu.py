@@ -2,10 +2,10 @@ import inspect
 from collections import defaultdict
 import dearpygui.dearpygui as dpg
 import os
-from ..base.oper import SetOper
-from ..Core_SelectApp import Core_SelectApp
-from .Form import BaseForm
-from ..base.avi import BaseAvi
+from core.base.oper import SetOper
+from core.Core_SelectApp import Core_SelectApp
+from core.form.Base import Base
+from core.base.avi import BaseAvi
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -22,7 +22,7 @@ def to_dict(d):
 
 class mainMenu(BaseAvi):
 
-    class Default(BaseForm):
+    class Default(Base):
         @SetOper(label="Приложение", order=-10)
         def mm_main_oper(self): pass
 

@@ -1,9 +1,8 @@
-from core.empty.MainMenu import mainMenu
+from core.form.MainMenu import mainMenu
 from core.base.oper import SetOper
 
 from .anime.Awh_AnimeAvi import Awh_AnimeAvi
 from .genre.Awh_GenreAvi import Awh_GenreAvi
-from .animegenre.Awh_AnimeGenreAvi import Awh_AnimeGenreAvi
 
 class Awh_MainMenu(mainMenu):
     class Default(mainMenu.Default):

@@ -33,8 +33,8 @@ class Bc_FileDpi(BaseApi):
     async def update(self, rop:Bc_FileObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Bc_FileObj:
-        return await super().load(id)
+    def load(self, id: int)->Bc_FileObj:
+        return super().load(id)
 
     def setgidScr(self, obj:Bc_FileObj, value): obj.gidScr = value
     def setsCaption(self, obj:Bc_FileObj, value): obj.sCaption = value

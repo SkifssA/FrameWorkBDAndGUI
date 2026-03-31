@@ -1,14 +1,11 @@
 from ..package.Core_DbManagerPkg import ATQSL, ASQL
-from ..package import Core_AsynRunPkg
+from ..package.Core_AsynRunPkg import asyncRun
 from .Type import Gid
 
 class BaseApi:
     _idClass = None
     _classObj = None
     _all_instances = {}
-
-    def asyncRun(self, coroutine):
-        return Core_AsynRunPkg.asyncRun(coroutine)
 
     async def idClass(self):
         id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))
@@ -38,7 +35,7 @@ class BaseApi:
         results = []
         for i in w:
             results.append(self._createRop(i))
-        return results
+        return results or []
 
     async def _findAllByAttr(self, attr:str, value)->list[int]|None:
         w = await self._findDataBase(attr, value)
@@ -92,11 +89,11 @@ class BaseApi:
             setattr(rop, k, v)
         return rop
 
-    async def load(self, id):
+    def load(self, id):
         try:
             if id is not None:
                 t = self._getNameClass()
-                data = await ASQL(f"SELECT * FROM {t} WHERE id = ?", [id])
+                data = asyncRun(ASQL(f"SELECT * FROM {t} WHERE id = ?", [id]))
                 return self._createRop(data=data[0])
         except IndexError:
             pass

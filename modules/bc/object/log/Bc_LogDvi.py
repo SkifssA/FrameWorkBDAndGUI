@@ -6,7 +6,7 @@ class Bc_LogDvi(BaseAvi):
     thisApi = Bc_LogApi
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
                 SELECT t.id,
                     t.gid,

@@ -24,11 +24,12 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
         @SetOper(label='ВК', img='8')
         async def openWebVk(self):
-            temp = 'https://vkvideo.ru/?hd=1&q=аниме%20{name}%20все%20серии%20Anime%20➤%20AniPlanet'
+            temp = 'https://vkvideo.ru/?hd=1&q=аниме%20{name}%20все%20серии%20подряд%20{qty}'
             name = self.getAttr('sCaption').replace(' ', '%20')
-            webbrowser.open(temp.format(name=name))
+            qty = f'1-{self.getAttr('nSeries')}'
+            webbrowser.open(temp.format(name=name, qty=qty))
 
-        async def onRefresh(self):
+        def onRefresh(self):
             return f"""
             SELECT t.id,
                    t.gid,
@@ -64,6 +65,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10', isLong=True)
         async def returnResult(self):
+            print(self.getAttr("sUrl"))
             if self.getAttr("sUrl") is None or self.getAttr("sUrl").strip() == '':
                 ErrorModal('Значение атрибута \"Ссылка на аниме\" не может быть пустым').show()
             else:

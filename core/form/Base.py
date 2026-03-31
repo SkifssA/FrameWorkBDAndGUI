@@ -2,15 +2,15 @@ import dearpygui.dearpygui as dpg
 import inspect
 import asyncio
 import re
-from ..package.Core_FileManagerPkg import Core_FileManagerPkg
-from ..base.selection import Selection
-from ..base.filter import Filter
-from .AbstractForm import AbstractForm
-from ..package.Core_ImageManagerPkg import Core_ImageManagerPkg
-from ..base.modal import FormModal, LoadModal
-from ..package.Core_AsynRunPkg import asyncRun
+from core.package.Core_FileManagerPkg import Core_FileManagerPkg
+from core.base.selection import Selection
+from core.base.filter import Filter
+from core.form.Abstract import Abstract
+from core.package.Core_ImageManagerPkg import Core_ImageManagerPkg
+from core.base.modal import FormModal, LoadModal
+from core.package.Core_AsynRunPkg import asyncRun
 
-class BaseForm(AbstractForm):
+class Base(Abstract):
 
     allOpenForm = {}
 
@@ -25,7 +25,7 @@ class BaseForm(AbstractForm):
         self.tab = None
         self.parent = None
         self.parentTable = None
-        self.ch:list[BaseForm] = None
+        self.ch:list[Base] = None
         self.isMod = False
         self.isInsert = False
         self.isModal = False
@@ -45,10 +45,10 @@ class BaseForm(AbstractForm):
         
     @classmethod
     def getAllForm(cls):
-        return BaseForm.allOpenForm
+        return Base.allOpenForm
 
     async def open(self, parent='tab_bar', parentTable=None):
-        BaseForm.allOpenForm[str(self.__class__)] = self
+        Base.allOpenForm[str(self.__class__)] = self
         '''Открытие выборки'''
         self.parent = parent
         self.parentTable = parentTable
@@ -270,14 +270,15 @@ class BaseForm(AbstractForm):
             return lambda: asyncio.run(bound_method())
 
     def closeForm(self):
-        BaseForm.allOpenForm.pop(str(self.__class__), None)
+        Base.allOpenForm.pop(str(self.__class__), None)
         dpg.delete_item(self.tab)
         if self.modal is not None:
             self.modal.hide_overlay()
 
     def getSqlAndParam(self, sql:str)->tuple[str, list]:
-        par = [self.getAttr(i) for i in re.findall(r':([^ ]*)', sql)]
-        sql = re.sub(r':[^ ]*', '?', sql)
+        paternFind = r':([^ \s]*)'
+        par = [self.getAttr(i) for i in re.findall(paternFind, sql)]
+        sql = re.sub(paternFind, '?', sql)
         return (sql, par)
     
     def openCh(self):

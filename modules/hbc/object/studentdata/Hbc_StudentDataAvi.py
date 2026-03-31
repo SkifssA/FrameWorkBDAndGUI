@@ -5,8 +5,8 @@ class Hbc_StudentDataAvi(Hbc_StudentDataDvi):
     class List(Hbc_StudentDataDvi.DviList): pass
 
     class List_idStudent(Hbc_StudentDataDvi.DviList):
-        async def onRefresh(self):
-            return await super().onRefresh() + f"WHERE t.idStudent = :super$id"
+        def onRefresh(self):
+            return super().onRefresh() + "WHERE t.idStudent = :super$id"
 
     class Card(Hbc_StudentDataDvi.DviCard): pass
 

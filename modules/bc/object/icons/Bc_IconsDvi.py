@@ -6,7 +6,7 @@ class Bc_IconsDvi(BaseAvi):
     thisApi = Bc_IconsApi
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
                 SELECT t.id,
                     t.gid,

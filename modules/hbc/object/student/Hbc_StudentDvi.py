@@ -6,7 +6,7 @@ class Hbc_StudentDvi(BaseAvi):
     thisApi = Hbc_StudentApi
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
                 SELECT t.id,
                     t.gid,

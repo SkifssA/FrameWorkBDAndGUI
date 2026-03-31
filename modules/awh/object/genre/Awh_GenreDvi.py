@@ -6,7 +6,7 @@ class Awh_GenreDvi(BaseAvi):
     thisApi = Awh_GenreApi
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
                 SELECT t.id,
                     t.gid,

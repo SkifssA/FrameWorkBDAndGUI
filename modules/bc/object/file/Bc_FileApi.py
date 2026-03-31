@@ -18,7 +18,7 @@ class Bc_FileApi(Bc_FileDpi):
         await self.update(rop)
         print(f"Сохранёт файл {rop.sCaption} для источника {rop.gidScr}")
 
-    async def getRealPath(self, id):
-        rop = await self.load(id)
+    def getRealPath(self, id):
+        rop = self.load(id)
         if rop is not None:
             return Core_FileManagerPkg._getObjPath(rop.sPath)

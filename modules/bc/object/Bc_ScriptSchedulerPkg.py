@@ -4,8 +4,8 @@ import asyncio
 import datetime
 
 from core.package import Core_ActionDispatcher
-from .scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerObj, Bc_ScriptSchedulerApi
-from .timeline.Bc_TimeLineApi import Bc_TimeLineApi
+from modules.bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerObj, Bc_ScriptSchedulerApi
+from modules.bc.object.timeline.Bc_TimeLineApi import Bc_TimeLineApi
 
 class Bc_ScriptSchedulerPkg:
     nHour = -1
@@ -21,7 +21,7 @@ class Bc_ScriptSchedulerPkg:
     @classmethod
     async def run(cls):
         await Bc_TimeLineApi().fill()
-        data = await Bc_ScriptSchedulerApi()._getAllByAttr('bUsed', 1) or []
+        data = await Bc_ScriptSchedulerApi()._getAllByAttr('bUsed', 1)
         obj = Bc_ScriptSchedulerPkg(data)
         obj.runMe = True
         threading.Thread(target=obj._run).start()
@@ -64,7 +64,7 @@ class Bc_ScriptSchedulerPkg:
     def _runByTime(self, TimeLine, Time):
         
         def k(name):
-            asyncio.run(Core_ActionDispatcher().action(name))
+            Core_ActionDispatcher().action(name)
 
         for i in Bc_ScriptSchedulerPkg.script[TimeLine].get(str(Time), []):
             threading.Thread(target=k, args=(i, )).start()

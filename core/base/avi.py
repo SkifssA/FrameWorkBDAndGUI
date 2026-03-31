@@ -3,12 +3,12 @@ import importlib
 import inspect
 
 from ..package import ASQL
-from ..empty.Form import BaseForm
-from ..empty.EmptyList import EmptyList
-from ..empty.EmptyCard import EmptyCard
-from .oper import SetOper
-from .modal import DialogModal
-from .Event import SetterEvent
+from core.form.Base import Base
+from core.form.List import List
+from core.form.Card import Card
+from core.base.oper import SetOper
+from core.base.modal import DialogModal
+from core.base.Event import SetterEvent
 
 class BaseAvi:
 
@@ -40,13 +40,13 @@ class BaseAvi:
         else:
             print("Сеттер на ввод значения")
 
-    class DefaultDefault(BaseForm):
+    class DefaultDefault(Base):
         def getAttr(self, name:str):
             w = name.split('$', maxsplit=1)
             n, p = w[0], '$'.join(w[1:])
             if n == 'super':
                 if self.parent != 'tab_bar':
-                    w:BaseForm = dpg.get_item_user_data(self.parentTable)
+                    w:Base = dpg.get_item_user_data(self.parentTable)
                     return w.getAttr(p)  
             elif n == 'filter':
                 return self.filter._getAttr(p)                           
@@ -83,7 +83,7 @@ class BaseAvi:
             super().checwork()
             self.selection.oper('returnResult').isVisible = self.isModal
 
-    class DefaultList(DefaultDefault, EmptyList):
+    class DefaultList(DefaultDefault, List):
         
         @SetOper(label='Открыть', order=2, img='4')
         async def openForm(self): await self._getAvi().card(idItem=self.getAttr('id')).open()
@@ -107,7 +107,7 @@ class BaseAvi:
             super().checwork()
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
 
-    class DefaultCard(DefaultDefault, EmptyCard): 
+    class DefaultCard(DefaultDefault, Card): 
         @SetOper(label='Закрыть', order=10000, img='1')
         async def closeFormCancel(self):
             if not self.isModal:
@@ -166,7 +166,7 @@ class BaseAvi:
             super().checwork()
             self.selection.oper("saveForm").isDisabled = not self.isMod
 
-    class DefaultDet(DefaultDefault, EmptyList):
+    class DefaultDet(DefaultDefault, List):
         def getIdMaster(self):
             return self.getAttr('super$id')
 

@@ -2,10 +2,11 @@ import dearpygui.dearpygui as dpg
 import asyncio
 from ..package.Core_FileManagerPkg import Core_FileManagerPkg
 from ..package.Core_DbManagerPkg import ASQL
+from core.package.Core_AsynRunPkg import asyncRun
 
 
 def getImgDict():
-    w = asyncio.run(ASQL(
+    w = asyncRun(ASQL(
     """
     SELECT t.id,
         t.gid,

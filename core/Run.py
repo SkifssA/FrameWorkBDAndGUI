@@ -3,7 +3,8 @@ import os
 
 from core.package import Core_FileManagerPkg
 from core.Core_SelectApp import Core_SelectApp
-from modules.bc import Bc_ScriptSchedulerPkg
+from core.package.Core_ActionDispatcherPkg import Core_ActionDispatcherPkg
+from core.package.Core_AsynRunPkg import asyncRun
 
 async def mainProgram():
     dpg.create_context()
@@ -47,7 +48,7 @@ async def mainProgram():
 
     conf = await Core_FileManagerPkg.ReadFile('config/config.json')
     if (conf['isScriptScheduler']):
-        scriptScheduler = await Bc_ScriptSchedulerPkg.run()
+        scriptScheduler = Core_ActionDispatcherPkg().action("Bc_ScriptSchedulerPkg.run", classMethod=True)
 
     dpg.set_primary_window("main_window", True)
     dpg.maximize_viewport()

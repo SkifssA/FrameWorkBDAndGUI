@@ -25,6 +25,6 @@ class Core_SelectApp:
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}.default"
         dpg.delete_item(self.mainMenuApp)
-        asyncio.run(asyncio.run(Core_ActionDispatcher().action(module_name)).open(parent='main_window'))
+        asyncio.run(Core_ActionDispatcher().action(module_name).open(parent='main_window'))
 
         

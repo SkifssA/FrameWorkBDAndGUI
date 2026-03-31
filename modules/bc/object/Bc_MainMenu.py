@@ -1,10 +1,10 @@
-from core.empty.MainMenu import mainMenu
+from core.form.MainMenu import mainMenu
 from core.base.oper import SetOper
 
-from ..object.config.Bc_ConfigAvi import Bc_ConfigAvi
-from ..object.scriptscheduler.Bc_ScriptSchedulerAvi import Bc_ScriptSchedulerAvi
-from ..object.timeline.Bc_TimeLineAvi import Bc_TimeLineAvi
-from ..object.icons.Bc_IconsAvi import Bc_IconsAvi
+from modules.bc.object.config.Bc_ConfigAvi import Bc_ConfigAvi
+from modules.bc.object.scriptscheduler.Bc_ScriptSchedulerAvi import Bc_ScriptSchedulerAvi
+from modules.bc.object.timeline.Bc_TimeLineAvi import Bc_TimeLineAvi
+from modules.bc.object.icons.Bc_IconsAvi import Bc_IconsAvi
 
 class Bc_MainMenu(mainMenu):
     class Default(mainMenu.Default):

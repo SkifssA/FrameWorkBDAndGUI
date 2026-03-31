@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
-from ..base.api import BaseApi
+from core.base.api import BaseApi
 
-class AbstractForm(ABC): 
+class Abstract(ABC): 
     @abstractmethod
     def thisApi(self)->BaseApi: pass
 

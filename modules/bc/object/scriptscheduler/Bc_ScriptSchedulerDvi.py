@@ -6,7 +6,7 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
     thisApi = Bc_ScriptSchedulerApi
 
     class DviDefault(BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
                 SELECT t.id,
                     t.gid,
