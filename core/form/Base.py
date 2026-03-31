@@ -77,7 +77,7 @@ class Base(Abstract):
         self.modal.show()
 
     def openModal(self, callback=None, returnAttr:list=['id']):
-        self.asyncRun(self._openModal(callback, returnAttr))
+        asyncRun(self._openModal(callback, returnAttr))
 
     def asyncRun(self, coroutine):
         return asyncRun(coroutine)
