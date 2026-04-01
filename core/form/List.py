@@ -67,7 +67,7 @@ class List(Base):
         '''Операция выполняемая при выборе строки'''
         if tagRow != self.tagRow:
             self.tagRow = tagRow
-            self.asyncRun(self.refreshCh())
+            asyncRun(self.refreshCh())
             self.checwork()
 
     def _oneShow(self, tagSelf, tagTable):

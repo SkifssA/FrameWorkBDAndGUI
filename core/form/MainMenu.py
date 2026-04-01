@@ -6,6 +6,7 @@ from core.base.oper import SetOper
 from core.Core_SelectApp import Core_SelectApp
 from core.form.Base import Base
 from core.base.avi import BaseAvi
+from core.package.Core_AsynRunPkg import asyncRun
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -50,7 +51,7 @@ class mainMenu(BaseAvi):
             with dpg.child_window(parent=par) as g:
                 dpg.add_tab_bar(tag="tab_bar")
             if self.firstFrame() is not None:
-                self.asyncRun(self.firstFrame().open())
+                asyncRun(self.firstFrame().open())
             return g
             
         def firstFrame(self): pass

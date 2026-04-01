@@ -2,6 +2,8 @@ import dearpygui.dearpygui as dpg
 import inspect
 import asyncio
 import re
+from typing import TypedDict
+
 from core.package.Core_FileManagerPkg import Core_FileManagerPkg
 from core.base.selection import Selection
 from core.base.filter import Filter
@@ -9,11 +11,13 @@ from core.form.Abstract import Abstract
 from core.package.Core_ImageManagerPkg import Core_ImageManagerPkg
 from core.base.modal import FormModal, LoadModal
 from core.package.Core_AsynRunPkg import asyncRun
+from core.package.Core_MetadataManager import Core_Metadata
+
+class Config(TypedDict, total=False):
+    locat: str
+    isUpdate: bool
 
 class Base(Abstract):
-
-    allOpenForm = {}
-
     def __init__(self):
         self.sizeLineResize = 5
         self.defaultHeight = -1
@@ -34,26 +38,14 @@ class Base(Abstract):
         self.right = False
         self.filter = None
         self.imgManager = Core_ImageManagerPkg()
+        self.meta = Core_Metadata.get(self)
         self.modal = None
-        
-    def get_impl_path(self):
-        """Путь к файлу, где определён класс"""
-        file = inspect.getfile(self.__class__)
-        w = file.find('modules')
-        file = file[w:-3].replace('object', 'schemas')
-        return file
-        
-    @classmethod
-    def getAllForm(cls):
-        return Base.allOpenForm
 
     async def open(self, parent='tab_bar', parentTable=None):
-        Base.allOpenForm[str(self.__class__)] = self
         '''Открытие выборки'''
         self.parent = parent
         self.parentTable = parentTable
         self.ch = tuple(self.openCh())
-        self.meta = await self.getMeta()
         if dpg.does_item_exist(self.tab):
             await self.refresh()
         else:    
@@ -68,7 +60,6 @@ class Base(Abstract):
         self.returnAttr = returnAttr
         self.callback = callback
         self.isModal = True
-        self.meta = await self.getMeta()
         wd = self.meta.get('width', dpg.get_viewport_width() * 0.5)
         hg = self.meta.get('height', dpg.get_viewport_height() * 0.5)
         self.modal = FormModal(wd, hg)
@@ -78,40 +69,6 @@ class Base(Abstract):
 
     def openModal(self, callback=None, returnAttr:list=['id']):
         asyncRun(self._openModal(callback, returnAttr))
-
-    def asyncRun(self, coroutine):
-        return asyncRun(coroutine)
-                
-    async def getMeta(self):
-        path = f'../../{self.get_impl_path()}'
-        if (path.endswith('Avi')):
-            path = path[:-3]
-        a = await Core_FileManagerPkg.ReadFile(f"{path}.Ameta.json")
-        d = await Core_FileManagerPkg.ReadFile(f"{path}.Dmeta.json")
-        if self.__class__.__name__ in a and d != 'Файл не найден':
-            return self.__fillByDefault(a[self.__class__.__name__], d['Default'])
-        elif (self.__class__.__name__ in a):
-            return a[self.__class__.__name__]
-        elif 'Default' in d:
-            return d['Default']
-        else:
-            return {'isVisibleToolBar': False}
-
-    def __fillByDefault(self, a, d):
-        self.__w(a, d, 'caption')
-        self.__w(a, d, 'isVisibleToolBar')
-        self.__w(a, d, 'attr')
-
-        for i in d['attr']:
-            self.__w(a['attr'], d['attr'], i)
-            for j in d['attr'][i]:
-                self.__w(a['attr'][i], d['attr'][i], j)
-            
-        return a
-
-    def __w(self, a, d, sNAme):
-        if(sNAme not in a):
-            a[sNAme] = d[sNAme]
 
     def getW(self):
         '''Получение ширины'''
