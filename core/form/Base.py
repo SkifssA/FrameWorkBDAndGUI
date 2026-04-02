@@ -12,6 +12,7 @@ from core.package.Core_ImageManagerPkg import Core_ImageManagerPkg
 from core.base.modal import FormModal, LoadModal
 from core.package.Core_AsynRunPkg import asyncRun
 from core.package.Core_MetadataManager import Core_Metadata
+from core.form.widgets.groupByCh import groupByCh
 
 class Config(TypedDict, total=False):
     locat: str
@@ -22,8 +23,6 @@ class Base(Abstract):
         self.sizeLineResize = 5
         self.defaultHeight = -1
 
-        self.last_mouse_pos = [0.0, 0.0]
-        self.dragging_resize = False
         self.offset_x_resize = 0.0
         self.offset_y_resize = 0.0
         self.tab = None
@@ -40,6 +39,7 @@ class Base(Abstract):
         self.imgManager = Core_ImageManagerPkg()
         self.meta = Core_Metadata.get(self)
         self.modal = None
+        self.locationCh = {}
 
     async def open(self, parent='tab_bar', parentTable=None):
         '''Открытие выборки'''
@@ -92,8 +92,7 @@ class Base(Abstract):
         for i in self.ch:
             if i is not None:
                 if i.right:
-                    await i.open(self.rightGroup, parentTable=self.mainForm)
-                    dpg.configure_item(self.LeftRight, show=True)
+                    self.rightGroup.add(i)
                 else:
                     await i.open(self.tabBar, parentTable=self.mainForm)
                     dpg.configure_item(self.tabBar, show=True)
@@ -109,16 +108,15 @@ class Base(Abstract):
 
         self.filter = Filter(self)
 
-        with dpg.group(parent=self.tab, horizontal=True) as rightGroup:
-            with dpg.group() as mainGroup: pass
-            self.LeftRight = dpg.add_button(label="", width=self.sizeLineResize, height=-1, show=False)
+        with dpg.group(parent=self.tab, horizontal=True) as mainGroup:
+            self.mainGroup = mainGroup
+            self.leftGroup = groupByCh(self)
+            self.selfgroup = dpg.add_group(label=f"Отображение класса {inspect.getfile(self.__class__)}")
+            self.rightGroup = groupByCh(self, True)
 
-        self.rightGroup = rightGroup
-        self.selfgroup = mainGroup
+        # dpg.show_item_registry()
 
-        await self.createTable(mainGroup, width)
-
-        self.regHandler()
+        await self.createTable(self.selfgroup, width)
     
     async def createTable(self, par, width=-1, height=None):
         '''Создание основного фрейма'''
@@ -129,7 +127,7 @@ class Base(Abstract):
             self.toolBar = dpg.add_group(show=False, horizontal=True, tag=f'{par}_ToolBar')
         self.mainForm = self.createMainForm(par)
         dpg.set_item_user_data(self.mainForm, self)
-        self.UpDown = dpg.add_button(label="", height=self.sizeLineResize, parent=par, show=False)
+        dpg.configure_item(self.mainForm, label=f"ГЛВНАЯ ФОРМА")
         self.tabBar = dpg.add_tab_bar(show=False, parent=par)
 
         await self.afterCreate()
@@ -149,39 +147,6 @@ class Base(Abstract):
         await self.refreshCh()
 
     async def validateClass(self): pass
-
-    def regHandler(self):
-        """Регистрация обработчиков и событий"""
-        def on_mouse_drag(sender, app_data):
-            mouse_x, mouse_y = dpg.get_mouse_pos(local=False)
-            if self.dragging_resize == 1:
-                dx = mouse_x - self.last_mouse_pos[0]
-                self.offset_x_resize += dx
-                self.last_mouse_pos[0] = mouse_x
-                dpg.configure_item(self.selfgroup, width=self.offset_x_resize)
-            elif self.dragging_resize == 2:
-                dy = mouse_y - self.last_mouse_pos[1]
-                self.offset_y_resize += dy
-                self.last_mouse_pos[1] = mouse_y
-                dpg.configure_item(self.mainForm, height=self.offset_y_resize)
-
-        def on_mouse_right_down(sender, app_data):
-            try:
-                if dpg.is_item_hovered(self.LeftRight):
-                    self.dragging_resize = 1
-                elif dpg.is_item_hovered(self.UpDown):
-                    self.dragging_resize = 2
-                self.last_mouse_pos[:] = dpg.get_mouse_pos(local=False)
-            except:
-                pass
-
-        def on_mouse_right_up(sender, app_data):
-            self.dragging_resize = 0
-
-        with dpg.handler_registry():
-            dpg.add_mouse_move_handler(callback=on_mouse_drag)
-            dpg.add_mouse_down_handler(button=dpg.mvMouseButton_Left, callback=on_mouse_right_down)
-            dpg.add_mouse_release_handler(button=dpg.mvMouseButton_Left, callback=on_mouse_right_up)
 
     async def addTools(self):
         '''Обработка и создание операций'''
@@ -227,7 +192,6 @@ class Base(Abstract):
             return lambda: asyncio.run(bound_method())
 
     def closeForm(self):
-        Base.allOpenForm.pop(str(self.__class__), None)
         dpg.delete_item(self.tab)
         if self.modal is not None:
             self.modal.hide_overlay()

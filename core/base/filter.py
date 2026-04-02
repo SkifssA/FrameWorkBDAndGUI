@@ -7,9 +7,12 @@ class Filter:
         self.tagInput = {}
         self.where = []
         with dpg.group(parent=parent.tab, 
-                       horizontal=True) as fileter:
+                       horizontal=True
+                       ,label="Фильтр"
+                       ,show=False) as fileter:
             self.tag = fileter
             if 'filter' in parent.meta:
+                dpg.show_item(self.tag)
                 flt = parent.meta['filter']
                 for i in flt:
                     self.where.append(i['where'])

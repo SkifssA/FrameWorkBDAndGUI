@@ -25,6 +25,7 @@ class CardFileView(Base):
                                 , no_scroll_with_mouse= True
                                 , parent=par) as image_container:
             self.image_drawlist = dpg.add_drawlist(width=-1, height=-1)
+            self.regHandler()
         return image_container
 
     async def onRefresh(self):
