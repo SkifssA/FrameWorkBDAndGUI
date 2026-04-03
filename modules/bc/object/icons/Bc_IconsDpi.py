@@ -31,8 +31,8 @@ class Bc_IconsDpi(BaseApi):
     async def update(self, rop:Bc_IconsObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Bc_IconsObj:
-        return await super().load(id)
+    def load(self, id: int)->Bc_IconsObj:
+        return super().load(id)
 
     def setsCode(self, obj:Bc_IconsObj, value): obj.sCode = value
     def setsPath(self, obj:Bc_IconsObj, value): obj.sPath = value

@@ -31,8 +31,8 @@ class Hbc_StudentDataDpi(BaseApi):
     async def update(self, rop:Hbc_StudentDataObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Hbc_StudentDataObj:
-        return await super().load(id)
+    def load(self, id: int)->Hbc_StudentDataObj:
+        return super().load(id)
 
     def setidStudent(self, obj:Hbc_StudentDataObj, value): obj.idStudent = value
     def setsData(self, obj:Hbc_StudentDataObj, value): obj.sData = value

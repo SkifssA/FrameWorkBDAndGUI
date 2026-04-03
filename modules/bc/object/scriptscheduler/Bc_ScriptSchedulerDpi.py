@@ -35,8 +35,8 @@ class Bc_ScriptSchedulerDpi(BaseApi):
     async def update(self, rop:Bc_ScriptSchedulerObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Bc_ScriptSchedulerObj:
-        return await super().load(id)
+    def load(self, id: int)->Bc_ScriptSchedulerObj:
+        return super().load(id)
 
     def setsNameScript(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameScript = value
     def setsNameModule(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameModule = value

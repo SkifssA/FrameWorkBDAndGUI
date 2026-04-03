@@ -40,15 +40,15 @@
   },
   "List": {
     "width": 1400,
-    "filter":[
+    "filter": [
       {
         "where": "t.sCaption like '%' || :filter$flt_sName || '%'",
-        "attr":{
+        "attr": {
           "flt_sName": {
             "caption": "Название",
             "edit": "edit"
           }
-        } 
+        }
       }
     ],
     "attr": {
@@ -61,7 +61,23 @@
     },
     "oper": {
       "insert": {
-            "isVisible": false
+        "isVisible": false
+      }
+    }
+  },
+  "CardByText": {
+    "isVisibleToolBar": false,
+    "attr": {
+      "sCaption": {
+        "caption": "Описание",
+        "edit": "multiText",
+        "isVisible": true
+      },
+      "bReleased": {
+        "isVisible": false
+      },
+      "nSeries": {
+        "isVisible": false
       }
     }
   }

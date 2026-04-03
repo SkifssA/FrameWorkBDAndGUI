@@ -31,8 +31,8 @@ class Hbc_LessonDpi(BaseApi):
     async def update(self, rop:Hbc_LessonObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Hbc_LessonObj:
-        return await super().load(id)
+    def load(self, id: int)->Hbc_LessonObj:
+        return super().load(id)
 
     def setsCaption(self, obj:Hbc_LessonObj, value): obj.sCaption = value
     def setsIdExit(self, obj:Hbc_LessonObj, value): obj.sIdExit = value

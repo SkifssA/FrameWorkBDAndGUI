@@ -31,8 +31,8 @@ class Bc_TimeLineDpi(BaseApi):
     async def update(self, rop:Bc_TimeLineObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Bc_TimeLineObj:
-        return await super().load(id)
+    def load(self, id: int)->Bc_TimeLineObj:
+        return super().load(id)
 
     def setsCode(self, obj:Bc_TimeLineObj, value): obj.sCode = value
     def setsName(self, obj:Bc_TimeLineObj, value): obj.sName = value

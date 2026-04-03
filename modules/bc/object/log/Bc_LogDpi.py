@@ -30,7 +30,7 @@ class Bc_LogDpi(BaseApi):
     async def update(self, rop:Bc_LogObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Bc_LogObj:
-        return await super().load(id)
+    def load(self, id: int)->Bc_LogObj:
+        return super().load(id)
 
     def setsText(self, obj:Bc_LogObj, value): obj.sText = value

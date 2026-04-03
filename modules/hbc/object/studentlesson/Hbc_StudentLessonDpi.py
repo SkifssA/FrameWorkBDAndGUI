@@ -35,8 +35,8 @@ class Hbc_StudentLessonDpi(BaseApi):
     async def update(self, rop:Hbc_StudentLessonObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Hbc_StudentLessonObj:
-        return await super().load(id)
+    def load(self, id: int)->Hbc_StudentLessonObj:
+        return super().load(id)
 
     def setidStudent(self, obj:Hbc_StudentLessonObj, value): obj.idStudent = value
     def setidLesson(self, obj:Hbc_StudentLessonObj, value): obj.idLesson = value

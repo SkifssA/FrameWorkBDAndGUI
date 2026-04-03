@@ -189,7 +189,7 @@ class Base(Abstract):
         if obj._is_long:
             return lambda: LoadModal(bound_method, f'Выполнение задачи \'{obj._oper_label}\'').show()
         else:
-            return lambda: asyncio.run(bound_method())
+            return lambda: asyncRun(bound_method())
 
     def closeForm(self):
         dpg.delete_item(self.tab)

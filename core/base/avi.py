@@ -107,7 +107,7 @@ class BaseAvi:
             super().checwork()
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
 
-    class DefaultCard(DefaultDefault, Card): 
+    class DefaultCard(Card, DefaultDefault):
         @SetOper(label='Закрыть', order=10000, img='1')
         async def closeFormCancel(self):
             if not self.isModal:
@@ -159,7 +159,7 @@ class BaseAvi:
                     obj = await self.thisApi().insert()
                     setattr(self, 'idItem', obj.id)
                     return obj
-                return await self.thisApi().load(getattr(self, 'idItem', None))
+                return self.thisApi().load(getattr(self, 'idItem', None))
             return self.obj
         
         def checwork(self):

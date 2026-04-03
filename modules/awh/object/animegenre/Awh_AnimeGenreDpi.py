@@ -31,8 +31,8 @@ class Awh_AnimeGenreDpi(BaseApi):
     async def update(self, rop:Awh_AnimeGenreObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Awh_AnimeGenreObj:
-        return await super().load(id)
+    def load(self, id: int)->Awh_AnimeGenreObj:
+        return super().load(id)
 
     def setidAnime(self, obj:Awh_AnimeGenreObj, value): obj.idAnime = value
     def setidGenre(self, obj:Awh_AnimeGenreObj, value): obj.idGenre = value

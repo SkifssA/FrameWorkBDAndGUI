@@ -48,6 +48,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
             yield Bc_FileAvi.cardFileView_sUrl(right=True)
+            yield Awh_AnimeAvi.cardByText(right=True)
 
         async def setflt_sName(self):
             await self.refresh()
@@ -70,6 +71,22 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             else:
                 return await super().returnResult()
 
+    class CardByText(Card):
+        class addData:
+            def __init__(self):
+                self.sCaption:str = None
+
+        def _getAttr(self):
+            return super()._getAttr()
+        
+        def createMainForm(self, par):
+            return super().createMainForm(par)
+
+        async def getObj(self):
+            w = self.addData()
+            w.sCaption = self.getAttr("super$sCaption")
+            return w
+
     class LookUp(Awh_AnimeDvi.DviLookUp): pass
 
     @classmethod
@@ -83,3 +100,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
     @classmethod
     def cardSetUrlAnime(cls, **kwargs)->CardSetUrlAnime:
         return cls.typeMeta(cls.CardSetUrlAnime, **kwargs)
+    
+    @classmethod
+    def cardByText(cls, **kwargs)->CardByText:
+        return cls.typeMeta(cls.CardByText, **kwargs)

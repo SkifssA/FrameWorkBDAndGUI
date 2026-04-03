@@ -33,8 +33,8 @@ class {nameClass}Dpi(BaseApi):
     async def update(self, rop:{nameClass}Obj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->{nameClass}Obj:
-        return await super().load(id)
+    def load(self, id: int)->{nameClass}Obj:
+        return super().load(id)
 
     {setter}
 """

@@ -32,8 +32,8 @@ class Bc_ConfigDpi(BaseApi):
     async def update(self, rop:Bc_ConfigObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Bc_ConfigObj:
-        return await super().load(id)
+    def load(self, id: int)->Bc_ConfigObj:
+        return super().load(id)
 
     def setsModule(self, obj:Bc_ConfigObj, value): obj.sModule = value
     def setsCaprionSetting(self, obj:Bc_ConfigObj, value): obj.sCaprionSetting = value

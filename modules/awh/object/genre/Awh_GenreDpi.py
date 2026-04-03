@@ -30,7 +30,7 @@ class Awh_GenreDpi(BaseApi):
     async def update(self, rop:Awh_GenreObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Awh_GenreObj:
-        return await super().load(id)
+    def load(self, id: int)->Awh_GenreObj:
+        return super().load(id)
 
     def setsCaption(self, obj:Awh_GenreObj, value): obj.sCaption = value

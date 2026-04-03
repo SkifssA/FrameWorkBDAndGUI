@@ -36,8 +36,8 @@ class Awh_AnimeDpi(BaseApi):
     async def update(self, rop:Awh_AnimeObj)->None:
         return await super().update(rop)
     
-    async def load(self, id: int)->Awh_AnimeObj:
-        return await super().load(id)
+    def load(self, id: int)->Awh_AnimeObj:
+        return super().load(id)
 
     def setsCaption(self, obj:Awh_AnimeObj, value): obj.sCaption = value
     def setnSeries(self, obj:Awh_AnimeObj, value): obj.nSeries = value
