@@ -76,16 +76,13 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             def __init__(self):
                 self.sCaption:str = None
 
-        def _getAttr(self):
-            return super()._getAttr()
-        
-        def createMainForm(self, par):
-            return super().createMainForm(par)
-
-        async def getObj(self):
+        def getData(self):
             w = self.addData()
             w.sCaption = self.getAttr("super$sCaption")
             return w
+
+        async def getObj(self):
+            return self.getData()
 
     class LookUp(Awh_AnimeDvi.DviLookUp): pass
 

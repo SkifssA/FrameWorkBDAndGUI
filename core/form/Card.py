@@ -2,9 +2,8 @@ import dearpygui.dearpygui as dpg
 import time
 import asyncio
 
-from core.package import ASQL, Core_ActionDispatcher
+from core.package import ASQL
 from core.form.Base import Base
-from core.base.Event import SetterEvent
 from core.package.Core_ThreadWorkerPkg import tw
 
 from core.form.widgets.input.base import Base as baseInput
@@ -14,6 +13,14 @@ from core.form.widgets.input.lookUp import LookUp
 from core.form.widgets.input.button import ButtonRef
 
 class Card(Base):
+    inputClass:dict[str, baseInput] = {
+        'multiText':multiText
+        ,'edit':baseInput
+        ,'check':Check
+        ,'lookUp':LookUp
+        ,'button':ButtonRef
+    }
+
     def __init__(self):
         super().__init__()
         self.tagInput = {}
@@ -82,18 +89,12 @@ class Card(Base):
         
     def createGroupInput(self, nameAttr:str, groupParent, selfSizeName=False):
         dataAttr = self.meta['attr'][nameAttr]
-        if dataAttr['edit'] == 'multiText':
-            self.input[nameAttr] = multiText(self, nameAttr, groupParent)
-        elif dataAttr['edit'] == 'edit':
-            self.input[nameAttr] = baseInput(self, nameAttr, groupParent)
-        elif dataAttr['edit'] == 'check':
-            self.input[nameAttr] = Check(self, nameAttr, groupParent)
-        elif dataAttr['edit'] == 'lookUp':
-            self.input[nameAttr] = LookUp(self, nameAttr, groupParent)
-        elif dataAttr['edit'] == 'button':
-            self.input[nameAttr] = ButtonRef(self, nameAttr, groupParent)
-        else:
-            print("-"*200)
+        data = {
+            'classCard': self
+            ,'nameAttr': nameAttr
+            ,'parent': groupParent
+        }
+        self.input[nameAttr] = Card.inputClass.get(dataAttr['edit'], lambda **x: print("ТАКОГО ТИПА РЕДОКТРОВАНИЯ НЕТ"))(**data)
 
     async def initInput(self):
         self.data = self.thisApi()._getDataRop(self.obj)

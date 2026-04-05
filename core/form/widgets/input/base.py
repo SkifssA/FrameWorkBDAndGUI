@@ -14,8 +14,9 @@ class Base:
         p = self._createLable()
         return dpg.add_input_text(width=-1, on_enter=True, parent=p)
             
-    def _createLable(self, isHorizontal:bool=True):
-        with dpg.child_window(border=False, height=20, width=-1, show=self.data['isVisible'], parent=self.parent):
+    def _createLable(self, isHorizontal:bool=True, height:int=20):
+        with dpg.child_window(border=False, height=height, width=-1, show=self.data['isVisible'], parent=self.parent) as q:
+            self.mainWind = q
             with dpg.group(horizontal=isHorizontal) as g:
                 with dpg.child_window(width=len(self.data['caption'])*11, border=False, height=20):
                     dpg.add_text(self.data['caption'])
