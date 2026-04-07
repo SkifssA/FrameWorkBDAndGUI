@@ -13,6 +13,7 @@ from core.base.modal import FormModal, LoadModal
 from core.package.Core_AsynRunPkg import asyncRun
 from core.package.Core_MetadataManager import Core_Metadata
 from core.form.widgets.groupByCh import groupByCh
+from core.form.widgets.ReSizeLine import ReSizeLine
 
 class Config(TypedDict, total=False):
     locat: str
@@ -127,7 +128,8 @@ class Base(Abstract):
             self.toolBar = dpg.add_group(show=False, horizontal=True, tag=f'{par}_ToolBar')
         self.mainForm = self.createMainForm(par)
         dpg.set_item_user_data(self.mainForm, self)
-        dpg.configure_item(self.mainForm, label=f"ГЛВНАЯ ФОРМА")
+        dpg.configure_item(self.mainForm, label=f"ГЛАВНАЯ ФОРМА")
+        self.UpDown = ReSizeLine(self, self.mainForm, isHorizontal=True, par=par).btn
         self.tabBar = dpg.add_tab_bar(show=False, parent=par)
 
         await self.afterCreate()

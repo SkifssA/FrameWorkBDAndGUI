@@ -34,10 +34,11 @@ class Core_DbManager:
             try:
                 print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
                 result = await db.execute(SQLstr, parameters or [])
-                if result.rows != []:
-                    return [dict(zip(result.columns, row)) for row in result.rows]
-                elif result.columns:
+                if isReturnColumn:
                     return [{i:None for i in result.columns}]
+                elif result.rows != []:
+                    return [dict(zip(result.columns, row)) for row in result.rows]
+                return []
             except:
                 return []
 

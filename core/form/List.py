@@ -82,7 +82,7 @@ class List(Base):
         '''Получение столбцов'''
         attrs:dict = self.meta['attr']
         self.headRes = {col: (attrs[col]['caption'], attrs[col]['isVisible'], attrs[col]['edit']) for col in dict(sorted(attrs.items(), key=lambda x: x[1].get('order', 0)))}
-        returnSelect = asyncRun(ASQL(*self.getSqlAndParam(self.onRefresh() + '\nLimit 0')))[0]
+        returnSelect = asyncRun(ASQL(*self.getSqlAndParam(self.onRefresh() + '\nLimit 0'), isReturnColumn=True))[0]
         for i in returnSelect.keys():
             if not i in self.headRes.keys():
                 self.headRes[i] = (i, True, 'edit')
