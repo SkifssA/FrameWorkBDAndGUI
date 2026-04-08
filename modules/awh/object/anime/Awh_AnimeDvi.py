@@ -14,7 +14,8 @@ class Awh_AnimeDvi(BaseAvi):
                     t.nSeries,
                     t.bReleased,
                     t.sUrl,
-                    t.sUrlImg
+                    t.sUrlImg,
+                    t.sComment
                 FROM Awh_Anime AS t
                     
                 """
@@ -40,6 +41,7 @@ class Awh_AnimeDvi(BaseAvi):
         def setbReleased(self, event:Event.SetterEvent): self.thisApi().setbReleased(self.thisRop(), event.value); self.afterSetter()
         def setsUrl(self, event:Event.SetterEvent): self.thisApi().setsUrl(self.thisRop(), event.value); self.afterSetter()
         def setsUrlImg(self, event:Event.SetterEvent): self.thisApi().setsUrlImg(self.thisRop(), event.value); self.afterSetter()
+        def setsComment(self, event:Event.SetterEvent): self.thisApi().setsComment(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

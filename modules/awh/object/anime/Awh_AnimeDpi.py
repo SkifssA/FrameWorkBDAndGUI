@@ -11,6 +11,7 @@ class Awh_AnimeObj(BaseObj):
         self.bReleased:int = None
         self.sUrl:str = None
         self.sUrlImg:str = None
+        self.sComment:str = None
 
 class Awh_AnimeDpi(BaseApi):
     _classObj = Awh_AnimeObj
@@ -19,7 +20,7 @@ class Awh_AnimeDpi(BaseApi):
         return "Awh_Anime"
 
     def calcHeadLine(self, rop:Awh_AnimeObj)->str:
-        return f'{rop.sCaption}'
+        return f'{rop.sCaption} {rop.sComment}'
 
     def calcMnemoCode(self, rop:Awh_AnimeObj)->str:
         return f'{rop.sUrl}'
@@ -44,3 +45,4 @@ class Awh_AnimeDpi(BaseApi):
     def setbReleased(self, obj:Awh_AnimeObj, value): obj.bReleased = value
     def setsUrl(self, obj:Awh_AnimeObj, value): obj.sUrl = value
     def setsUrlImg(self, obj:Awh_AnimeObj, value): obj.sUrlImg = value
+    def setsComment(self, obj:Awh_AnimeObj, value): obj.sComment = value

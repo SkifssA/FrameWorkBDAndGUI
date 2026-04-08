@@ -57,6 +57,9 @@
         "edit": "edit",
         "isVisible": true,
         "order": 1000
+      },
+      "sComment": {
+        "isVisible": false
       }
     },
     "oper": {
@@ -68,7 +71,7 @@
   "CardByText": {
     "isVisibleToolBar": false,
     "attr": {
-      "sCaption": {
+      "sComment": {
         "caption": "Описание",
         "edit": "multiText",
         "isVisible": true
@@ -77,6 +80,9 @@
         "isVisible": false
       },
       "nSeries": {
+        "isVisible": false
+      },
+      "sCaption": {
         "isVisible": false
       }
     }

@@ -21,7 +21,7 @@ class multiText(Base):
     def _on_resize(self, sender, app_data):
         w = dpg.get_item_rect_size(app_data)[0] // (dpg.get_text_size('d')[0])
         text:str = dpg.get_item_user_data(app_data)
-        dpg.set_value(self.input, textwrap.fill(text, width=int(w) if w > 0 else 1))
+        dpg.set_value(self.input, textwrap.fill(text or '', width=int(w) if w > 0 else 1))
 
     def _regHandler(self):
         with dpg.item_handler_registry() as w:

@@ -44,6 +44,12 @@
         "edit": "edit",
         "isVisible": false,
         "order": 0
+      },
+      "sComment": {
+        "caption": "Описание",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
       }
     }
   }

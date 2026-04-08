@@ -37,7 +37,8 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
                    t.bReleased,
                    t.sUrl,
                    GROUP_CONCAT(t2.sHeadLine, ', ') AS lGenres,
-                   t.sUrlImg
+                   t.sUrlImg,
+                   t.sComment
             FROM Awh_Anime AS t
             LEFT JOIN Awh_AnimeGenre t1 on t1.idAnime = t.id
             LEFT JOIN Awh_Genre t2 on t2.id = t1.idGenre
@@ -74,11 +75,11 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
     class CardByText(Card):
         class addData:
             def __init__(self):
-                self.sCaption:str = None
+                self.sComment:str = None
 
         def getData(self):
             w = self.addData()
-            w.sCaption = self.getAttr("super$sCaption")
+            w.sComment = self.getAttr("super$sComment")
             return w
 
         async def getObj(self):

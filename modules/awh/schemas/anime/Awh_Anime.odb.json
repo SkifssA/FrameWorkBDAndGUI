@@ -7,32 +7,42 @@
             "attr": "idAnime"
         }
     ],
-    "attr":[
+    "attr": [
         {
             "name": "sCaption",
             "type": "TEXT",
             "caption": "Название",
             "isHeadLine": true
-        },{
+        },
+        {
             "name": "nSeries",
             "type": "INT",
             "caption": "Кол-во серий"
-        },{
+        },
+        {
             "name": "bReleased",
             "type": "INT",
             "caption": "Вышло",
             "editType": "check"
-        },{
+        },
+        {
             "name": "sUrl",
             "type": "TEXT",
             "caption": "Ссылка",
             "isMnemoCode": true,
             "isVisible": false
-        },{
+        },
+        {
             "name": "sUrlImg",
             "type": "TEXT",
             "caption": "Ссылка на постер",
             "isVisible": false
+        },
+        {
+            "name": "sComment",
+            "type": "TEXT",
+            "caption": "Описание",
+            "isHeadLine": false
         }
     ]
 }

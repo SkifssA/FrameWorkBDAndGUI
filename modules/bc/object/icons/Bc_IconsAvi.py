@@ -14,7 +14,7 @@ class Bc_IconsAvi(Bc_IconsDvi):
     class LookUp(Bc_IconsDvi.DviLookUp): pass
 
     class CardFileView_idFile(CardFileView, BaseAvi.DefaultDefault):
-        async def onRefresh(self):
+        def onRefresh(self):
             return Core_FileManagerPkg._getObjPath(self.getAttr('super$sPath'))
 
     @classmethod

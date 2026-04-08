@@ -1,6 +1,6 @@
 import dearpygui.dearpygui as dpg
-import asyncio
-from .package import Core_FileManagerPkg, Core_ActionDispatcher
+
+from core.package import Core_FileManagerPkg, Core_ActionDispatcher, Core_AsynRunPkg
 
 class Core_SelectApp:
     async def open(self):
@@ -25,6 +25,6 @@ class Core_SelectApp:
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}.default"
         dpg.delete_item(self.mainMenuApp)
-        asyncio.run(Core_ActionDispatcher().action(module_name).open(parent='main_window'))
+        Core_AsynRunPkg.asyncRun(Core_ActionDispatcher().action(module_name).open(parent='main_window'))
 
         

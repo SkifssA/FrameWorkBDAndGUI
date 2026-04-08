@@ -12,6 +12,7 @@ class Awh_AnimeLoadPkg(Core_AiohttpPkg):
             self.d['urlImg'] = await self.__getUrlImg(text)
             self.d['released'] = int(series.find('/') == -1)
             self.d['series'] = self.__convSeriesInInt(series)
+            self.d['comment'] = await self.__comment(text)
             self.d['url'] = urlAnime
         return self.d
     
@@ -39,4 +40,7 @@ class Awh_AnimeLoadPkg(Core_AiohttpPkg):
                 return int(w)
             else:
                 return 0
+            
+    async def __comment(self, text)->str:
+        return (await self.find(text, 'div', class_='description')).get_text()
             

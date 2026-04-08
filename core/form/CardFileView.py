@@ -28,13 +28,13 @@ class CardFileView(Base):
             self.regHandler()
         return image_container
 
-    async def onRefresh(self):
+    def onRefresh(self):
         return ''
     
-    async def onRefreshExt(self):
+    def onRefreshExt(self):
         return ''
     
-    async def _getAttr(self):
+    def _getAttr(self):
         return ''
 
     async def _refresh(self):
