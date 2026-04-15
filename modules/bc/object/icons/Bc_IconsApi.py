@@ -10,7 +10,7 @@ class Bc_IconsApi(Bc_IconsDpi):
             w = await self.insert()
             self.setsCode(w, sCode)
         else:
-            w = await self.load(w)
+            w = self.load(w)
 
         self.setsPath(w, path)
         await self.update(w)

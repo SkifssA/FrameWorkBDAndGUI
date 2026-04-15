@@ -1,12 +1,12 @@
 import inspect
 from collections import defaultdict
 import dearpygui.dearpygui as dpg
-import os
 from core.base.oper import SetOper
 from core.Core_SelectApp import Core_SelectApp
 from core.form.Base import Base
 from core.base.avi import BaseAvi
 from core.package.Core_AsynRunPkg import asyncRun
+from core.package import Core_FileManagerPkg, Core_ActionDispatcher, Core_AsynRunPkg
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -54,7 +54,8 @@ class mainMenu(BaseAvi):
                 asyncRun(self.firstFrame().open())
             return g
             
-        def firstFrame(self): pass
+        def firstFrame(self): 
+            return Core_AsynRunPkg.asyncRun(Core_ActionDispatcher().action('Bc_ConfigAvi.emptyCard').open())
 
         def _createMenu(self):
             menuDict = make_btn()
