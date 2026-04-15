@@ -21,7 +21,7 @@ async def mainProgram():
     dpg.bind_theme(compat_theme)
 
     # Путь к шрифту
-    font_path = Core_FileManagerPkg._getObjPath("font/minecraft_0.ttf", index=1)
+    font_path = Core_FileManagerPkg._getObjPath("font/Farabee Straight Medium.ttf", index=1)
     font_path = font_path['real_path']
     if not os.path.exists(font_path):
         raise FileNotFoundError(f"Шрифт не найден: {font_path}")
