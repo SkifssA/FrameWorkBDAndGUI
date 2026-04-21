@@ -11,4 +11,5 @@
 - [Bc](modules/bc/README.md)
 - [Hbc](modules/hbc/README.md)
 - [Awh](modules/awh/README.md)
-- [Ir](modules/ir/README.md)
+
+Дальнейшая разработка завершена на неопределёный срок
