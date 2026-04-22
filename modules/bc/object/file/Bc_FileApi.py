@@ -22,3 +22,4 @@ class Bc_FileApi(Bc_FileDpi):
         rop = self.load(id)
         if rop is not None:
             return Core_FileManagerPkg._getObjPath(rop.sPath)
+        return {}

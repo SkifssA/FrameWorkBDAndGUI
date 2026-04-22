@@ -53,7 +53,7 @@ class Hbc_StudentDvi(BaseAvi):
     class DviCard(DviDefault, BaseAvi.DefaultCard): pass
 
     class DviLookUp(BaseAvi.DefaultLookUp):
-        async def onRefresh(self):
+        def onRefresh(self):
             return """
             SELECT t.id
                 ,t.sHeadLine 

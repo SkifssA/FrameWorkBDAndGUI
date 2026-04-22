@@ -15,10 +15,10 @@ class Abstract(ABC):
     def onRefreshExt(self)->str: pass
 
     @abstractmethod
-    def getAttr(self)->Optional[Any]: pass
+    def getAttr(self, name)->Optional[Any]: pass
 
     @abstractmethod
-    def _getAttr(self)->Optional[Any]: pass
+    def _getAttr(self, name)->Optional[Any]: pass
 
     @abstractmethod
     def createMainForm(self, par)->int|str: pass

@@ -137,7 +137,7 @@ class BaseAvi:
 
         @SetOper(label='Сохранить', order=1, img='5')
         async def saveForm(self):
-            await self.thisApi().update(self.obj)
+            await self.thisApi().update(self.thisRop())
             self.isInsert = False
             self.isMod = False
 
@@ -156,7 +156,8 @@ class BaseAvi:
     class DefaultLookUp(DefaultDefault): 
         async def getData(self, tagMaster):
             self.parentTable = tagMaster
-            self.data = await ASQL(*self.getSqlAndParam(await self.onRefresh()))
+            self.rect.refresh()
+            self.data = self.rect.getData()
             return self.data
         
         def getId(self, value:str)->int:
@@ -164,7 +165,7 @@ class BaseAvi:
         
         def _refresh(self):pass
 
-        def _getAttr(self):pass
+        def _getAttr(self, name):pass
 
         def onRefreshExt(self):pass
 

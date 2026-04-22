@@ -206,6 +206,9 @@ class Base(Abstract):
         '''Открытие дочерних форм. Пользовательский'''
         yield
 
+    def thisRop(self):
+        return self.thisApi().load(self.rect.data[0]['id'])
+
     async def afterCreate(self)->None: pass
 
     def checwork(self): pass

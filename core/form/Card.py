@@ -98,7 +98,7 @@ class Card(Base):
 
     async def initInput(self):
         dpg.configure_item(self.tab, label=self.thisApi().calcHeadLine(self.thisRop()))
-        for key, value in self.rect.data.items():
+        for key, value in self.rect.data[0].items():
             if key in self.input.keys():
                 self.input[key].init(value)
 
@@ -106,9 +106,6 @@ class Card(Base):
         self.rect.refresh()
         await self.initInput()
         self.checwork()
-
-    def thisRop(self):
-        return self.thisApi().load(self.rect.data['id'])
 
     def afterSetter(self):
         self.isMod = True

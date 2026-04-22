@@ -57,4 +57,5 @@ class Rect:
         pass
 
     def _obj(self, res:BaseObj):
-        self.data = res.__dict__.copy()
+        self.data = [res.__dict__.copy()]
+        self.attr = list(self.data[0].keys())

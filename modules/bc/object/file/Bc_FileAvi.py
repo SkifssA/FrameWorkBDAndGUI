@@ -23,15 +23,24 @@ class Bc_FileAvi(Bc_FileDvi):
     class LookUp(Bc_FileDvi.DviLookUp): pass
 
     class CardFileView_idFile(CardFileView, BaseAvi.DefaultDefault):
+        class Data:
+            def __init__(self):
+                self.real_path = None
+                self.type = None
+
         def onRefresh(self):
-            return self.thisApi().getRealPath(self.getAttr('super$id'))
+            w = self.Data()
+            q:dict = self.thisApi().getRealPath(self.getAttr('super$id'))
+            w.real_path = q.get('real_path', None)
+            w.type = q.get('type', None)
+            return w
         
     class CardFileView_sUrl(CardFileView, BaseAvi.DefaultDefault):
         class Data:
             def __init__(self):
                 self.real_path = None
                 self.type = None
-                
+
         def onRefresh(self):
             w = self.Data()
             w.real_path = self.getAttr("super$sUrlImg")

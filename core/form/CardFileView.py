@@ -39,7 +39,7 @@ class CardFileView(Base):
 
     async def _refresh(self):
         self.rect.refresh()
-        self.textureTag = await self.imgManager.loadFile(self.rect.getData())
+        self.textureTag = await self.imgManager.loadFile(self.rect.getData()[0])
         self.img_w = dpg.get_item_width(self.textureTag)
         self.img_h = dpg.get_item_height(self.textureTag)
         dpg.delete_item(self.image_drawlist, children_only=True)
