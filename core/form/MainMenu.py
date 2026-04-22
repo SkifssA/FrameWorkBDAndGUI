@@ -27,7 +27,6 @@ class mainMenu(BaseAvi):
         @SetOper(label="Приложение", order=-10)
         def mm_main_oper(self): pass
 
-
         @SetOper(label='Выйти', headOper='mm_main_oper', order=10000)
         async def exit(self): 
             dpg.delete_item(self.parent, children_only=True)
@@ -55,7 +54,8 @@ class mainMenu(BaseAvi):
             return g
             
         def firstFrame(self): 
-            return Core_AsynRunPkg.asyncRun(Core_ActionDispatcher().action('Bc_ConfigAvi.emptyCard').open())
+            # return Core_ActionDispatcher().action('Bc_ConfigAvi.emptyCard')
+            pass
 
         def _createMenu(self):
             menuDict = make_btn()

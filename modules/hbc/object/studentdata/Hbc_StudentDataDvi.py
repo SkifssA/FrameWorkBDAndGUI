@@ -20,9 +20,12 @@ class Hbc_StudentDataDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
+                    :id as id
                     :idStudent as idStudent
                 )
-                select t1.sHeadLine as idStudentHL
+                select
+                    t.id
+                  t1.sHeadLine as idStudentHL
                 from t
                     LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
                 """

@@ -29,7 +29,7 @@ class List(Base):
 
     async def _refresh(self):
         '''Обнолвение формы'''
-        rows = await self.__getDataTab()
+        rows = self.rect.getData()
         tabl = self.mainForm
         if dpg.does_item_exist(tabl):
             children = dpg.get_item_children(tabl, slot=1) # slot=0 — основной контейнер
@@ -82,14 +82,10 @@ class List(Base):
         '''Получение столбцов'''
         attrs:dict = self.meta['attr']
         self.headRes = {col: (attrs[col]['caption'], attrs[col]['isVisible'], attrs[col]['edit']) for col in dict(sorted(attrs.items(), key=lambda x: x[1].get('order', 0)))}
-        returnSelect = asyncRun(ASQL(*self.getSqlAndParam(self.onRefresh() + '\nLimit 0'), isReturnColumn=True))[0]
-        for i in returnSelect.keys():
+        returnSelect = self.rect.getAttr()
+        for i in returnSelect:
             if not i in self.headRes.keys():
                 self.headRes[i] = (i, True, 'edit')
-    
-    async def __getDataTab(self):
-        '''Получение данных из БД для данной таблицы'''
-        return await ASQL(*self.getSqlAndParam(self.onRefresh()))
     
     def createMainForm(self, par):
         w = dpg.add_table(header_row=True,
@@ -105,6 +101,7 @@ class List(Base):
         return w
     
     async def afterCreate(self):
+        self.rectUpdate()
         await self._createColumn(self.mainForm)
 
     def _getAttr(self, nameAttr:str):

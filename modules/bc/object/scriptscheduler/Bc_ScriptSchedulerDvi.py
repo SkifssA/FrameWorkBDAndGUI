@@ -24,9 +24,12 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
+                    :id as id
                     :idTimeLine as idTimeLine
                 )
-                select t1.sHeadLine as idTimeLineHL
+                select
+                    t.id
+                  t1.sHeadLine as idTimeLineHL
                 from t
                     LEFT JOIN Bc_TimeLine t1 ON t1.id = t.idTimeLine
                 """

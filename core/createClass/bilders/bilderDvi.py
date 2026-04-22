@@ -85,9 +85,12 @@ class {nameClass}Dvi(BaseAvi):
                 """,
                 f"""
                 with t as ( select 
+                    :id as id
                     {f',\n{self.tabSpace*3}'.join(f":{i[i.rfind('.')+1:]} as {i[i.rfind('.')+1:]}" for i in sqlstr['join'])}
                 )
-                select {f',\n{self.tabSpace*5}'.join(i for i in sqlstr['attr'] if i.endswith("HL"))}
+                select
+                    t.id
+                  {f',\n{self.tabSpace*5}'.join(i for i in sqlstr['attr'] if i.endswith("HL"))}
                 from t
                     {f'\n{self.tabSpace*3}'.join(sqlstr['join'])}
                 """]

@@ -22,10 +22,13 @@ class Awh_AnimeGenreDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
+                    :id as id
                     :idAnime as idAnime,
             :idGenre as idGenre
                 )
-                select t1.sHeadLine as idAnimeHL,
+                select
+                    t.id
+                  t1.sHeadLine as idAnimeHL,
                     t2.sHeadLine as idGenreHL
                 from t
                     LEFT JOIN Awh_Anime t1 ON t1.id = t.idAnime

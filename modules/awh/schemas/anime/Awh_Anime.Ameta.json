@@ -24,6 +24,11 @@
         "caption": "Вышло",
         "edit": "check",
         "isVisible": false
+      },
+      "sComment": {
+        "caption": "Описание",
+        "edit": "multiText",
+        "isVisible": false
       }
     },
     "oper": {

@@ -20,9 +20,12 @@ class Bc_ConfigDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
+                    :id as id
                     
                 )
-                select 
+                select
+                    t.id
+                  
                 from t
                     
                 """

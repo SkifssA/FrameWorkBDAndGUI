@@ -2,13 +2,14 @@ from abc import ABC, abstractmethod
 from typing import Any, Optional
 
 from core.base.api import BaseApi
+from core.base.obj import BaseObj
 
 class Abstract(ABC): 
     @abstractmethod
     def thisApi(self)->BaseApi: pass
 
     @abstractmethod
-    def onRefresh(self)->str: pass
+    def onRefresh(self)->str|list|BaseObj: pass
 
     @abstractmethod
     def onRefreshExt(self)->str: pass

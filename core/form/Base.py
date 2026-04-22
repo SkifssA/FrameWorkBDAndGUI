@@ -1,10 +1,8 @@
 import dearpygui.dearpygui as dpg
 import inspect
-import asyncio
 import re
 from typing import TypedDict
 
-from core.package.Core_FileManagerPkg import Core_FileManagerPkg
 from core.base.selection import Selection
 from core.base.filter import Filter
 from core.form.Abstract import Abstract
@@ -21,6 +19,7 @@ class Config(TypedDict, total=False):
 
 class Base(Abstract):
     def __init__(self):
+        from core.base.rect import Rect
         self.sizeLineResize = 5
         self.defaultHeight = -1
 
@@ -41,6 +40,7 @@ class Base(Abstract):
         self.meta = Core_Metadata.get(self)
         self.modal = None
         self.locationCh = {}
+        self.rect = Rect(self)
 
     async def open(self, parent='tab_bar', parentTable=None):
         '''Открытие выборки'''
@@ -145,6 +145,7 @@ class Base(Abstract):
     async def refresh(self):
         '''Обновление. Пользовательское'''
         await self.validateClass()
+        self.rectUpdate()
         await self._refresh()
         await self.refreshCh()
 
@@ -197,13 +198,10 @@ class Base(Abstract):
         dpg.delete_item(self.tab)
         if self.modal is not None:
             self.modal.hide_overlay()
-
-    def getSqlAndParam(self, sql:str)->tuple[str, list]:
-        paternFind = r':([^ \s]*)'
-        par = [self.getAttr(i) for i in re.findall(paternFind, sql)]
-        sql = re.sub(paternFind, '?', sql)
-        return (sql, par)
     
+    def rectUpdate(self):
+        self.rect.refresh()
+
     def openCh(self):
         '''Открытие дочерних форм. Пользовательский'''
         yield

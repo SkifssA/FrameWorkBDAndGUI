@@ -9,6 +9,7 @@ from core.form.Card import Card
 from core.base.oper import SetOper
 from core.base.modal import DialogModal
 from core.base.Event import SetterEvent
+from core.base import api
 
 class BaseAvi:
 
@@ -65,7 +66,10 @@ class BaseAvi:
       
         
         @SetOper(label='Обновить', order=1, img='2')
-        async def refreshForm(self): await self.refresh()
+        async def refreshForm(self):
+            api.likeСache[self.thisApi()._getNameClass()] = {}
+            self.rectUpdate()
+            await self.refresh()
 
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')
         async def returnResult(self):
@@ -120,9 +124,6 @@ class BaseAvi:
                     await self.thisApi().delete(self.obj)
                 self.closeForm()
 
-        def thisRop(self):
-            return self.obj
-
         async def handle_confirmation(self, result: bool):
             if self.isInsert:
                 if not result:
@@ -143,24 +144,6 @@ class BaseAvi:
         @SetOper(label='Обновить', order=-1, img='2')
         async def refreshForm(self):
             await self.refresh()
-
-        async def afterCreate(self):
-            # await self.refresh()
-            pass
-
-        async def _refresh(self):
-            self.obj = await self.getObj()
-            await self.initInput()
-            self.checwork()
-            
-        async def getObj(self):
-            if self.obj is None:
-                if getattr(self, 'idItem', None) is None:
-                    obj = await self.thisApi().insert()
-                    setattr(self, 'idItem', obj.id)
-                    return obj
-                return self.thisApi().load(getattr(self, 'idItem', None))
-            return self.obj
         
         def checwork(self):
             super().checwork()

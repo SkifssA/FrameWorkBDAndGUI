@@ -1,6 +1,6 @@
 import dearpygui.dearpygui as dpg
 import time
-import asyncio
+import re
 
 from core.package import ASQL
 from core.form.Base import Base
@@ -97,18 +97,18 @@ class Card(Base):
         self.input[nameAttr] = Card.inputClass.get(dataAttr['edit'], lambda **x: print("ТАКОГО ТИПА РЕДОКТРОВАНИЯ НЕТ"))(**data)
 
     async def initInput(self):
-        self.data = self.thisApi()._getDataRop(self.obj)
-        dpg.configure_item(self.tab, label=self.meta['caption'] if 'caption' in self.meta else self.thisApi().calcHeadLine(self.obj))
-        self.data = self.data | await self.getDataExt()
-        for i in self.data:
-            if i in self.input.keys():
-                self.input[i].init(self.data[i])
+        dpg.configure_item(self.tab, label=self.thisApi().calcHeadLine(self.thisRop()))
+        for key, value in self.rect.data.items():
+            if key in self.input.keys():
+                self.input[key].init(value)
 
-    async def getDataExt(self):
-        dataEx = await ASQL(*self.getSqlAndParam(self.onRefreshExt()))
-        if dataEx != []:
-            return dataEx[0]
-        return {}
+    async def _refresh(self):
+        self.rect.refresh()
+        await self.initInput()
+        self.checwork()
+
+    def thisRop(self):
+        return self.thisApi().load(self.rect.data['id'])
 
     def afterSetter(self):
         self.isMod = True

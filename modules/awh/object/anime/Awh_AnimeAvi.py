@@ -73,7 +73,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
                 return await super().returnResult()
 
     class CardByText(Card):
-        class addData:
+        class addData():
             def __init__(self):
                 self.sComment:str = None
 
@@ -82,8 +82,8 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             w.sComment = self.getAttr("super$sComment")
             return w
 
-        async def getObj(self):
-            return self.getData()
+        def onRefresh(self):
+            return self.thisApi().load(self.getAttr("super$id"))
 
     class LookUp(Awh_AnimeDvi.DviLookUp): pass
 

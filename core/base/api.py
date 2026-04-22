@@ -2,6 +2,9 @@ from ..package.Core_DbManagerPkg import ATQSL, ASQL
 from ..package.Core_AsynRunPkg import asyncRun
 from .Type import Gid
 
+
+likeСache = {}
+
 class BaseApi:
     _idClass = None
     _classObj = None
@@ -48,9 +51,6 @@ class BaseApi:
     async def findByMnemocode(self, value)->int:
         return await self._findByAttr('sMnemoCode', value=value)
 
-    def _getDataRop(self, rop)->dict:
-        return rop.__dict__.copy()
-
     def calcHeadLine(self, rop):
         return ' '
     
@@ -89,12 +89,19 @@ class BaseApi:
             setattr(rop, k, v)
         return rop
 
+    def _getDataRop(self, rop)->dict:
+        return rop.__dict__.copy()
+
     def load(self, id):
         try:
             if id is not None:
                 t = self._getNameClass()
-                data = asyncRun(ASQL(f"SELECT * FROM {t} WHERE id = ?", [id]))
-                return self._createRop(data=data[0])
+                if likeСache.get(t, None) is None: likeСache[t] = {}
+                if (likeСache[t].get(id, None) is None):
+                    data = asyncRun(ASQL(f"SELECT * FROM {t} WHERE id = ?", [id]))
+                    likeСache[t][id] = self._createRop(data=data[0])
+
+                return likeСache[t][id]
         except IndexError:
             pass
 

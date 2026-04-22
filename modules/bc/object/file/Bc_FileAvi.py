@@ -27,8 +27,16 @@ class Bc_FileAvi(Bc_FileDvi):
             return self.thisApi().getRealPath(self.getAttr('super$id'))
         
     class CardFileView_sUrl(CardFileView, BaseAvi.DefaultDefault):
+        class Data:
+            def __init__(self):
+                self.real_path = None
+                self.type = None
+                
         def onRefresh(self):
-            return {'real_path':self.getAttr("super$sUrlImg"), 'type':'http'}
+            w = self.Data()
+            w.real_path = self.getAttr("super$sUrlImg")
+            w.type = 'http'
+            return w 
         
     @classmethod
     def list(cls, **kwargs)->List:
