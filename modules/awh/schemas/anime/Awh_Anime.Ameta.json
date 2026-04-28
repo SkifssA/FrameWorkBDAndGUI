@@ -73,13 +73,24 @@
       }
     }
   },
+  "Card": {
+    "attr": {
+      "sComment": {
+        "caption": "Описание",
+        "edit": "multiText",
+        "isVisible": true,
+        "order": 1000
+      }
+    }
+  },
   "CardByText": {
     "isVisibleToolBar": false,
     "attr": {
       "sComment": {
         "caption": "Описание",
         "edit": "multiText",
-        "isVisible": true
+        "isVisible": true,
+        "height": -1
       },
       "bReleased": {
         "isVisible": false
