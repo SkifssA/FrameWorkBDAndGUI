@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection, Event
+from engine.base import BaseAvi, Selection, Event
 from .Awh_GenreApi import Awh_GenreApi, Awh_GenreObj
 
 class Awh_GenreDvi(BaseAvi):

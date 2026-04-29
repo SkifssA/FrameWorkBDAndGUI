@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_LogDvi import Bc_LogDvi
-from core.fabric.Form import FormConstruct
+from engine.fabric.Form import FormConstruct
 
 class Bc_LogAvi(Bc_LogDvi):
     class List(Bc_LogDvi.DviList): pass

@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection, Event
+from engine.base import BaseAvi, Selection, Event
 from .Bc_TimeLineApi import Bc_TimeLineApi, Bc_TimeLineObj
 
 class Bc_TimeLineDvi(BaseAvi):

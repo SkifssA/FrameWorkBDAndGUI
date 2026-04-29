@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_ConfigDvi import Bc_ConfigDvi
-from core.fabric.Form import FormConstruct
+from engine.fabric.Form import FormConstruct
 
 class Bc_ConfigAvi(Bc_ConfigDvi):
     class EmptyCard(Bc_ConfigDvi.DviCard):

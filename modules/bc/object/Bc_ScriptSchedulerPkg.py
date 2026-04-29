@@ -3,7 +3,7 @@ import time
 import asyncio
 import datetime
 
-from core.package import Core_ActionDispatcher
+from engine.package import ActionDispatcher
 from modules.bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerObj, Bc_ScriptSchedulerApi
 from modules.bc.object.timeline.Bc_TimeLineApi import Bc_TimeLineApi
 
@@ -64,7 +64,7 @@ class Bc_ScriptSchedulerPkg:
     def _runByTime(self, TimeLine, Time):
         
         def k(name):
-            Core_ActionDispatcher().action(name)
+            ActionDispatcher().action(name)
 
         for i in Bc_ScriptSchedulerPkg.script[TimeLine].get(str(Time), []):
             threading.Thread(target=k, args=(i, )).start()

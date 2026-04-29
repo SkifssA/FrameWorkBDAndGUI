@@ -1,9 +1,9 @@
 # Пользовательский файл для интерфейса
-from core.base.oper import SetOper
+from engine.base.oper import SetOper
 from .Awh_AnimeDvi import Awh_AnimeDvi
 import webbrowser
-from core.base.modal import *
-from core.fabric.Form import FormConstruct
+from engine.base.modal import *
+from engine.fabric.Form import FormConstruct
 
 from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 

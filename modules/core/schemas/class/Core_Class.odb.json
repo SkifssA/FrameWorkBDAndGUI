@@ -1,0 +1,18 @@
+{
+    "name": "Core_Class",
+    "caption": "Классы",
+    "attr": [
+        {
+            "name": "sCode",
+            "type": "TEXT",
+            "caption": "Код",
+            "isMnemoCode": true
+        },
+        {
+            "name": "sCaption",
+            "type": "TEXT",
+            "caption": "Наименование",
+            "isHeadLine": true
+        }
+    ]
+}

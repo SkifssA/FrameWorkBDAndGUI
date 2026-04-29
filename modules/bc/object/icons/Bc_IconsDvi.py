@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection, Event
+from engine.base import BaseAvi, Selection, Event
 from .Bc_IconsApi import Bc_IconsApi, Bc_IconsObj
 
 class Bc_IconsDvi(BaseAvi):

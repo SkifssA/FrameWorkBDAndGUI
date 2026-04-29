@@ -1,6 +1,6 @@
 # Пользовательский файл для логики
 from .Bc_ConfigDpi import Bc_ConfigDpi, Bc_ConfigObj
-from core.package import ASQL
+from engine.package import ASQL
 
 class Bc_ConfigApi(Bc_ConfigDpi):
     async def insertByModule(self, sModule, sCaprionSetting, sValue):

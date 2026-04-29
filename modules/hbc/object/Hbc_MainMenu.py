@@ -2,8 +2,8 @@ from .lesson.Hbc_LessonAvi import Hbc_LessonAvi
 from .student.Hbc_StudentAvi import Hbc_StudentAvi
 from .studentdata.Hbc_StudentDataAvi import Hbc_StudentDataAvi
 from .studentlesson.Hbc_StudentLessonAvi import Hbc_StudentLessonAvi
-from core.base.oper import SetOper
-from core.form.MainMenu import mainMenu
+from engine.base.oper import SetOper
+from engine.form.MainMenu import mainMenu
 from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
 
 class Hbc_MainMenu(mainMenu):

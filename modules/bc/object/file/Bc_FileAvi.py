@@ -1,8 +1,8 @@
 # Пользовательский файл для интерфейса
 from .Bc_FileDvi import Bc_FileDvi
-from core.form.CardFileView import CardFileView
-from core.base.avi import BaseAvi
-from core.fabric.Form import FormConstruct
+from engine.form.CardFileView import CardFileView
+from engine.base.avi import BaseAvi
+from engine.fabric.Form import FormConstruct
 
 class Bc_FileAvi(Bc_FileDvi):
     class List(Bc_FileDvi.DviList):

@@ -1,6 +1,6 @@
 # Пользовательский файл для логики
 from .Hbc_LessonDpi import Hbc_LessonDpi, Hbc_LessonObj
-from core.package import ASQL
+from engine.package import ASQL
 
 class Hbc_LessonApi(Hbc_LessonDpi):
 

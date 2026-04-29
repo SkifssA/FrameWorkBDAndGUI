@@ -1,7 +1,7 @@
 # Пользовательский файл для логики
 from .Bc_IconsDpi import Bc_IconsDpi, Bc_IconsObj
 
-from core.package.Core_FileManagerPkg import Core_FileManagerPkg
+from engine.package.FileManagerPkg import FileManagerPkg
 
 class Bc_IconsApi(Bc_IconsDpi):
     async def register(self, sCode, path):

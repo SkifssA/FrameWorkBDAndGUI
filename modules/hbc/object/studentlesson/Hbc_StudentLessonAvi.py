@@ -2,7 +2,7 @@
 from .Hbc_StudentLessonDvi import Hbc_StudentLessonDvi
 from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
 from ..student.Hbc_StudentApi import Hbc_StudentApi
-from core.base.oper import SetOper
+from engine.base.oper import SetOper
 
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
     @classmethod

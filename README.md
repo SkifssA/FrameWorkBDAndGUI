@@ -7,7 +7,7 @@
 
 Система для работы с базой данных в облегчёной форме. Не претендует на что-то великое.
 Система работае на модулях:
-- [Core](core/README.md)
+- [Core](modules/core/README.md)
 - [Bc](modules/bc/README.md)
 - [Hbc](modules/hbc/README.md)
 - [Awh](modules/awh/README.md)

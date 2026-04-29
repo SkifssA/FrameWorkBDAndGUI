@@ -3,8 +3,8 @@ import sys
 import asyncio
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from core.createClass.createClass import createTab, createFile
-from core import mainProgram
+from engine.createClass.createClass import createTab, createFile
+from engine import mainProgram
 
 if __name__ == "__main__":
     args = sys.argv[1:]  # первый элемент — имя скрипта

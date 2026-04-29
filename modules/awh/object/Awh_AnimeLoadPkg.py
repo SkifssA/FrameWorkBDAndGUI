@@ -1,6 +1,6 @@
-from core.package import Core_AiohttpPkg
+from engine.package import AiohttpPkg
 
-class Awh_AnimeLoadPkg(Core_AiohttpPkg):
+class Awh_AnimeLoadPkg(AiohttpPkg):
     async def getData(self, urlAnime: str):
         self.d = {}
         async with self.get(urlAnime) as response:

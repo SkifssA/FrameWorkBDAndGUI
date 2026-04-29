@@ -1,4 +1,4 @@
-from core.package import Core_AiohttpPkg
+from engine.package import AiohttpPkg
 from ..object.lesson.Hbc_LessonApi import Hbc_LessonApi
 from ..object.studentdata.Hbc_StudentDataApi import Hbc_StudentDataApi
 from ..object.student.Hbc_StudentApi import Hbc_StudentApi
@@ -7,7 +7,7 @@ from ..object.studentlesson.Hbc_StudentLessonApi import Hbc_StudentLessonApi
 from modules.bc.object.config.Bc_ConfigApi import Bc_ConfigApi
 from modules.bc.object.file.Bc_FileApi import Bc_FileApi
 
-class Hbc_NewProfiClientPkg(Core_AiohttpPkg):
+class Hbc_NewProfiClientPkg(AiohttpPkg):
     _domen = "https://newprofi-edu.ru"
     _nameCSRFToken = "logintoken"
     _url = {

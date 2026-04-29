@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection, Event
+from engine.base import BaseAvi, Selection, Event
 from .Hbc_StudentApi import Hbc_StudentApi, Hbc_StudentObj
 
 class Hbc_StudentDvi(BaseAvi):

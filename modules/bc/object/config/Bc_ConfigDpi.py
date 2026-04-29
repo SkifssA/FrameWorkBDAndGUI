@@ -1,6 +1,6 @@
 # Системный файл для логики
 import asyncio
-from core.base import BaseApi, BaseObj, gid
+from engine.base import BaseApi, BaseObj, gid
 
 class Bc_ConfigObj(BaseObj):
     def __init__(self):

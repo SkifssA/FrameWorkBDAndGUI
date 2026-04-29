@@ -1,5 +1,5 @@
-from core.form.MainMenu import mainMenu
-from core.base.oper import SetOper
+from engine.form.MainMenu import mainMenu
+from engine.base.oper import SetOper
 
 from .anime.Awh_AnimeAvi import Awh_AnimeAvi
 from .genre.Awh_GenreAvi import Awh_GenreAvi

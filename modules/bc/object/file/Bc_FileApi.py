@@ -1,5 +1,5 @@
 # Пользовательский файл для логики
-from core.package import Core_FileManagerPkg
+from engine.package import FileManagerPkg
 from .Bc_FileDpi import Bc_FileDpi, Bc_FileObj
 import asyncio
 
@@ -9,7 +9,7 @@ class Bc_FileApi(Bc_FileDpi):
 
     async def insertBygidSrc(self, gidSrc, nameFile, data):
         path = f"../../../../data/{gidSrc}/{nameFile}"
-        await Core_FileManagerPkg.CreateFile(path, data)
+        await FileManagerPkg.CreateFile(path, data)
         rop = await self.insert()
         rop.gidScr = gidSrc
         rop.sPath = path
@@ -21,5 +21,5 @@ class Bc_FileApi(Bc_FileDpi):
     def getRealPath(self, id):
         rop = self.load(id)
         if rop is not None:
-            return Core_FileManagerPkg._getObjPath(rop.sPath)
+            return FileManagerPkg._getObjPath(rop.sPath)
         return {}

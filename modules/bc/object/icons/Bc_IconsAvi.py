@@ -1,9 +1,9 @@
 # Пользовательский файл для интерфейса
 from .Bc_IconsDvi import Bc_IconsDvi
-from core.form.CardFileView import CardFileView
-from core.base.avi import BaseAvi
-from core.package import Core_FileManagerPkg
-from core.fabric.Form import FormConstruct
+from engine.form.CardFileView import CardFileView
+from engine.base.avi import BaseAvi
+from engine.package import FileManagerPkg
+from engine.fabric.Form import FormConstruct
 
 class Bc_IconsAvi(Bc_IconsDvi):
     class List(Bc_IconsDvi.DviList): 
@@ -23,7 +23,7 @@ class Bc_IconsAvi(Bc_IconsDvi):
 
         def onRefresh(self):
             w = self.Data()
-            q:dict = Core_FileManagerPkg._getObjPath(self.getAttr('super$sPath'))
+            q:dict = FileManagerPkg._getObjPath(self.getAttr('super$sPath'))
             w.real_path = q.get('real_path', None)
             w.type = q.get('type', None)
             return w

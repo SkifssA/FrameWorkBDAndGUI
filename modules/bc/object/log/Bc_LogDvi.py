@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.base import BaseAvi, Selection, Event
+from engine.base import BaseAvi, Selection, Event
 from .Bc_LogApi import Bc_LogApi, Bc_LogObj
 
 class Bc_LogDvi(BaseAvi):
