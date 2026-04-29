@@ -1,4 +1,7 @@
 {
-    "name": "Список аниме", 
-    "nameMainScreen": "Awh_MainMenu"
+    "name": "Список аниме",
+    "nameMainScreen": "Awh_MainMenu",
+    "dependenceModules": [
+        "bc"
+    ]
 }

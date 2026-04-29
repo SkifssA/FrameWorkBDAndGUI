@@ -48,8 +48,8 @@ class BaseApi:
         w = await self._findAllByAttr(attr, value)
         return w[0] if w is not None else w
     
-    async def findByMnemocode(self, value)->int:
-        return await self._findByAttr('sMnemoCode', value=value)
+    def findByMnemocode(self, value)->int|None:
+        return asyncRun(self._findByAttr('sMnemoCode', value=value))
 
     def calcHeadLine(self, rop):
         return ' '
@@ -60,7 +60,7 @@ class BaseApi:
     async def insert(self):
         t = self._getNameClass()
         rop = self._classObj()
-        rop.id = await ATQSL(f"INSERT INTO {t} (id) VALUES (NULL)")
+        rop.id = asyncRun(ATQSL(f"INSERT INTO {t} (id) VALUES (NULL)"))
         return rop
     
     async def update(self, rop):

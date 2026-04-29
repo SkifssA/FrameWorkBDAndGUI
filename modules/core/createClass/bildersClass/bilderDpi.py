@@ -3,7 +3,7 @@ from .bilderBase import BilderBase
 class BilderDpi(BilderBase):
     temp = """# Системный файл для логики
 import asyncio
-from core.base import BaseApi, BaseObj, gid
+from engine.base import BaseApi, BaseObj, gid
 
 class {nameClass}Obj(BaseObj):
     def __init__(self):

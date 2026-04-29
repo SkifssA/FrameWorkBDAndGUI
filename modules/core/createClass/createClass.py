@@ -1,7 +1,5 @@
-from ..package import FileManagerPkg, ASQL, ATQSL, ActionDispatcher
-from .bilders import BilderApi, BilderAvi, BilderDvi, BilderDpi, BildersAmeta, BildersDmeta
+from ....engine.package import FileManagerPkg, ASQL, ATQSL, ActionDispatcher
 from collections import Counter
-from pathlib import Path
 
 TYPE_MAPPING = {
     "TEXT": "TEXT",
@@ -14,7 +12,6 @@ TYPE_MAPPING = {
 }
 
 async def createTab():
-    await __initMetaTab()
     listApp = await FileManagerPkg.ReadFile("../../project.yaml")
     script = []
     for app in listApp['modules']:
@@ -38,69 +35,6 @@ async def createTab():
 
     await __actionScripts(script)
 
-async def createFile():
-    listApp = await FileManagerPkg.ReadFile("../../project.yaml")
-    for app in listApp['modules']:
-        pathClass = f"../../modules/{app}/schemas"
-        if await FileManagerPkg.Exists(pathClass):
-            for cl in await FileManagerPkg.GetFoldersList(pathClass):
-                lFiles = await FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json')
-                for File in lFiles:
-                    data = await FileManagerPkg.ReadFile(File.__str__())
-                    await BilderDpi(data).createFileD(f'../../../modules/{app}/object/{cl}')
-                    await BilderDvi(data).createFileD(f'../../../modules/{app}/object/{cl}')
-                    await BilderApi(data).createFileA(f'../../../modules/{app}/object/{cl}')
-                    await BilderAvi(data).createFileA(f'../../../modules/{app}/object/{cl}')
-
-                    await BildersDmeta(data).createFile(f'../{pathClass}/{cl}')
-                    await BildersAmeta(data).createFile(f'../{pathClass}/{cl}')
-
-            await _getInitModule(app)
-
-
-async def _getInitModule(app):
-    dir = f"../../modules/{app}/object"
-    w = await FileManagerPkg.getFilesWithExtension(dir, '.py')
-    paths = [f for f in w if not (f.stem.endswith('Dvi') or f.stem.endswith('Dpi'))]
-    base_path = Path(FileManagerPkg._getObjPath(f"../../modules/{app}")['real_path'])
-    imports = []
-    classApi = []
-    for p in paths:
-        # Относительный путь от base_path (без расширения .py)
-        rel_path = p.relative_to(base_path).with_suffix('')
-        # Преобразуем в строку и заменяем '/' или '\' на '.'
-        module_path = str(rel_path).replace('/', '.').replace('\\', '.')
-        # Имя класса — последняя часть имени файла
-        class_name = p.stem  # то же, что и rel_path.name
-        # Формируем строку импорта
-        import_line = f'from .{module_path} import {class_name}'
-        classApi.append(f'\'{class_name}\'')
-        imports.append(import_line)
-    
-    await FileManagerPkg.CreateFile(f"../../modules/{app}/__init__.py", '\n'.join(imports) + f'\n\n__all__ = [\n    {'\n    '.join(classApi)}\n]')
-
-async def __initMetaTab():
-    for i in await FileManagerPkg.getFilesWithExtension(f'../../core/schemas/clas', '.odb.json'):
-        data = await FileManagerPkg.ReadFile(i.__str__())
-        q = await __getQ(None, data['attr'])
-        await __createOrUpdateTable(q, data['attr'], data['name'], False)
-        await ASQL("INSERT OR IGNORE INTO Class (sCode, sMnemoCode) VALUES (?, ?)", (data['name'],data['name'],))
-
-    for i in await FileManagerPkg.getFilesWithExtension(f'../../core/schemas/attr', '.odb.json'):
-        data = await FileManagerPkg.ReadFile(i.__str__())
-        q = await __getQ(None, data['attr'])
-        await __createOrUpdateTable(q, data['attr'], data['name'], False)
-        await ASQL("INSERT OR IGNORE INTO Class (sCode, sMnemoCode) VALUES (?, ?)", (data['name'],data['name'],))
-
-async def __insertMetaTable(sName, sCaption):
-    from ..object.clas.ClassApi import ClassApi
-    rop = await ClassApi().register(sName, sCaption)
-    return rop.id
-
-async def __insertMetaColumn(idTab, sName, sType, sCaption, sNameRefTab=None):
-    from ..object.attr.AttrApi import AttrApi
-    await AttrApi().register(idTab, sName, sType, sCaption, sNameRefTab)
-
 async def __insertTab(data):
     from ..object.clas.ClassApi import ClassApi
     # Проверяем, существует ли таблица в meta_tables
@@ -121,12 +55,6 @@ async def __insertTab(data):
             return data
 
     # Вставляем в meta_tables
-    
-
-    await __insertMetaColumn(data['id'], 'id', 'INTEGER', 'Идентификатор')
-    await __insertMetaColumn(data['id'], 'gid', 'TEXT', 'Глобальный идентификатор')
-    await __insertMetaColumn(data['id'], 'sHeadLine', 'TEXT', 'sHeadLine')
-    await __insertMetaColumn(data['id'], 'sMnemoCode', 'TEXT', 'sMnemoCode')
     
     await __createOrUpdateTable(q, data['attr'], data['name'], table_existed)
 

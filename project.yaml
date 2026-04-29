@@ -1,6 +1,6 @@
 modules:
-  - core
-  - bc
-  - hbc
   - awh
+  - bc
+  - core
+  - hbc
   

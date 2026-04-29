@@ -4,7 +4,6 @@ import os
 from engine.package import FileManagerPkg
 from engine.SelectApp import SelectApp
 from engine.package.ActionDispatcherPkg import ActionDispatcherPkg
-from engine.package.AsynRunPkg import asyncRun
 
 async def mainProgram():
     dpg.create_context()

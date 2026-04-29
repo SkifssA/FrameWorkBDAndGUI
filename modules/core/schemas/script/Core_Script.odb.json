@@ -1,0 +1,16 @@
+{
+    "name": "Core_Class",
+    "caption": "Классы",
+    "attr": [
+        {
+            "name": "sCode",
+            "type": "TEXT",
+            "caption": "Код"
+        },
+        {
+            "name": "nVersion",
+            "type": "LONG",
+            "caption": "Версия"
+        }
+    ]
+}

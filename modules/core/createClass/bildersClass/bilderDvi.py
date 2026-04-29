@@ -2,7 +2,7 @@ from .bilderBase import BilderBase
 
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
-from core.base import BaseAvi, Selection, Event
+from engine.base import BaseAvi, Selection, Event
 from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
 
 class {nameClass}Dvi(BaseAvi):

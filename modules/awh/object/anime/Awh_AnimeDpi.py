@@ -20,7 +20,7 @@ class Awh_AnimeDpi(BaseApi):
         return "Awh_Anime"
 
     def calcHeadLine(self, rop:Awh_AnimeObj)->str:
-        return f'{rop.sCaption}'
+        return f'{rop.sCaption} {rop.sComment}'
 
     def calcMnemoCode(self, rop:Awh_AnimeObj)->str:
         return f'{rop.sUrl}'
