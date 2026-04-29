@@ -20,9 +20,10 @@ class groupByCh:
     def add(self, i):
         if self.bottomLine is not None:
             dpg.show_item(self.bottomLine)
-        asyncRun(i.open(self.group, self.obj.mainForm))
-        self.allCh.append(i)
-        self.bottomLine = ReSizeLine(obj=i, tagReSize=i.mainGroup, isHorizontal=True, par=self.group).get()
+        i.open()
+        objI = i.clsForm
+        self.allCh.append(objI)
+        self.bottomLine = ReSizeLine(obj=objI, tagReSize=objI.mainGroup, isHorizontal=True, par=self.group).get()
         dpg.configure_item(self.line.btn, show=True)
         tw.submit(self._calcSize)
 

@@ -2,6 +2,7 @@
 from .Bc_FileDvi import Bc_FileDvi
 from core.form.CardFileView import CardFileView
 from core.base.avi import BaseAvi
+from core.fabric.Form import FormConstruct
 
 class Bc_FileAvi(Bc_FileDvi):
     class List(Bc_FileDvi.DviList):
@@ -48,21 +49,21 @@ class Bc_FileAvi(Bc_FileDvi):
             return w 
         
     @classmethod
-    def list(cls, **kwargs)->List:
-        return cls.typeMeta(cls.List, **kwargs)
+    def list(cls)->FormConstruct:
+        return FormConstruct(cls.List)
     
     @classmethod
-    def list_gidSrc(cls, **kwargs)->List_gidSrc:
-        return cls.typeMeta(cls.List_gidSrc, **kwargs)
+    def list_gidSrc(cls)->FormConstruct:
+        return FormConstruct(cls.List_gidSrc)
     
     @classmethod
-    def card(cls, **kwargs)->Card:
-        return cls.typeMeta(cls.Card, **kwargs)
+    def card(cls)->FormConstruct:
+        return FormConstruct(cls.Card)
     
     @classmethod
-    def cardFileView_idFile(cls, **kwargs)->CardFileView_idFile:
-        return cls.typeMeta(cls.CardFileView_idFile, **kwargs)
+    def cardFileView_idFile(cls, **kwargs)->FormConstruct:
+        return FormConstruct(cls.CardFileView_idFile)
     
     @classmethod
-    def cardFileView_sUrl(cls, **kwargs)->CardFileView_sUrl:
-        return cls.typeMeta(cls.CardFileView_sUrl, **kwargs)
+    def cardFileView_sUrl(cls)->FormConstruct:
+        return FormConstruct(cls.CardFileView_sUrl)

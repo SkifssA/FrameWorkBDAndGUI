@@ -14,7 +14,7 @@ class Awh_MainMenu(mainMenu):
 
         @SetOper(label='Аниме', order=1, headOper='mm_respo')
         async def Awh_Anime(self):
-            await Awh_AnimeAvi.list().open()
+            Awh_AnimeAvi.list().open()
 
         @SetOper(label='Жанры', order=2, headOper='mm_respo')
         async def Awh_Genre(self):

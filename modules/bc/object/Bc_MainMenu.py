@@ -13,20 +13,20 @@ class Bc_MainMenu(mainMenu):
 
         @SetOper(label='Еденицы времени', order=1, headOper='mm_jurnal')
         async def Bc_TimeLine(self):
-            await Bc_TimeLineAvi.list().open()
+            Bc_TimeLineAvi.list().open()
 
         @SetOper(label='Иконки', order=2, headOper='mm_jurnal')
         async def Bc_TimeLine(self):
-            await Bc_IconsAvi().list().open()
+            Bc_IconsAvi().list().open()
 
         @SetOper(label="Настройки", order=1)
         def mm_setting(self): pass
 
         @SetOper(label='Конфигурация', order=1, headOper='mm_setting')
         async def Bc_Config(self):
-            await Bc_ConfigAvi.list().open()
+            Bc_ConfigAvi.list().open()
 
         @SetOper(label='Отложеные скритпы', order=2, headOper='mm_setting')
         async def Bc_ScriptScheduler(self):
-            await Bc_ScriptSchedulerAvi.list().open()
+            Bc_ScriptSchedulerAvi.list().open()
         

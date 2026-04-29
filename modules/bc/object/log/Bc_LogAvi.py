@@ -1,5 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_LogDvi import Bc_LogDvi
+from core.fabric.Form import FormConstruct
 
 class Bc_LogAvi(Bc_LogDvi):
     class List(Bc_LogDvi.DviList): pass
@@ -9,9 +10,9 @@ class Bc_LogAvi(Bc_LogDvi):
     class LookUp(Bc_LogDvi.DviLookUp): pass
 
     @classmethod
-    def list(cls, **kwargs)->List:
-        return cls.typeMeta(cls.List, **kwargs)
+    def list(cls)->FormConstruct:
+        return FormConstruct(cls.List)
     
     @classmethod
-    def card(cls, **kwargs)->Card:
-        return cls.typeMeta(cls.Card, **kwargs)
+    def card(cls)->FormConstruct:
+        return FormConstruct(cls.Card)

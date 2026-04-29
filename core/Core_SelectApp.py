@@ -4,6 +4,8 @@ from core.package import Core_FileManagerPkg, Core_ActionDispatcher, Core_AsynRu
 
 class Core_SelectApp:
     async def open(self):
+        self.tabBar = 'main_window'
+        self.mainForm = None
         with dpg.child_window(parent='main_window', tag='select_app') as mainMenuApp:
             self.mainMenuApp = mainMenuApp
             listApp = await Core_FileManagerPkg.ReadFile("../project.yaml")
@@ -25,6 +27,6 @@ class Core_SelectApp:
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}.default"
         dpg.delete_item(self.mainMenuApp)
-        Core_AsynRunPkg.asyncRun(Core_ActionDispatcher().action(module_name).open(parent='main_window'))
+        Core_ActionDispatcher().action(module_name).open()
 
         

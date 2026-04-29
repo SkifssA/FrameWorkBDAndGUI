@@ -6,7 +6,7 @@ from core.Core_SelectApp import Core_SelectApp
 from core.form.Base import Base
 from core.base.avi import BaseAvi
 from core.package.Core_AsynRunPkg import asyncRun
-from core.package import Core_FileManagerPkg, Core_ActionDispatcher, Core_AsynRunPkg
+from core.fabric.Form import FormConstruct
 
 def make_btn():
     return defaultdict(lambda: {"child": defaultdict(dict)})
@@ -48,14 +48,12 @@ class mainMenu(BaseAvi):
                             s = w[i]['child'][j]
                             dpg.add_menu_item(label=s['data'][1]._oper_label, callback=s['data'][-1])
             with dpg.child_window(parent=par) as g:
-                dpg.add_tab_bar(tag="tab_bar")
+                 dpg.add_tab_bar(tag="tab_bar")
             if self.firstFrame() is not None:
-                asyncRun(self.firstFrame().open())
+                self.firstFrame().open()
             return g
             
-        def firstFrame(self): 
-            # return Core_ActionDispatcher().action('Bc_ConfigAvi.emptyCard')
-            pass
+        def firstFrame(self): pass
 
         def _createMenu(self):
             menuDict = make_btn()
@@ -67,5 +65,5 @@ class mainMenu(BaseAvi):
                         menuDict[obj._oper_id]['data'] = (name, obj, self.appendAction(obj, name))
             return to_dict(menuDict)
             
-    def default(self, **kwargs)->Default:
-        return self.__class__.typeMeta(self.__class__.Default, **kwargs)
+    def default(self)->FormConstruct:
+        return FormConstruct(self.__class__.Default)

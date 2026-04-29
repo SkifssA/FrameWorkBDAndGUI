@@ -1,5 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_ConfigDvi import Bc_ConfigDvi
+from core.fabric.Form import FormConstruct
 
 class Bc_ConfigAvi(Bc_ConfigDvi):
     class EmptyCard(Bc_ConfigDvi.DviCard):
@@ -13,13 +14,13 @@ class Bc_ConfigAvi(Bc_ConfigDvi):
     class LookUp(Bc_ConfigDvi.DviLookUp): pass
 
     @classmethod
-    def list(cls, **kwargs)->List:
-        return cls.typeMeta(cls.List, **kwargs)
+    def list(cls)->FormConstruct:
+        return FormConstruct(cls.List)
     
     @classmethod
-    def emptyCard(cls, **kwargs)->EmptyCard:
-        return cls.typeMeta(cls.EmptyCard, **kwargs)
+    def emptyCard(cls)->FormConstruct:
+        return FormConstruct(cls.EmptyCard)
     
     @classmethod
-    def card(cls, **kwargs)->Card:
-        return cls.typeMeta(cls.Card, **kwargs)
+    def card(cls)->FormConstruct:
+        return FormConstruct(cls.Card)

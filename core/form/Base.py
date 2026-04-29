@@ -77,8 +77,8 @@ class Base(Abstract):
         wScreen = dpg.get_viewport_width()
         for i in self.ch:
             if i is not None:
-                if hasattr(i, 'right'):
-                    if i.right:
+                if hasattr(i, 'locat'):
+                    if i.locat == 'right':
                         w = self.meta.get('width', wScreen * 0.5) 
         return w
     
@@ -86,16 +86,16 @@ class Base(Abstract):
         '''Обновление дочерних форм'''
         for i in self.ch:
             if i is not None:
-                await i.refresh() 
+                await i.clsForm.refresh() 
 
     async def _openCh(self):
         '''Открытие дочерних форм. Системный'''
         for i in self.ch:
             if i is not None:
-                if i.right:
+                if i.locat == 'right':
                     self.rightGroup.add(i)
                 else:
-                    await i.open(self.tabBar, parentTable=self.mainForm)
+                    i.open()
                     dpg.configure_item(self.tabBar, show=True)
                     dpg.configure_item(self.UpDown, show=True)
                     dpg.configure_item(self.mainForm, height=self.defaultHeight)
