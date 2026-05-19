@@ -97,7 +97,7 @@ class Card(Base):
         self.input[nameAttr] = Card.inputClass.get(dataAttr['edit'], lambda **x: print("ТАКОГО ТИПА РЕДОКТРОВАНИЯ НЕТ"))(**data)
 
     async def initInput(self):
-        dpg.configure_item(self.tab, label=self.thisApi().calcHeadLine(self.thisRop()))
+        # dpg.configure_item(self.tab, label=self.thisApi().calcHeadLine(self.thisRop()))
         for key, value in self.rect.data[0].items():
             if key in self.input.keys():
                 self.input[key].init(value)

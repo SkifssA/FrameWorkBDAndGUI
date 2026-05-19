@@ -11,8 +11,12 @@ class BaseApi:
     _all_instances = {}
 
     async def idClass(self):
-        id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))
-        return id[0]['id']
+        if self._idClass is None:
+            print(self._getNameClass())
+            id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))
+            return id[0]['id']
+        else :
+            return self._idClass
 
     async def getCaptionAttrClass(self)->list:
         r = await self._sqlMetaColumns('sCaption, sCode')

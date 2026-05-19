@@ -1,6 +1,7 @@
 import dearpygui.dearpygui as dpg
 import inspect
 import asyncio
+from engine.package.AsynRunPkg import asyncRun
 
 class BaseModal:
     def __init__(self, mess: str, width: int=-1, height:int=-1):
@@ -84,8 +85,8 @@ class FormModal(BaseModal):
     def __init__(self, width = -1, height = -1):
         super().__init__('', width, height)
 
-    async def createMainContexWithFuc(self, fun):
-        await fun(self.tag)
+    def createMainContexWithFuc(self, fun):
+        asyncRun(fun(self.tag))
 
 class LoadModal(BaseModal):
     def __init__(self, fun, mess):

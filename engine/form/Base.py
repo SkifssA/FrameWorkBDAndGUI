@@ -57,19 +57,19 @@ class Base(Abstract):
         dpg.show_item(self.tab)
         dpg.set_value(self.parent, self.tab)
 
-    async def _openModal(self, callback=None, returnAttr:list=['id']):
+    def _openModal(self, callback=None, returnAttr:list=['id']):
         self.returnAttr = returnAttr
         self.callback = callback
         self.isModal = True
         wd = self.meta.get('width', dpg.get_viewport_width() * 0.5)
         hg = self.meta.get('height', dpg.get_viewport_height() * 0.5)
         self.modal = FormModal(wd, hg)
-        await self.modal.createMainContexWithFuc(self.open)
+        self.modal.createMainContexWithFuc(self.open)
         dpg.split_frame()
         self.modal.show()
 
     def openModal(self, callback=None, returnAttr:list=['id']):
-        asyncRun(self._openModal(callback, returnAttr))
+        self._openModal(callback, returnAttr)
 
     def getW(self):
         '''Получение ширины'''

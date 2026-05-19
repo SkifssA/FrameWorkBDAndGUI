@@ -15,12 +15,17 @@ class FormConstruct:
                 setattr(self, key, value)
         return self
     
-    def result(self):
+    def result(self,callback=None, returnAttr:list=['id']):
         '''НЕ РЕАЛИЗОВАНО'''
+        self.callback = callback
+        self.returnAttr = returnAttr
         return self
     
     def open(self):
         AsynRunPkg.asyncRun(self.clsForm.open('tab_bar', None))
+
+    def openModal(self):
+        self.clsForm.openModal(self.callback, self.returnAttr)
 
     def _open(self):
         from engine.form.MainMenu import mainMenu

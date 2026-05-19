@@ -16,7 +16,10 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
                 await self.thisApi().register(a)
                 await self.refresh()
             
-            Awh_AnimeAvi.cardSetUrlAnime().openModal(registerAnime, ['sUrl'])
+            Awh_AnimeAvi.cardSetUrlAnime().result(
+                callback= registerAnime
+                ,returnAttr=['sUrl']
+                ).openModal()
 
         @SetOper(label='Cайт', img='8')
         async def openWeb(self):
@@ -61,8 +64,8 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         class addData:
             def __init__(self):
                 self.sUrl:str = None
-
-        async def getObj(self):
+                 
+        def onRefresh(self):
             return self.addData()
         
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10', isLong=True)
@@ -74,15 +77,6 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
                 return await super().returnResult()
 
     class CardByText(Card):
-        class addData():
-            def __init__(self):
-                self.sComment:str = None
-
-        def getData(self):
-            w = self.addData()
-            w.sComment = self.getAttr("super$sComment")
-            return w
-
         def onRefresh(self):
             return self.thisApi().load(self.getAttr("super$id"))
 

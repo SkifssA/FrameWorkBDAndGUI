@@ -4,7 +4,7 @@ from ..animegenre.Awh_AnimeGenreApi import Awh_AnimeGenreApi
 
 class Awh_AnimeApi(Awh_AnimeDpi):
     async def register(self, data):
-        obj = await self.findByMnemocode(data['url'])
+        obj = self.findByMnemocode(data['url'])
         if obj is None:
             obj = await self.insert()
             obj.sUrl = data['url']

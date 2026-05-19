@@ -29,7 +29,7 @@ class Awh_AnimeLoadPkg(AiohttpPkg):
         return w[2].get_text()
     
     async def __getUrlImg(self, text)->str:
-        return (await self.find(text, 'img', class_='image__img rounded', title= self.d['name'])).get('src')
+        return (await self.find(text, 'img', class_='image__img rounded', alt= self.d['name'])).get('src')
 
     def __convSeriesInInt(self, series:str):
         if series.isdigit():
