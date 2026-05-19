@@ -20,7 +20,7 @@ class groupByCh:
     def add(self, i):
         if self.bottomLine is not None:
             dpg.show_item(self.bottomLine)
-        i.open()
+        i._open()
         objI = i.clsForm
         self.allCh.append(objI)
         self.bottomLine = ReSizeLine(obj=objI, tagReSize=objI.mainGroup, isHorizontal=True, par=self.group).get()

@@ -28,6 +28,6 @@ class SelectApp:
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}.default"
         dpg.delete_item(self.mainMenuApp)
-        ActionDispatcher().action(module_name).open()
+        ActionDispatcher().action(module_name)._open()
 
         

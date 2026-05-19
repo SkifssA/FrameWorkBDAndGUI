@@ -30,7 +30,7 @@ class mainMenu(BaseAvi):
         @SetOper(label='Выйти', headOper='mm_main_oper', order=10000)
         async def exit(self): 
             dpg.delete_item(self.parent, children_only=True)
-            await Core_SelectApp().open()
+            await SelectApp().open()
 
         def _getAttr(self):pass
         async def _refresh(self):pass
@@ -50,7 +50,7 @@ class mainMenu(BaseAvi):
             with dpg.child_window(parent=par) as g:
                  dpg.add_tab_bar(tag="tab_bar")
             if self.firstFrame() is not None:
-                self.firstFrame().open()
+                self.firstFrame()._open()
             return g
             
         def firstFrame(self): pass

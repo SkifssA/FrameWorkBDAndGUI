@@ -10,6 +10,7 @@ from engine.base.oper import SetOper
 from engine.base.modal import DialogModal
 from engine.base.Event import SetterEvent
 from engine.base import api
+from engine.fabric.Form import FormConstruct
 
 class BaseAvi:
 
@@ -22,10 +23,10 @@ class BaseAvi:
         return instance
     
     @classmethod
-    def list(cls, **kwargs): pass
+    def list(cls, **kwargs)->FormConstruct: pass
 
     @classmethod
-    def card(cls, **kwargs): pass
+    def card(cls, **kwargs)->FormConstruct: pass
 
     def proccessById(self, event:SetterEvent, getAttr, setAttr, repList=None, repCard=None):
         if (event.type == 'selectValue'):
@@ -54,10 +55,10 @@ class BaseAvi:
             else:
                 return self._getAttr(name)
 
-        def thisApi(self):
+        def thisApi(self)->api.BaseApi:
             return self._getAvi().thisApi()
         
-        def _getAvi(self):
+        def _getAvi(self)->'BaseAvi':
             outer_class_name = self.__class__.__qualname__.rsplit('.', 1)[0]
             # Получаем имя модуля, где определён класс
             module_name = self.__class__.__module__
@@ -90,10 +91,10 @@ class BaseAvi:
     class DefaultList(DefaultDefault, List):
         
         @SetOper(label='Открыть', order=2, img='4')
-        async def openForm(self): await self._getAvi().card(idItem=self.getAttr('id')).open()
+        async def openForm(self): self._getAvi().card().param(idItem=self.getAttr('id')).open()
         
         @SetOper(label='Создать', order=10, img='0')
-        async def insert(self): await self._getAvi().card(isInsert=True).open()
+        async def insert(self): self._getAvi().card().param(isInsert=True).open()
 
         @SetOper(label='Удалить', order=20, img='3')
         async def delete(self):

@@ -20,6 +20,9 @@ class FormConstruct:
         return self
     
     def open(self):
+        AsynRunPkg.asyncRun(self.clsForm.open('tab_bar', None))
+
+    def _open(self):
         from engine.form.MainMenu import mainMenu
         from engine.form.widgets.groupByCh import groupByCh
 
