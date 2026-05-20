@@ -5,11 +5,7 @@ from engine.package import FileManagerPkg, ASQL, ATQSL, ActionDispatcher
 
 logger = logging.getLogger(__name__)
 
-TYPE_MAPPING: Dict[str, str] = {
-    "TEXT": "TEXT", "STRING": "TEXT",
-    "INT": "INTEGER", "INTEGER": "INTEGER", "LONG": "INTEGER",
-    "BOOLEAN": "INTEGER", "DATE": "TEXT",
-}
+
 
 SYSTEM_COLUMNS: List[str] = ["id", "gid", "sHeadLine", "sMnemoCode"]
 BASE_PATH = Path(__file__).resolve().parent.parent.parent  # Заменяет ../../

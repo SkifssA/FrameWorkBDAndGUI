@@ -21,8 +21,8 @@ class Core_ClassDpi(BaseApi):
     def calcMnemoCode(self, rop:Core_ClassObj)->str:
         return f'{rop.sCode}'
 
-    def insert(self)->Core_ClassObj:
-        return super().insert()
+    async def insert(self)->Core_ClassObj:
+        return await super().insert()
 
     async def delete(self, rop:Core_ClassObj)->None:
         

@@ -17,9 +17,6 @@ class AsyncFileManager:
         # Например: '../data/config.json' -> поднимаемся на уровень выше
         real_path = (caller_dir / path).resolve()
 
-        # Создаем директории, если их нет
-        real_path.parent.mkdir(parents=True, exist_ok=True)
-
         # Определяем тип файла
         typeFile = path.rsplit('.', 1)[-1] if '.' in path else None
         
@@ -47,9 +44,9 @@ class AsyncFileManager:
         obj = self._getObjPath(path)
         return await asyncio.to_thread(os.path.exists, obj['real_path'])
     
-    async def GetFoldersList(self, path):
+    async def GetFoldersList(self, path, index=2):
         try:
-            obj = self._getObjPath(path)
+            obj = self._getObjPath(path, index=index)
             folders = []
             for item in os.listdir(obj['real_path']):
                 item_path = os.path.join(obj['real_path'], item)
@@ -59,10 +56,10 @@ class AsyncFileManager:
         except Exception as e:
             return []
         
-    async def getFilesWithExtension(self, directory: str| dict, extension: str) -> list[Path]:
+    async def getFilesWithExtension(self, directory: str| dict, extension: str, index=2) -> list[Path]:
         """Асинхронно возвращает список файлов с заданным расширением."""
         if (type(directory) == str):
-            obj = self._getObjPath(directory)
+            obj = self._getObjPath(directory, index=index)
         else:
             obj = directory
             
