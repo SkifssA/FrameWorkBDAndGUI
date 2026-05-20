@@ -1,152 +1,163 @@
-from ....engine.package import FileManagerPkg, ASQL, ATQSL, ActionDispatcher
-from collections import Counter
+import logging
+from typing import Dict, List, Any, Optional
+from pathlib import Path
+from engine.package import FileManagerPkg, ASQL, ATQSL, ActionDispatcher
 
-TYPE_MAPPING = {
-    "TEXT": "TEXT",
-    "STRING": "TEXT",
-    "INT": "INTEGER",
-    "INTEGER": "INTEGER",
-    "LONG": "INTEGER",
-    "BOOLEAN": "INTEGER",
-    "DATE": "TEXT",
+logger = logging.getLogger(__name__)
+
+TYPE_MAPPING: Dict[str, str] = {
+    "TEXT": "TEXT", "STRING": "TEXT",
+    "INT": "INTEGER", "INTEGER": "INTEGER", "LONG": "INTEGER",
+    "BOOLEAN": "INTEGER", "DATE": "TEXT",
 }
 
-async def createTab():
-    listApp = await FileManagerPkg.ReadFile("../../project.yaml")
-    script = []
-    for app in listApp['modules']:
-        pathClass = f"../../modules/{app}/schemas"
-        if await FileManagerPkg.Exists(pathClass):
-                for cl in await FileManagerPkg.GetFoldersList(pathClass):
-                    lFiles = await FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json')
-                    for File in lFiles:
-                        w = await FileManagerPkg.ReadFile(File.__str__())
-                        await __insertTab(w)
-                        # Выполнение скриптов для заполнения таблиц
-                        if 'dbData' in w.keys():
-                            for i in w['dbData']:
-                                script.append(i)
-                    lFilesPkg = await FileManagerPkg.getFilesWithExtension(f'{pathClass}', '.pkg.json')
-                    for filePkg in lFilesPkg:
-                        w = await FileManagerPkg.ReadFile(filePkg.__str__())
-                        if 'dbData' in w.keys():
-                            for i in w['dbData']:
-                                script.append(i)
+SYSTEM_COLUMNS: List[str] = ["id", "gid", "sHeadLine", "sMnemoCode"]
+BASE_PATH = Path(__file__).resolve().parent.parent.parent  # Заменяет ../../
 
-    await __actionScripts(script)
+async def create_tables() -> None:
+    """Главная точка входа: чтение конфигов, миграция таблиц, выполнение скриптов."""
+    project_path = BASE_PATH / "project.yaml"
+    if not await FileManagerPkg.Exists(project_path):
+        logger.error("Файл project.yaml не найден по пути %s", project_path)
+        return
 
-async def __insertTab(data):
+    list_app = await FileManagerPkg.ReadFile(project_path)
+    if not isinstance(list_app, dict) or "modules" not in list_app:
+        logger.error("Некорректная структура project.yaml")
+        return
+
+    data_scripts: List[Dict[str, Any]] = []
+
+    for app_name in list_app["modules"]:
+        schema_dir = BASE_PATH / "modules" / app_name / "schemas"
+        if not await FileManagerPkg.Exists(schema_dir):
+            continue
+
+        for schema_dir_name in await FileManagerPkg.GetFoldersList(schema_dir):
+            dir_path = schema_dir / schema_dir_name
+            
+            # 1. Обработка .odb.json
+            for odb_file in await FileManagerPkg.getFilesWithExtension(dir_path, ".odb.json"):
+                schema = await FileManagerPkg.ReadFile(str(odb_file))
+                if await _validate_schema(schema, str(odb_file)):
+                    await __insert_table(schema)
+                    if "dbData" in schema:
+                        data_scripts.extend(schema["dbData"])
+
+            # 2. Обработка .pkg.json
+            for pkg_file in await FileManagerPkg.getFilesWithExtension(schema_dir, ".pkg.json"):
+                pkg = await FileManagerPkg.ReadFile(str(pkg_file))
+                if "dbData" in pkg:
+                    data_scripts.extend(pkg["dbData"])
+
+    if data_scripts:
+        logger.info("Запуск %d скриптов заполнения данных", len(data_scripts))
+        await __action_scripts(data_scripts)
+
+async def __insert_table(data: Dict[str, Any]) -> None:
+    """Регистрация метаданных и запуск миграции таблицы."""
     from ..object.clas.ClassApi import ClassApi
-    # Проверяем, существует ли таблица в meta_tables
-    existing_id = await ClassApi()._findByAttr('sCode', data['name'])
-    table_existed = bool(existing_id)
 
-    data['id'] = await __insertMetaTable(data['name'], data['caption'])
+    # Проверка в метаданных (можно заменить на ASQL PRAGMA для надёжности)
+    existing = await ClassApi()._findByAttr("sCode", data["name"])
+    table_in_meta = bool(existing)
 
-    q = await __getQ(data['id'], data['attr'])
+    meta_id = await __insert_meta_table(data["name"], data.get("caption", ""))
+    data["id"] = meta_id
 
-    if table_existed:
-        old_columns = await ASQL(f"PRAGMA table_info({data['name']})")
-        old_col_names = [row['name'] for row in old_columns]
-        new_col_names = [i['name'] for i in data['attr']] + ['id', 'gid', 'sHeadLine', 'sMnemoCode']
+    query_schema = await __build_query_schema(meta_id, data["attr"])
+    await __create_or_update_table(query_schema, data["attr"], data["name"], table_in_meta)
 
-        if Counter(old_col_names) == Counter(new_col_names):
-            print("Новых столбцов нет")
-            return data
+async def __build_query_schema(table_id: int, attributes: List[Dict]) -> Dict[str, List[str]]:
+    """Формирует SQL-фрагменты колонок и записывает их в meta_columns."""
+    cols_sql = []
+    for attr in attributes:
+        col_type = TYPE_MAPPING.get(attr["type"].upper(), "TEXT")
+        cols_sql.append(f'"{attr["name"]}" {col_type}')
+        
+        await __insert_meta_column(
+            table_id, 
+            attr["name"], 
+            col_type, 
+            attr.get("caption", ""), 
+            attr.get("refTab")
+        )
+    return {"attr": cols_sql}
 
-    # Вставляем в meta_tables
+async def __create_or_update_table(
+    q: Dict[str, List[str]], 
+    attr_data: List[Dict], 
+    table_name: str, 
+    exists_in_meta: bool
+) -> None:
+    """Создаёт таблицу или выполняет безопасную миграцию структуры."""
+    safe_name = f'"{table_name}"'
     
-    await __createOrUpdateTable(q, data['attr'], data['name'], table_existed)
+    # Проверяем реальное наличие в БД
+    pragma_rows = await ASQL(f"PRAGMA table_info({safe_name})")
+    db_exists = len(pragma_rows) > 0
 
-    return data
+    if not db_exists:
+        await __create_table(q, table_name, is_new=False)
+        return
 
-async def __getQ(idTabl, dataAttr):
-    q = {
-        'attr': []
-    }
+    old_cols = {row["name"] for row in pragma_rows}
+    new_cols = {a["name"] for a in attr_data} | set(SYSTEM_COLUMNS)
 
-    for i in dataAttr:
-        q['attr'].append(f"{i['name']} {TYPE_MAPPING[i['type'].upper()]}")
-        if 'refTab' in i:
-            c = i['refTab']
-        else:
-            c = None
-        if idTabl:
-            await __insertMetaColumn(idTabl, i['name'], TYPE_MAPPING[i['type'].upper()], i['caption'], c)
+    if old_cols == new_cols and len(old_cols) == len(new_cols):
+        logger.debug("Структура таблицы %s не изменилась, пропуск", table_name)
+        return
+
+    logger.info("Обнаружены изменения в %s. Запуск миграции...", table_name)
+    temp_name = f'"{table_name}_new"'
+
+    try:
+        # 1. Создаём новую таблицу
+        await __create_table(q, table_name, is_new=True)
+        
+        # 2. Копируем данные только по общим колонкам
+        common_cols = [f'"{c}"' for c in old_cols if c in new_cols]
+        if common_cols:
+            cols_str = ", ".join(common_cols)
+            await ATQSL(f"INSERT INTO {temp_name} ({cols_str}) SELECT {cols_str} FROM {safe_name}")
+            
+        # 3. Удаляем старый индекс и таблицу
+        await ATQSL(f'DROP INDEX IF EXISTS "index_{table_name}_mnemocode"')
+        await ATQSL(f"DROP TABLE {safe_name}")
+        
+        # 4. Переименовываем и создаём индекс
+        await ATQSL(f"ALTER TABLE {temp_name} RENAME TO {safe_name}")
+        await __create_index(table_name)
+        
+        logger.info("Миграция таблицы %s завершена успешно", table_name)
+    except Exception as e:
+        logger.error("Ошибка миграции %s: %s. Откат не реализован (требует транзакций на уровне ASQL)", table_name, e)
+        # В реальном проекте здесь должен быть rollback через ATQSL("ROLLBACK")
+
+async def __create_table(q: Dict[str, List[str]], name_table: str, is_new: bool) -> None:
+    suffix = "_new" if is_new else ""
+    safe_name = f'"{name_table}{suffix}"'
     
-    return q
-
-async def __createTable(q, nameTable, isNew):
+    columns = ",\n    ".join(q["attr"])
     await ATQSL(f"""
-            CREATE TABLE IF NOT EXISTS {nameTable}{'_new' if isNew else ''} (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                gid TEXT,
-                sHeadLine TEXT,
-                sMnemoCode TEXT UNIQUE,
-                {',\n    '.join(q['attr'])}
-            )
-        """)
-    
-    await ATQSL(f"""
-        CREATE INDEX IF NOT EXISTS index_{nameTable}{'_new' if isNew else ''}_mnemocode ON {nameTable}{'_new' if isNew else ''} (sMnemoCode);
-        """)
-    print(f'Генерация index_{nameTable}{'_new' if isNew else ''}_mnemocode прошла успешно')
+        CREATE TABLE {safe_name} (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            gid TEXT,
+            sHeadLine TEXT,
+            sMnemoCode TEXT UNIQUE,
+            {columns}
+        )
+    """)
+    await __create_index(name_table, suffix)
+    logger.info("Таблица %s создана", safe_name)
 
-async def __createOrUpdateTable(q, dataAttr, nameTable, isExisted):
-    # Если таблица уже существовала, нужно перенести данные
-    if isExisted:
-        # Получаем список старых столбцов (для переноса данных)
-        old_columns = await ASQL(f"PRAGMA table_info({nameTable})")
-        old_col_names = [row['name'] for row in old_columns]
-        new_col_names = [i['name'] for i in dataAttr] + ['id', 'gid', 'sHeadLine', 'sMnemoCode']
+async def __create_index(name_table: str, suffix: str = "") -> None:
+    idx_name = f"index_{name_table}{suffix}_mnemocode"
+    safe_name = f'"{name_table}{suffix}"'
+    await ATQSL(f'CREATE INDEX IF NOT EXISTS "{idx_name}" ON {safe_name} (sMnemoCode)')
 
-        if Counter(old_col_names) == Counter(new_col_names):
-            print("Новых столбцов нет")
-            # return
-
-        # Создаём новую таблицу с новой структурой
-        await __createTable(q, nameTable, True)
-
-        # Копируем данные из старой в новую (только общие столбцы)
-        common_columns = [col for col in old_col_names if col in new_col_names]
-        if common_columns:
-            columns_str = ', '.join(common_columns)
-            await ATQSL(f"""
-                INSERT INTO {nameTable}_new ({columns_str})
-                SELECT {columns_str} FROM {nameTable}
-            """)
-
-        # Удаляем старую таблицу
-        await ATQSL(f"DROP TABLE IF EXISTS {nameTable}")
-        await ATQSL(f"DROP INDEX IF EXISTS {nameTable}_new_mnemocode")
-
-        # Переименовываем новую
-        await ATQSL(f"ALTER TABLE {nameTable}_new RENAME TO {nameTable}")
-        await ATQSL(f"""
-            CREATE INDEX IF NOT EXISTS index_{nameTable}_mnemocode ON {nameTable} (sMnemoCode);
-        """)
-    else:
-        # Если таблицы не было — создаём её как обычно
-        await __createTable(q, nameTable, False)
-
-async def __actionScripts(datas:list[dict]):
-
-    async def actionDependence(sName):
-        w = next((d for d in datas if d.get("name") == sName), None)
-        await __actionScripts([w])
-
-    for data in datas:
-        d = await ASQL(f"SELECT nVersion FROM Script WHERE sAction = ?", (data['name'], ))
-        if d == [] or d[0]['nVersion'] < data['version']:
-            if 'dependence' in data.keys():
-                if isinstance(data['dependence'], list):
-                    for depe in data['dependence']:
-                        await actionDependence(depe)
-                else:
-                    await actionDependence(data['dependence'])
-            await ActionDispatcher().action(data['name'])
-            if d == []:
-                s = f"INSERT INTO Script (nVersion, sAction) VALUES (?, ?)"
-            else:
-                s = f"UPDATE Script SET nVersion = ? WHERE sAction = ?"
-            await ATQSL(s, (data['version'], data['name']))
+async def _validate_schema(data: Any, file_path: str) -> bool:
+    if not isinstance(data, dict) or "name" not in data or "attr" not in data:
+        logger.error("Файл %s не содержит обязательных полей name/attr", file_path)
+        return False
+    return True

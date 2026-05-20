@@ -1,7 +1,6 @@
 from engine.package import FileManagerPkg
 from engine.package.AsynRunPkg import asyncRun
 
-
 def create():
     listModules = asyncRun(FileManagerPkg.ReadFile("../../project.yaml"))
     listModulesWithDep = getListModulesWithDep(listModules['modules'])
