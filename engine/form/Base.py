@@ -20,6 +20,7 @@ class Config(TypedDict, total=False):
 class Base(Abstract):
     def __init__(self):
         from engine.base.rect import Rect
+        from engine.fabric.Form import FormConstruct
         self.sizeLineResize = 5
         self.defaultHeight = -1
 
@@ -28,7 +29,7 @@ class Base(Abstract):
         self.tab = None
         self.parent = None
         self.parentTable = None
-        self.ch:list[Base] = None
+        self.ch:list[FormConstruct] = None
         self.isMod = False
         self.isInsert = False
         self.isModal = False
@@ -77,8 +78,8 @@ class Base(Abstract):
         wScreen = dpg.get_viewport_width()
         for i in self.ch:
             if i is not None:
-                if hasattr(i, 'locat'):
-                    if i.locat == 'right':
+                if hasattr(i.clsForm, 'locat'):
+                    if i.clsForm.locat == 'right':
                         w = self.meta.get('width', wScreen * 0.5) 
         return w
     
@@ -92,7 +93,7 @@ class Base(Abstract):
         '''Открытие дочерних форм. Системный'''
         for i in self.ch:
             if i is not None:
-                if i.locat == 'right':
+                if i.clsForm.locat == 'right':
                     self.rightGroup.add(i)
                 else:
                     i.open()

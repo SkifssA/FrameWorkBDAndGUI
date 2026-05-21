@@ -11,8 +11,7 @@ class FormConstruct:
 
     def param(self, **kwargs:Unpack[Config]):
         for key, value in kwargs.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
+            setattr(self.clsForm, key, value)
         return self
     
     def result(self,callback=None, returnAttr:list=['id']):
