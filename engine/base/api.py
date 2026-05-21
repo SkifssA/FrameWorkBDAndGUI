@@ -1,14 +1,20 @@
 from ..package.DbManagerPkg import ATQSL, ASQL
 from ..package.AsynRunPkg import asyncRun
 from .Type import Gid
+from abc import ABC, abstractmethod
 
 
 likeСache = {}
 
-class BaseApi:
+class BaseApi(ABC):
     _idClass = None
     _classObj = None
     _all_instances = {}
+
+    @abstractmethod
+    def calcHeadLine(self, rop)->str: pass
+    @abstractmethod
+    def calcMnemoCode(self, rop)->str: pass
 
     def idClass(self):
         if self._idClass is None:
@@ -58,12 +64,6 @@ class BaseApi:
     def getByMnemocode(self, value):
         if x:=self.findByMnemocode(value=value):
             return self.load(x)
-
-    def calcHeadLine(self, rop):
-        return ' '
-    
-    def calcMnemoCode(self, rop):
-        return ' '
 
     def insert(self):
         t = self._getNameClass()
