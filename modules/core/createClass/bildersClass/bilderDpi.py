@@ -23,15 +23,18 @@ class {nameClass}Dpi(BaseApi):
     def calcMnemoCode(self, rop:{nameClass}Obj)->str:
         return f'{isMnemoCode}'
 
-    async def insert(self)->{nameClass}Obj:
-        return await super().insert()
+    def insert(self)->{nameClass}Obj:
+        return super().insert()
 
-    async def delete(self, rop:{nameClass}Obj)->None:
+    def getByMnemocode(self, value)->{nameClass}Obj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:{nameClass}Obj)->None:
         {deleteDetails}
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:{nameClass}Obj)->None:
-        return await super().update(rop)
+    def update(self, rop:{nameClass}Obj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->{nameClass}Obj:
         return super().load(id)
@@ -83,7 +86,7 @@ class {nameClass}Dpi(BaseApi):
                 m = i['name'][:i['name'].find('_')].lower()
                 mtemp = '...' if mM == m else f'{m}.'
                 res.append(f'from {mtemp}object.{w.split('_')[-1].lower()}.{w}Api import {w}Api')
-                res.append(f'd = await {w}Api()._getAllByAttr(\'{i['attr']}\', rop.{'id' if i['attr'].startswith('id') else 'gid'})')
+                res.append(f'd = {w}Api()._getAllByAttr(\'{i['attr']}\', rop.{'id' if i['attr'].startswith('id') else 'gid'})')
                 res.append(f'if d: asyncio.gather(*({w}Api().delete(i) for i in d))')
                 
         return '\n        '.join(res)

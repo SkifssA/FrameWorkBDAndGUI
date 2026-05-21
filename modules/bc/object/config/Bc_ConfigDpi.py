@@ -22,15 +22,18 @@ class Bc_ConfigDpi(BaseApi):
     def calcMnemoCode(self, rop:Bc_ConfigObj)->str:
         return f'{rop.sModule} {rop.sCaprionSetting}'
 
-    async def insert(self)->Bc_ConfigObj:
-        return await super().insert()
+    def insert(self)->Bc_ConfigObj:
+        return super().insert()
 
-    async def delete(self, rop:Bc_ConfigObj)->None:
+    def getByMnemocode(self, value)->Bc_ConfigObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Bc_ConfigObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Bc_ConfigObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Bc_ConfigObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Bc_ConfigObj:
         return super().load(id)

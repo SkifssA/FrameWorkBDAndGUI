@@ -21,15 +21,18 @@ class Bc_TimeLineDpi(BaseApi):
     def calcMnemoCode(self, rop:Bc_TimeLineObj)->str:
         return f'{rop.sCode}'
 
-    async def insert(self)->Bc_TimeLineObj:
-        return await super().insert()
+    def insert(self)->Bc_TimeLineObj:
+        return super().insert()
 
-    async def delete(self, rop:Bc_TimeLineObj)->None:
+    def getByMnemocode(self, value)->Bc_TimeLineObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Bc_TimeLineObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Bc_TimeLineObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Bc_TimeLineObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Bc_TimeLineObj:
         return super().load(id)

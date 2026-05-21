@@ -20,15 +20,18 @@ class Bc_LogDpi(BaseApi):
     def calcMnemoCode(self, rop:Bc_LogObj)->str:
         return f'{rop.id}'
 
-    async def insert(self)->Bc_LogObj:
-        return await super().insert()
+    def insert(self)->Bc_LogObj:
+        return super().insert()
 
-    async def delete(self, rop:Bc_LogObj)->None:
+    def getByMnemocode(self, value)->Bc_LogObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Bc_LogObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Bc_LogObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Bc_LogObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Bc_LogObj:
         return super().load(id)

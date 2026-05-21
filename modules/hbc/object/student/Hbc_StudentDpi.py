@@ -26,20 +26,23 @@ class Hbc_StudentDpi(BaseApi):
     def calcMnemoCode(self, rop:Hbc_StudentObj)->str:
         return f'{rop.id}'
 
-    async def insert(self)->Hbc_StudentObj:
-        return await super().insert()
+    def insert(self)->Hbc_StudentObj:
+        return super().insert()
 
-    async def delete(self, rop:Hbc_StudentObj)->None:
+    def getByMnemocode(self, value)->Hbc_StudentObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Hbc_StudentObj)->None:
         from ...object.studentdata.Hbc_StudentDataApi import Hbc_StudentDataApi
-        d = await Hbc_StudentDataApi()._getAllByAttr('idStudent', rop.id)
+        d = Hbc_StudentDataApi()._getAllByAttr('idStudent', rop.id)
         if d: asyncio.gather(*(Hbc_StudentDataApi().delete(i) for i in d))
         from ...object.studentlesson.Hbc_StudentLessonApi import Hbc_StudentLessonApi
-        d = await Hbc_StudentLessonApi()._getAllByAttr('idStudent', rop.id)
+        d = Hbc_StudentLessonApi()._getAllByAttr('idStudent', rop.id)
         if d: asyncio.gather(*(Hbc_StudentLessonApi().delete(i) for i in d))
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Hbc_StudentObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Hbc_StudentObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Hbc_StudentObj:
         return super().load(id)

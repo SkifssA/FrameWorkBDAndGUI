@@ -42,5 +42,5 @@ class Awh_AnimeLoadPkg(AiohttpPkg):
                 return 0
             
     async def __comment(self, text)->str:
-        return (await self.find(text, 'div', class_='description')).get_text()
+        return (await self.find(text, 'div', class_='description')).get_text().strip()
             

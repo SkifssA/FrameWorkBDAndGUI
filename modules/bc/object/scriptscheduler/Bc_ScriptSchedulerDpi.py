@@ -25,15 +25,18 @@ class Bc_ScriptSchedulerDpi(BaseApi):
     def calcMnemoCode(self, rop:Bc_ScriptSchedulerObj)->str:
         return f'{rop.sNameScript}'
 
-    async def insert(self)->Bc_ScriptSchedulerObj:
-        return await super().insert()
+    def insert(self)->Bc_ScriptSchedulerObj:
+        return super().insert()
 
-    async def delete(self, rop:Bc_ScriptSchedulerObj)->None:
+    def getByMnemocode(self, value)->Bc_ScriptSchedulerObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Bc_ScriptSchedulerObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Bc_ScriptSchedulerObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Bc_ScriptSchedulerObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Bc_ScriptSchedulerObj:
         return super().load(id)

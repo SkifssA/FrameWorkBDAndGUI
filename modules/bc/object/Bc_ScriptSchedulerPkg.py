@@ -20,7 +20,6 @@ class Bc_ScriptSchedulerPkg:
 
     @classmethod
     async def run(cls):
-        await Bc_TimeLineApi().fill()
         data = await Bc_ScriptSchedulerApi()._getAllByAttr('bUsed', 1)
         obj = Bc_ScriptSchedulerPkg(data)
         obj.runMe = True

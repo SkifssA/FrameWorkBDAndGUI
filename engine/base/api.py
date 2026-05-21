@@ -10,10 +10,10 @@ class BaseApi:
     _classObj = None
     _all_instances = {}
 
-    async def idClass(self):
+    def idClass(self):
         if self._idClass is None:
             print(self._getNameClass())
-            id = await ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),))
+            id = asyncRun(ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),)))
             return id[0]['id']
         else :
             return self._idClass
@@ -23,7 +23,7 @@ class BaseApi:
         return r
     
     async def _sqlMetaColumns(self, columns:str):
-        return await ASQL(f"select {columns} from Core_Attr t where t.idTab = ? and t.sCode <> 'id'", (await self.idClass(),))
+        return await ASQL(f"select {columns} from Core_Attr t where t.idTab = ? and t.sCode <> 'id'", (self.idClass(),))
 
     async def _findDataBase(self, attr:str, value):
         if value is not None:
@@ -35,8 +35,8 @@ class BaseApi:
     async def getAll(self):
         return await ASQL(f'SELECT * FROM {self._getNameClass()}')
     
-    async def _getAllByAttr(self, attr:str, value)->list|None:
-        w = await self._findDataBase(attr, value)
+    def _getAllByAttr(self, attr:str, value)->list|None:
+        w = asyncRun(self._findDataBase(attr, value))
         if not w:  # covers both [] and None
             return None
         results = []
@@ -54,6 +54,10 @@ class BaseApi:
     
     def findByMnemocode(self, value)->int|None:
         return asyncRun(self._findByAttr('sMnemoCode', value=value))
+    
+    def getByMnemocode(self, value):
+        if x:=self.findByMnemocode(value=value):
+            return self.load(x)
 
     def calcHeadLine(self, rop):
         return ' '
@@ -61,23 +65,23 @@ class BaseApi:
     def calcMnemoCode(self, rop):
         return ' '
 
-    async def insert(self):
+    def insert(self):
         t = self._getNameClass()
         rop = self._classObj()
         rop.id = asyncRun(ATQSL(f"INSERT INTO {t} (id) VALUES (NULL)"))
         return rop
     
-    async def update(self, rop):
+    def update(self, rop):
         value = self._getDataRop(rop)
         keys = [k for k in value.keys() if k != 'id']
-        value['gid'] = Gid(f'{await self.idClass()}/{rop.id}')
+        value['gid'] = ''#Gid(f'{self.idClass()}/{rop.id}')
         value['sHeadLine'] = self.calcHeadLine(rop)
         value['sMnemoCode'] = self.calcMnemoCode(rop)
         keys = [k for k in value.keys() if k != 'id']
-        await ATQSL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (rop.id,))
+        asyncRun(ATQSL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (rop.id,)))
         
-    async def delete(self, rop):
-        return await self._deleteById(rop.id)
+    def delete(self, rop):
+        return asyncRun(self._deleteById(rop.id))
         
     async def _deleteById(self, id):
         t = self._getNameClass()

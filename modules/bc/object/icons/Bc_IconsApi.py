@@ -4,16 +4,16 @@ from .Bc_IconsDpi import Bc_IconsDpi, Bc_IconsObj
 from engine.package.FileManagerPkg import FileManagerPkg
 
 class Bc_IconsApi(Bc_IconsDpi):
-    async def register(self, sCode, path):
-        w = await self.findByMnemocode(sCode)
+    def register(self, sCode, path):
+        w = self.findByMnemocode(sCode)
         if w is None:
-            w = await self.insert()
+            w = self.insert()
             self.setsCode(w, sCode)
         else:
             w = self.load(w)
 
         self.setsPath(w, path)
-        await self.update(w)
+        self.update(w)
 
     async def dataInstall(self):
         beginPath = '../img/icon/{name}.png'
@@ -31,4 +31,4 @@ class Bc_IconsApi(Bc_IconsDpi):
             ,"selected"
         ]
         for i, path in enumerate(beginPath.format(name=i) for i in nameIcon):
-            await self.register(i, str(path))
+            self.register(i, str(path))

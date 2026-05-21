@@ -20,7 +20,7 @@ class multiText(Base):
 
     def _on_resize(self, sender, app_data):
         q = dpg.get_item_rect_size(app_data)
-        w = dpg.get_item_rect_size(app_data)[0] // (9)
+        w = dpg.get_item_rect_size(app_data)[0] // 8
         text:str = dpg.get_item_user_data(app_data)
         dpg.set_value(self.input, textwrap.fill(text or '', width=int(w) if w > 0 else 1, tabsize=1))
 

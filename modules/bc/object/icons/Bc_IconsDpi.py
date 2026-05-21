@@ -21,15 +21,18 @@ class Bc_IconsDpi(BaseApi):
     def calcMnemoCode(self, rop:Bc_IconsObj)->str:
         return f'{rop.sCode}'
 
-    async def insert(self)->Bc_IconsObj:
-        return await super().insert()
+    def insert(self)->Bc_IconsObj:
+        return super().insert()
 
-    async def delete(self, rop:Bc_IconsObj)->None:
+    def getByMnemocode(self, value)->Bc_IconsObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Bc_IconsObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Bc_IconsObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Bc_IconsObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Bc_IconsObj:
         return super().load(id)

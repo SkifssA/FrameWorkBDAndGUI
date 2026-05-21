@@ -122,13 +122,13 @@ class BaseAvi:
                     self.closeForm()
             else:
                 if self.isInsert:
-                    await self.thisApi().delete(self.obj)
+                    self.thisApi().delete(self.obj)
                 self.closeForm()
 
         async def handle_confirmation(self, result: bool):
             if self.isInsert:
                 if not result:
-                    await self.thisApi().delete(self.obj)
+                    self.thisApi().delete(self.obj)
                 else:
                     await self.saveForm()
             else:
@@ -138,7 +138,7 @@ class BaseAvi:
 
         @SetOper(label='Сохранить', order=1, img='5')
         async def saveForm(self):
-            await self.thisApi().update(self.thisRop())
+            self.thisApi().update(self.thisRop())
             self.isInsert = False
             self.isMod = False
 

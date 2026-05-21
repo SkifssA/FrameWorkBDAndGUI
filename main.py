@@ -3,7 +3,7 @@ import sys
 import asyncio
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# from engine import mainProgram
+from engine import mainProgram
 from modules.core.createClass import createFile, createTab
 
 if __name__ == "__main__":
@@ -12,5 +12,5 @@ if __name__ == "__main__":
         asyncio.run(createTab())
     elif (args[0] == 'createSours'):
         asyncio.run(createFile())
-    # elif (args[0] == 'launchApp'):
-        # asyncio.run(mainProgram())
+    elif (args[0] == 'launchApp'):
+        asyncio.run(mainProgram())

@@ -20,15 +20,18 @@ class Awh_GenreDpi(BaseApi):
     def calcMnemoCode(self, rop:Awh_GenreObj)->str:
         return f'{rop.sCaption}'
 
-    async def insert(self)->Awh_GenreObj:
-        return await super().insert()
+    def insert(self)->Awh_GenreObj:
+        return super().insert()
 
-    async def delete(self, rop:Awh_GenreObj)->None:
+    def getByMnemocode(self, value)->Awh_GenreObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Awh_GenreObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Awh_GenreObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Awh_GenreObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Awh_GenreObj:
         return super().load(id)

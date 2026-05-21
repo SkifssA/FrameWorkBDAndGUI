@@ -1,9 +1,9 @@
 # Системный файл для интерфейса
 from engine.base import BaseAvi, Selection, Event
-from .Core_ClassApi import Core_ClassApi, Core_ClassObj
+from .Core_ScriptApi import Core_ScriptApi, Core_ScriptObj
 
-class Core_ClassDvi(BaseAvi):
-    thisApi = Core_ClassApi
+class Core_ScriptDvi(BaseAvi):
+    thisApi = Core_ScriptApi
 
     class DviDefault(BaseAvi.DefaultDefault):
         def onRefresh(self):
@@ -12,7 +12,7 @@ class Core_ClassDvi(BaseAvi):
                     t.gid,
                     t.sCode,
                     t.nVersion
-                FROM Core_Class AS t
+                FROM Core_Script AS t
                     
                 """
 
@@ -29,10 +29,10 @@ class Core_ClassDvi(BaseAvi):
                     
                 """
 
-        def thisRop(self)->Core_ClassObj:
+        def thisRop(self)->Core_ScriptObj:
             return super().thisRop()
 
-        def thisApi(self)->Core_ClassApi:
+        def thisApi(self)->Core_ScriptApi:
             return super().thisApi()
         
         def setsCode(self, event:Event.SetterEvent): self.thisApi().setsCode(self.thisRop(), event.value); self.afterSetter()
@@ -47,5 +47,5 @@ class Core_ClassDvi(BaseAvi):
             return """
             SELECT t.id
                 ,t.sHeadLine 
-            FROM Core_Class AS t
+            FROM Core_Script AS t
             """

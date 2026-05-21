@@ -19,7 +19,7 @@ class DbManager:
         parameters = self.rebaseParameters(parameters)
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             if 'insert'.upper() in SQLstr.upper():
-                SQLstr += "RETURNING id"
+                SQLstr += " RETURNING id"
             print(' '.join(SQLstr.replace('\n', ' ').strip().split()),parameters or [])
             c = await db.execute(SQLstr, parameters or [])
             if c.rows != []:

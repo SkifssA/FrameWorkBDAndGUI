@@ -15,9 +15,9 @@ class Hbc_LessonApi(Hbc_LessonDpi):
     async def register(self, spIdExit:str, spName:str)->int:
         id = await self.findByIdExit(spIdExit)
         if id is None:
-            rop = await self.insert()
+            rop = self.insert()
             rop.sCaption = spName
             rop.sIdExit = spIdExit
-            await self.update(rop)
+            self.update(rop)
             id = rop.id
         return id

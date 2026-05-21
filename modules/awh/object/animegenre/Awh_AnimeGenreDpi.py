@@ -21,15 +21,18 @@ class Awh_AnimeGenreDpi(BaseApi):
     def calcMnemoCode(self, rop:Awh_AnimeGenreObj)->str:
         return f'{rop.id}'
 
-    async def insert(self)->Awh_AnimeGenreObj:
-        return await super().insert()
+    def insert(self)->Awh_AnimeGenreObj:
+        return super().insert()
 
-    async def delete(self, rop:Awh_AnimeGenreObj)->None:
+    def getByMnemocode(self, value)->Awh_AnimeGenreObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Awh_AnimeGenreObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Awh_AnimeGenreObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Awh_AnimeGenreObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Awh_AnimeGenreObj:
         return super().load(id)

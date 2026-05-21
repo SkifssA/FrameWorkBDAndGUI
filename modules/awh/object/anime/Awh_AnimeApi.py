@@ -3,12 +3,12 @@ from .Awh_AnimeDpi import Awh_AnimeDpi, Awh_AnimeObj
 from ..animegenre.Awh_AnimeGenreApi import Awh_AnimeGenreApi
 
 class Awh_AnimeApi(Awh_AnimeDpi):
-    async def register(self, data):
+    def register(self, data):
         obj = self.findByMnemocode(data['url'])
         if obj is None:
-            obj = await self.insert()
+            obj = self.insert()
             obj.sUrl = data['url']
-            await Awh_AnimeGenreApi().fillGenreByAnime(obj.id, data['genre'])
+            Awh_AnimeGenreApi().fillGenreByAnime(obj.id, data['genre'])
         else:
             obj = self.load(obj)
 
@@ -17,7 +17,7 @@ class Awh_AnimeApi(Awh_AnimeDpi):
         obj.nSeries = data['series']
         obj.sUrlImg = data['urlImg']
         obj.sComment = data['comment']
-        await self.update(obj)
+        self.update(obj)
         return obj.id
     
     async def updateAnime(self):
@@ -26,4 +26,4 @@ class Awh_AnimeApi(Awh_AnimeDpi):
         for i in lv:
             obj = self.load(i['id'])
             a = await Awh_AnimeLoadPkg().getData(obj.sUrl)
-            await self.register(a)
+            self.register(a)

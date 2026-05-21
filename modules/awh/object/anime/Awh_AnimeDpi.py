@@ -20,22 +20,25 @@ class Awh_AnimeDpi(BaseApi):
         return "Awh_Anime"
 
     def calcHeadLine(self, rop:Awh_AnimeObj)->str:
-        return f'{rop.sCaption} {rop.sComment}'
+        return f'{rop.sCaption}'
 
     def calcMnemoCode(self, rop:Awh_AnimeObj)->str:
         return f'{rop.sUrl}'
 
-    async def insert(self)->Awh_AnimeObj:
-        return await super().insert()
+    def insert(self)->Awh_AnimeObj:
+        return super().insert()
 
-    async def delete(self, rop:Awh_AnimeObj)->None:
+    def getByMnemocode(self, value)->Awh_AnimeObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Awh_AnimeObj)->None:
         from ...object.animegenre.Awh_AnimeGenreApi import Awh_AnimeGenreApi
-        d = await Awh_AnimeGenreApi()._getAllByAttr('idAnime', rop.id)
+        d = Awh_AnimeGenreApi()._getAllByAttr('idAnime', rop.id)
         if d: asyncio.gather(*(Awh_AnimeGenreApi().delete(i) for i in d))
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Awh_AnimeObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Awh_AnimeObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Awh_AnimeObj:
         return super().load(id)

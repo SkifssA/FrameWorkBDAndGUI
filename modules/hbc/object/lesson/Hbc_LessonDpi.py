@@ -21,15 +21,18 @@ class Hbc_LessonDpi(BaseApi):
     def calcMnemoCode(self, rop:Hbc_LessonObj)->str:
         return f'{rop.id}'
 
-    async def insert(self)->Hbc_LessonObj:
-        return await super().insert()
+    def insert(self)->Hbc_LessonObj:
+        return super().insert()
 
-    async def delete(self, rop:Hbc_LessonObj)->None:
+    def getByMnemocode(self, value)->Hbc_LessonObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Hbc_LessonObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Hbc_LessonObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Hbc_LessonObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Hbc_LessonObj:
         return super().load(id)

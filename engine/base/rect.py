@@ -44,7 +44,10 @@ class Rect:
         else: 
             sqlAndParam = self._getSqlAndParam(res)
             data = asyncRun(ASQL(*sqlAndParam))
-        attr = list(data[0].keys())
+        if (data == []):
+            attr = list(asyncRun(ASQL(*sqlAndParam, isReturnColumn=True))[0].keys())
+        else:
+            attr = list(data[0].keys())
         return data, attr
 
     def _getSqlAndParam(self, res, data:dict=None)->tuple[str, list]:

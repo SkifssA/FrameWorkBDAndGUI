@@ -12,15 +12,32 @@ class Tab:
     def __init__(self, **arg):
         self.name = arg.get('name', None)
         self.caption = arg.get('caption', self.name)
-        self.attr = []
+
+        self.attr:list[Attr] = []
         if 'attr' in arg:
             for i in arg['attr']:
                 self.attr.append(Attr(**i))
-        self.coll = []
+
+        self.coll:list[Coll] = []
         if 'coll' in arg:
             for i in arg['coll']:
-                self.attr.append(Coll(**i))
+                self.coll.append(Coll(**i))
 
+        self.dbData:list[dbData] = []
+        if 'dbData' in arg:
+            for i in arg['dbData']:
+                self.dbData.append(dbData(**i))
+
+    def getSQL(self):
+        return f"""
+CREATE TABLE {self.name} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    gid TEXT,
+    sHeadLine TEXT,
+    sMnemoCode TEXT UNIQUE,
+    {',\n    '.join(attr.getSql() for attr in self.attr)}
+)
+"""
 
 class Attr:
     def __init__(self, **arg):
@@ -32,8 +49,16 @@ class Attr:
         self.isVisible = arg.get('isVisible', True)
         self.refTab = arg.get('refTab', None)
 
+    def getSql(self):
+        return f'{self.name} {TYPE_MAPPING.get(self.type, 'TEXT')}'
 
 class Coll:
     def __init__(self, **arg):
         self.name = arg.get('name', None)
         self.attr = arg.get('attr', None)
+
+class dbData:
+    def __init__(self, **arg):
+        self.name = arg.get('name', None)
+        self.version = arg.get('version', None)
+        self.dependence = arg.get('dependence', None)

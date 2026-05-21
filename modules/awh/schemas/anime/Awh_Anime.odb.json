@@ -41,8 +41,7 @@
         {
             "name": "sComment",
             "type": "TEXT",
-            "caption": "Описание",
-            "isHeadLine": false
+            "caption": "Описание"
         }
     ]
 }

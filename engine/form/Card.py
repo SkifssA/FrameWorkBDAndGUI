@@ -112,4 +112,4 @@ class Card(Base):
         self.checwork()
 
     def _getAttr(self, nameAttr:str):
-        return self.input[nameAttr].value
+        return self.input[nameAttr].value   

@@ -13,7 +13,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         async def uploadlesson(self):
             async def registerAnime(kattr):
                 a = await Awh_AnimeLoadPkg().getData(kattr['sUrl'])
-                await self.thisApi().register(a)
+                self.thisApi().register(a)
                 await self.refresh()
             
             Awh_AnimeAvi.cardSetUrlAnime().result(
@@ -77,8 +77,14 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
                 return await super().returnResult()
 
     class CardByText(Card):
+        class addData:
+            def __init__(self):
+                self.sComment:str = None
+                 
         def onRefresh(self):
-            return self.thisApi().load(self.getAttr("super$id"))
+            obj = self.addData()
+            obj.sComment = self.getAttr("super$sComment")
+            return obj
 
     class LookUp(Awh_AnimeDvi.DviLookUp): pass
 

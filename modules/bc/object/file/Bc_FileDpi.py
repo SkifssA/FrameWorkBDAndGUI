@@ -23,15 +23,18 @@ class Bc_FileDpi(BaseApi):
     def calcMnemoCode(self, rop:Bc_FileObj)->str:
         return f'{rop.id}'
 
-    async def insert(self)->Bc_FileObj:
-        return await super().insert()
+    def insert(self)->Bc_FileObj:
+        return super().insert()
 
-    async def delete(self, rop:Bc_FileObj)->None:
+    def getByMnemocode(self, value)->Bc_FileObj|None:   
+        return super().getByMnemocode(value)
+
+    def delete(self, rop:Bc_FileObj)->None:
         
-        return await super().delete(rop)
+        return super().delete(rop)
     
-    async def update(self, rop:Bc_FileObj)->None:
-        return await super().update(rop)
+    def update(self, rop:Bc_FileObj)->None:
+        return super().update(rop)
     
     def load(self, id: int)->Bc_FileObj:
         return super().load(id)

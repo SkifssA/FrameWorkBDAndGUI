@@ -10,24 +10,19 @@ class Bc_TimeLineApi(Bc_TimeLineDpi):
     sMinute = "Minute"
     sSecond = "Second"
 
-    idHour = None
-    idMinute = None
-    idSecond = None
-        
-    async def fill(self):
-        Bc_TimeLineApi.idHour = await self.findByMnemocode(Bc_TimeLineApi.sHour)
-        Bc_TimeLineApi.idMinute = await self.findByMnemocode(Bc_TimeLineApi.sMinute)
-        Bc_TimeLineApi.idSecond = await self.findByMnemocode(Bc_TimeLineApi.sSecond)
+    idHour = (lambda: Bc_TimeLineDpi().findByMnemocode("Hour"))()
+    idMinute = (lambda: Bc_TimeLineDpi().findByMnemocode("Minute"))()
+    idSecond = (lambda: Bc_TimeLineDpi().findByMnemocode("Second"))()
                                               
-    async def register(self, sCode:str, sName:str):
-        obj = await self.findByMnemocode(sCode)
+    def register(self, sCode:str, sName:str):
+        obj = self.findByMnemocode(sCode)
         if obj is None:
-            obj = await self.insert()
+            obj = self.insert()
             self.setsCode(obj, sCode)
         self.setsName(obj, sName)
-        await self.update(obj)
+        self.update(obj)
 
     async def dataInstall(self):
-        await self.register(Bc_TimeLineApi.sHour, "Час")
-        await self.register(Bc_TimeLineApi.sMinute, "Минута")
-        await self.register(Bc_TimeLineApi.sSecond, "Секунда")
+        self.register(Bc_TimeLineApi.sHour, "Час")
+        self.register(Bc_TimeLineApi.sMinute, "Минута")
+        self.register(Bc_TimeLineApi.sSecond, "Секунда")
