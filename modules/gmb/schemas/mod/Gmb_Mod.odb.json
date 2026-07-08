@@ -3,16 +3,28 @@
     "caption": "Модули для задачи",
     "attr": [
         {
-            "name": "idTask",
-            "type": "INT",
-            "caption": "Задача",
-            "refTab": "Gmb_Task"
-        },
-        {
-            "name": "sCapTask",
+            "name": "sCaption",
             "caption": "Название",
             "type": "TEXT",
-            "isMnemoCode": true
+            "isMnemoCode": true,
+            "isHeadLine": true
+        },
+        {
+            "name": "sReviewer",
+            "caption": "Ответственный",
+            "type": "TEXT"
+        },
+        {
+            "name": "sIdGitReviewer",
+            "caption": "id ответственного",
+            "type": "TEXT",
+            "isVisible": false
+        }
+    ],
+    "dbData": [
+        {
+            "name": "Gmb_ModApi.dataInstall",
+            "version": 1
         }
     ]
 }

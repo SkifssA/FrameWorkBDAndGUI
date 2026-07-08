@@ -1,0 +1,48 @@
+{
+  "Default": {
+    "caption": "Модули для задачи",
+    "isVisibleToolBar": true,
+    "attr": {
+      "id": {
+        "caption": "id",
+        "edit": "edit",
+        "isVisible": false,
+        "order": -2
+      },
+      "gid": {
+        "caption": "gid",
+        "edit": "edit",
+        "isVisible": false,
+        "order": -1
+      },
+      "idTask": {
+        "caption": "Задача",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
+      },
+      "idTaskHL": {
+        "caption": "Задача",
+        "edit": "button",
+        "isVisible": true,
+        "order": 0,
+        "refTab": "Gmb_Task",
+        "display": "list"
+      },
+      "idMod": {
+        "caption": "Модуль",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
+      },
+      "idModHL": {
+        "caption": "Модуль",
+        "edit": "button",
+        "isVisible": true,
+        "order": 0,
+        "refTab": "Gmb_Mod",
+        "display": "list"
+      }
+    }
+  }
+}

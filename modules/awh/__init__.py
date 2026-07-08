@@ -10,12 +10,12 @@ from .object.genre.Awh_GenreAvi import Awh_GenreAvi
 
 __all__ = [
     'Awh_AnimeLoadPkg'
-    'Awh_DataInstallPkg'
-    'Awh_MainMenu'
-    'Awh_AnimeApi'
-    'Awh_AnimeAvi'
-    'Awh_AnimeGenreApi'
-    'Awh_AnimeGenreAvi'
-    'Awh_GenreApi'
-    'Awh_GenreAvi'
+    ,'Awh_DataInstallPkg'
+    ,'Awh_MainMenu'
+    ,'Awh_AnimeApi'
+    ,'Awh_AnimeAvi'
+    ,'Awh_AnimeGenreApi'
+    ,'Awh_AnimeGenreAvi'
+    ,'Awh_GenreApi'
+    ,'Awh_GenreAvi'
 ]

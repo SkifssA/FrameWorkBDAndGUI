@@ -37,8 +37,7 @@ class Gmb_TaskDvi(BaseAvi):
             return super().thisApi()
         
         def setnNumTask(self, event:Event.SetterEvent): self.thisApi().setnNumTask(self.thisRop(), event.value); self.afterSetter()
-        def setsCapTask(self, event:Event.SetterEvent): 
-            self.thisApi().setsCapTask(self.thisRop(), event.value); self.afterSetter()
+        def setsCapTask(self, event:Event.SetterEvent): self.thisApi().setsCapTask(self.thisRop(), event.value); self.afterSetter()
         def setsBranch(self, event:Event.SetterEvent): self.thisApi().setsBranch(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass

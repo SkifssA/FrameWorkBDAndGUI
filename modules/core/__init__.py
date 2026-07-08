@@ -7,9 +7,9 @@ from .object.script.Core_ScriptAvi import Core_ScriptAvi
 
 __all__ = [
     'Core_AttributeApi'
-    'Core_AttributeAvi'
-    'Core_ClassApi'
-    'Core_ClassAvi'
-    'Core_ScriptApi'
-    'Core_ScriptAvi'
+    ,'Core_AttributeAvi'
+    ,'Core_ClassApi'
+    ,'Core_ClassAvi'
+    ,'Core_ScriptApi'
+    ,'Core_ScriptAvi'
 ]

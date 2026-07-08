@@ -10,3 +10,5 @@ numpy
 brotlicffi
 nest-asyncio
 infi.systray
+python-gitlab
+GitPython

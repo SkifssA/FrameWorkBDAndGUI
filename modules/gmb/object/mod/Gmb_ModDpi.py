@@ -6,8 +6,9 @@ class Gmb_ModObj(BaseObj):
     def __init__(self):
         self.id:int = None
         self.gid:gid = None
-        self.idTask:int = None
-        self.sCapTask:str = None
+        self.sCaption:str = None
+        self.sReviewer:str = None
+        self.sIdGitReviewer:str = None
 
 class Gmb_ModDpi(BaseApi):
     _classObj = Gmb_ModObj
@@ -16,10 +17,10 @@ class Gmb_ModDpi(BaseApi):
         return "Gmb_Mod"
 
     def calcHeadLine(self, rop:Gmb_ModObj)->str:
-        return f'{rop.id}'
+        return f'{rop.sCaption}'
 
     def calcMnemoCode(self, rop:Gmb_ModObj)->str:
-        return f'{rop.sCapTask}'
+        return f'{rop.sCaption}'
 
     def insert(self)->Gmb_ModObj:
         return super().insert()
@@ -37,5 +38,6 @@ class Gmb_ModDpi(BaseApi):
     def load(self, id: int)->Gmb_ModObj:
         return super().load(id)
 
-    def setidTask(self, obj:Gmb_ModObj, value): obj.idTask = value
-    def setsCapTask(self, obj:Gmb_ModObj, value): obj.sCapTask = value
+    def setsCaption(self, obj:Gmb_ModObj, value): obj.sCaption = value
+    def setsReviewer(self, obj:Gmb_ModObj, value): obj.sReviewer = value
+    def setsIdGitReviewer(self, obj:Gmb_ModObj, value): obj.sIdGitReviewer = value

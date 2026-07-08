@@ -39,6 +39,5 @@ class Gmb_TaskDpi(BaseApi):
         return super().load(id)
 
     def setnNumTask(self, obj:Gmb_TaskObj, value): obj.nNumTask = value
-    def setsCapTask(self, obj:Gmb_TaskObj, value):
-        obj.sCapTask = value
+    def setsCapTask(self, obj:Gmb_TaskObj, value): obj.sCapTask = value
     def setsBranch(self, obj:Gmb_TaskObj, value): obj.sBranch = value
