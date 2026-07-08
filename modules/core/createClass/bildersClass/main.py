@@ -50,4 +50,4 @@ async def _getInitModule(app):
         classApi.append(f'\'{class_name}\'')
         imports.append(import_line)
     
-    await FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + f'\n\n__all__ = [\n    {'\n    '.join(classApi)}\n]')
+    await FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + f'\n\n__all__ = [\n    {'\n    ,'.join(classApi)}\n]')

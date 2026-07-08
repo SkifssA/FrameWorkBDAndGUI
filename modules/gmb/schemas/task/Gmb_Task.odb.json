@@ -1,0 +1,24 @@
+{
+    "name": "Gmb_Task",
+    "caption": "Задачи",
+    "attr": [
+        {
+            "name": "nNumTask",
+            "caption": "Номер",
+            "type": "TEXT",
+            "isMnemoCode": true
+        },
+        {
+            "name": "sCapTask",
+            "caption": "Название",
+            "type": "TEXT",
+            "isMnemoCode": true
+        },
+        {
+            "name": "sBranch",
+            "caption": "Ветка",
+            "type": "TEXT",
+            "isVisible": false
+        }
+    ]
+}

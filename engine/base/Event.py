@@ -8,7 +8,8 @@ class SetterEvent:
         self.class_ = class_
 
     def get(self, sAttr):
-        getattr(self.class_, f'set{sAttr}', None)(self)
+        x = getattr(self.class_, f'set{sAttr}', None)
+        x(self)
 
     def getEvent(self, sAttr):
         def fillEvent(sender, value, user_data):

@@ -113,6 +113,14 @@ class BaseAvi:
             self.selection.oper(['openForm', 'delete']).isDisabled = self.getAttr('id') is None
 
     class DefaultCard(Card, DefaultDefault):
+
+        async def open(self, parent='tab_bar', parentTable=None):
+            if getattr(self, 'isInsert'):
+                if self.isInsert:
+                    obj = self.thisApi().insert()
+                    setattr(self, 'idItem', obj.id)
+            await super().open(parent, parentTable)
+
         @SetOper(label='Закрыть', order=10000, img='1')
         async def closeFormCancel(self):
             if not self.isModal:
@@ -122,13 +130,13 @@ class BaseAvi:
                     self.closeForm()
             else:
                 if self.isInsert:
-                    self.thisApi().delete(self.obj)
+                    self.thisApi().delete(self.thisRop())
                 self.closeForm()
 
         async def handle_confirmation(self, result: bool):
             if self.isInsert:
                 if not result:
-                    self.thisApi().delete(self.obj)
+                    self.thisApi().delete(self.thisRop())
                 else:
                     await self.saveForm()
             else:
@@ -149,6 +157,9 @@ class BaseAvi:
         def checwork(self):
             super().checwork()
             self.selection.oper("saveForm").isDisabled = not self.isMod
+
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DefaultDet(DefaultDefault, List):
         def getIdMaster(self):

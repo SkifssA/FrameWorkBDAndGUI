@@ -84,6 +84,7 @@ class AsyncFileManager:
             await f.write(content)
 
     async def _createDefaultFile(self, real_path, data):
+        os.makedirs(os.path.dirname(real_path), exist_ok=True)
         if isinstance(data, str):
             data = data.encode('utf-8')
         async with aiofiles.open(real_path, 'wb') as f:

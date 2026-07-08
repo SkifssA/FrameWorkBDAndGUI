@@ -12,7 +12,7 @@ class Base:
 
     def _create(self):
         p = self._createLable()
-        return dpg.add_input_text(width=-1, on_enter=True, parent=p)
+        return dpg.add_input_text(width=-1, parent=p)
             
     def _createLable(self, isHorizontal:bool=True, height:int=20):
         with dpg.child_window(border=False, height=height, width=-1, show=self.data['isVisible'], parent=self.parent) as q:
