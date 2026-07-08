@@ -1,11 +1,16 @@
 import dearpygui.dearpygui as dpg
 import os
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from engine.package.AsynRunPkg import asyncRun
 from engine.package import FileManagerPkg
 from engine.SelectApp import SelectApp
 from engine.package.ActionDispatcherPkg import ActionDispatcherPkg
 
-async def mainProgram():
+
+def mainProgram():
     dpg.create_context()
 
     # Тема для корректного отображения отключённых кнопок
@@ -34,7 +39,7 @@ async def mainProgram():
     dpg.bind_font(font)
     with dpg.window(label="Главное окно", tag="main_window", menubar=True, no_scrollbar=True):
         pass
-    await SelectApp().open()
+    asyncRun(SelectApp().open())
 
     # Создаём viewport и запускаем
     dpg.create_viewport(title='NecoTab', width=800, height=600)
@@ -45,14 +50,18 @@ async def mainProgram():
 
     dpg.setup_dearpygui()
 
-    conf = await FileManagerPkg.ReadFile('config/config.json')
+    conf = asyncRun(FileManagerPkg.ReadFile('../engine/config/config.json'))
     if (conf['isScriptScheduler']):
         scriptScheduler = ActionDispatcherPkg().action("Bc_ScriptSchedulerPkg.run", classMethod=True)
 
     dpg.set_primary_window("main_window", True)
-    dpg.maximize_viewport()
+    # dpg.maximize_viewport()
     dpg.show_viewport()
     dpg.start_dearpygui()
+    
     if (conf['isScriptScheduler']):
         scriptScheduler.runMe = False
     dpg.destroy_context()
+
+if __name__ == '__main__':
+    mainProgram()

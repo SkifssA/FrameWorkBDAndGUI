@@ -40,7 +40,7 @@ class Hbc_NewProfiClientPkg(AiohttpPkg):
 
     async def fillConfigName(self, text):
         userName = (await self.findAll(text, 'span', class_='usertext mr-1'))[0].get_text().strip()
-        await Bc_ConfigApi().insertByModule('hbc', 'firstNameLastName', ' '.join(userName.split(' ')[:-1]))
+        await Bc_ConfigApi().registerByModule('hbc', 'firstNameLastName', ' '.join(userName.split(' ')[:-1]))
 
     async def _createDataLesson(self, html):
         divs = await self.findAll(html, 'div', class_='progressEventInfo',

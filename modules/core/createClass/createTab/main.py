@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent))
+
 from engine.package import FileManagerPkg
 from engine.package.AsynRunPkg import asyncRun
 from engine.package import ASQL
@@ -28,7 +32,7 @@ async def createTab():
             pkgObject = Tab(**asyncRun(FileManagerPkg.ReadFile(pkgFile.__str__())))
             if pkgObject.dbData != []:
                 script.append(*pkgObject.dbData)
-
+    print('-'*10 + 'Начало выполнение скриптов' + '-'*10)
     asyncRun(ScriptsManager.execute_pending(script))
             
 
@@ -49,4 +53,4 @@ def getListModulesWithDep(listModules: list)->list:
     return listModulesWithDep
 
 if __name__ == '__main__':
-    createTab()
+    asyncRun(createTab())

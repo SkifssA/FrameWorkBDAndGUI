@@ -13,4 +13,4 @@ if __name__ == "__main__":
     elif (args[0] == 'createSours'):
         asyncio.run(createFile())
     elif (args[0] == 'launchApp'):
-        asyncio.run(mainProgram())
+        mainProgram()

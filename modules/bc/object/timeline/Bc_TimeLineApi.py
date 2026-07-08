@@ -15,7 +15,7 @@ class Bc_TimeLineApi(Bc_TimeLineDpi):
     idSecond = (lambda: Bc_TimeLineDpi().findByMnemocode("Second"))()
                                               
     def register(self, sCode:str, sName:str):
-        obj = self.findByMnemocode(sCode)
+        obj = self.getByMnemocode(sCode)
         if obj is None:
             obj = self.insert()
             self.setsCode(obj, sCode)
