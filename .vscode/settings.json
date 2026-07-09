@@ -6,7 +6,7 @@
             "fileMatch": [
                 "*.odb.json"
             ],
-            "url": "./core/templaceJson/jsonObjectDataBase.json"
+            "url": "./engine/templaceJson/jsonObjectDataBase.json"
         }
     ],
     "json.validate.enable": true,

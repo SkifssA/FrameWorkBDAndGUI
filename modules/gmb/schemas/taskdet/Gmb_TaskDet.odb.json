@@ -6,13 +6,15 @@
             "name": "idTask",
             "type": "INT",
             "caption": "Задача",
-            "refTab": "Gmb_Task"
+            "refTab": "Gmb_Task",
+            "isMnemoCode": true
         },
         {
             "name": "idMod",
             "type": "INT",
             "caption": "Модуль",
-            "refTab": "Gmb_Mod"
+            "refTab": "Gmb_Mod",
+            "isMnemoCode": true
         }
     ]
 }

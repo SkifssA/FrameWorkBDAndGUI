@@ -19,7 +19,7 @@ class Gmb_TaskDetDpi(BaseApi):
         return f'{rop.id}'
 
     def calcMnemoCode(self, rop:Gmb_TaskDetObj)->str:
-        return f'{rop.id}'
+        return f'{rop.idTask} {rop.idMod}'
 
     def insert(self)->Gmb_TaskDetObj:
         return super().insert()

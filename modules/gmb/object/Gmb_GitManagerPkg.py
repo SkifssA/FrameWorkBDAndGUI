@@ -6,7 +6,7 @@ from pathlib import Path
 from modules.bc import Bc_ConfigApi
 
 def GitFabric(lNameModule: list=None):
-    modules = [str(item) for item in Path(Bc_ConfigApi().getByMnemocode('modulesRootPath').sValue).iterdir()
+    modules = [str(item) for item in Path(Bc_ConfigApi().getByMnemocode('gmb modulesRootPath').sValue).iterdir()
                if item.is_dir() and (item / '.git').exists() and (lNameModule is None or str(item)[str(item).rfind('\\')+1:] in lNameModule)]
 
     if (lNameModule is None):
