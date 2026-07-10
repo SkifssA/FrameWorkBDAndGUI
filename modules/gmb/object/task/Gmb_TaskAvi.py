@@ -21,11 +21,13 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
             lobjTaskDet = Gmb_TaskDetApi()._getAllByAttr('idTask', self.thisRop().id)
             sBranch = "iss/{Label}/{taskIdOrText}".format(
                 Label='feat',
-                taskIdOrText = x if (x:=self.thisRop().nNumTask) != '' or x is not None else self.thisRop().sCapTask
+                taskIdOrText = x if (x:=self.thisRop().nNumTask) else self.thisRop().sCapTask.replace(' ', '-')
             )
 
             sCommit = "{Label}({Modules}): {Text} #issue {idTask}".format(
-                idTask=self.thisRop().nNumTask, Label='feat', Text=self.thisRop().sCapTask
+                idTask=x if (x:=self.thisRop().nNumTask) else 'notask'
+                , Label='feat'
+                , Text=self.thisRop().sCapTask
                 , Modules=', '.join(list(Gmb_ModApi().load(i.idMod).sCaption for i in lobjTaskDet or []))
             )
             print(sBranch, sCommit)
