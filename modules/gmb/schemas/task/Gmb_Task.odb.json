@@ -1,6 +1,12 @@
 {
     "name": "Gmb_Task",
     "caption": "Задачи",
+    "collections": [
+        {
+            "name": "Gmb_TaskDet",
+            "attr": "idTask"
+        }
+    ],
     "attr": [
         {
             "name": "nNumTask",

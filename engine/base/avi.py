@@ -31,12 +31,10 @@ class BaseAvi:
     def proccessById(self, event:SetterEvent, getAttr, setAttr, repList=None, repCard=None):
         if (event.type == 'selectValue'):
             selList = repList or self.__class__.list
-            selList().openModal(
-                callback=setAttr
-            )
+            selList().result(setAttr, ['id']).openModal()
         elif (event.type == 'openCard'):
             selCard = repCard or self.__class__.card
-            selCard(idItem=getAttr).openModal()
+            selCard().param(idItem=getAttr).openModal()
         elif (event.type == 'deleteValue'):
             setAttr({'id': None})
         else:
@@ -98,7 +96,7 @@ class BaseAvi:
 
         @SetOper(label='Удалить', order=20, img='3')
         async def delete(self):
-            await self.thisApi()._deleteById(self.getAttr('id'))
+            self.thisApi().delete(self.thisRop())
             await self.refresh()
 
         @SetOper(label='Закрыть', order=10000, img='1')
@@ -157,9 +155,6 @@ class BaseAvi:
         def checwork(self):
             super().checwork()
             self.selection.oper("saveForm").isDisabled = not self.isMod
-
-        def onRefresh(self):
-            return self.thisApi().load(self.idItem)
 
     class DefaultDet(DefaultDefault, List):
         def getIdMaster(self):

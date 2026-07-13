@@ -62,3 +62,9 @@ class Rect:
     def _obj(self, res:BaseObj):
         self.data = [res.__dict__.copy()]
         self.attr = list(self.data[0].keys())
+        sqlAndParam = self._getSqlAndParam(self.class_.onRefreshExt(), self.data[0])
+        extData = asyncRun(ASQL(*sqlAndParam))[0]
+        for nameAttr in extData:
+            self.data[0][nameAttr] = extData[nameAttr]
+            self.attr.append(nameAttr)
+        

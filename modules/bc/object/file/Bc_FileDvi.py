@@ -44,7 +44,9 @@ class Bc_FileDvi(BaseAvi):
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):

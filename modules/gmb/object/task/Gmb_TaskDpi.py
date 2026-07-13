@@ -29,7 +29,9 @@ class Gmb_TaskDpi(BaseApi):
         return super().getByMnemocode(value)
 
     def delete(self, rop:Gmb_TaskObj)->None:
-        
+        from ...object.taskdet.Gmb_TaskDetApi import Gmb_TaskDetApi
+        for i in Gmb_TaskDetApi()._getAllByAttr('idTask', rop.id):
+            Gmb_TaskDetApi().delete(i)
         return super().delete(rop)
     
     def update(self, rop:Gmb_TaskObj)->None:

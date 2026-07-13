@@ -24,12 +24,12 @@ class Hbc_StudentLessonDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
-                    :id as id
+                    :id as id,
                     :idStudent as idStudent,
             :idLesson as idLesson
                 )
                 select
-                    t.id
+                    t.id,
                   t1.sHeadLine as idStudentHL,
                     t2.sHeadLine as idLessonHL
                 from t
@@ -44,15 +44,21 @@ class Hbc_StudentLessonDvi(BaseAvi):
             return super().thisApi()
         
         def setidStudent(self, event:Event.SetterEvent): self.thisApi().setidStudent(self.thisRop(), event.value); self.afterSetter()
-        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidStudent(self.thisRop(), x['id'])); self.afterSetter()
+        def setidStudentHL(self, event:Event.SetterEvent): 
+            from ...object.student.Hbc_StudentAvi import Hbc_StudentAvi
+            Hbc_StudentAvi().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidStudent(self.thisRop(), x['id'])); self.afterSetter()
         def setidLesson(self, event:Event.SetterEvent): self.thisApi().setidLesson(self.thisRop(), event.value); self.afterSetter()
-        def setidLessonHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idLesson'), lambda x: self.thisApi().setidLesson(self.thisRop(), x['id'])); self.afterSetter()
+        def setidLessonHL(self, event:Event.SetterEvent): 
+            from ...object.lesson.Hbc_LessonAvi import Hbc_LessonAvi
+            Hbc_LessonAvi().proccessById(event, self.getAttr('idLesson'), lambda x: self.thisApi().setidLesson(self.thisRop(), x['id'])); self.afterSetter()
         def setbUploadFile(self, event:Event.SetterEvent): self.thisApi().setbUploadFile(self.thisRop(), event.value); self.afterSetter()
         def setbFillScore(self, event:Event.SetterEvent): self.thisApi().setbFillScore(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):

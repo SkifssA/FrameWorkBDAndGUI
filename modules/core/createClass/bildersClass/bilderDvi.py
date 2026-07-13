@@ -25,7 +25,9 @@ class {nameClass}Dvi(BaseAvi):
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):
@@ -47,7 +49,7 @@ class {nameClass}Dvi(BaseAvi):
     def __getSetters(self):
         tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value); self.afterSetter()'
         tempSetLookUp = '{setHead}idLook = event.user_data.getId(event.value); self.thisApi().set{nameAttr}(self.thisRop(), idLook); self.afterSetter()'
-        tempSetButton = '{setHead}event.user_data._getAvi()().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().set{nameAttr}(self.thisRop(), x[\'id\'])); self.afterSetter()'
+        tempSetButton = '{setHead}\n            {import}\n            {AviClass}().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().set{nameAttr}(self.thisRop(), x[\'id\'])); self.afterSetter()'
         listTepmSet = []
 
         dictAttr = {}
@@ -55,11 +57,18 @@ class {nameClass}Dvi(BaseAvi):
             dictAttr['nameAttr'] = i['name']
             dictAttr['setHead'] = 'def set{nameAttr}(self, event:Event.SetterEvent): '.format(**dictAttr)
             listTepmSet.append(tempSet.format(**dictAttr))
+
             editType = i.get('editType', None)
             dictAttr['setHead'] = 'def set{nameAttr}(self, event:Event.SetterEvent): '.format(nameAttr=i['name']+'HL')
+            mM = self.data['name'][:self.data['name'].find('_')].lower()
             if editType == 'lookUp':
                 listTepmSet.append(tempSetLookUp.format(**dictAttr))
             elif i['name'].startswith('id') and editType is None:
+                w:str = i['refTab']
+                m = i['refTab'][:i['refTab'].find('_')].lower()
+                mtemp = '...' if mM == m else f'{m}.'
+                dictAttr['import']=f'from {mtemp}object.{x+'_' if (x:=w.split('_')[-1].lower()) == 'class' else x}.{w}Avi import {w}Avi'
+                dictAttr['AviClass'] = f'{w}Avi'
                 listTepmSet.append(tempSetButton.format(**dictAttr))
 
         return f'\n{self.tabSpace*2}'.join(listTepmSet)
@@ -78,6 +87,9 @@ class {nameClass}Dvi(BaseAvi):
                 sqlstr['attr'].append(f"t{sqlstr['int']}.sHeadLine as {i['name']}HL")
                 sqlstr['join'].append(f"LEFT JOIN {i['refTab']} t{sqlstr['int']} ON t{sqlstr['int']}.id = t.{i['name']}")
                 sqlstr['int'] += 1
+
+        getSel = f',\n{self.tabSpace*3}'.join(f":{i[i.rfind('.')+1:]} as {i[i.rfind('.')+1:]}" for i in sqlstr['join'])
+        getExt = f',\n{self.tabSpace*5}'.join(i for i in sqlstr['attr'] if i.endswith("HL"))
         return [f"""
                 SELECT {f',\n{self.tabSpace*5}'.join(sqlstr['attr'])}
                 FROM {nameTabl} AS t
@@ -85,12 +97,12 @@ class {nameClass}Dvi(BaseAvi):
                 """,
                 f"""
                 with t as ( select 
-                    :id as id
-                    {f',\n{self.tabSpace*3}'.join(f":{i[i.rfind('.')+1:]} as {i[i.rfind('.')+1:]}" for i in sqlstr['join'])}
+                    :id as id{',' if getSel != '' else ''}
+                    {getSel}
                 )
                 select
-                    t.id
-                  {f',\n{self.tabSpace*5}'.join(i for i in sqlstr['attr'] if i.endswith("HL"))}
+                    t.id{',' if getExt != '' else ''}
+                  {getExt}
                 from t
                     {f'\n{self.tabSpace*3}'.join(sqlstr['join'])}
                 """]

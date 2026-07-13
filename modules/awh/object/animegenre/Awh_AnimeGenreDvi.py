@@ -22,12 +22,12 @@ class Awh_AnimeGenreDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
-                    :id as id
+                    :id as id,
                     :idAnime as idAnime,
             :idGenre as idGenre
                 )
                 select
-                    t.id
+                    t.id,
                   t1.sHeadLine as idAnimeHL,
                     t2.sHeadLine as idGenreHL
                 from t
@@ -42,13 +42,19 @@ class Awh_AnimeGenreDvi(BaseAvi):
             return super().thisApi()
         
         def setidAnime(self, event:Event.SetterEvent): self.thisApi().setidAnime(self.thisRop(), event.value); self.afterSetter()
-        def setidAnimeHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idAnime'), lambda x: self.thisApi().setidAnime(self.thisRop(), x['id'])); self.afterSetter()
+        def setidAnimeHL(self, event:Event.SetterEvent): 
+            from ...object.anime.Awh_AnimeAvi import Awh_AnimeAvi
+            Awh_AnimeAvi().proccessById(event, self.getAttr('idAnime'), lambda x: self.thisApi().setidAnime(self.thisRop(), x['id'])); self.afterSetter()
         def setidGenre(self, event:Event.SetterEvent): self.thisApi().setidGenre(self.thisRop(), event.value); self.afterSetter()
-        def setidGenreHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idGenre'), lambda x: self.thisApi().setidGenre(self.thisRop(), x['id'])); self.afterSetter()
+        def setidGenreHL(self, event:Event.SetterEvent): 
+            from ...object.genre.Awh_GenreAvi import Awh_GenreAvi
+            Awh_GenreAvi().proccessById(event, self.getAttr('idGenre'), lambda x: self.thisApi().setidGenre(self.thisRop(), x['id'])); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):

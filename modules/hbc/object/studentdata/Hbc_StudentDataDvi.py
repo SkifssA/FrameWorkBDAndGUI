@@ -20,11 +20,11 @@ class Hbc_StudentDataDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
-                    :id as id
+                    :id as id,
                     :idStudent as idStudent
                 )
                 select
-                    t.id
+                    t.id,
                   t1.sHeadLine as idStudentHL
                 from t
                     LEFT JOIN Hbc_Student t1 ON t1.id = t.idStudent
@@ -37,12 +37,16 @@ class Hbc_StudentDataDvi(BaseAvi):
             return super().thisApi()
         
         def setidStudent(self, event:Event.SetterEvent): self.thisApi().setidStudent(self.thisRop(), event.value); self.afterSetter()
-        def setidStudentHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidStudent(self.thisRop(), x['id'])); self.afterSetter()
+        def setidStudentHL(self, event:Event.SetterEvent): 
+            from ...object.student.Hbc_StudentAvi import Hbc_StudentAvi
+            Hbc_StudentAvi().proccessById(event, self.getAttr('idStudent'), lambda x: self.thisApi().setidStudent(self.thisRop(), x['id'])); self.afterSetter()
         def setsData(self, event:Event.SetterEvent): self.thisApi().setsData(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):

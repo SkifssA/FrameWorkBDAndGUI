@@ -33,8 +33,8 @@ class Awh_AnimeDpi(BaseApi):
 
     def delete(self, rop:Awh_AnimeObj)->None:
         from ...object.animegenre.Awh_AnimeGenreApi import Awh_AnimeGenreApi
-        d = Awh_AnimeGenreApi()._getAllByAttr('idAnime', rop.id)
-        if d: asyncio.gather(*(Awh_AnimeGenreApi().delete(i) for i in d))
+        for i in Awh_AnimeGenreApi()._getAllByAttr('idAnime', rop.id):
+            Awh_AnimeGenreApi().delete(i)
         return super().delete(rop)
     
     def update(self, rop:Awh_AnimeObj)->None:

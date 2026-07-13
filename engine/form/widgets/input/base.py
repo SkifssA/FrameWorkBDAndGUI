@@ -8,6 +8,7 @@ class Base:
         self.nameAttr = nameAttr
         self.data = classCard.meta['attr'][nameAttr]
         self.parent = parent
+        self.groupInput = None
         self.input = self._create()
 
     def _create(self):
@@ -20,6 +21,7 @@ class Base:
             with dpg.group(horizontal=isHorizontal) as g:
                 with dpg.child_window(width=len(self.data['caption'])*11, border=False, height=20):
                     dpg.add_text(self.data['caption'])
+        self.groupInput = g
         return g
 
     def _get_value(self):

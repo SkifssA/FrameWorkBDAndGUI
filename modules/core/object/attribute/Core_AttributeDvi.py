@@ -21,11 +21,11 @@ class Core_AttributeDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
-                    :id as id
+                    :id as id,
                     :idClass as idClass
                 )
                 select
-                    t.id
+                    t.id,
                   t1.sHeadLine as idClassHL
                 from t
                     LEFT JOIN Core_Class t1 ON t1.id = t.idClass
@@ -40,11 +40,15 @@ class Core_AttributeDvi(BaseAvi):
         def setsCode(self, event:Event.SetterEvent): self.thisApi().setsCode(self.thisRop(), event.value); self.afterSetter()
         def setsCaption(self, event:Event.SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
         def setidClass(self, event:Event.SetterEvent): self.thisApi().setidClass(self.thisRop(), event.value); self.afterSetter()
-        def setidClassHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idClass'), lambda x: self.thisApi().setidClass(self.thisRop(), x['id'])); self.afterSetter()
+        def setidClassHL(self, event:Event.SetterEvent): 
+            from ...object.class_.Core_ClassAvi import Core_ClassAvi
+            Core_ClassAvi().proccessById(event, self.getAttr('idClass'), lambda x: self.thisApi().setidClass(self.thisRop(), x['id'])); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):

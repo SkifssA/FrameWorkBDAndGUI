@@ -22,12 +22,12 @@ class Gmb_TaskDetDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
-                    :id as id
+                    :id as id,
                     :idTask as idTask,
             :idMod as idMod
                 )
                 select
-                    t.id
+                    t.id,
                   t1.sHeadLine as idTaskHL,
                     t2.sHeadLine as idModHL
                 from t
@@ -42,13 +42,19 @@ class Gmb_TaskDetDvi(BaseAvi):
             return super().thisApi()
         
         def setidTask(self, event:Event.SetterEvent): self.thisApi().setidTask(self.thisRop(), event.value); self.afterSetter()
-        def setidTaskHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idTask'), lambda x: self.thisApi().setidTask(self.thisRop(), x['id'])); self.afterSetter()
+        def setidTaskHL(self, event:Event.SetterEvent): 
+            from ...object.task.Gmb_TaskAvi import Gmb_TaskAvi
+            Gmb_TaskAvi().proccessById(event, self.getAttr('idTask'), lambda x: self.thisApi().setidTask(self.thisRop(), x['id'])); self.afterSetter()
         def setidMod(self, event:Event.SetterEvent): self.thisApi().setidMod(self.thisRop(), event.value); self.afterSetter()
-        def setidModHL(self, event:Event.SetterEvent): event.user_data._getAvi()().proccessById(event, self.getAttr('idMod'), lambda x: self.thisApi().setidMod(self.thisRop(), x['id'])); self.afterSetter()
+        def setidModHL(self, event:Event.SetterEvent): 
+            from ...object.mod.Gmb_ModAvi import Gmb_ModAvi
+            Gmb_ModAvi().proccessById(event, self.getAttr('idMod'), lambda x: self.thisApi().setidMod(self.thisRop(), x['id'])); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):

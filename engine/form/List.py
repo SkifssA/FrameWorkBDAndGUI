@@ -60,6 +60,7 @@ class List(Base):
 
     def _click(self, tagSelf, tagTable):
         '''Обработчик выбора строки в таблице'''
+        print(tagSelf, tagTable)
         self._oneShow(tagSelf, tagTable)
         self._checwork(tagSelf)
 

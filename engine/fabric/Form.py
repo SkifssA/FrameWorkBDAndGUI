@@ -8,6 +8,8 @@ class FormConstruct:
     def __init__(self, clsForm:Base.__class__):
         self.clsForm = clsForm()
         self.locat = 'bottom'
+        self.callback = None
+        self.returnAttr = None
 
     def param(self, **kwargs:Unpack[Config]):
         for key, value in kwargs.items():

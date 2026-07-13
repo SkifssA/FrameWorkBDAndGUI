@@ -181,26 +181,28 @@ class Base(Abstract):
 
         for i in sorted(q, key=lambda x: x[-1]._order):
             if not dpg.does_item_exist(f'{self.selfgroup}_{i[0]}'):
-                await self.addButton(
+                self.addButton(
                     tag = f'{self.selfgroup}_{i[0]}',
                     objPath=FileManagerPkg._getObjPath(self.imgDict.get(i[-1].img, ''), index=0), 
                     parent=self.toolBar, 
                     label=i[-1]._oper_label, 
                     callback=self.appendAction(i[-1], i[0]),
-                    show=oper[i[0]]['isVisible'] if i[0] in oper else i[-1].isVisible
+                    show=oper[i[0]]['isVisible'] if i[0] in oper else i[-1].isVisible,
+                    enabled=True
                 )
                 dpg.configure_item(self.toolBar, show=True)
                 dpg.configure_item(self.upToolBar, show=True)
 
-    async def addButton(self, tag, objPath, parent, label, callback, show): 
+    def addButton(self, tag, objPath, parent, label, callback, show, enabled): 
         dpg.add_image_button(
             tag = tag,
-            texture_tag = await ImageManagerPkg().loadFile(objPath),
+            texture_tag = asyncRun(ImageManagerPkg().loadFile(objPath)),
             parent = parent,
             width=30,
             height=30,
             callback=callback,
-            show=show
+            show=show,
+            enabled=enabled
         )
         with dpg.tooltip(tag=f'{tag}_tooltip', parent=tag, show=show):
             dpg.add_text(label)

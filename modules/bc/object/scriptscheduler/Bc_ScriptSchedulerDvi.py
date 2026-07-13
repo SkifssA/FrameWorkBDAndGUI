@@ -24,11 +24,11 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
         def onRefreshExt(self):
             return """
                 with t as ( select 
-                    :id as id
+                    :id as id,
                     :idTimeLine as idTimeLine
                 )
                 select
-                    t.id
+                    t.id,
                   t1.sHeadLine as idTimeLineHL
                 from t
                     LEFT JOIN Bc_TimeLine t1 ON t1.id = t.idTimeLine
@@ -50,7 +50,9 @@ class Bc_ScriptSchedulerDvi(BaseAvi):
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 
-    class DviCard(DviDefault, BaseAvi.DefaultCard): pass
+    class DviCard(DviDefault, BaseAvi.DefaultCard): 
+        def onRefresh(self):
+            return self.thisApi().load(self.idItem)
 
     class DviLookUp(BaseAvi.DefaultLookUp):
         def onRefresh(self):
