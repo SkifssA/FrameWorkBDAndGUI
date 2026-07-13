@@ -1,7 +1,5 @@
 # Пользовательский файл для логики
-import asyncio
-from concurrent.futures import Future
-
+from engine.package.LazyVal import LazyVal 
 from .Bc_TimeLineDpi import Bc_TimeLineDpi, Bc_TimeLineObj
 
 class Bc_TimeLineApi(Bc_TimeLineDpi):
@@ -10,9 +8,9 @@ class Bc_TimeLineApi(Bc_TimeLineDpi):
     sMinute = "Minute"
     sSecond = "Second"
 
-    idHour = (lambda: Bc_TimeLineDpi().findByMnemocode("Hour"))()
-    idMinute = (lambda: Bc_TimeLineDpi().findByMnemocode("Minute"))()
-    idSecond = (lambda: Bc_TimeLineDpi().findByMnemocode("Second"))()
+    idHour = LazyVal(lambda: Bc_TimeLineDpi().findByMnemocode("Hour"))
+    idMinute = LazyVal(lambda: Bc_TimeLineDpi().findByMnemocode("Minute"))
+    idSecond = LazyVal(lambda: Bc_TimeLineDpi().findByMnemocode("Second"))
                                               
     def register(self, sCode:str, sName:str):
         obj = self.getByMnemocode(sCode)

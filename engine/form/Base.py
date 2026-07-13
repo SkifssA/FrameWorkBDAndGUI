@@ -12,12 +12,30 @@ from engine.package.AsynRunPkg import asyncRun
 from engine.package.MetadataManager import Metadata
 from engine.form.widgets.groupByCh import groupByCh
 from engine.form.widgets.ReSizeLine import ReSizeLine
+from engine.package.FileManagerPkg import FileManagerPkg
+from engine.package.LazyVal import LazyVal
+from engine.package.DbManagerPkg import ASQL
 
 class Config(TypedDict, total=False):
     locat: str
     isUpdate: bool
 
 class Base(Abstract):
+
+    def getImgDict():
+        w = asyncRun(ASQL(
+        """
+        SELECT t.id,
+            t.gid,
+            t.sCode,
+            t.sPath
+        FROM Bc_Icons AS t
+        """
+        ))
+        return {i['sCode']: i['sPath'] for i in w}
+
+    imgDict = LazyVal(getImgDict)
+
     def __init__(self):
         from engine.base.rect import Rect
         from engine.fabric.Form import FormConstruct
@@ -165,7 +183,7 @@ class Base(Abstract):
             if not dpg.does_item_exist(f'{self.selfgroup}_{i[0]}'):
                 await self.addButton(
                     tag = f'{self.selfgroup}_{i[0]}',
-                    objPath=i[-1].img, 
+                    objPath=FileManagerPkg._getObjPath(self.imgDict.get(i[-1].img, ''), index=0), 
                     parent=self.toolBar, 
                     label=i[-1]._oper_label, 
                     callback=self.appendAction(i[-1], i[0]),

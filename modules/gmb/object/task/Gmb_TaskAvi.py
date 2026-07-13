@@ -18,23 +18,22 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
                 idMod = Gmb_ModApi().findByMnemocode(repo.name)
                 Gmb_TaskDetApi().register(self.thisRop().id, idMod)
 
-            lobjTaskDet = Gmb_TaskDetApi()._getAllByAttr('idTask', self.thisRop().id)
-            sBranch = "iss/{Label}/{taskIdOrText}".format(
-                Label='feat',
-                taskIdOrText = x if (x:=self.thisRop().nNumTask) else self.thisRop().sCapTask.replace(' ', '-')
-            )
+            if lobjTaskDet := Gmb_TaskDetApi()._getAllByAttr('idTask', self.thisRop().id):
+                sBranch = "iss/{Label}/{taskIdOrText}".format(
+                    Label='feat',
+                    taskIdOrText = x if (x:=self.thisRop().nNumTask) else self.thisRop().sCapTask.replace(' ', '-')
+                )
 
-            sCommit = "{Label}({Modules}): {Text} #issue {idTask}".format(
-                idTask=x if (x:=self.thisRop().nNumTask) else 'notask'
-                , Label='feat'
-                , Text=self.thisRop().sCapTask
-                , Modules=', '.join(list(Gmb_ModApi().load(i.idMod).sCaption for i in lobjTaskDet or []))
-            )
-            print(sBranch, sCommit)
+                sCommit = "{Label}({Modules}): {Text} #issue {idTask}".format(
+                    idTask=x if (x:=self.thisRop().nNumTask) else 'notask'
+                    , Label='feat'
+                    , Text=self.thisRop().sCapTask
+                    , Modules=', '.join(list(Gmb_ModApi().load(i.idMod).sCaption for i in lobjTaskDet or []))
+                )
+                print(sBranch, sCommit)
 
-            if lobjTaskDet:
                 for repo in GitFabric(list(Gmb_ModApi().load(i.idMod).sCaption for i in lobjTaskDet)):
-                    repo.allProcces(sBranch, sCommit)
+                        repo.allProcces(sBranch, sCommit)
 
     class Card(Gmb_TaskDvi.DviCard): pass
 

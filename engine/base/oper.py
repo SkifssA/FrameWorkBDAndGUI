@@ -1,23 +1,4 @@
 import dearpygui.dearpygui as dpg
-import asyncio
-from ..package.FileManagerPkg import FileManagerPkg
-from ..package.DbManagerPkg import ASQL
-from engine.package.AsynRunPkg import asyncRun
-
-
-def getImgDict():
-    w = asyncRun(ASQL(
-    """
-    SELECT t.id,
-        t.gid,
-        t.sCode,
-        t.sPath
-    FROM Bc_Icons AS t
-    """
-    ))
-    return {i['sCode']: i['sPath'] for i in w}
-
-imgDict = getImgDict()
 
 class Oper:
     def __init__(self, scen:str, op:str|list[str]):
@@ -61,7 +42,7 @@ def SetOper(label: str = None, order:int=0, headOper:str=None, isVisible:bool=Tr
         func._order = order
         func._headOper = headOper
         func._is_long = isLong
-        func.img = FileManagerPkg._getObjPath(imgDict.get(img, ''), index=0)
+        func.img = img
         func.isVisible = isVisible
         return func
     return decorator
