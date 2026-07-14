@@ -26,8 +26,6 @@ class FrameworkContext:
             if (issubclass(type(self_obj), FormConstruct)):
                 self_obj = self_obj.clsForm
 
-            print(self_obj)
-            print(self_obj is not obj)
             if self_obj and self_obj is not obj and (issubclass(type(self_obj), Base) or issubclass(type(self_obj), groupByCh)):
                 # Проверка на иерархию
                 if exclude_same_hierarchy:

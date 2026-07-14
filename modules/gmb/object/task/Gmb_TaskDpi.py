@@ -30,7 +30,7 @@ class Gmb_TaskDpi(BaseApi):
 
     def delete(self, rop:Gmb_TaskObj)->None:
         from ...object.taskdet.Gmb_TaskDetApi import Gmb_TaskDetApi
-        for i in Gmb_TaskDetApi()._getAllByAttr('idTask', rop.id):
+        for i in Gmb_TaskDetApi()._getAllByAttr('idTask', rop.id) or []:
             Gmb_TaskDetApi().delete(i)
         return super().delete(rop)
     

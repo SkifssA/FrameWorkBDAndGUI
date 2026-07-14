@@ -16,7 +16,6 @@ class Bc_FileApi(Bc_FileDpi):
         rop.sCaption = nameFile[:nameFile.rfind('.')]
         rop.sSuffix = nameFile[nameFile.rfind('.')+1:]
         await self.update(rop)
-        print(f"Сохранёт файл {rop.sCaption} для источника {rop.gidScr}")
 
     def getRealPath(self, id):
         rop = self.load(id)

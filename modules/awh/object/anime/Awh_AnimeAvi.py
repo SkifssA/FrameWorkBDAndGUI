@@ -70,7 +70,6 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10', isLong=True)
         async def returnResult(self):
-            print(self.getAttr("sUrl"))
             if self.getAttr("sUrl") is None or self.getAttr("sUrl").strip() == '':
                 ErrorModal('Значение атрибута \"Ссылка на аниме\" не может быть пустым').show()
             else:

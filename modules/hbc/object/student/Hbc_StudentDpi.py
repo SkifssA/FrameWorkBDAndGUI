@@ -34,10 +34,10 @@ class Hbc_StudentDpi(BaseApi):
 
     def delete(self, rop:Hbc_StudentObj)->None:
         from ...object.studentdata.Hbc_StudentDataApi import Hbc_StudentDataApi
-        for i in Hbc_StudentDataApi()._getAllByAttr('idStudent', rop.id):
+        for i in Hbc_StudentDataApi()._getAllByAttr('idStudent', rop.id) or []:
             Hbc_StudentDataApi().delete(i)
         from ...object.studentlesson.Hbc_StudentLessonApi import Hbc_StudentLessonApi
-        for i in Hbc_StudentLessonApi()._getAllByAttr('idStudent', rop.id):
+        for i in Hbc_StudentLessonApi()._getAllByAttr('idStudent', rop.id) or []:
             Hbc_StudentLessonApi().delete(i)
         return super().delete(rop)
     

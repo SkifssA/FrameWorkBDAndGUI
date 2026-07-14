@@ -18,7 +18,6 @@ class BaseApi(ABC):
 
     def idClass(self):
         if self._idClass is None:
-            print(self._getNameClass())
             id = asyncRun(ASQL(f'select t.id from Core_Class t where t.sMnemoCode = ?', (self._getNameClass(),)))
             return id[0]['id']
         else :

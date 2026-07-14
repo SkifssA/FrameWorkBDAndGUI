@@ -31,7 +31,7 @@ class Hbc_StudentLessonDpi(BaseApi):
 
     def delete(self, rop:Hbc_StudentLessonObj)->None:
         from bc.object.file.Bc_FileApi import Bc_FileApi
-        for i in Bc_FileApi()._getAllByAttr('gidScr', rop.gid):
+        for i in Bc_FileApi()._getAllByAttr('gidScr', rop.gid) or []:
             Bc_FileApi().delete(i)
         return super().delete(rop)
     

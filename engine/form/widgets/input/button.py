@@ -11,9 +11,9 @@ class ButtonRef(Base):
     def _create(self):
         p = self._createLable(isHorizontal=True)
         i = dpg.add_input_text(width=200, on_enter=True, parent=p)
-        dpg.add_button(label='...', width=self.sizeButton, callback=lambda: print("Открываю выборку"), parent=p)
-        dpg.add_button(label=' ^ ', width=self.sizeButton, callback=lambda: print("Открываю карточку"), parent=p)
-        dpg.add_button(label=' X ', width=self.sizeButton, callback=lambda: print("Очищаю"), parent=p)
+        dpg.add_button(label='...', width=self.sizeButton, parent=p)
+        dpg.add_button(label=' ^ ', width=self.sizeButton, parent=p)
+        dpg.add_button(label=' X ', width=self.sizeButton, parent=p)
         return i
     
     def init(self, value):

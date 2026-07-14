@@ -67,7 +67,6 @@ class BaseAvi:
         @SetOper(label='Обновить', order=1, img='2')
         async def refreshForm(self):
             api.likeСache[self.thisApi()._getNameClass()] = {}
-            self.rectUpdate()
             await self.refresh()
 
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10')

@@ -28,19 +28,27 @@ class DbManager:
                 d = None
             return d
 
-    async def ASQL(self, SQLstr: str, parameters=None, isReturnColumn: bool = False):
+    async def ASQL(self, SQLstr: str, parameters=None):
         parameters = self.rebaseParameters(parameters)
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
             try:
                 print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
                 result = await db.execute(SQLstr, parameters or [])
-                if isReturnColumn:
-                    return [{i:None for i in result.columns}]
-                elif result.rows != []:
+                if result.rows != []:
                     return [dict(zip(result.columns, row)) for row in result.rows]
                 return []
             except:
                 return []
+            
+    async def ASQL_Dict(self, SQLstr: str, parameters=None):
+        parameters = self.rebaseParameters(parameters)
+        async with create_client(url=self.url, auth_token=self.auth_token) as db:
+            try:
+                print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
+                result = await db.execute(SQLstr, parameters or [])
+                return {'columns': list(result.columns), 'data': [dict(zip(result.columns, row)) for row in result.rows]}
+            except:
+                return {'columns': [], 'data': []}
 
     def rebaseParameters(self, parameters):
         parameters = list(parameters or [])
@@ -56,3 +64,4 @@ asyncio.run(DbManagerPkg.setConf())
 
 ATQSL = DbManagerPkg.ATSQL
 ASQL = DbManagerPkg.ASQL
+ASQL_Dict = DbManagerPkg.ASQL_Dict

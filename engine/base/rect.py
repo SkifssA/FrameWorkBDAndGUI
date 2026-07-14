@@ -2,7 +2,7 @@ import re
 
 from engine.base.obj import BaseObj
 from engine.package.AsynRunPkg import asyncRun
-from engine.package.DbManagerPkg import ASQL
+from engine.package.DbManagerPkg import ASQL_Dict, ASQL
 from engine.form.Base import Base
 
 class Rect:
@@ -43,11 +43,9 @@ class Rect:
             data.append(asyncRun(ASQL(*sqlAndParam))[0])
         else: 
             sqlAndParam = self._getSqlAndParam(res)
-            data = asyncRun(ASQL(*sqlAndParam))
-        if (data == []):
-            attr = list(asyncRun(ASQL(*sqlAndParam, isReturnColumn=True))[0].keys())
-        else:
-            attr = list(data[0].keys())
+            resSQL = asyncRun(ASQL_Dict(*sqlAndParam))
+            data = resSQL['data']
+            attr = resSQL['columns']
         return data, attr
 
     def _getSqlAndParam(self, res, data:dict=None)->tuple[str, list]:
@@ -63,7 +61,7 @@ class Rect:
         self.data = [res.__dict__.copy()]
         self.attr = list(self.data[0].keys())
         sqlAndParam = self._getSqlAndParam(self.class_.onRefreshExt(), self.data[0])
-        extData = asyncRun(ASQL(*sqlAndParam))[0]
+        extData = asyncRun(ASQL(*sqlAndParam))['data'][0]
         for nameAttr in extData:
             self.data[0][nameAttr] = extData[nameAttr]
             self.attr.append(nameAttr)

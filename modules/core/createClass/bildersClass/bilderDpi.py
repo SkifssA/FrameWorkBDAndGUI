@@ -86,7 +86,7 @@ class {nameClass}Dpi(BaseApi):
                 m = i['name'][:i['name'].find('_')].lower()
                 mtemp = '...' if mM == m else f'{m}.'
                 res.append(f'from {mtemp}object.{w.split('_')[-1].lower()}.{w}Api import {w}Api')
-                res.append(f'for i in {w}Api()._getAllByAttr(\'{i['attr']}\', rop.{'id' if i['attr'].startswith('id') else 'gid'}):')
+                res.append(f'for i in {w}Api()._getAllByAttr(\'{i['attr']}\', rop.{'id' if i['attr'].startswith('id') else 'gid'}) or []:')
                 res.append(f'    {w}Api().delete(i)')
                 
         return '\n        '.join(res)
