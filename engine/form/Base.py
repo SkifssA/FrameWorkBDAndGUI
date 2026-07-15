@@ -228,7 +228,7 @@ class Base(Abstract):
         yield
 
     def thisRop(self):
-        return self.thisApi().load(self.rect.data[0].get('id', None))
+        return self.thisApi().load(self.rect.getData()[0].get('id', None))
 
     async def afterCreate(self)->None: pass
 

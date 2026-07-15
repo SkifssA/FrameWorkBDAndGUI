@@ -99,7 +99,7 @@ class Card(Base):
     async def initInput(self):
         if obj:=self.thisRop():
             dpg.configure_item(self.tab, label=self.thisApi().calcHeadLine(obj))
-        for key, value in self.rect.data[0].items():
+        for key, value in self.rect.getData()[0].items():
             if key in self.input.keys():
                 self.input[key].init(value)
 

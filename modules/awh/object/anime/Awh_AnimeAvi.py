@@ -84,6 +84,9 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             obj = self.addData()
             obj.sComment = self.getAttr("super$sComment")
             return obj
+        
+        def onRefreshExt(self):
+            return ''
 
     class LookUp(Awh_AnimeDvi.DviLookUp): pass
 
