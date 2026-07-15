@@ -68,12 +68,17 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         def onRefresh(self):
             return self.addData()
         
+        def onRefreshExt(self):
+            return ''
+        
         @SetOper(label='Выбрать', order=-1, isVisible=False, img='10', isLong=True)
         async def returnResult(self):
             if self.getAttr("sUrl") is None or self.getAttr("sUrl").strip() == '':
                 ErrorModal('Значение атрибута \"Ссылка на аниме\" не может быть пустым').show()
             else:
                 return await super().returnResult()
+            
+        def setsUrl(self, event): self.rect.getData()[0]['sUrl'] = event.value
 
     class CardByText(Card):
         class addData:
