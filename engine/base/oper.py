@@ -1,6 +1,11 @@
 import dearpygui.dearpygui as dpg
 
 class Oper:
+    tints_color = {
+        True: (255, 255, 255, 255),
+        False: (100, 100, 100, 200)
+    }
+
     def __init__(self, scen:str, op:str|list[str]):
         if isinstance(op, str):
             ops = [op]
@@ -18,7 +23,7 @@ class Oper:
     def isDisabled(self, value):
         for i in self.oper:
             if (dpg.does_item_exist(i)):
-                dpg.configure_item(i, enabled=not value)
+                dpg.configure_item(i, enabled=not value, tint_color=self.tints_color[not value])
 
     @property
     def isVisible(self) -> bool:

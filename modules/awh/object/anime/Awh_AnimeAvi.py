@@ -58,6 +58,10 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
         async def setflt_sName(self):
             await self.refresh()
 
+        def checwork(self):
+            super().checwork()
+            self.selection.oper("openWebVk").isDisabled = not self.getAttr('bReleased')
+
     class Card(Awh_AnimeDvi.DviCard): pass
 
     class CardSetUrlAnime(Card):

@@ -1,6 +1,7 @@
 import gitlab
 
 from modules.bc import Bc_ConfigApi
+from engine.package.AsynRunPkg import asyncRun
 
 """
 Старый код, надо переписать под новые реали
@@ -8,8 +9,8 @@ from modules.bc import Bc_ConfigApi
 class Gmb_GitLabManagerPkg:
     def __init__(self):
         self.gitLab = gitlab.Gitlab(
-            url=Bc_ConfigApi().getByMnemocode('baseUrlGitLab').sValue,
-            private_token=Bc_ConfigApi().getByMnemocode('privateTokenGitLab').sValue,
+            url=Bc_ConfigApi().getByMnemocode('gmb baseUrlGitLab').sValue,
+            private_token=Bc_ConfigApi().getByMnemocode('gmb privateTokenGitLab').sValue,
             timeout=30,  # таймаут в секундах
             retry_transient_errors=True  # автоматический повтор при 429/5xx
         )
@@ -19,26 +20,27 @@ class Gmb_GitLabManagerPkg:
             self.gitLab.auth()
             user = self.gitLab.user
         except gitlab.exceptions.GitlabAuthenticationError as e:
-            exit(1)
+            pass
 
-    def createMR(self, text:str):
-        from modules.gmb import Gmb_ModApi
-        d = self._get_dict_text(text)
+    def createMR(self, idTask:int, text, branch):
+        from modules.gmb import Gmb_ModApi, Gmb_TaskDetApi
+        d = asyncRun(Gmb_TaskDetApi()._findAllByAttr('idTask', idTask))
         url = []
-        for i in d['mod']:
-            project_id = self._get_project_id_by_name(i)[0]
+        for i in d:
+            objTaskDet = Gmb_TaskDetApi().load(i)
+            objMod = Gmb_ModApi().load(objTaskDet.idMod)
+            project_id = self._get_project_id_by_name(objMod.sCaption)[0]
             try:
                 project = self.gitLab.projects.get(project_id)
             except gitlab.exceptions.GitlabGetError:
                 raise RuntimeError(f"❌ Проект {project_id} не найден или нет доступа")
 
-            objMod = Gmb_ModApi().getByMnemocode(i)
             if not objMod.sIdGitReviewer:
                 Gmb_ModApi().setsIdGitReviewer(objMod, self._find_user_id_by_last_name(objMod.sReviewer))
 
             # 🛠 4. Данные для MR
             mr_payload = {
-                "source_branch": f'iss/{d['type']}/{d['issue'] if d["issue"] != 'notask' else d['text'].replace(' ', '-')}',
+                "source_branch": branch,
                 "target_branch": 'main',
                 "title": text,
                 "description": text,
@@ -47,12 +49,11 @@ class Gmb_GitLabManagerPkg:
                 "remove_source_branch": True,                                                          # Удалить ветку после мерджа
                 "squash": True                                                                         # Сквошить коммиты при мердже
             }
-            Gmb_ModApi().getByMnemocode(i).sReviewer
             # 🚀 5. Создание MR
             try:
                 mr = project.mergerequests.create(mr_payload)
                 # insertMR(project_id, mr.iid)
-                url.append(mr.web_url)
+                # objTaskDet.sUrlMR = mr.web_url
                 pass
             except gitlab.exceptions.GitlabCreateError as e:
                 pass

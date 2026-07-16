@@ -5,6 +5,7 @@ from engine.base.oper import SetOper
 from modules.gmb.object.Gmb_GitManagerPkg import GitFabric
 from modules.gmb.object.mod.Gmb_ModApi import Gmb_ModApi
 from modules.gmb.object.taskdet.Gmb_TaskDetApi import Gmb_TaskDetApi
+from modules.gmb.object.Gmb_GitLabManagerPkg import Gmb_GitLabManagerPkg
 
 class Gmb_TaskAvi(Gmb_TaskDvi):
     class List(Gmb_TaskDvi.DviList): 
@@ -34,6 +35,10 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
 
                 for repo in GitFabric(list(Gmb_ModApi().load(i.idMod).sCaption for i in lobjTaskDet)):
                         repo.allProcces(sBranch, sCommit)
+
+                        Gmb_GitLabManagerPkg().createMR(self.getAttr('id'), sCommit, sBranch)
+
+            
 
     class Card(Gmb_TaskDvi.DviCard): pass
 

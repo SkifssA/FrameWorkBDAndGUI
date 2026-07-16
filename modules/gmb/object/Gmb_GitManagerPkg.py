@@ -104,7 +104,7 @@ class Gmb_GitManagerPkg:
         try:
             result = subprocess.run(
                 ['git', '-C', repo_path, 'log', 'origin/main..main', '--oneline'],
-                capture_output=True, text=True, check=False
+                capture_output=True, text=True, check=False, encoding='utf-8'
             )
             return bool(result.stdout.strip())
         except:
