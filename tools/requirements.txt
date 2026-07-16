@@ -9,6 +9,6 @@ pillow
 numpy
 brotlicffi
 nest-asyncio
-infi.systray
+pystray
 python-gitlab
 GitPython

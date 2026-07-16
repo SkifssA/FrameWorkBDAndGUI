@@ -16,7 +16,7 @@ class Bc_IconsApi(Bc_IconsDpi):
         self.update(w)
 
     async def dataInstall(self):
-        beginPath = '../img/icon/{name}.png'
+        beginPath = '../assets/img/icon/{name}.png'
         nameIcon = [
             "add"
             ,"close"

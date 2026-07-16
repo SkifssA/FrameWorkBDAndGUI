@@ -1,13 +1,14 @@
 {
     "name": "Bc_Icons",
     "caption": "Файлы",
-    "attr":[
+    "attr": [
         {
             "name": "sCode",
             "type": "TEXT",
             "caption": "Код",
             "isMnemoCode": true
-        },{
+        },
+        {
             "name": "sPath",
             "type": "TEXT",
             "caption": "Путь до файла"
@@ -16,7 +17,7 @@
     "dbData": [
         {
             "name": "Bc_IconsApi.dataInstall",
-            "version": 3
+            "version": 4
         }
     ]
 }

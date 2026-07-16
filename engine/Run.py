@@ -4,8 +4,9 @@ import sys
 import queue
 from pathlib import Path
 import threading
-from infi.systray import SysTrayIcon
 import traceback
+import pystray
+from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.package.AsynRunPkg import asyncRun
@@ -13,7 +14,7 @@ from engine.package import FileManagerPkg
 from engine.SelectApp import SelectApp
 from engine.package.ActionDispatcherPkg import ActionDispatcherPkg
 
-PATH_ICON = 'app.ico'
+PATH_ICON = 'engine/assets/img/iconApp/app.ico'
 NAME_APP = 'NecoTab'
 
 cmd_queue = queue.Queue()
@@ -32,7 +33,7 @@ def theme_registry():
 
 def font_registry():
     # Путь к шрифту
-    font_path = FileManagerPkg._getObjPath("font/Farabee Straight Medium.ttf", index=1)
+    font_path = FileManagerPkg._getObjPath("assets/font/Farabee Straight Medium.ttf", index=1)
     font_path = font_path['real_path']
     if not os.path.exists(font_path):
         raise FileNotFoundError(f"Шрифт не найден: {font_path}")
@@ -66,15 +67,13 @@ def app_register():
     dpg.show_viewport()
 
 def init_tray():
-    "--- Меню трея ---"
     def tray_worker():
-        menu_options = (
-            ('Открыть интерфейс', None, lambda x: cmd_queue.put("show_gui")),
-            ('Выйти', None, lambda x: cmd_queue.put("exit")),
+        menu = pystray.Menu(
+            pystray.MenuItem('Открыть интерфейс', lambda icon, item: cmd_queue.put("show_gui")),
+            pystray.MenuItem('Выйти', lambda icon, item: cmd_queue.put("exit")),
         )
-        systray = SysTrayIcon(PATH_ICON, NAME_APP, menu_options=menu_options,
-                            on_quit=lambda: cmd_queue.put("exit"))
-        systray.start()
+        icon = pystray.Icon(NAME_APP, Image.open(PATH_ICON), NAME_APP, menu)
+        icon.run()
 
     tray_thread = threading.Thread(target=tray_worker, daemon=True)
     tray_thread.start()
@@ -87,7 +86,7 @@ def init_scheduler():
         scheduler_thread = ActionDispatcherPkg().action("Bc_ScriptSchedulerPkg.run", classMethod=True)
         return scheduler_thread
 
-def mainWhile():
+def mainWhile(scheduler):
     "--- Главный цикл рендеринга (ручной) ---"
     try:
         while True:
@@ -127,19 +126,21 @@ def mainWhile():
         traceback.print_exc()
     finally:
         dpg.destroy_context()
+        if scheduler:
+            scheduler.runMe = False
         print("Программа завершена")
 
 def mainProgram():
     dpg.create_context()
 
-    init_scheduler()
+    scheduler = init_scheduler()
 
     app_register()
 
     init_tray()
 
     print("Цикл рендеринга запущен.")
-    mainWhile()
+    mainWhile(scheduler)
 
 if __name__ == '__main__':
     mainProgram()
