@@ -25,8 +25,7 @@ class List(Base):
             self.column.append(dpg.add_table_column(label=value[0]
                                                     , user_data=(key, value[2], value[1])
                                                     , enabled=value[1]
-                                                    , parent=tabl
-                                                    , width_fixed=True))
+                                                    , parent=tabl))
 
     async def _refresh(self):
         '''Обнолвение формы'''
