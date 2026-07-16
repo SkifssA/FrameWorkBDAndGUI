@@ -14,8 +14,8 @@ from engine.package import FileManagerPkg
 from engine.SelectApp import SelectApp
 from engine.package.ActionDispatcherPkg import ActionDispatcherPkg
 
-PATH_ICON = 'engine/assets/img/iconApp/app.ico'
-NAME_APP = 'NecoTab'
+_pathConfig = '../engine/config/config.json'
+config = asyncRun(FileManagerPkg.ReadFile(_pathConfig))
 
 cmd_queue = queue.Queue()
 
@@ -57,7 +57,8 @@ def app_register():
     asyncRun(SelectApp().open())
 
     # Создаём viewport и запускаем
-    dpg.create_viewport(title=NAME_APP, width=800, height=600, small_icon=PATH_ICON, large_icon=PATH_ICON)
+    icon_path = FileManagerPkg._getObjPath(config['pathIcon'], index=1)['real_path']
+    dpg.create_viewport(title=config['nameApp'], width=800, height=600, small_icon=icon_path, large_icon=icon_path)
 
     dpg.setup_dearpygui()
 
@@ -72,7 +73,8 @@ def init_tray():
             pystray.MenuItem('Открыть интерфейс', lambda icon, item: cmd_queue.put("show_gui")),
             pystray.MenuItem('Выйти', lambda icon, item: cmd_queue.put("exit")),
         )
-        icon = pystray.Icon(NAME_APP, Image.open(PATH_ICON), NAME_APP, menu)
+        icon_path = FileManagerPkg._getObjPath(config['pathIcon'], index=1)['real_path']
+        icon = pystray.Icon(config['nameApp'], Image.open(icon_path), config['nameApp'], menu)
         icon.run()
 
     tray_thread = threading.Thread(target=tray_worker, daemon=True)

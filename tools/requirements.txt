@@ -12,3 +12,4 @@ nest-asyncio
 pystray
 python-gitlab
 GitPython
+windows-toasts
