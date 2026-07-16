@@ -1,7 +1,11 @@
 import dearpygui.dearpygui as dpg
 import os
 import sys
+import queue
 from pathlib import Path
+import threading
+from infi.systray import SysTrayIcon
+import traceback
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.package.AsynRunPkg import asyncRun
@@ -9,10 +13,12 @@ from engine.package import FileManagerPkg
 from engine.SelectApp import SelectApp
 from engine.package.ActionDispatcherPkg import ActionDispatcherPkg
 
+PATH_ICON = 'app.ico'
+NAME_APP = 'NecoTab'
 
-def mainProgram():
-    dpg.create_context()
+cmd_queue = queue.Queue()
 
+def theme_registry():
     # Тема для корректного отображения отключённых кнопок
     with dpg.theme() as compat_theme:
         with dpg.theme_component(dpg.mvButton, enabled_state=False):
@@ -24,6 +30,7 @@ def mainProgram():
 
     dpg.bind_theme(compat_theme)
 
+def font_registry():
     # Путь к шрифту
     font_path = FileManagerPkg._getObjPath("font/Farabee Straight Medium.ttf", index=1)
     font_path = font_path['real_path']
@@ -39,29 +46,100 @@ def mainProgram():
     dpg.bind_font(font)
     with dpg.window(label="Главное окно", tag="main_window", menubar=True, no_scrollbar=True):
         pass
+    
+def app_register():
+    
+    theme_registry()
+
+    font_registry()
+
     asyncRun(SelectApp().open())
 
     # Создаём viewport и запускаем
-    dpg.create_viewport(title='NecoTab', width=800, height=600)
-
-    icon_path = FileManagerPkg._getObjPath("img/icon/icons8-закрыть-40.png", index=1)
-    dpg.set_viewport_small_icon(icon_path['real_path'])  # 16x16 или 32x32
-    dpg.set_viewport_large_icon(icon_path['real_path'])  # 128x128 или больше
+    dpg.create_viewport(title=NAME_APP, width=800, height=600, small_icon=PATH_ICON, large_icon=PATH_ICON)
 
     dpg.setup_dearpygui()
 
-    conf = asyncRun(FileManagerPkg.ReadFile('../engine/config/config.json'))
-    if (conf['isScriptScheduler']):
-        scriptScheduler = ActionDispatcherPkg().action("Bc_ScriptSchedulerPkg.run", classMethod=True)
-
     dpg.set_primary_window("main_window", True)
     # dpg.maximize_viewport()
+
     dpg.show_viewport()
-    dpg.start_dearpygui()
-    
+
+def init_tray():
+    "--- Меню трея ---"
+    def tray_worker():
+        menu_options = (
+            ('Открыть интерфейс', None, lambda x: cmd_queue.put("show_gui")),
+            ('Выйти', None, lambda x: cmd_queue.put("exit")),
+        )
+        systray = SysTrayIcon(PATH_ICON, NAME_APP, menu_options=menu_options,
+                            on_quit=lambda: cmd_queue.put("exit"))
+        systray.start()
+
+    tray_thread = threading.Thread(target=tray_worker, daemon=True)
+    tray_thread.start()
+    return tray_thread
+
+def init_scheduler():
+    "--- Отложеные скрипты ---"
+    conf = asyncRun(FileManagerPkg.ReadFile('../engine/config/config.json'))
     if (conf['isScriptScheduler']):
-        scriptScheduler.runMe = False
-    dpg.destroy_context()
+        scheduler_thread = ActionDispatcherPkg().action("Bc_ScriptSchedulerPkg.run", classMethod=True)
+        return scheduler_thread
+
+def mainWhile():
+    "--- Главный цикл рендеринга (ручной) ---"
+    try:
+        while True:
+            # Обработка команд из очереди
+            try:
+                cmd = cmd_queue.get_nowait()
+                if cmd == "show_gui":
+                    # Показываем и разворачиваем окно
+                    try:
+                        dpg.delete_item("main_window", children_only=True)
+                        asyncRun(SelectApp().open())
+
+                        dpg.show_viewport()
+                    except AttributeError:
+                        # Если restore_viewport нет, просто показываем
+                        dpg.configure_viewport("viewport", show=True)
+                    print("Окно показано")
+                elif cmd == "exit":
+                    print("Выход по команде")
+                    break
+            except queue.Empty:
+                pass
+
+            # Рендеринг одного кадра с обработкой ошибок
+            try:
+                dpg.render_dearpygui_frame()
+            except Exception as e:
+                print(f"Ошибка рендеринга: {e}")
+                traceback.print_exc()
+                # Если ошибка критическая, можно выйти
+                break
+
+    except KeyboardInterrupt:
+        print("Прервано пользователем")
+    except Exception as e:
+        print(f"Критическая ошибка: {e}")
+        traceback.print_exc()
+    finally:
+        dpg.destroy_context()
+        print("Программа завершена")
+
+def mainProgram():
+    dpg.create_context()
+
+    init_scheduler()
+
+    app_register()
+
+    init_tray()
+
+    print("Цикл рендеринга запущен.")
+    mainWhile()
 
 if __name__ == '__main__':
     mainProgram()
