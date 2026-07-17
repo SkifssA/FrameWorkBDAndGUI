@@ -16,14 +16,29 @@ class SelectApp:
                         self.createBlocApp(data)
 
     def createBlocApp(self, data):
-         with dpg.child_window(
+        def on_row_click(sender, app_data, user_data):
+            self.openMainMenuModule(user_data)
+
+        with dpg.child_window(
+            width=-1, 
+            height=50, 
+            border=False, 
+            no_scrollbar=True
+        ):
+            # Невидимая кнопка на всю ширину — ловит все клики
+            dpg.add_button(
+                label="",
                 width=-1,
-                height=150,
-                border=True,               # ← Включает рамку
-                no_scrollbar=True
-            ):
-                dpg.add_text(data['name'])
-                dpg.add_button(label='Открыть', callback=lambda: self.openMainMenuModule(data))
+                height=-1,
+                tag=f"btn_{data['nameMainScreen']}",
+                user_data=data,
+                callback=on_row_click
+            )
+            
+            # Поверх кнопки кладём контент через same_line
+            # Сначала сдвигаемся в начало child_window
+            # dpg.add_image(texture_id, width=32, height=32, pos=(5, 9))
+            dpg.add_text(data['name'], pos=(15, 15))
 
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}.default"

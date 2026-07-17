@@ -58,7 +58,7 @@ def app_register():
 
     # Создаём viewport и запускаем
     icon_path = FileManagerPkg._getObjPath(config['pathIcon'], index=1)['real_path']
-    dpg.create_viewport(title=config['nameApp'], width=800, height=600, small_icon=icon_path, large_icon=icon_path)
+    dpg.create_viewport(title=config['nameApp'], width=1080, height=720, small_icon=icon_path, large_icon=icon_path)
 
     dpg.setup_dearpygui()
 

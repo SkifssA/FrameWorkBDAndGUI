@@ -36,7 +36,7 @@ class Bc_ScriptSchedulerPkg:
                 self.fillDict(obj, 'sec')
         
     def fillDict(self, obj:Bc_ScriptSchedulerObj, TimeLine):
-        for i in obj.nTime.split(','):
+        for i in str(obj.nTime).replace(' ', '').split(','):
             if Bc_ScriptSchedulerPkg.script[TimeLine].get(i, None) is None:
                 Bc_ScriptSchedulerPkg.script[TimeLine][i] = []
 
