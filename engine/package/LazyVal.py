@@ -17,3 +17,6 @@ class LazyVal:
             raise AttributeError(name)
         # Проксирует вызовы к вычисленному значению (для модульного уровня)
         return getattr(self._get_value(), name)
+    
+    def __get__(self, instance, owner):
+        return self._get_value()
