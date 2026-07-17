@@ -15,6 +15,17 @@
             "caption": "Модуль",
             "refTab": "Gmb_Mod",
             "isMnemoCode": true
+        },
+        {
+            "name": "sUlrMR",
+            "type": "TEXT",
+            "caption": "Ссылка на МР"
+        },
+        {
+            "name": "sLastComment",
+            "type": "TEXT",
+            "caption": "Последний коммент",
+            "isVisible": false
         }
     ]
 }

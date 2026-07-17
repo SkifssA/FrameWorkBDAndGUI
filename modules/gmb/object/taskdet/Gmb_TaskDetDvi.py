@@ -13,7 +13,9 @@ class Gmb_TaskDetDvi(BaseAvi):
                     t.idTask,
                     t1.sHeadLine as idTaskHL,
                     t.idMod,
-                    t2.sHeadLine as idModHL
+                    t2.sHeadLine as idModHL,
+                    t.sUlrMR,
+                    t.sLastComment
                 FROM Gmb_TaskDet AS t
                     LEFT JOIN Gmb_Task t1 ON t1.id = t.idTask
                     LEFT JOIN Gmb_Mod t2 ON t2.id = t.idMod
@@ -49,6 +51,8 @@ class Gmb_TaskDetDvi(BaseAvi):
         def setidModHL(self, event:Event.SetterEvent): 
             from ...object.mod.Gmb_ModAvi import Gmb_ModAvi
             Gmb_ModAvi().proccessById(event, self.getAttr('idMod'), lambda x: self.thisApi().setidMod(self.thisRop(), x['id'])); self.afterSetter()
+        def setsUlrMR(self, event:Event.SetterEvent): self.thisApi().setsUlrMR(self.thisRop(), event.value); self.afterSetter()
+        def setsLastComment(self, event:Event.SetterEvent): self.thisApi().setsLastComment(self.thisRop(), event.value); self.afterSetter()
 
     class DviList(DviDefault, BaseAvi.DefaultList): pass
 

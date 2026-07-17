@@ -42,6 +42,18 @@
         "order": 0,
         "refTab": "Gmb_Mod",
         "display": "list"
+      },
+      "sUlrMR": {
+        "caption": "Ссылка на МР",
+        "edit": "edit",
+        "isVisible": true,
+        "order": 0
+      },
+      "sLastComment": {
+        "caption": "Последний коммент",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
       }
     }
   }

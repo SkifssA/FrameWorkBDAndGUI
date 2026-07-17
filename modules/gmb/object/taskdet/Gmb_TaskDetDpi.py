@@ -8,6 +8,8 @@ class Gmb_TaskDetObj(BaseObj):
         self.gid:gid = None
         self.idTask:int = None
         self.idMod:int = None
+        self.sUlrMR:str = None
+        self.sLastComment:str = None
 
 class Gmb_TaskDetDpi(BaseApi):
     _classObj = Gmb_TaskDetObj
@@ -39,3 +41,5 @@ class Gmb_TaskDetDpi(BaseApi):
 
     def setidTask(self, obj:Gmb_TaskDetObj, value): obj.idTask = value
     def setidMod(self, obj:Gmb_TaskDetObj, value): obj.idMod = value
+    def setsUlrMR(self, obj:Gmb_TaskDetObj, value): obj.sUlrMR = value
+    def setsLastComment(self, obj:Gmb_TaskDetObj, value): obj.sLastComment = value

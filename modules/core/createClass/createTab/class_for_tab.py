@@ -1,3 +1,7 @@
+from engine.package import ASQL
+
+from engine.package.AsynRunPkg import asyncRun
+
 TYPE_MAPPING: dict[str, str] = {
     "TEXT": "TEXT"
     , "STRING": "TEXT"
@@ -12,6 +16,7 @@ class Tab:
     def __init__(self, **arg):
         self.name = arg.get('name', None)
         self.caption = arg.get('caption', self.name)
+        self._isNew = False
 
         self.attr:list[Attr] = []
         if 'attr' in arg:
@@ -28,9 +33,13 @@ class Tab:
             for i in arg['dbData']:
                 self.dbData.append(dbData(**i))
 
+    def isNew(self, minListAttr):
+        self._isNew = True
+        self.minListAttr = minListAttr
+
     def getSQL(self):
         return f"""
-CREATE TABLE {self.name} (
+CREATE TABLE {self.name}{'_new' if self._isNew else ''} (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     gid TEXT,
     sHeadLine TEXT,
@@ -38,6 +47,17 @@ CREATE TABLE {self.name} (
     {',\n    '.join(attr.getSql() for attr in self.attr)}
 )
 """
+    
+    def execute_pending(self):
+        asyncRun(ASQL(self.getSQL()))
+        if self._isNew:
+            sListAttr = ', '.join(self.minListAttr)
+            asyncRun(ASQL(f"""
+                INSERT INTO {self.name}_new({sListAttr})
+                SELECT {sListAttr} FROM {self.name};
+            """))
+            asyncRun(ASQL(f"""DROP TABLE {self.name};"""))
+            asyncRun(ASQL(f"""ALTER TABLE {self.name}_new RENAME TO {self.name};"""))
 
 class Attr:
     def __init__(self, **arg):
