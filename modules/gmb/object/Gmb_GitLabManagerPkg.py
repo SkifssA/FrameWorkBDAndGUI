@@ -2,10 +2,8 @@ import gitlab
 
 from modules.bc import Bc_ConfigApi
 from engine.package.AsynRunPkg import asyncRun
+import time
 
-"""
-Старый код, надо переписать под новые реали
-"""
 class Gmb_GitLabManagerPkg:
     def __init__(self):
         self.gitLab = gitlab.Gitlab(
@@ -25,7 +23,6 @@ class Gmb_GitLabManagerPkg:
     def createMR(self, idTask:int, text, branch):
         from modules.gmb import Gmb_ModApi, Gmb_TaskDetApi
         d = asyncRun(Gmb_TaskDetApi()._findAllByAttr('idTask', idTask))
-        url = []
         for i in d:
             objTaskDet = Gmb_TaskDetApi().load(i)
             objMod = Gmb_ModApi().load(objTaskDet.idMod)
@@ -53,7 +50,8 @@ class Gmb_GitLabManagerPkg:
             try:
                 mr = project.mergerequests.create(mr_payload)
                 # insertMR(project_id, mr.iid)
-                # objTaskDet.sUrlMR = mr.web_url
+                objTaskDet.sIdMR = mr.iid
+                Gmb_TaskDetApi().update(objTaskDet)
                 pass
             except gitlab.exceptions.GitlabCreateError as e:
                 pass
@@ -119,3 +117,46 @@ class Gmb_GitLabManagerPkg:
         
         p = matches[0]
         return p.id, p.path_with_namespace
+    
+    def MRMonitor(self):
+        from modules.gmb import Gmb_ModApi, Gmb_TaskDetApi, Gmb_TaskApi
+        print("Проверка выполнения отложеного скрипта из Pkg")
+        if int(Bc_ConfigApi().getByMnemocode('gmb beginHourWork').sValue) <= time.localtime().tm_hour <= int(Bc_ConfigApi().getByMnemocode('gmb endHourWork').sValue):
+                for i in Gmb_TaskDetApi().getAll():
+                    objTaskDet = Gmb_TaskDetApi().load(i['id'])
+                    # --- 1. Получаем проект и конкретный MR ---
+                    objMod = Gmb_ModApi().load(objTaskDet.idMod).sCaption
+                    idMod = self._get_project_id_by_name(objMod.sCaption)[0]
+                    project = self.gitLab.projects.get(idMod)
+                    mr = project.mergerequests.get(objTaskDet.sIdMR)
+
+                    text_fields = None
+                    if mr.state == 'merged':
+                        text_fields = ['MR приняли', f'Для модуля {project.name} приняли MR']
+                        Gmb_TaskApi().delete(Gmb_TaskApi().load(objTaskDet.idTask))
+
+                    if ((x:=self.getLastComm(mr)) is not None):
+                        if x['id'] != i['lastComment']:
+                            text_fields = ['Новый кометарий MR', f'Для модуля {project.name.lower()} новый коментарий']
+                            Gmb_TaskDetApi().setsLastComment(objTaskDet, x['id'])
+
+                    if text_fields is not None:
+                        from engine.package.ToasterPkg import ToasterPkg
+                        ToasterPkg().text(text_fields).show()
+                        
+
+    def getLastComm(self, mr)->dict|None:
+        comments = []
+        for note in mr.notes.list(all=True):
+            if not note.system:
+                comments.append({
+                    'id': note.id,
+                    'author': note.author['username'],
+                    'text': note.body,
+                    'created_at': note.created_at
+                })
+        
+        # Сортируем по времени
+        comments.sort(key=lambda x: x['created_at'])
+
+        return comments[-1] if comments else None

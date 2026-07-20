@@ -17,14 +17,20 @@
             "isMnemoCode": true
         },
         {
-            "name": "sUlrMR",
+            "name": "sIdMR",
             "type": "TEXT",
-            "caption": "Ссылка на МР"
+            "caption": "id МР на GitLab"
         },
         {
             "name": "sLastComment",
             "type": "TEXT",
             "caption": "Последний коммент",
+            "isVisible": false
+        },
+        {
+            "name": "bMerged",
+            "type": "INT",
+            "caption": "Смёржино",
             "isVisible": false
         }
     ]

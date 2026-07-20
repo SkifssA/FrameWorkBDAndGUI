@@ -1,4 +1,4 @@
-from modules.bc.object.config.Bc_ConfigApi import Bc_ConfigApi
+from modules.bc import Bc_ConfigApi, Bc_ScriptSchedulerApi, Bc_TimeLineApi
 
 class Gmb_DataInstallPkg:
     async def dataInstallConfig(self):
@@ -8,3 +8,6 @@ class Gmb_DataInstallPkg:
         await Bc_ConfigApi().registerByModule('gmb', 'modulesRootPath', 'C:\\programs\\gsf-cli\\workspace\\sources\\pgDev\\application')
         await Bc_ConfigApi().registerByModule('gmb', 'beginHourWork', '9')
         await Bc_ConfigApi().registerByModule('gmb', 'endHourWork', '18')
+
+        Bc_ScriptSchedulerApi().register('Gmb_GitLabManagerPkg.MRMonitor', nTime=30, idTimeLine=Bc_TimeLineApi.idSecond)
+

@@ -43,14 +43,20 @@
         "refTab": "Gmb_Mod",
         "display": "list"
       },
-      "sUlrMR": {
-        "caption": "Ссылка на МР",
+      "sIdMR": {
+        "caption": "id МР на GitLab",
         "edit": "edit",
         "isVisible": true,
         "order": 0
       },
       "sLastComment": {
         "caption": "Последний коммент",
+        "edit": "edit",
+        "isVisible": false,
+        "order": 0
+      },
+      "bMerged": {
+        "caption": "Смёржино",
         "edit": "edit",
         "isVisible": false,
         "order": 0

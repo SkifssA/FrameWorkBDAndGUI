@@ -19,6 +19,7 @@ from engine.package.DbManagerPkg import ASQL
 class Config(TypedDict, total=False):
     locat: str
     isUpdate: bool
+    isCh: bool
 
 class Base(Abstract):
 
@@ -60,6 +61,7 @@ class Base(Abstract):
         self.modal = None
         self.locationCh = {}
         self.rect = Rect(self)
+        self.isCh = False
 
     async def open(self, parent='tab_bar', parentTable=None):
         '''Открытие выборки'''
@@ -111,6 +113,9 @@ class Base(Abstract):
         '''Открытие дочерних форм. Системный'''
         for i in self.ch:
             if i is not None:
+                i.param(
+                   isCh=True 
+                )
                 if i.clsForm.locat == 'right':
                     self.rightGroup.add(i)
                 else:

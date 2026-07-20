@@ -27,15 +27,23 @@ class Bc_ScriptSchedulerPkg:
         return obj
 
     def __init__(self, objScript:tuple[Bc_ScriptSchedulerObj]):
+        self.fillDict(objScript=objScript)
+        
+    def fillDict(self, objScript):
+        self.script = {
+            'hour': {}
+            ,'minute' : {}
+            ,'sec': {}    
+        }
         for obj in objScript:
             if obj.idTimeLine == Bc_TimeLineApi.idHour:
-                self.fillDict(obj, 'hour')
+                self._fillDict(obj, 'hour')
             elif obj.idTimeLine == Bc_TimeLineApi.idMinute:
-                self.fillDict(obj, 'minute')
+                self._fillDict(obj, 'minute')
             elif obj.idTimeLine == Bc_TimeLineApi.idSecond:
-                self.fillDict(obj, 'sec')
-        
-    def fillDict(self, obj:Bc_ScriptSchedulerObj, TimeLine):
+                self._fillDict(obj, 'sec')
+
+    def _fillDict(self, obj:Bc_ScriptSchedulerObj, TimeLine):
         for i in str(obj.nTime).replace(' ', '').split(','):
             if Bc_ScriptSchedulerPkg.script[TimeLine].get(i, None) is None:
                 Bc_ScriptSchedulerPkg.script[TimeLine][i] = []

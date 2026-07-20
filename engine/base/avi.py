@@ -84,6 +84,7 @@ class BaseAvi:
         def checwork(self):
             super().checwork()
             self.selection.oper('returnResult').isVisible = self.isModal
+            self.selection.oper('closeFormCancel').isVisible = not self.isCh
 
     class DefaultList(DefaultDefault, List):
         
