@@ -1,5 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Hbc_StudentDataDvi import Hbc_StudentDataDvi
+from engine.fabric.Form import FormConstruct
 
 class Hbc_StudentDataAvi(Hbc_StudentDataDvi):   
     class List(Hbc_StudentDataDvi.DviList): pass
@@ -13,13 +14,13 @@ class Hbc_StudentDataAvi(Hbc_StudentDataDvi):
     class LookUp(Hbc_StudentDataDvi.DviLookUp): pass
 
     @classmethod
-    def list(cls, **kwargs)->List:
-        return cls.typeMeta(cls.List, **kwargs)
+    def list(cls)->FormConstruct:
+        return FormConstruct(cls.List)
     
     @classmethod
-    def card(cls, **kwargs)->Card:
-        return cls.typeMeta(cls.Card, **kwargs)
-
+    def list_idStudent(cls)->FormConstruct:
+        return FormConstruct(cls.List_idStudent)
+    
     @classmethod
-    def list_idStudent(cls, **kwargs)->List_idStudent:
-        return cls.typeMeta(cls.List_idStudent, **kwargs)
+    def card(cls)->FormConstruct:
+        return FormConstruct(cls.Card)

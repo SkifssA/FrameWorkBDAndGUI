@@ -12,16 +12,7 @@ from engine.base.Event import SetterEvent
 from engine.base import api
 from engine.fabric.Form import FormConstruct
 
-class BaseAvi:
-
-    @classmethod
-    def typeMeta(cls, subClass, **kwargs):
-        instance = subClass()
-        # Устанавливаем атрибуты из kwargs
-        for key, value in kwargs.items():
-            setattr(instance, key, value)
-        return instance
-    
+class BaseAvi:    
     @classmethod
     def list(cls, **kwargs)->FormConstruct: pass
 

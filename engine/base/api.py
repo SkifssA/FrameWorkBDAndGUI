@@ -23,13 +23,6 @@ class BaseApi(ABC):
         else :
             return self._idClass
 
-    async def getCaptionAttrClass(self)->list:
-        r = await self._sqlMetaColumns('sCaption, sCode')
-        return r
-    
-    async def _sqlMetaColumns(self, columns:str):
-        return await ASQL(f"select {columns} from Core_Attr t where t.idTab = ? and t.sCode <> 'id'", (self.idClass(),))
-
     async def _findDataBase(self, attr:str, value):
         if value is not None:
             w = await ASQL(f'SELECT * FROM {self._getNameClass()} WHERE {attr} = ?', [value,])

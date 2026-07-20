@@ -1,16 +1,9 @@
 # Пользовательский файл для интерфейса
 from .Hbc_StudentDvi import Hbc_StudentDvi
 from engine.base.oper import SetOper
+from engine.fabric.Form import FormConstruct
 
 class Hbc_StudentAvi(Hbc_StudentDvi):
-    @classmethod
-    def list(cls, **kwargs):
-        return cls.typeMeta(cls.List, **kwargs)
-
-    @classmethod
-    def card(cls, **kwargs):
-        return cls.typeMeta(cls.Card, **kwargs)
-
     class List(Hbc_StudentDvi.DviList):
         @SetOper(label='Загрузить')
         async def UploadStudentByGSheet(self):
@@ -23,7 +16,18 @@ class Hbc_StudentAvi(Hbc_StudentDvi):
             yield Hbc_StudentDataAvi.list_idStudent()
             yield Hbc_StudentLessonAvi.list_idStudent()
 
+    class Card(Hbc_StudentDvi.DviCard): pass
+
     class LookUp(Hbc_StudentDvi.DviLookUp): pass
 
-    class LookUp(Hbc_StudentDvi.DviLookUp):
-        pass
+    @classmethod
+    def list(cls)->FormConstruct:
+        return FormConstruct(cls.List)
+    
+    @classmethod
+    def card(cls)->FormConstruct:
+        return FormConstruct(cls.Card)
+    
+    @classmethod
+    def lookUp(cls)->FormConstruct:
+        return FormConstruct(cls.LookUp)

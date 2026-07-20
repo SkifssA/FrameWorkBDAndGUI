@@ -3,20 +3,9 @@ from .Hbc_StudentLessonDvi import Hbc_StudentLessonDvi
 from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
 from ..student.Hbc_StudentApi import Hbc_StudentApi
 from engine.base.oper import SetOper
+from engine.fabric.Form import FormConstruct
 
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
-    @classmethod
-    def list(cls, **kwargs):
-        return cls.typeMeta(cls.List, **kwargs)
-    
-    @classmethod
-    def list_idStudent(cls, **kwargs):
-        return cls.typeMeta(cls.List_idStudent, **kwargs)
-    
-    @classmethod
-    def card(cls, **kwargs):
-        return cls.typeMeta(cls.Card, **kwargs)
-
     class List(Hbc_StudentLessonDvi.DviList):
         @SetOper(label='Обновить практические', order=-1)
         async def uploadlessonAll(self):
@@ -64,3 +53,15 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
     class Card(Hbc_StudentLessonDvi.DviCard): pass
 
     class LookUp(Hbc_StudentLessonDvi.DviLookUp): pass
+
+    @classmethod
+    def list(cls)->FormConstruct:
+        return FormConstruct(cls.List)
+    
+    @classmethod
+    def list_idStudent(cls)->FormConstruct:
+        return FormConstruct(cls.list_idStudent)
+    
+    @classmethod
+    def card(cls)->FormConstruct:
+        return FormConstruct(cls.Card)
