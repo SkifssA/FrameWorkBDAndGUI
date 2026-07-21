@@ -2,19 +2,19 @@
 from .Bc_FileDvi import Bc_FileDvi
 from engine.form.CardFileView import CardFileView
 from engine.base.avi import BaseAvi
-from engine.fabric.Form import FormConstruct, Local
+from engine.fabric.Form import FormConstruct, Locat
 
 class Bc_FileAvi(Bc_FileDvi):
     class List(Bc_FileDvi.DviList):
         def openCh(self):
-            yield Bc_FileAvi.CardFileView_idFile()
+            yield Bc_FileAvi.CardFileView_idFile().param(locat=Locat.bottom)
 
         def onRefresh(self):
             return super().onRefresh()
 
     class List_gidSrc(Bc_FileDvi.DviList):
         def openCh(self):
-            yield Bc_FileAvi.cardFileView_idFile().param(locat=Local.bottom)
+            yield Bc_FileAvi.cardFileView_idFile().param(locat=Locat.bottom)
 
         def onRefresh(self):
             return super().onRefresh() + f"WHERE t.gidScr = :super$gid"

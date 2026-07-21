@@ -3,12 +3,12 @@ from .Bc_IconsDvi import Bc_IconsDvi
 from engine.form.CardFileView import CardFileView
 from engine.base.avi import BaseAvi
 from engine.package import FileManagerPkg
-from engine.fabric.Form import FormConstruct, Local
+from engine.fabric.Form import FormConstruct, Locat
 
 class Bc_IconsAvi(Bc_IconsDvi):
     class List(Bc_IconsDvi.DviList): 
         def openCh(self):
-            yield Bc_IconsAvi.cardFileView_idFile().param(locat=Local.bottom)
+            yield Bc_IconsAvi.cardFileView_idFile().param(locat=Locat.bottom)
 
     class Card(Bc_IconsDvi.DviCard): pass
 

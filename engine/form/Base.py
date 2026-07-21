@@ -111,15 +111,14 @@ class Base(Abstract):
 
     async def _openCh(self):
         '''Открытие дочерних форм. Системный'''
-        from engine.fabric.Form import Local
+        from engine.fabric.Form import Locat
         for i in self.ch:
             if i is not None:
                 i.param(
-                   isCh=True 
-                )
-                if i.clsForm.locat == Local.right:
+                   isCh=True)
+                if i.clsForm.locat == Locat.right:
                     self.rightGroup.add(i)
-                elif i.clsForm.local == Local.bottom:
+                elif i.clsForm.locat == Locat.bottom:
                     i.open()
                     dpg.configure_item(self.tabBar, show=True)
                     dpg.configure_item(self.UpDown, show=True)

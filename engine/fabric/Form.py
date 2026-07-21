@@ -4,7 +4,7 @@ from engine.form.Base import Base, Config
 from engine.package.FrameworkContext import FrameworkContext
 from engine.package import AsynRunPkg
 
-class Local:
+class Locat:
     right = 'right'
     left = 'left'
     bottom = 'bottom'
