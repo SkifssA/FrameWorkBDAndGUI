@@ -16,6 +16,7 @@ from engine.package.FileManagerPkg import FileManagerPkg
 from engine.package.LazyVal import LazyVal
 from engine.package.DbManagerPkg import ASQL
 
+
 class Config(TypedDict, total=False):
     locat: str
     isUpdate: bool
@@ -86,7 +87,6 @@ class Base(Abstract):
         hg = self.meta.get('height', dpg.get_viewport_height() * 0.5)
         self.modal = FormModal(wd, hg)
         self.modal.createMainContexWithFuc(self.open)
-        dpg.split_frame()
         self.modal.show()
 
     def openModal(self, callback=None, returnAttr:list=['id']):
@@ -111,14 +111,15 @@ class Base(Abstract):
 
     async def _openCh(self):
         '''Открытие дочерних форм. Системный'''
+        from engine.fabric.Form import Local
         for i in self.ch:
             if i is not None:
                 i.param(
                    isCh=True 
                 )
-                if i.clsForm.locat == 'right':
+                if i.clsForm.locat == Local.right:
                     self.rightGroup.add(i)
-                else:
+                elif i.clsForm.local == Local.bottom:
                     i.open()
                     dpg.configure_item(self.tabBar, show=True)
                     dpg.configure_item(self.UpDown, show=True)

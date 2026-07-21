@@ -3,7 +3,7 @@ from .Hbc_StudentLessonDvi import Hbc_StudentLessonDvi
 from ..Hbc_NewProfiClientPkg import Hbc_NewProfiClientPkg
 from ..student.Hbc_StudentApi import Hbc_StudentApi
 from engine.base.oper import SetOper
-from engine.fabric.Form import FormConstruct
+from engine.fabric.Form import FormConstruct, Local
 
 class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
     class List(Hbc_StudentLessonDvi.DviList):
@@ -45,7 +45,7 @@ class Hbc_StudentLessonAvi(Hbc_StudentLessonDvi):
         
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
-            yield Bc_FileAvi.list_gidSrc(right=True)
+            yield Bc_FileAvi.list_gidSrc().param(locat=Local.bottom)
 
         def refreshCh(self):
             return super().refreshCh()

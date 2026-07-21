@@ -4,6 +4,13 @@ from engine.form.Base import Base, Config
 from engine.package.FrameworkContext import FrameworkContext
 from engine.package import AsynRunPkg
 
+class Local:
+    right = 'right'
+    left = 'left'
+    bottom = 'bottom'
+    top = 'top'
+
+
 class FormConstruct:
     def __init__(self, clsForm:Base.__class__):
         self.clsForm = clsForm()

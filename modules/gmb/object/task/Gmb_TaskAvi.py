@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Gmb_TaskDvi import Gmb_TaskDvi
-from engine.fabric.Form import FormConstruct
+from engine.fabric.Form import FormConstruct, Local
 from engine.base.oper import SetOper
 from modules.gmb.object.Gmb_GitManagerPkg import GitFabric
 from modules.gmb.object.mod.Gmb_ModApi import Gmb_ModApi
@@ -11,7 +11,7 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
     class List(Gmb_TaskDvi.DviList): 
         def openCh(self):
             from modules.gmb import Gmb_TaskDetAvi
-            yield Gmb_TaskDetAvi.list().param(locat='right')
+            yield Gmb_TaskDetAvi.list().param(locat=Local.right)
 
         @SetOper(label='Провести по процессу', img='8', order=10)
         async def openWeb(self):

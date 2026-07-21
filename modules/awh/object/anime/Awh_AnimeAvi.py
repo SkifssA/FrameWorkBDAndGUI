@@ -3,7 +3,7 @@ from engine.base.oper import SetOper
 from .Awh_AnimeDvi import Awh_AnimeDvi
 import webbrowser
 from engine.base.modal import *
-from engine.fabric.Form import FormConstruct
+from engine.fabric.Form import FormConstruct, Local
 
 from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
 
@@ -52,8 +52,8 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
         def openCh(self):
             from modules.bc.object.file.Bc_FileAvi import Bc_FileAvi
-            yield Bc_FileAvi.cardFileView_sUrl().param(locat='right')
-            yield Awh_AnimeAvi.cardByText().param(locat='right')
+            yield Bc_FileAvi.cardFileView_sUrl().param(locat=Local.right)
+            yield Awh_AnimeAvi.cardByText().param(locat=Local.right)
 
         async def setflt_sName(self):
             await self.refresh()
