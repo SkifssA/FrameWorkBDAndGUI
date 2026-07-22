@@ -35,8 +35,8 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
 
                 for repo in GitFabric(list(Gmb_ModApi().load(i.idMod).sCaption for i in lobjTaskDet)):
                         repo.allProcces(sBranch, sCommit)
-
                         Gmb_GitLabManagerPkg().createMR(self.getAttr('id'), sCommit, sBranch)
+
 
             
 

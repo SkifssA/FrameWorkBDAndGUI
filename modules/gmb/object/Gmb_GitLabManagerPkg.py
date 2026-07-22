@@ -120,7 +120,6 @@ class Gmb_GitLabManagerPkg:
     
     def MRMonitor(self):
         from modules.gmb import Gmb_ModApi, Gmb_TaskDetApi, Gmb_TaskApi
-        print("Проверка выполнения отложеного скрипта из Pkg")
         if int(Bc_ConfigApi().getByMnemocode('gmb beginHourWork').sValue) <= time.localtime().tm_hour <= int(Bc_ConfigApi().getByMnemocode('gmb endHourWork').sValue):
                 for i in Gmb_TaskDetApi().getAll():
                     objTaskDet = Gmb_TaskDetApi().load(i['id'])
@@ -133,12 +132,17 @@ class Gmb_GitLabManagerPkg:
                     text_fields = None
                     if mr.state == 'merged':
                         text_fields = ['MR приняли', f'Для модуля {project.name} приняли MR']
-                        Gmb_TaskApi().delete(Gmb_TaskApi().load(objTaskDet.idTask))
+                        Gmb_TaskDetApi().setbMerged(objTaskDet, 1)
+                        Gmb_TaskDetApi().update(objTaskDet)
+
+                        if len(set([g.bMerged for g in Gmb_TaskDetApi()._getAllByAttr('idTask', objTaskDet.idTask)])) == 1:
+                            Gmb_TaskApi().delete(Gmb_TaskApi().load(objTaskDet.idTask))
 
                     if ((x:=self.getLastComm(mr)) is not None):
-                        if x['id'] != i['lastComment']:
+                        if x['id'] != objTaskDet.sLastComment:
                             text_fields = ['Новый кометарий MR', f'Для модуля {project.name.lower()} новый коментарий']
                             Gmb_TaskDetApi().setsLastComment(objTaskDet, x['id'])
+                            Gmb_TaskDetApi().update(objTaskDet)
 
                     if text_fields is not None:
                         from engine.package.ToasterPkg import ToasterPkg

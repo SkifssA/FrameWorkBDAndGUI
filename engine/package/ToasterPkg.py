@@ -9,7 +9,7 @@ class ToasterPkg:
 
     def __init__(self):
         self.toast = Toast()
-        self._image(config['pathIcon'])
+        self._image(f'../{config['pathIcon']}')
 
     def _image(self, path):
         icon_path = FileManagerPkg._getObjPath(path, index=1)['real_path']
