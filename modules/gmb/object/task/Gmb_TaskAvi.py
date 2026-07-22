@@ -11,7 +11,7 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
     class List(Gmb_TaskDvi.DviList): 
         def openCh(self):
             from modules.gmb import Gmb_TaskDetAvi
-            yield Gmb_TaskDetAvi.list().param(locat=Locat.right)
+            yield Gmb_TaskDetAvi.list_idTask().param(locat=Locat.right)
 
         @SetOper(label='Провести по процессу', img='8', order=10)
         async def openWeb(self):

@@ -125,7 +125,7 @@ class Gmb_GitLabManagerPkg:
                 for i in Gmb_TaskDetApi().getAll():
                     objTaskDet = Gmb_TaskDetApi().load(i['id'])
                     # --- 1. Получаем проект и конкретный MR ---
-                    objMod = Gmb_ModApi().load(objTaskDet.idMod).sCaption
+                    objMod = Gmb_ModApi().load(objTaskDet.idMod)
                     idMod = self._get_project_id_by_name(objMod.sCaption)[0]
                     project = self.gitLab.projects.get(idMod)
                     mr = project.mergerequests.get(objTaskDet.sIdMR)
