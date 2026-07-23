@@ -6,9 +6,9 @@ from engine.package import FileManagerPkg
 from engine.package.AsynRunPkg import asyncRun
 from engine.package import ASQL
 
-from modules.core.createClass.createTab.class_for_tab import Tab
-from modules.core.createClass.createTab.script_manager import ScriptsManager
-from modules.core.createClass.createTab.tab_manager import TabsManager
+from engine.createClass.createTab.class_for_tab import Tab
+from engine.createClass.createTab.script_manager import ScriptsManager
+from engine.createClass.createTab.tab_manager import TabsManager
 
 async def createTab():
     listModules = asyncRun(FileManagerPkg.ReadFile("../project.yaml"))
@@ -17,8 +17,6 @@ async def createTab():
     for app in listModulesWithDep:
         pathMod = f"../modules/{app}/schemas"
         lDirModSchemas = asyncRun(FileManagerPkg.GetFoldersList(pathMod, 3))
-        if app == 'core':
-            lDirModSchemas = ['class_'] + lDirModSchemas
         for i in lDirModSchemas:
             odbFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f"../{pathMod}/{i}", '.odb.json', 1))
             for odbFile in odbFiles:

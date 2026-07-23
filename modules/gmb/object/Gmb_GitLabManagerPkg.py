@@ -148,7 +148,6 @@ class Gmb_GitLabManagerPkg:
                         from engine.package.ToasterPkg import ToasterPkg
                         ToasterPkg().text(text_fields).show()
                         
-
     def getLastComm(self, mr)->dict|None:
         comments = []
         for note in mr.notes.list(all=True):

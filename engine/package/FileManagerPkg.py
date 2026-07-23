@@ -24,7 +24,6 @@ class AsyncFileManager:
 
     async def CreateFile(self, path: str, data):
         obj = self._getObjPath(path)
-
         if obj['type'] in ['json', 'code-workspace']:
             await self._createJsonFile(obj['real_path'], data)
         else:

@@ -1,6 +1,6 @@
 from engine.package import ActionDispatcher
 
-from modules.core.createClass.createTab.class_for_tab import dbData
+from engine.createClass.createTab.class_for_tab import dbData
 
 from modules.core.object.script.Core_ScriptApi import Core_ScriptApi
 

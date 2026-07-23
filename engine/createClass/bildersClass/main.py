@@ -8,10 +8,10 @@ from .bildersDmeta import BildersDmeta
 from engine.package import FileManagerPkg
 from pathlib import Path
 
-pathModile = lambda app, end='': f"../../../../modules/{app}" + end
+pathModile = lambda app, end='': f"../../../modules/{app}" + end
 
 async def createFile():
-    listApp = await FileManagerPkg.ReadFile("../../../../project.yaml")
+    listApp = await FileManagerPkg.ReadFile("../../../project.yaml")
     for app in listApp['modules']:
         pathClass = pathModile(app, '/schemas')
         if await FileManagerPkg.Exists(pathClass):
@@ -20,9 +20,13 @@ async def createFile():
                 for File in lFiles:
                     data = await FileManagerPkg.ReadFile(File.__str__())
                     pathPyFile = pathModile(app, f"/object/{cl}")
+                    print(f"Запись в Dpi в классе {cl}")
                     await BilderDpi(data).createFileD(pathPyFile)
+                    print(f"Запись в Dvi в классе {cl}")
                     await BilderDvi(data).createFileD(pathPyFile)
+                    print(f"Запись в Api в классе {cl}")
                     await BilderApi(data).createFileA(pathPyFile)
+                    print(f"Запись в Avi в классе {cl}")
                     await BilderAvi(data).createFileA(pathPyFile)
 
                     pathMetaFile = f'{pathClass}/{cl}'
