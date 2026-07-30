@@ -36,26 +36,38 @@ class Card(Base):
             row = [[]]
             for i in sorted(self.meta['attr'], key=lambda x: self.meta['attr'][x]['order']):
                 self.createGroupInput(i, w, backLastLine)
-                # if self.meta['attr'][i]['isVisible']:
-                #     row[-1].append(self.tagInput[i]['group'])
-                #     isLastLine = self.meta['attr'][i].get('isLastLine', True)
-                #     if isLastLine:
-                #         w = dpg.add_group(horizontal=True)
-                #         row.append([])
-                #     backLastLine = isLastLine
+        
         row = row[:-1]
-        tw.submit(self.k, args=(row, par))
+        
+        # === ИСПРАВЛЕНИЕ ===
+        # 1. Создаем реестр обработчиков
+        with dpg.item_handler_registry() as registry:
+            # 2. Добавляем обработчик изменения размера
+            # Передаем registry в user_data, чтобы потом удалить его
+            dpg.add_item_resize_handler(
+                callback=self._on_form_ready, 
+                user_data=(row, group, registry)
+            )
+        
+        # 3. Привязываем реестр к нашему child_window (group)
+        dpg.bind_item_handler_registry(group, registry)
+        
         return group
 
-    def k(self, row, mainForm):
-        q = True
-        while q:
-            if dpg.does_item_exist(mainForm):
-                if dpg.get_item_rect_size(mainForm)[0] != 0:
-                    q = False
-                    self.w(row)
-                    self.MaxHeightTitle(row)
-                    time.sleep(0.5)
+    def _on_form_ready(self, sender, app_data, user_data):
+        """
+        Этот метод автоматически вызовется в главном потоке GUI, 
+        как только DPG рассчитает размеры child_window.
+        """
+        row, mainForm, registry_tag = user_data
+        
+        if dpg.does_item_exist(mainForm):
+            size = dpg.get_item_rect_size(mainForm)
+            # Проверяем, что форма реально отрисована и имеет ширину > 0
+            if size[0] > 0:
+                # Выполняем ваши расчеты
+                self.w(row)
+                self.MaxHeightTitle(row)
 
     def w(self, rows):
         for row in rows:

@@ -114,8 +114,7 @@ class Base(Abstract):
         from engine.fabric.Form import Locat
         for i in self.ch:
             if i is not None:
-                i.param(
-                   isCh=True)
+                i.param(isCh=True)
                 if i.clsForm.locat == Locat.right:
                     self.rightGroup.add(i)
                 elif i.clsForm.locat == Locat.bottom:

@@ -32,6 +32,10 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             qty = f'1-{self.getAttr('nSeries')}'
             webbrowser.open(temp.format(name=name, qty=qty))
 
+        @SetOper(label='Debug', img='8')
+        async def oфывфывфVk(self):
+            dpg.show_item_registry()
+
         def onRefresh(self):
             return f"""
             SELECT t.id,

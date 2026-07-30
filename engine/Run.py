@@ -45,8 +45,7 @@ def font_registry():
 
     # Устанавливаем шрифт как активный (заменяет устаревший default_font=True)
     dpg.bind_font(font)
-    with dpg.window(label="Главное окно", tag="main_window", menubar=True, no_scrollbar=True):
-        pass
+    
     
 def app_register():
     
@@ -54,11 +53,12 @@ def app_register():
 
     font_registry()
 
-    asyncRun(SelectApp().open())
+    with dpg.window(label="Главное окно", tag="main_window", menubar=True, no_scrollbar=True):
+            asyncRun(SelectApp().open())
 
     # Создаём viewport и запускаем
     icon_path = FileManagerPkg._getObjPath(config['pathIcon'], index=1)['real_path']
-    dpg.create_viewport(title=config['nameApp'], width=1080, height=720, small_icon=icon_path, large_icon=icon_path)
+    dpg.create_viewport(title=config['nameApp'], width=1280, height=720, small_icon=icon_path, large_icon=icon_path)
 
     dpg.setup_dearpygui()
 
@@ -98,16 +98,19 @@ def mainWhile(scheduler):
                 if cmd == "show_gui":
                     # Показываем и разворачиваем окно
                     try:
-                        dpg.delete_item("main_window", children_only=True)
-                        asyncRun(SelectApp().open())
-
-                        dpg.show_viewport()
+                        dpg.destroy_context()
+                        import gc
+                        gc.collect()
+                        dpg.create_context()
+                        app_register()
+                        
                     except AttributeError:
                         # Если restore_viewport нет, просто показываем
                         dpg.configure_viewport("viewport", show=True)
                     print("Окно показано")
                 elif cmd == "exit":
                     print("Выход по команде")
+                    dpg.destroy_context()
                     break
             except queue.Empty:
                 pass

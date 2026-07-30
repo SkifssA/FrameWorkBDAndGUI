@@ -1,9 +1,8 @@
 import threading
 import time
-import asyncio
 import datetime
 
-from engine.package import ActionDispatcher
+from engine.package import ActionDispatcher, tw
 from modules.bc.object.scriptscheduler.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerObj, Bc_ScriptSchedulerApi
 from modules.bc.object.timeline.Bc_TimeLineApi import Bc_TimeLineApi
 
@@ -23,7 +22,7 @@ class Bc_ScriptSchedulerPkg:
         data = Bc_ScriptSchedulerApi()._getAllByAttr('bUsed', 1)
         obj = Bc_ScriptSchedulerPkg(data)
         obj.runMe = True
-        threading.Thread(target=obj._run).start()
+        tw.submit(obj._run)
         return obj
 
     def __init__(self, objScript:tuple[Bc_ScriptSchedulerObj]):
@@ -74,6 +73,6 @@ class Bc_ScriptSchedulerPkg:
             ActionDispatcher().action(name)
 
         for i in Bc_ScriptSchedulerPkg.script[TimeLine].get(str(Time), []):
-            threading.Thread(target=k, args=(i, )).start()
+            threading.Thread(target=k, args=(i, ), daemon=True).start()
 
 

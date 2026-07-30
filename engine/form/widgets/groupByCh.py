@@ -27,15 +27,22 @@ class groupByCh:
         dpg.configure_item(self.line.btn, show=True)
         tw.submit(self._calcSize)
 
+        with dpg.item_handler_registry() as registry:
+            dpg.add_item_resize_handler(
+                callback=self._calcSize
+            )
+        
+        # 3. Привязываем реестр к нашему child_window (group)
+        dpg.bind_item_handler_registry(self.group, registry)
+
     def _calcSize(self):
-        q = True
-        while q:
-            if dpg.does_item_exist(self.group):
-                h = dpg.get_item_rect_size(self.group)[1] 
-                if h != 0:
-                    q=False
-                    x = h / len(self.allCh)
-                    for i in self.allCh[:-1]:
-                        dpg.set_item_height(i.mainForm, x)
-                        i.offset_y_resize = x
+        if dpg.does_item_exist(self.group):
+            size = dpg.get_item_rect_size(self.group)
+            # Проверяем, что форма реально отрисована и имеет ширину > 0
+            if size[1] > 0:
+                x = size[1] / len(self.allCh)
+                for i in self.allCh[:-1]:
+                    dpg.set_item_height(i.mainForm, x)
+                    i.offset_y_resize = x
+                    
 
