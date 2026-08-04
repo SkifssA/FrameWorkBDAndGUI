@@ -37,8 +37,11 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
                         repo.allProcces(sBranch, sCommit)
                         Gmb_GitLabManagerPkg().createMR(self.getAttr('id'), sCommit, sBranch)
 
-
-            
+        @SetOper(label='Переключить модули на ветки задачи', img='8', order=20)
+        def checBranch(self):
+            from ..taskdet.Gmb_TaskDetApi import Gmb_TaskDetApi
+            for repo in Gmb_TaskDetApi.getGitByTask(self.getAttr("id")):
+                repo.select_branch(self.getAttr("sBranch"))
 
     class Card(Gmb_TaskDvi.DviCard): pass
 

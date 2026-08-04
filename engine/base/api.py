@@ -82,7 +82,6 @@ class BaseApi(ABC):
     def _createRop(self, data):
         rop = self._classObj()
         value = self._getDataRop(rop)
-        ''.startswith
         for k, v in {i:data[i] for i in value.keys()}.items():
             if k.startswith('gid'):
                 v = Gid(v)

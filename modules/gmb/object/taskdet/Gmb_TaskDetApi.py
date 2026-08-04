@@ -10,3 +10,15 @@ class Gmb_TaskDetApi(Gmb_TaskDetDpi):
             self.setidMod(obj, idMod)
         self.update(obj)
         return obj
+
+    def getGitByTask(self, idTask):
+        from ..mod.Gmb_ModApi import Gmb_ModApi
+        from ..Gmb_GitManagerPkg import GitFabric
+        res = []
+        for obj in self._getAllByAttr('idTask', idTask):
+            objMod = Gmb_ModApi().load(obj.idMod)
+            res.append(objMod.sCaption)
+
+        return GitFabric(res) if res != [] else []
+
+    

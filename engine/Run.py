@@ -17,6 +17,8 @@ from engine.package.ActionDispatcherPkg import ActionDispatcherPkg
 _pathConfig = '../engine/config/config.json'
 config = asyncRun(FileManagerPkg.ReadFile(_pathConfig))
 
+isClearContext = True
+
 cmd_queue = queue.Queue()
 
 def theme_registry():
@@ -45,8 +47,7 @@ def font_registry():
 
     # Устанавливаем шрифт как активный (заменяет устаревший default_font=True)
     dpg.bind_font(font)
-    
-    
+      
 def app_register():
     
     theme_registry()
@@ -90,6 +91,7 @@ def init_scheduler():
 
 def mainWhile(scheduler):
     "--- Главный цикл рендеринга (ручной) ---"
+    global isClearContext
     try:
         while True:
             # Обработка команд из очереди
@@ -98,12 +100,8 @@ def mainWhile(scheduler):
                 if cmd == "show_gui":
                     # Показываем и разворачиваем окно
                     try:
-                        dpg.destroy_context()
-                        import gc
-                        gc.collect()
-                        dpg.create_context()
+                        isClearContext = True
                         app_register()
-                        
                     except AttributeError:
                         # Если restore_viewport нет, просто показываем
                         dpg.configure_viewport("viewport", show=True)
@@ -117,7 +115,14 @@ def mainWhile(scheduler):
 
             # Рендеринг одного кадра с обработкой ошибок
             try:
-                dpg.render_dearpygui_frame()
+                if (dpg.is_dearpygui_running()):
+                    dpg.render_dearpygui_frame()
+                elif isClearContext:
+                    dpg.destroy_context()
+                    import gc
+                    gc.collect()
+                    dpg.create_context()
+                    isClearContext = False
             except Exception as e:
                 print(f"Ошибка рендеринга: {e}")
                 traceback.print_exc()
