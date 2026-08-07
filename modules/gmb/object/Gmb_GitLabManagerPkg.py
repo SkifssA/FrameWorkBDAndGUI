@@ -130,7 +130,7 @@ class Gmb_GitLabManagerPkg:
                     mr = project.mergerequests.get(objTaskDet.sIdMR)
 
                     text_fields = None
-                    if mr.state == 'merged':
+                    if mr.state == 'merged' and objTaskDet.bMerged != 1:
                         text_fields = ['MR приняли', f'Для модуля {project.name} приняли MR']
                         Gmb_TaskDetApi().setbMerged(objTaskDet, 1)
                         Gmb_TaskDetApi().update(objTaskDet)
@@ -146,7 +146,9 @@ class Gmb_GitLabManagerPkg:
 
                     if text_fields is not None:
                         from engine.package.ToasterPkg import ToasterPkg
-                        ToasterPkg().text(text_fields).show()
+                        import webbrowser
+                        url = f'https://extgit.global-system.ru/appdev/modules/{objMod.sCaption}/-/merge_requests/{objTaskDet.sIdMR}'
+                        ToasterPkg().text(text_fields).on_activated(lambda x: webbrowser.open(url)).show()
                         
     def getLastComm(self, mr)->dict|None:
         comments = []
