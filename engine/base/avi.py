@@ -79,13 +79,13 @@ class BaseAvi:
 
     class DefaultList(DefaultDefault, List):
         
-        @SetOper(label='Открыть', order=2, img='4')
+        @SetOper(label='Открыть', order=4, img='4')
         async def openForm(self): self._getAvi().card().param(idItem=self.getAttr('id')).open()
         
-        @SetOper(label='Создать', order=10, img='0')
+        @SetOper(label='Создать', order=3, img='0')
         async def insert(self): self._getAvi().card().param(isInsert=True).open()
 
-        @SetOper(label='Удалить', order=20, img='3')
+        @SetOper(label='Удалить', order=2, img='3')
         async def delete(self):
             self.thisApi().delete(self.thisRop())
             await self.refresh()

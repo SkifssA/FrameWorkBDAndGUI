@@ -49,6 +49,7 @@ def font_registry():
     dpg.bind_font(font)
       
 def app_register():
+    dpg.create_context()
     
     theme_registry()
 
@@ -100,7 +101,6 @@ def mainWhile(scheduler):
                 if cmd == "show_gui":
                     # Показываем и разворачиваем окно
                     try:
-                        isClearContext = True
                         app_register()
                     except AttributeError:
                         # Если restore_viewport нет, просто показываем
@@ -115,14 +115,8 @@ def mainWhile(scheduler):
 
             # Рендеринг одного кадра с обработкой ошибок
             try:
-                if (dpg.is_dearpygui_running()):
+                if dpg.is_dearpygui_running():
                     dpg.render_dearpygui_frame()
-                elif isClearContext:
-                    dpg.destroy_context()
-                    import gc
-                    gc.collect()
-                    dpg.create_context()
-                    isClearContext = False
             except Exception as e:
                 print(f"Ошибка рендеринга: {e}")
                 traceback.print_exc()
@@ -141,8 +135,6 @@ def mainWhile(scheduler):
         print("Программа завершена")
 
 def mainProgram():
-    dpg.create_context()
-
     scheduler = init_scheduler()
 
     app_register()

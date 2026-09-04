@@ -14,7 +14,7 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
             yield Gmb_TaskDetAvi.list_idTask().param(locat=Locat.right)
 
         @SetOper(label='Провести по процессу', img='8', order=10)
-        async def openWeb(self):
+        async def beginProcess(self):
             for repo in GitFabric():
                 idMod = Gmb_ModApi().findByMnemocode(repo.name)
                 Gmb_TaskDetApi().register(self.thisRop().id, idMod)
@@ -37,11 +37,16 @@ class Gmb_TaskAvi(Gmb_TaskDvi):
                         repo.allProcces(sBranch, sCommit)
                         Gmb_GitLabManagerPkg().createMR(self.getAttr('id'), sCommit, sBranch)
 
-        @SetOper(label='Переключить модули на ветки задачи', img='8', order=20)
+        @SetOper(label='Переключить модули на ветку задачи', img='8', order=20)
         def checBranch(self):
             from ..taskdet.Gmb_TaskDetApi import Gmb_TaskDetApi
             for repo in Gmb_TaskDetApi.getGitByTask(self.getAttr("id")):
                 repo.select_branch(self.getAttr("sBranch"))
+
+        def checwork(self):
+            super().checwork()
+            self.selection.oper(['checBranch', ]).isDisabled = self.getAttr('sBranch') is None 
+            self.selection.oper(['beginProcess', ]).isDisabled = self.getAttr('id') is None
 
     class Card(Gmb_TaskDvi.DviCard): pass
 

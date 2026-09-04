@@ -57,8 +57,8 @@
       },
       "bMerged": {
         "caption": "Смёржино",
-        "edit": "edit",
-        "isVisible": false,
+        "edit": "check",
+        "isVisible": true,
         "order": 0
       }
     }

@@ -1,1 +1,26 @@
-{}
+{
+    "List_idTask": {
+        "oper": {
+            "insert": {
+                "isVisible": false
+            },
+            "delete": {
+                "isVisible": false
+            },
+            "openForm": {
+                "isVisible": false
+            }
+        },
+        "attr": {
+            "sIdMR": {
+                "isVisible": false
+            },
+            "bMerged": {
+                "caption": "Смёржино",
+                "edit": "edit",
+                "isVisible": true,
+                "order": 10
+            }
+        }
+    }
+}

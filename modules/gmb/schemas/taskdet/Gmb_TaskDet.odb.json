@@ -31,7 +31,8 @@
             "name": "bMerged",
             "type": "INT",
             "caption": "Смёржино",
-            "isVisible": false
+            "editType": "check",
+            "isVisible": true
         }
     ]
 }

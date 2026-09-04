@@ -26,7 +26,7 @@ class Gmb_TaskDetAvi(Gmb_TaskDetDvi):
                 WHERE t.idTask = {self.getAttr("super$id")}
                 """
         
-        @SetOper(label='Открыть МР', img='8')
+        @SetOper(label='Открыть МР', img='8', order=10)
         async def openWeb(self):
             from modules.gmb.object.mod.Gmb_ModApi import Gmb_ModApi
             obj = self.thisRop()
