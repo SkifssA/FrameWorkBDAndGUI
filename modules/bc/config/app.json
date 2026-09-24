@@ -1,7 +1,0 @@
-{
-    "name": "Настройки системы",
-    "nameMainScreen": "Bc_MainMenu",
-    "dependenceModules": [
-        "core"
-    ]
-}

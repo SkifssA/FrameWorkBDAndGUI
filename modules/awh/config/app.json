@@ -1,7 +1,0 @@
-{
-    "name": "Список аниме",
-    "nameMainScreen": "Awh_MainMenu",
-    "dependenceModules": [
-        "bc"
-    ]
-}

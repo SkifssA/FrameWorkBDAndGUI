@@ -1,8 +1,0 @@
-{
-    "name": "Помошник с работой",
-    "nameMainScreen": "Gmb_MainMenu",
-    "dependenceModules": [
-        "core",
-        "bc"
-    ]
-}
