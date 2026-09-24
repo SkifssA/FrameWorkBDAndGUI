@@ -1,0 +1,17 @@
+{
+    "name": "Awh_AnimeGenre",
+    "caption": "Жарны аниме",
+    "attr":[
+        {
+            "name": "idAnime",
+            "type": "INT",
+            "caption": "Аниме",
+            "refTab": "Awh_Anime"
+        },{
+            "name": "idGenre",
+            "type": "INT",
+            "caption": "Жанр",
+            "refTab": "Awh_Genre"
+        }
+    ]
+}

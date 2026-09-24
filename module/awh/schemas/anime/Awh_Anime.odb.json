@@ -1,0 +1,54 @@
+{
+    "name": "Awh_Anime",
+    "caption": "Аниме",
+    "collections": [
+        {
+            "name": "Awh_AnimeGenre",
+            "attr": "idAnime"
+        }
+    ],
+    "attr": [
+        {
+            "name": "sCaption",
+            "type": "TEXT",
+            "caption": "Название",
+            "isHeadLine": true,
+            "order": 10
+        },
+        {
+            "name": "nSeries",
+            "type": "INT",
+            "caption": "Кол-во серий",
+            "order": 20
+        },
+        {
+            "name": "bReleased",
+            "type": "INT",
+            "caption": "Вышло",
+            "editType": "check",
+            "order": 30
+        },
+        {
+            "name": "sUrl",
+            "type": "TEXT",
+            "caption": "Ссылка",
+            "isMnemoCode": true,
+            "isVisible": false,
+            "order": 40
+        },
+        {
+            "name": "sUrlImg",
+            "type": "TEXT",
+            "caption": "Ссылка на постер",
+            "isVisible": false,
+            "order": 50
+        },
+        {
+            "name": "sComment",
+            "type": "TEXT",
+            "caption": "Описание",
+            "isVisible": false,
+            "order": 60
+        }
+    ]
+}

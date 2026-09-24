@@ -1,0 +1,47 @@
+{
+    "name": "Bc_ScriptScheduler",
+    "caption": "Планировщик сценариев",
+    "attr": [
+        {
+            "name": "sNameScript",
+            "type": "TEXT",
+            "caption": "Скрипт",
+            "isMnemoCode": true,
+            "order": 10
+        },
+        {
+            "name": "sNameModule",
+            "type": "TEXT",
+            "caption": "Наименование модуля",
+            "order": 20
+        },
+        {
+            "name": "bRepeat",
+            "type": "INT",
+            "caption": "Повторять",
+            "editType": "check",
+            "order": 30
+        },
+        {
+            "name": "nTime",
+            "type": "TEXT",
+            "caption": "Время",
+            "order": 40
+        },
+        {
+            "name": "idTimeLine",
+            "type": "INT",
+            "caption": "Временой промежуток",
+            "editType": "lookUp",
+            "refTab": "Bc_TimeLine",
+            "order": 50
+        },
+        {
+            "name": "bUsed",
+            "type": "INT",
+            "caption": "Использовать",
+            "editType": "check",
+            "order": 60
+        }
+    ]
+}

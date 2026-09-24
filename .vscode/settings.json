@@ -1,0 +1,15 @@
+{
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": [],
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "*.odb.json"
+            ],
+            "url": "./core/templaceJson/jsonObjectDataBase.json"
+        }
+    ],
+    "json.validate.enable": true,
+    "editor.formatOnSave": true,
+    "python.REPL.enableREPLSmartSend": false
+}

@@ -1,0 +1,20 @@
+{
+    "CardImgByAnime": {
+        "caption": "Аниме",
+        "isVisibleToolBar": false
+    },
+    "TextByAnime": {
+        "caption": "Аниме",
+        "isVisibleToolBar": false
+    },
+    "List": {
+        "attr": {
+            "lGenres": {
+                "caption": "Жанры",
+                "edit": "edit",
+                "isVisible": true,
+                "order": 70
+            }
+        }
+    }
+}

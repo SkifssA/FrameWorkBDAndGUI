@@ -1,0 +1,13 @@
+{
+    "name": "Awh_Genre",
+    "caption": "Жанры",
+    "attr":[
+        {
+            "name": "sCaption",
+            "type": "TEXT",
+            "caption": "Название",
+            "isHeadLine": true,
+            "isMnemoCode": true
+        }
+    ]
+}
