@@ -66,7 +66,11 @@ class InputListConstruct:
     def _getEdit(self, sysName, dataAttr, value, rect):
         self._editor = LineEdit(dataAttr)
         self._editor.setValue(value)
-        self._editor.setStyleSheet("background: blue; padding: 2px;")
+        # Инлайн-редактор в таблице: выделяем акцентной рамкой (токены темы)
+        from core.ui.theme import C
+        self._editor.setStyleSheet(
+            f"background: {C.CARD}; border: 1px solid {C.ACCENT}; border-radius: 6px; padding: 2px;"
+        )
         self._editor.setGeometry(rect)
         self._editor.setParent(self.formParent.tablet.viewport())  # Важно! viewport, не сама таблица
         self._editor.show()

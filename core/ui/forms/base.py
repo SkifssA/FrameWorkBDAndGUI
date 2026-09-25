@@ -1,104 +1,154 @@
-from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QPushButton, QLabel, QTableWidget, QTableWidgetItem, 
-    QTabWidget, QGroupBox, QLineEdit, QComboBox, QCheckBox,
-    QSystemTrayIcon, QMenu, QMessageBox, QSplitter, QFrame, QToolBar
-)
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon, QAction
-from PyQt6.QtWidgets import QHeaderView
+"""Базовый класс формы приложения.
 
-from typing import TypedDict
-from abc import ABC, abstractmethod
-from typing import Any, Optional, Generator
+Ответственности слоя (шаблон Template Method):
+- Base строит «каркас» формы: тулбар, сплиттер, дочерние группы форм.
+- Наследники реализуют только «хуки»: onRefresh / _createMainFrameWidget / getChilders.
+
+Правила, которые здесь соблюдаются:
+1. Никаких дублей объявлений хуков — каждый хук объявлен ровно один раз.
+2. Порядок инициализации фиксирован: kwargs -> инфраструктура -> каркас UI.
+3. Состояние дочерних групп хранится локально (не в магических словарях),
+   общение с наследниками идёт через явно объявленные хуки.
+"""
+
+from typing import Any, Optional, TypedDict
+
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QSplitter
 
 from core import Metadata
 from core.package.Rect import Rect
-from core.ui.widget.menubar import SetOper, OperUIBuilder, OperRegistry
+from core.ui.widget.menubar import OperUIBuilder, OperRegistry
 from core.ui.widget.groupForm import GroupForm
 from core.type.Event import SetterEvent
 
+LEFT = 'left'
+RIGHT = 'right'
+
+
 class Config(TypedDict, total=False):
+    """Параметры, которые можно передать форме через FormConstruct.param()."""
     locat: str
     isUpdate: bool
     isCh: bool
 
-class Base(QWidget):
 
+class Base(QWidget):
+    """Каркас всех форм модулей."""
+
+    #: показывать ли тулбар формы (наследники могут отключить классовым флагом)
     IsToolBar = True
 
     def __init__(self, **kwargs):
         super().__init__()
 
+        # 1. Внешние параметры (Config и всё, что передал модуль).
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+        # 2. Инфраструктура формы.
         self.registry = OperRegistry()
         self.oper = OperUIBuilder(self.registry)
         self.metaInfo = Metadata.get(self)
         self.Rect = Rect(self)
         self.formParent = None
         self.caption = self.metaInfo.get('caption', 'НАЗВАНИЯ НЕТ')
-        
-        self.layoutBox = QVBoxLayout(self)
         self.toolbar = None
-        
-        if (self.IsToolBar and self.metaInfo.get("isVisibleToolBar", True)):
+
+        # 3. Каркас UI.
+        layout = QVBoxLayout(self)
+        if self.IsToolBar and self.metaInfo.get('isVisibleToolBar', True):
             self._refreshToolBar()
-            self.layoutBox.addWidget(self.toolbar)
+            layout.addWidget(self.toolbar)
         else:
             self.registry.register(self)
 
-        self.spliter = QSplitter(self)
-        self.layoutBox.addWidget(self.spliter)
+        splitter = QSplitter(self)
+        # У QSplitter нет setHandleSize — ширина «ручек» задаётся через QSS
+        # (в теме: QSplitter::handle { background/min-size }), поэтому здесь
+        # только отключаем схлопывание дочерних панелей.
+        splitter.setChildrenCollapsible(False)
+        layout.addWidget(splitter)
 
-        self.dictChilders = {
-            'left': {'form':[], 'group': None},
-            'right': {'form':[], 'group': None}
-        }
-        self.createDictChilders()
+        children = {LEFT: [], RIGHT: []}
+        for childer in self.getChilders() or []:
+            # form.open() мутирует конструктор (clsForm заменяется экземпляром),
+            # поэтому locat читаем ДО открытия.
+            children[childer.locat].append(childer)
 
-        self.createGroupForm('left')
-        self.spliter.addWidget(self._createMainFrameWidget())
-        self.createGroupForm('right')
+        self._addChildrenGroup(children[LEFT], splitter)
+        splitter.addWidget(self._createMainFrameWidget())
+        self._addChildrenGroup(children[RIGHT], splitter)
 
-    def getForOpen(self):
+    # ------------------------------------------------------------------
+    # Публичное API
+    # ------------------------------------------------------------------
+
+    def getForOpen(self) -> tuple['Base', str]:
+        """Что вернуть родителю (главному окну) для вставки формы во вкладку."""
         return (self, self.caption)
 
-    def createDictChilders(self):
-        for chelder in self.getChilders() or []:
-            self.dictChilders[chelder.locat]['form'].append(chelder)
+    # ------------------------------------------------------------------
+    # Хуки для наследников (переопределяются, но не вызываются снаружи)
+    # ------------------------------------------------------------------
 
-    def createGroupForm(self, l: str):
-        if self.dictChilders[l]['form'] != []: 
-            group = self.dictChilders[l]['group'] = GroupForm(self)
-            self.spliter.addWidget(group)
-            for form in self.dictChilders[l]['form']:
-                f = form.open()
-                f.formParent = self
-                group.addWidget(f)
-                group
+    def getChilders(self) -> list:
+        """Дочерние формы-конструкторы, расставляемые по краям сплиттера."""
+        return []
+
+    def onRefresh(self):
+        """Источник данных формы (используется Rect.refresh())."""
+        return {}
+
+    def _createMainFrameWidget(self) -> QWidget:
+        raise NotImplementedError
+
+    def _onRefresh(self):
+        pass
+
+    def _getAttr(self, sysName: str) -> Optional[Any]:
+        return None
+
+    def checwork(self):
+        """Хук актуализации состояния тулбара/кнопок после изменений."""
+        pass
+
+    # ------------------------------------------------------------------
+    # Внутренние механизмы
+    # ------------------------------------------------------------------
+
+    def _addChildrenGroup(self, forms: list, splitter: QSplitter) -> None:
+        """Создаёт GroupForm из дочерних форм и добавляет её в сплиттер.
+
+        Формы, у которых задан callback, не встраиваются как панели — они
+        открываются один раз сразу после сборки каркаса (например, модалка).
+        """
+        plain = [f for f in forms if getattr(f, 'callback', None) is None]
+        deferred = [f for f in forms if getattr(f, 'callback', None) is not None]
+        if plain:
+            group = GroupForm(self)
+            group.setObjectName("SidePanel")  # боковая панель стилизуется темой
+            splitter.addWidget(group)
+            for form in plain:
+                child = form.open()
+                child.formParent = self
+                group.addWidget(child)
+        for form in deferred:
+            result = form.open()
+            if result is not None and hasattr(result, 'formParent'):
+                result.formParent = self
+            form.callback(result)
 
     def refreshCh(self):
-        for i in self.dictChilders:
-            if self.dictChilders[i]['form'] != []:
-                self.dictChilders[i]['group'].refreshCh()
+        """Обновляет все дочерние группы форм."""
+        for group in self.findChildren(GroupForm):
+            group.refreshCh()
 
-    def _set_value_avi(self, attrName:str, setter: SetterEvent):
+    def _set_value_avi(self, attrName: str, setter: SetterEvent) -> None:
+        """Вызывает сеттер атрибута `set<attrName>`, если он определён."""
         setName = f'set{attrName}'
         if hasattr(self, setName):
             getattr(self, setName)(setter)
 
-    def _refreshToolBar(self):
+    def _refreshToolBar(self) -> None:
         self.registry.register(self)
         self.toolbar = self.oper.build_toolbar(self.toolbar)
-
-    def _onRefresh(self):...           
-    def getChilders(self)->Generator[Any, None, None]:...
-    def _getAttr(self, sysName:str): None
-    def _onRefresh(self):...
-    def onRefresh(self):...
-    def _createMainFrameWidget(self)->QWidget: ...
-    def _getAttr(self, name)->Optional[Any]: ...
-    def checwork(self):...
-    

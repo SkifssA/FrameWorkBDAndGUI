@@ -25,8 +25,12 @@ class ActionDispatcherPkg:
             attr = self._getMethod(cls, sNameMetod, classMethod)
             return self._runMethod(attr, kattr)
         except ImportError as e:
+            # Раньше при IsRaise=False ошибка молча съедалась и action()
+            # возвращал None; теперь хотя бы логируем.
+            import logging
+            logging.getLogger('NecoTab').error("Не удалось импортировать %s: %s", sNameModule, e)
             if self.IsRaise:
-                raise ValueError(f"Не удалось импортировать модуль {sNameModule}: {e}")
+                raise ValueError(f"Не удалось импортировать модуль {sNameModule}: {e}") from e
         
     def _getMethod(self, cls, sNameMetod:str, classMethod:bool=False):
         """Получение метода класса"""
@@ -42,4 +46,5 @@ class ActionDispatcherPkg:
         elif callable(attr):
             # Обычный метод
             return attr(**kattr)
+        raise TypeError(f"Атрибут не является вызываемым: {attr!r}")
         

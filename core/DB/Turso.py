@@ -1,19 +1,27 @@
 import asyncio
+import os
+
 from libsql_client import create_client
 
 from core.package.FileManager import FileManagerPkg
 
 class DbManager:
-    _pathConfig = '../config/config.json'
+    _pathConfig = 'core/config/config.json'
     _initialized = False
     url = None
     auth_token = None
 
     async def setConf(self):
+        """Параметры БД: сначала переменные окружения, потом config.json.
+
+        Токен НЕ должен лежать в git. Задайте один раз:
+            $env:TURSO_URL / TURSO_AUTH_TOKEN   (Windows PowerShell)
+            export TURSO_URL=... TURSO_AUTH_TOKEN=...   (Linux/macOS)
+        """
         if not self._initialized:
             conf = (await FileManagerPkg.ReadFile(self._pathConfig))['database']
-            self.url = conf['url']
-            self.auth_token = conf['auth_token']
+            self.url = os.environ.get('TURSO_URL') or conf.get('url')
+            self.auth_token = os.environ.get('TURSO_AUTH_TOKEN') or conf.get('auth_token')
             self._initialized = True
 
     async def ATSQL(self, SQLstr: str, parameters=None):

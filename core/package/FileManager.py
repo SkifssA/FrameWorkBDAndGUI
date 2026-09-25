@@ -3,8 +3,23 @@ import os
 import asyncio
 import aiofiles
 import inspect
+import sys
 from pathlib import Path
 import yaml
+
+
+def project_root() -> Path:
+    """Корень проекта — единственная точка отсчёта для всех путей.
+
+    Обычный запуск (python main.py): родительский каталог core/.
+    PyInstaller (--onefile, наш случай 'LAUNCH APP.cmd'): каталог exe.
+    Это делает пути независимыми от рабочей директории и совместимыми
+    с Linux/macOS (никаких windows-only допущений здесь нет).
+    """
+    if getattr(sys, 'frozen', False):  # собран .exe
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parents[2]  # .../FrameWorkBDAndGUI
+
 
 class AsyncFileManager:
     """Менеджер файлов"""
@@ -70,17 +85,31 @@ class AsyncFileManager:
     def getRealPath(self, path:str)->str:
         return self._getObjPath(path=path)['real_path']
 
+    @staticmethod
+    def resolve(path: str) -> str:
+        """Публичный API: путь относительно КОРНЯ ПРОЕКТА (не от cwd!).
+
+        Пример: FileManagerPkg.resolve('core/assets/img/iconApp/app.ico')
+        Работает одинаково на Windows/Linux/macOS и в PyInstaller.
+        """
+        return str((project_root() / path).resolve())
+
     def _getObjPath(self, path: str, index=0):
-            """Получает обьект пути по строке с ."""
-            #os.getcwd()
-            caller_frame = inspect.stack()[index]
-            caller_file = caller_frame.filename
-            caller_dir = Path(caller_file).parent
-    
-            # Преобразуем путь, разрешая точки (.. и .)
-            # Например: '../data/config.json' -> поднимаемся на уровень выше
-            real_path = (caller_dir / path).resolve()
-    
+            """Получает объект пути по строке.
+
+            ПУТИ — ОТ КОРНЯ ПРОЕКТА. Раньше база разрешения зависела от того,
+            какой файл вызвал менеджер (inspect.stack), и '../../module/foo'
+            молча ломалось при запуске из другой рабочей директории. Теперь
+            корень один (project_root()), а '..' выше корня не выпускает наружу.
+            """
+            rel = Path(path)
+            if rel.is_absolute():
+                real_path = rel.resolve()
+            else:
+                candidate = (project_root() / rel).resolve()
+                root = project_root()
+                real_path = candidate if str(candidate).startswith(str(root)) else root
+
             # Определяем тип файла
             typeFile = path.rsplit('.', 1)[-1] if '.' in path else None
             

@@ -9,14 +9,7 @@ class LookUp(Base):
         for dataLook in self.loadDataLookUp:
             self._editor.addItem(dataLook['sHeadLine'], dataLook['id'])
 
-        self._editor.setFrame(False)
-        self._editor.setStyleSheet("""
-            QComboBox { 
-                background: black; 
-                padding: 2px; 
-                border: 1px solid #aaa; 
-            }
-        """)
+        # Стиль (фон/рамка/padding) берётся из глобальной темы — GLOBAL_QSS QComboBox
 
     def setValue(self, value):
         self._editor.setCurrentText(str(value))

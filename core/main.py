@@ -14,10 +14,11 @@ from PyQt6.QtGui import QIcon, QAction
 from core.ui.forms.selectApp import SelectApp
 from core.package.FileManager import FileManagerPkg
 from core.package.ActionDispatcher import ActionDispatcherPkg
+from core.ui.theme import apply_theme
 
 class MainWindow(QMainWindow):
     name = "NecoTab"
-    pathIco = FileManagerPkg.getRealPath("../assets/img/iconApp/app.ico")
+    pathIco = FileManagerPkg.resolve("core/assets/img/iconApp/app.ico")
 
     def __init__(self):
         super().__init__()
@@ -30,7 +31,10 @@ class MainWindow(QMainWindow):
         ActionDispatcherPkg().action("Bc_ScriptSchedulerPkg.run", classMethod=True)
         
     def createSystemTray(self):
-        # Создаем системный трей
+        # Создаем системный трей (если ОС его поддерживает)
+        if not QSystemTrayIcon.isSystemTrayAvailable():
+            self.tray_icon = None
+            return
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(self.ico)
         self.tray_icon.setToolTip(self.name)
@@ -84,11 +88,11 @@ class MainWindow(QMainWindow):
 
 def mainProgram():
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
+    apply_theme(app)  # единая дизайн-система NecoTab (core/ui/theme.py)
 
     if not QSystemTrayIcon.isSystemTrayAvailable():
-        print("Системный трей не поддерживается")
-        sys.exit(1)
+        # На Linux без DE/трея это не повод умирать — просто работаем без трея.
+        print("Системный трей не поддерживается — продолжаем без него")
 
     window = MainWindow()
     window.show()
