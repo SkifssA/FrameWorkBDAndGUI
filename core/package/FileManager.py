@@ -2,9 +2,10 @@ import json
 import os
 import asyncio
 import aiofiles
-import inspect
 from pathlib import Path
 import yaml
+
+from core import ROOT
 
 class AsyncFileManager:
     """Менеджер файлов"""
@@ -70,21 +71,12 @@ class AsyncFileManager:
     def getRealPath(self, path:str)->str:
         return self._getObjPath(path=path)['real_path']
 
-    def _getObjPath(self, path: str, index=0):
-            """Получает обьект пути по строке с ."""
-            #os.getcwd()
-            caller_frame = inspect.stack()[index]
-            caller_file = caller_frame.filename
-            caller_dir = Path(caller_file).parent
-    
-            # Преобразуем путь, разрешая точки (.. и .)
-            # Например: '../data/config.json' -> поднимаемся на уровень выше
-            real_path = (caller_dir / path).resolve()
-    
+    def _getObjPath(self, path: str):
+            """Получает обьект пути по строке с ."""  
             # Определяем тип файла
             typeFile = path.rsplit('.', 1)[-1] if '.' in path else None
             
-            return {'real_path': str(real_path), 'type': typeFile}
+            return {'real_path': f'{ROOT}/{path}', 'type': typeFile}
 
     async def _createJsonFile(self, real_path, data):
         """Создаёт json файлы"""

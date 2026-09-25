@@ -18,7 +18,7 @@ from core.ui.theme import apply_theme
 
 class MainWindow(QMainWindow):
     name = "NecoTab"
-    pathIco = FileManagerPkg.getRealPath("../assets/img/iconApp/app.ico")
+    pathIco = FileManagerPkg.getRealPath("core/assets/img/iconApp/app.ico")
 
     def __init__(self):
         super().__init__()

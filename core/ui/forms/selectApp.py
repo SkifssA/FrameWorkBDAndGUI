@@ -112,11 +112,11 @@ class SelectApp(QWidget):
         self._cards: list[AppCard] = []
 
         # --- ЛОГИКА ЗАГРУЗКИ ---
-        listApp = asyncRun(FileManagerPkg.ReadFile("../../project.yaml"))
+        listApp = asyncRun(FileManagerPkg.ReadFile("project.yaml"))
 
         for app in listApp['modules']:
-            if asyncRun(FileManagerPkg.Exists(f"../../module/{app}/config/app.json")):
-                data = asyncRun(FileManagerPkg.ReadFile(f"../../module/{app}/config/app.json"))
+            if asyncRun(FileManagerPkg.Exists(f"module/{app}/config/app.json")):
+                data = asyncRun(FileManagerPkg.ReadFile(f"module/{app}/config/app.json"))
                 if (data.get('name', None) is not None):
                     card = AppCard(data)
                     # Единая точка навигации: карточка ничего не знает об окне,

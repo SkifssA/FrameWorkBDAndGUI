@@ -9,11 +9,11 @@ from core.package.FileManager import FileManagerPkg
 from core import asyncRun
 from pathlib import Path
 
-pathModile = lambda app, end='': f"../../module/{app}" + end
+pathModile = lambda app, end='': f"module/{app}" + end
 
 def createFile():
     '''Создание файлов для класса'''
-    listApp = asyncRun(FileManagerPkg.ReadFile("../../project.yaml"))
+    listApp = asyncRun(FileManagerPkg.ReadFile("project.yaml"))
     for app in listApp['modules']:
         pathClass = pathModile(app, '/schemas')
         if asyncRun(FileManagerPkg.Exists(pathClass)):

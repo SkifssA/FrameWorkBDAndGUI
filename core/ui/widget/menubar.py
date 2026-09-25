@@ -109,7 +109,7 @@ class OperUIBuilder:
         action = QAction(op['label'], parent_widget)
                                 
         if op.get('icon'):
-            realPath = FileManagerPkg.getRealPath("../assets/img/icon/" + op['icon'])
+            realPath = FileManagerPkg.getRealPath("core/assets/img/icon/" + op['icon'])
             action.setIcon(QIcon(realPath))
         if op.get('shortcut'):
             action.setShortcut(QKeySequence(op['shortcut']))

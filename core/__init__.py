@@ -1,3 +1,6 @@
+from pathlib import Path
+ROOT = Path(__file__).resolve().parent.parent
+
 from .package import LazyVal, AsyncFileManager, asyncRun, MetadataManager
 from .type.Gid import Gid
 
@@ -11,4 +14,5 @@ __all__ = [
     ,'Gid'
     ,'asyncRun'
     ,'Metadata'
+    ,'ROOT'
 ]
