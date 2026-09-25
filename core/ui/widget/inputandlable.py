@@ -12,6 +12,7 @@ from typing import Optional, Any
 class InputandLable(QWidget):
     def __init__(self, lable: str, input: QWidget):
         super().__init__()
+        self.setObjectName("FieldRow")  # подпись красится темой (GLOBAL_QSS)
         self.la = QHBoxLayout()
         self.setLayout(self.la)
 

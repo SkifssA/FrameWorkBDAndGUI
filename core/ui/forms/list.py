@@ -41,6 +41,11 @@ class List(Base):
             self.tablet.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
             self.tablet.selectRow(0)
             self.tablet.verticalHeader().setVisible(False)
+
+            self.tablet.setShowGrid(False)
+            self.tablet.setAlternatingRowColors(True)
+            self.tablet.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
             for i in self.attrHide:
                 self.tablet.setColumnHidden(self.systemName[i], True)
 

@@ -58,7 +58,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             super().checwork()
             self.oper.isVisible(['openWebVk', ], self.getSelfAttr('bReleased'))
 
-    class Card(Awh_AnimeDvi.Card):...
+    class Card(Awh_AnimeDvi.DviCard):...
 
     class CardImgByAnime(Awh_AnimeDvi.Default, Image): 
         def onRefresh(self):
@@ -83,6 +83,8 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
     @classmethod
     def list(cls): return FormConstruct(cls.List)
+    @classmethod
+    def card(cls): return FormConstruct(cls.Card)
     @classmethod
     def cardImgByAnime(cls): return FormConstruct(cls.CardImgByAnime)
     @classmethod

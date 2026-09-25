@@ -14,6 +14,7 @@ from PyQt6.QtGui import QIcon, QAction
 from core.ui.forms.selectApp import SelectApp
 from core.package.FileManager import FileManagerPkg
 from core.package.ActionDispatcher import ActionDispatcherPkg
+from core.ui.theme import apply_theme
 
 class MainWindow(QMainWindow):
     name = "NecoTab"
@@ -84,7 +85,7 @@ class MainWindow(QMainWindow):
 
 def mainProgram():
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
+    apply_theme(app)
 
     if not QSystemTrayIcon.isSystemTrayAvailable():
         print("Системный трей не поддерживается")

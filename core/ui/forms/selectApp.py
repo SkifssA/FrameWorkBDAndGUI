@@ -1,127 +1,146 @@
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFrame, QScrollArea
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFrame,
+    QScrollArea, QLineEdit
 )
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt, pyqtSignal
 
 # Импорты твоих утилит остаются прежними
 from core.package.ActionDispatcher import ActionDispatcherPkg
 from core.package.FileManager import FileManagerPkg
-from core.package.AsynRun import asyncRun 
+from core.package.AsynRun import asyncRun
+from core.ui.theme import Fonts
+
 
 class AppCard(QFrame):
     """
     Визуальный блок (карточка) приложения.
-    Отвечает только за внешний вид.
+    Отвечает только за внешний вид и сигнал «открыть».
+    Никаких обращений к родительским окнам — только Qt-сигналы.
+
+    Стилизация — через objectName-селекторы #AppCard/#AppCardTitle/...
+    из глобальной темы (core/ui/theme.py). Локальных цветов здесь нет.
     """
-    def __init__(self, data, parent_widget):
+    openRequested = pyqtSignal(dict)
+
+    def __init__(self, data):
         super().__init__()
         self.data = data
-        
-        # Настройка внешнего вида карточки
-        self.setFrameShape(QFrame.Shape.StyledPanel)
-        self.setObjectName("AppCard") # Для CSS стилизации
-        
+
+        self.setFrameShape(QFrame.Shape.NoFrame)
+        self.setObjectName("AppCard")  # стилизуется GLOBAL_QSS
+
         layout = QHBoxLayout(self)
         layout.setContentsMargins(20, 15, 20, 15)
         layout.setSpacing(15)
 
-        # 1. Левая часть: Название и описание (если есть)
+        # 1. Левая часть: название и описание
         info_layout = QVBoxLayout()
         info_layout.setSpacing(4)
-        
+
         title_label = QLabel(data['name'])
-        title_label.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
-        title_label.setStyleSheet("color: #FFFFFF;")
-        
-        # Если в json есть description, покажем его серым цветом
+        title_label.setFont(Fonts.H2)
+        title_label.setObjectName("AppCardTitle")
+
         desc_text = data.get('description', 'Модуль системы')
         desc_label = QLabel(desc_text)
-        desc_label.setFont(QFont("Segoe UI", 10))
-        desc_label.setStyleSheet("color: #AAAAAA;")
-        
+        desc_label.setFont(Fonts.MUTED)
+        desc_label.setObjectName("AppCardDesc")
+
         info_layout.addWidget(title_label)
         info_layout.addWidget(desc_label)
-        
-        # 2. Правая часть: Кнопка
+
+        # 2. Правая часть: кнопка
         btn_open = QPushButton("Открыть")
         btn_open.setCursor(Qt.CursorShape.PointingHandCursor)
         btn_open.setFixedSize(100, 36)
         btn_open.setObjectName("OpenButton")
-        
-        # Связываем клик с логикой родителя (как было раньше)
-        # Используем lambda, чтобы передать данные именно этого блока
-        btn_open.clicked.connect(lambda checked, d=data: parent_widget.parent().setCentralWidget(parent_widget.openMainMenuModule(d)))
+
+        # Карточка не знает о главном окне — она только испускает сигнал.
+        btn_open.clicked.connect(lambda checked, d=data: self.openRequested.emit(d))
 
         layout.addLayout(info_layout)
-        layout.addStretch() # Растягиваем пространство, чтобы кнопка прижалась вправо
+        layout.addStretch()
         layout.addWidget(btn_open)
-
-    # Метод для применения стилей (можно вынести в общий CSS)
-    def get_stylesheet():
-        return """
-            #AppCard {
-                background-color: #2B2B2B;
-                border: 1px solid #3E3E3E;
-                border-radius: 8px;
-            }
-            #AppCard:hover {
-                border: 1px solid #5A5A5A;
-                background-color: #323232;
-            }
-            #OpenButton {
-                background-color: #3700B3; /* Акцентный цвет (фиолетовый/синий) */
-                color: white;
-                border: none;
-                border-radius: 4px;
-                font-weight: bold;
-            }
-            #OpenButton:hover {
-                background-color: #6200EE;
-            }
-            #OpenButton:pressed {
-                background-color: #2a008a;
-            }
-        """
 
 
 class SelectApp(QWidget):
+    """Экран выбора модулей. Внешний вид — из глобальной темы."""
+
     def __init__(self):
         super().__init__()
-        
-        # Основной вертикальный лейаут
-        main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(40, 40, 40, 40) # Большие отступы по краям
-        main_layout.setSpacing(15) # Расстояние между карточками
 
-        # Заголовок страницы
-        header_label = QLabel("Доступные модули")
-        header_label.setFont(QFont("Segoe UI", 18, QFont.Weight.Light))
-        header_label.setStyleSheet("color: #E0E0E0; margin-bottom: 10px;")
-        main_layout.addWidget(header_label)
+        root = QVBoxLayout(self)
+        root.setContentsMargins(0, 0, 0, 0)
 
-        # Контейнер для списка приложений (чтобы они шли друг за другом красиво)
-        self.apps_container = QVBoxLayout()
+        # Шапка страницы
+        header = QWidget()
+        header_layout = QVBoxLayout(header)
+        header_layout.setContentsMargins(40, 36, 40, 12)
+        header_layout.setSpacing(6)
+
+        title = QLabel("Доступные модули")
+        title.setObjectName("PageTitle")
+        subtitle = QLabel("Выберите модуль для работы")
+        subtitle.setObjectName("PageSubtitle")
+
+        self.search = QLineEdit()
+        self.search.setPlaceholderText("Поиск модуля…")
+        self.search.setObjectName("SearchBox")
+        self.search.setClearButtonEnabled(True)
+        self.search.textChanged.connect(self._filterCards)
+
+        header_layout.addWidget(title)
+        header_layout.addWidget(subtitle)
+        header_layout.addSpacing(8)
+        header_layout.addWidget(self.search)
+        root.addWidget(header)
+
+        # Прокручиваемый список карточек
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+
+        container = QWidget()
+        self.apps_container = QVBoxLayout(container)
+        self.apps_container.setContentsMargins(40, 12, 40, 40)
         self.apps_container.setSpacing(12)
-        
-        main_layout.addLayout(self.apps_container)
-        main_layout.addStretch() # Чтобы список прижался к верху, если приложений мало
+        self.apps_container.addStretch()  # список прижат к верху
 
-        # --- ЛОГИКА ЗАГРУЗКИ (БЕЗ ИЗМЕНЕНИЙ) ---
+        scroll.setWidget(container)
+        root.addWidget(scroll, stretch=1)
+
+        self._cards: list[AppCard] = []
+
+        # --- ЛОГИКА ЗАГРУЗКИ ---
         listApp = asyncRun(FileManagerPkg.ReadFile("../../project.yaml"))
-        
+
         for app in listApp['modules']:
             if asyncRun(FileManagerPkg.Exists(f"../../module/{app}/config/app.json")):
                 data = asyncRun(FileManagerPkg.ReadFile(f"../../module/{app}/config/app.json"))
                 if (data.get('name', None) is not None):
-                    # Создаем красивую карточку вместо старого createBlocApp
-                    card = AppCard(data, self)
+                    card = AppCard(data)
+                    # Единая точка навигации: карточка ничего не знает об окне,
+                    # переключением центрального виджета занимается этот экран.
+                    card.openRequested.connect(self._openModule)
                     self.apps_container.addWidget(card)
+                    self._cards.append(card)
 
-        # Применяем стили ко всем карточкам сразу (или можно внутри AppCard)
-        self.setStyleSheet(AppCard.get_stylesheet())
+    # ------------------------------------------------------------------
+    # Фильтр карточек по тексту поиска
+    # ------------------------------------------------------------------
+    def _filterCards(self, text: str):
+        needle = text.strip().lower()
+        for card in self._cards:
+            name = card.data.get('name', '').lower()
+            desc = card.data.get('description', '').lower()
+            card.setVisible((not needle) or needle in name or needle in desc)
 
-    # Твоя оригинальная функция открытия (не тронута)
+    def _openModule(self, data):
+        """Открывает главное меню модуля и делает его центральным виджетом окна."""
+        mainWin = self.window()
+        self.mainMenu = self.openMainMenuModule(data)
+        mainWin.setCentralWidget(self.mainMenu)
+
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}Avi.Default"
-        return ActionDispatcherPkg().action(module_name, kattr={'mainWin': self.parent()})
+        return ActionDispatcherPkg().action(module_name, kattr={'mainWin': self.window()})
