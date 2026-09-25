@@ -6,6 +6,7 @@ __pycache__/
 python/
 
 core/assets/image_cache
+core/config/config.json
 
 # C extensions
 *.so
