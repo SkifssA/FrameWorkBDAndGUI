@@ -74,7 +74,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             def onRefreshExt(self):
                 return ''
                 
-            def setsUrlLoad(self, event): self.obj.sUrlLoad = event.value.getValue()['value']
+            def setsUrlLoad(self, event): self.obj.sUrlLoad = event.value
 
     @classmethod
     def list(cls): return FormConstruct(cls.List)
