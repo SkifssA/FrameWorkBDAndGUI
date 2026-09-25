@@ -89,11 +89,11 @@ class List(Base):
     def _getSysNameAttrByCol(self, col: int)->str:
         return list(i for i in self.systemName if self.systemName[i] == col)[0]
 
-    def _getCheckBox(self, row, col)->QComboBox:
+    def _getCheckBox(self, row, col)->CheckBox:
         container = self.tablet.cellWidget(row, col)
         if container and container.layout():
             chk = container.layout().itemAt(0).widget()
-            if isinstance(chk, QCheckBox):
+            if isinstance(chk, CheckBox):
                 return chk
 
     def _getAttr(self, sysName: str)->Optional[Any]:
@@ -102,7 +102,7 @@ class List(Base):
         item = self.tablet.item(indRow, indCollunm)
         if item is None:
             item = self.tablet.cellWidget(indRow, indCollunm)
-            if isinstance(item, QCheckBox):
+            if isinstance(item, CheckBox):
                 return item.isChecked()
             return None
         return item.text() if item else None

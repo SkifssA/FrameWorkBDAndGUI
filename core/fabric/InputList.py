@@ -34,8 +34,8 @@ class InputListConstruct:
 
     def _setCheck(self, sysName, dataAttr, value, rect):
         if (chk:=self.formParent._getCheckBox(self._current_edit_row, self._current_edit_col)):
-            chk.setChecked(not value)
-            self.formParent._set_value_avi(sysName, SetterEvent(not value))
+            chk.setValue(not value)
+            self.formParent._set_value_avi(sysName, SetterEvent(chk))
 
     def _getLookUp(self, sysName, dataAttr, value, rect):
         self._editor = LookUp(dataAttr)
@@ -58,7 +58,7 @@ class InputListConstruct:
             sysName = self.formParent._getSysNameAttrByCol(col)
             colId = self.formParent.systemName[sysName[:-2]]
             self._set_item_value(row, colId, new_user_data)
-            self.formParent._set_value_avi(sysName[:-2], SetterEvent(new_user_data))
+            self.formParent._set_value_avi(sysName, SetterEvent(self._editor))
 
             new_text = value['value']
             self._all_save(row, col, new_text)
@@ -86,7 +86,7 @@ class InputListConstruct:
         if hasattr(self, '_editor') and self._editor:
             sysName = self.formParent._getSysNameAttrByCol(col)
             new_value = self._editor.getValue()['value']
-            self.formParent._set_value_avi(sysName, SetterEvent(new_value))
+            self.formParent._set_value_avi(sysName, SetterEvent(self._editor))
 
             self._all_save(row, col, new_value)
 
