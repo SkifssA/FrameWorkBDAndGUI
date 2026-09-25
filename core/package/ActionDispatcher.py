@@ -59,7 +59,7 @@ class ActionDispatcherPkg:
             return None
         return conf if isinstance(conf, dict) else None
 
-    def runHook(self, hookName:str):
+    def runHook(self, hookName:str, **arg):
         """Вызывает optional-хук (например 'on_startup') из hooks.json каждого модуля.
 
         Значение хука — строка вида 'Class.method' (тот же контракт, что и action()).
@@ -71,7 +71,7 @@ class ActionDispatcherPkg:
             if not sAction:
                 continue
             try:
-                dispatcher.action(sAction=sAction['name'], classMethod=sAction['isClassMetod'])
+                dispatcher.action(sAction=sAction['name'], kattr=arg, classMethod=sAction['isClassMetod'])
             except Exception as e:
                 print(f"[ActionDispatcher] Хук '{hookName}' модуля '{moduleName}' "
                       f"завершился с ошибкой: {e}")
