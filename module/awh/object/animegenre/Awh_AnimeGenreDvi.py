@@ -1,7 +1,6 @@
 # Системный файл для интерфейса
-from core.empty import EmptyAvi
+from core.sdk import EmptyAvi, SetterEvent
 from .Awh_AnimeGenreApi import Awh_AnimeGenreApi, Awh_AnimeGenreObj
-from core.type.Event import SetterEvent
 
 class Awh_AnimeGenreDvi(EmptyAvi):
     thisApi = Awh_AnimeGenreApi

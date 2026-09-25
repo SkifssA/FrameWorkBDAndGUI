@@ -13,7 +13,7 @@ from PyQt6.QtGui import QIcon, QAction
 
 from core.ui.forms.selectApp import SelectApp
 from core.package.FileManager import FileManagerPkg
-from core.package.ActionDispatcher import ActionDispatcherPkg
+from core import ACTIONDISPATCHER
 from core.ui.theme import apply_theme
 
 class MainWindow(QMainWindow):
@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
         self.createSystemTray()
         self.setCentralWidget(SelectApp())
         
-        ActionDispatcherPkg().runHook("on_startup")
+        ACTIONDISPATCHER.runHook("on_startup")
         
     def createSystemTray(self):
         # Создаем системный трей

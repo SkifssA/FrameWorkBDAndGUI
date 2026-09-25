@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal
 
 # Импорты твоих утилит остаются прежними
-from core.package.ActionDispatcher import ActionDispatcherPkg
+from core import ACTIONDISPATCHER
 from core.package.FileManager import FileManagerPkg
 from core.package.AsynRun import asyncRun
 from core.ui.theme import Fonts
@@ -143,4 +143,4 @@ class SelectApp(QWidget):
 
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}Avi.Default"
-        return ActionDispatcherPkg().action(module_name, kattr={'mainWin': self.window()})
+        return ACTIONDISPATCHER.action(module_name, kattr={'mainWin': self.window()})

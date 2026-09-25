@@ -1,5 +1,4 @@
-from core.empty.avi import EmptyAvi
-from core.ui.widget.menubar import SetOper
+from core.sdk import EmptyAvi, SetOper
 
 from module.awh.object.anime.Awh_AnimeAvi import Awh_AnimeAvi
 from module.awh.object.animegenre.Awh_AnimeGenreAvi import Awh_AnimeGenreAvi

@@ -1,11 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Awh_AnimeDvi import Awh_AnimeDvi
-from core.fabric.Form import FormConstruct
-from core.ui.forms.image import Image
-from core.ui.forms.text import Text
-from core.ui.widget.menubar import SetOper
-from module.awh.object.Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
-from core.package.AsynRun import asyncRun
+from core.sdk import FormConstruct, Image, Text, SetOper
 import webbrowser
 
 class Awh_AnimeAvi(Awh_AnimeDvi):

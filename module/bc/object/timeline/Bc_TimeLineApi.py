@@ -1,6 +1,6 @@
 # Пользовательский файл для логики
 from .Bc_TimeLineDpi import Bc_TimeLineDpi, Bc_TimeLineObj
-from core.package.LazyVal import LazyVal
+from core.sdk import LazyVal
 
 class Bc_TimeLineApi(Bc_TimeLineDpi):
     sHour = "Hour"

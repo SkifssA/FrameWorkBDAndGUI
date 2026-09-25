@@ -2,7 +2,7 @@ import threading
 import time
 import datetime
 
-from core.package import ActionDispatcherPkg, ThreadWorkerPkg
+from core.sdk import ACTIONDISPATCHER, ThreadWorkerPkg
 from module.bc.object.scheduledtasks.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerObj, Bc_ScriptSchedulerApi
 from module.bc.object.timeline.Bc_TimeLineApi import Bc_TimeLineApi
 
@@ -70,7 +70,7 @@ class Bc_ScriptSchedulerPkg:
     def _runByTime(self, TimeLine, Time):
         
         def k(name):
-            ActionDispatcherPkg(IsRaise=False).action(name)
+            ACTIONDISPATCHER.action(name)
 
         for i in self.script[TimeLine].get(str(Time), []):
             threading.Thread(target=k, args=(i, ), daemon=True).start()

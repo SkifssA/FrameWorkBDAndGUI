@@ -4,3 +4,7 @@ from .AsynRun import asyncRun
 from .MetadataManager import MetadataManager 
 from .ThreadWorkerPkg import ThreadWorkerPkg
 from .ActionDispatcher import ActionDispatcherPkg
+
+
+METADATA = MetadataManager()
+ACTIONDISPATCHER = ActionDispatcherPkg()

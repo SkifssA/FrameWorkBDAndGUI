@@ -66,7 +66,6 @@ class ActionDispatcherPkg:
         Значение хука — строка вида 'Class.method' (тот же контракт, что и action()).
         Ошибка в одном модуле не роняет приложение и не блокирует остальные модули.
         """
-        dispatcher = ActionDispatcherPkg(IsRaise=False)
         if self.cachHooks == {}:
             self.cachHooks = self.getModulesConfig()
         for moduleName, conf in self.cachHooks.items():
@@ -74,7 +73,7 @@ class ActionDispatcherPkg:
             if not sAction:
                 continue
             try:
-                dispatcher.action(sAction=sAction['name'], kattr=arg, classMethod=sAction['isClassMetod'])
+                self.action(sAction=sAction['name'], kattr=arg, classMethod=sAction['isClassMetod'])
             except Exception as e:
                 print(f"[ActionDispatcher] Хук '{hookName}' модуля '{moduleName}' "
                       f"завершился с ошибкой: {e}")

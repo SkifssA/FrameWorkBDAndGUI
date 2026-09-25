@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_TimeLineDvi import Bc_TimeLineDvi
-from core.fabric.Form import FormConstruct
+from core.sdk import FormConstruct
 
 class Bc_TimeLineAvi(Bc_TimeLineDvi):
     class List(Bc_TimeLineDvi.DviList): pass

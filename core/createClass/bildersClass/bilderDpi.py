@@ -2,7 +2,7 @@ from .bilderBase import BilderBase
 
 class BilderDpi(BilderBase):
     temp = """# Системный файл для логики
-from core.empty import EmptyApi, EmptyObj
+from core.sdk import EmptyApi, EmptyObj
 
 class {nameClass}Obj(EmptyObj):
     def __init__(self):

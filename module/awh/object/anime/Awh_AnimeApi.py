@@ -1,7 +1,7 @@
 # Пользовательский файл для логики
 from .Awh_AnimeDpi import Awh_AnimeDpi, Awh_AnimeObj
 from ..animegenre.Awh_AnimeGenreApi import Awh_AnimeGenreApi
-from core.package.AsynRun import asyncRun
+from core.sdk import asyncRun
 
 class Awh_AnimeApi(Awh_AnimeDpi):
     def register(self, data: dict):

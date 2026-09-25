@@ -1,5 +1,5 @@
 # Системный файл для логики
-from core.empty import EmptyApi, EmptyObj
+from core.sdk import EmptyApi, EmptyObj
 
 class Awh_AnimeObj(EmptyObj):
     def __init__(self):
