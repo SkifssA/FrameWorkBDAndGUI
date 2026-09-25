@@ -8,9 +8,8 @@ class LineEdit(Base):
 
     def regSetter(self, fun):
         self.fun = fun
-        # Сохранение по Enter или потере фокуса
-        self._editor.returnPressed.connect(fun)
-        self.focusOutEvent = fun
+        self._editor.returnPressed.connect(lambda *a: fun())
+        self._editor.editingFinished.connect(lambda *a: fun())
 
     def setValue(self, value:str):
         if value:

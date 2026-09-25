@@ -18,11 +18,19 @@ class Base(QWidget):
         self._layout.setContentsMargins(0, 0, 0, 0)  # <-- Убираем отступы
         self._layout.setSpacing(0)  # <-- Убираем промежутки между виджетами
         self.fun = None
+
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         
         self._editor:QWidget = None
         
         self.createInput()
         self._layout.addWidget(self._editor)
+
+    def focusInEvent(self, event):
+        """Переадресуем фокус контейнера на внутреннее поле ввода."""
+        if self._editor is not None:
+            self._editor.setFocus()
+        super().focusInEvent(event)
 
     def createInput(self)->QWidget:...
     def getValue(self)->dict[str, Any]:...

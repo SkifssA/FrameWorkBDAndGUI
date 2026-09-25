@@ -73,7 +73,6 @@ class List(Base):
                 checkbox_container.setValue(data[sysName])
                 self.tablet.setCellWidget(currentRow, self.systemName[sysName], checkbox_container)
             else:
-                self.tablet.isEnabled = False
                 self.tablet.setItem(currentRow, self.systemName[sysName], QTableWidgetItem(str(data[sysName])))
                 
         if (currentRow == 0):

@@ -76,10 +76,11 @@ class InputListConstruct:
         self._editor.setGeometry(rect)
         self._editor.setParent(self.formParent.tablet.viewport())  # Важно! viewport, не сама таблица
         self._editor.show()
+        self._editor._editor.setFocus()
         self._editor._editor.selectAll()
         self._editor.setFocus()
 
-        self._editor.regSetter(lambda x: self._save_edit(self._current_edit_row, self._current_edit_col))
+        self._editor.regSetter(lambda *a: self._save_edit(self._current_edit_row, self._current_edit_col))
 
     def _save_edit(self, row, col):
         """Сохраняем значение и убираем редактор"""

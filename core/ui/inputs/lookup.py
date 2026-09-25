@@ -22,11 +22,4 @@ class LookUp(Base):
 
     def regSetter(self, fun):
         self.fun = fun
-        self._editor.currentIndexChanged.connect(fun)
-        
-        # Переопределяем focusOutEvent через установку атрибута
-        original_focus_out = self._editor.focusOutEvent
-        def custom_focus_out(event):
-            fun()
-            original_focus_out(event)
-        self.focusOutEvent = custom_focus_out
+        self._editor.currentIndexChanged.connect(lambda *a: fun())
