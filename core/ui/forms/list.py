@@ -102,7 +102,7 @@ class List(Base):
         if item is None:
             item = self.tablet.cellWidget(indRow, indCollunm)
             if isinstance(item, CheckBox):
-                return item.isChecked()
+                return item.getValue()['value']
             return None
         return item.text() if item else None
 

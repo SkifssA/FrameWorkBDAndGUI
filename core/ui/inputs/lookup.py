@@ -16,7 +16,7 @@ class LookUp(Base):
     def getValue(self):
         index = self._editor.currentIndex()
         return {
-            'data': self._editor.itemData(index)
+            'user_data': self._editor.itemData(index)
             ,'value': self._editor.itemText(index)
         }
 

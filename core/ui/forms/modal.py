@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import (
     QPushButton, QTableWidget, QTableWidgetItem, QDialog, 
     QLineEdit, QLabel, QMessageBox
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
 import types
 
 from core.ui.forms.base import Base
@@ -19,6 +19,8 @@ class Modal(QDialog):
         self.setWindowTitle(self._form.caption)
         self._layout.addWidget(self._form)
         self.setLayout(self._layout)
+        self.resize(QSize(800, 600))
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
 
     def getResult(self):
         res = {}

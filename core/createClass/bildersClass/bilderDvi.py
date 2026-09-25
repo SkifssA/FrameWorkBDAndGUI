@@ -48,8 +48,8 @@ class {nameClass}Dvi(EmptyAvi):
         self.data['sqlListExt'] = w[1]
 
     def __getSetters(self):
-        tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value.getValue()[\'value\']); self.afterSetter()'
-        tempSetLookUp = '{setHead}idLook = event.value.getValue()[\'data\']; self.thisApi().set{nameAttr}(self.thisRop(), idLook); self.afterSetter()'
+        tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value); self.afterSetter()'
+        tempSetLookUp = '{setHead}idLook = event.user_data; self.thisApi().set{nameAttr}(self.thisRop(), idLook); self.afterSetter()'
         tempSetButton = '{setHead}\n            {import}\n            {AviClass}().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().set{nameAttr}(self.thisRop(), x[\'id\'])); self.afterSetter()'
         listTepmSet = []
 

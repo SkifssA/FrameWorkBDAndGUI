@@ -54,7 +54,7 @@ class InputListConstruct:
         """Сохраняем выбранное значение комбобокса в ячейку"""
         if hasattr(self, '_editor') and self._editor:
             value = self._editor.getValue()
-            new_user_data = value['data']
+            new_user_data = value['user_data']
             sysName = self.formParent._getSysNameAttrByCol(col)
             colId = self.formParent.systemName[sysName[:-2]]
             self._set_item_value(row, colId, new_user_data)

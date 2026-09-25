@@ -1,4 +1,7 @@
+from core.ui.inputs.base import Base
+
 class SetterEvent:
-    def __init__(self, value, user_data=None):
-        self.value = value
-        self.user_data = user_data
+    def __init__(self, editor:Base):
+        data = editor.getValue()
+        self.value = data['value']
+        self.user_data = data.get('user_data')

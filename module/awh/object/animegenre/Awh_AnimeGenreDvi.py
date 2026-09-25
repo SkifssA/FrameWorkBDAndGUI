@@ -42,11 +42,11 @@ class Awh_AnimeGenreDvi(EmptyAvi):
         def thisApi(self)->Awh_AnimeGenreApi:
             return super().thisApi()
 
-        def setidAnime(self, event:SetterEvent): self.thisApi().setidAnime(self.thisRop(), event.value.getValue()['value']); self.afterSetter()
+        def setidAnime(self, event:SetterEvent): self.thisApi().setidAnime(self.thisRop(), event.value); self.afterSetter()
         def setidAnimeHL(self, event:SetterEvent): 
             from ...object.anime.Awh_AnimeAvi import Awh_AnimeAvi
             Awh_AnimeAvi().proccessById(event, self.getAttr('idAnime'), lambda x: self.thisApi().setidAnime(self.thisRop(), x['id'])); self.afterSetter()
-        def setidGenre(self, event:SetterEvent): self.thisApi().setidGenre(self.thisRop(), event.value.getValue()['value']); self.afterSetter()
+        def setidGenre(self, event:SetterEvent): self.thisApi().setidGenre(self.thisRop(), event.value); self.afterSetter()
         def setidGenreHL(self, event:SetterEvent): 
             from ...object.genre.Awh_GenreAvi import Awh_GenreAvi
             Awh_GenreAvi().proccessById(event, self.getAttr('idGenre'), lambda x: self.thisApi().setidGenre(self.thisRop(), x['id'])); self.afterSetter()
