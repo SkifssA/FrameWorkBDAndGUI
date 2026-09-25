@@ -28,7 +28,8 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(self.ico)
         self.createSystemTray()
         self.setCentralWidget(SelectApp())
-        ActionDispatcherPkg().action("Bc_ScriptSchedulerPkg.run", classMethod=True)
+        
+        ActionDispatcherPkg().runHook("on_startup")
         
     def createSystemTray(self):
         # Создаем системный трей
@@ -96,17 +97,5 @@ def mainProgram():
 
     sys.exit(app.exec())
 
-async def w():
-    from module.awh.object.Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
-    from module.awh.object.anime.Awh_AnimeApi import Awh_AnimeApi
-    
-    url = 'https://animego.me/anime/ya-perevoplotilsya-v-goblina-voprosy-yest-4007'
-    obj = await Awh_AnimeLoadPkg().init()
-    data = await obj.getData(url)
-    Awh_AnimeApi().register(data)
-
 if __name__ == '__main__':
-    # mainProgram()
-
-    from core.package.AsynRun import asyncRun
-    asyncRun(w())
+    mainProgram()

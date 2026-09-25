@@ -6,6 +6,12 @@
                 "*.odb.json"
             ],
             "url": "./core/templaceJson/jsonObjectDataBase.json"
+        },
+        {
+            "fileMatch": [
+                "hooks.json"
+            ],
+            "url": "./core/templaceJson/jsonHooks.json"
         }
     ],
     "json.validate.enable": true,

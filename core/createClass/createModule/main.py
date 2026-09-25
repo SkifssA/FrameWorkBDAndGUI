@@ -16,6 +16,7 @@ def createModule(nameModule:str, captionModule:str):
     capNameModule = nameModule.capitalize()
 
     _createFile(f'{beginPath}/config/app.json',{'name': captionModule, 'nameMainScreen': f'{capNameModule}_MainMenu'})
+    _createFile(f'{beginPath}/config/hooks.json',{})
 
     _createFile(f'{beginPath}/__init__.py', '')
     _createFile(f'{beginPath}/README.md', '# Модуль "{captionModule}"({nameModule})'.format(captionModule=captionModule, nameModule=capNameModule))
