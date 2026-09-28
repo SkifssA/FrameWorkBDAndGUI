@@ -30,7 +30,7 @@ class InputListConstruct:
             return x.text()
         else:
             if (chk:=self.formParent._getCheckBox(row, col)):
-                return chk.isChecked()
+                return chk.getValue()['value']
 
     def _setCheck(self, sysName, dataAttr, value, rect):
         if (chk:=self.formParent._getCheckBox(self._current_edit_row, self._current_edit_col)):

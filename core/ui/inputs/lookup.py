@@ -9,7 +9,6 @@ class LookUp(Base):
         for dataLook in self.loadDataLookUp:
             self._editor.addItem(dataLook['sHeadLine'], dataLook['id'])
 
-
     def setValue(self, value):
         self._editor.setCurrentText(str(value))
 

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
     QSystemTrayIcon, QMenu, QMessageBox, QSplitter, QFrame,
     QSizePolicy
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QEvent
 from PyQt6.QtWidgets import QHeaderView, QAbstractItemView
 from typing import Optional, Any
 
@@ -25,12 +25,20 @@ class Base(QWidget):
         
         self.createInput()
         self._layout.addWidget(self._editor)
+        self._editor.installEventFilter(self)
 
     def focusInEvent(self, event):
         """Переадресуем фокус контейнера на внутреннее поле ввода."""
         if self._editor is not None:
             self._editor.setFocus()
         super().focusInEvent(event)
+
+    def eventFilter(self, obj, event):
+        if obj == self._editor and event.type() == QEvent.Type.FocusOut:
+            if (self.fun):
+                self.fun()
+            return True  # Обработали событие
+        return super().eventFilter(obj, event)
 
     def createInput(self)->QWidget:...
     def getValue(self)->dict[str, Any]:...

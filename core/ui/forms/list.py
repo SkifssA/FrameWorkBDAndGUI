@@ -38,6 +38,7 @@ class List(Base):
             self.head = self._getHeaderLabelsMeta()
             self.tablet = QTableWidget(0, len(self.head))
             self.tablet.setHorizontalHeaderLabels(self.head)
+            self._reSizeColunm()
             self.tablet.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
             self.tablet.selectRow(0)
             self.tablet.verticalHeader().setVisible(False)
@@ -61,6 +62,11 @@ class List(Base):
                 self.attrHide.append(i)
         return res
 
+    def _reSizeColunm(self):
+        for i in self.systemName.keys():
+            if(x:=self.metaInfo['attr'].get(i, {}).get('length')):
+                self.tablet.setColumnWidth(self.systemName[i], x)
+
     def _add_row(self, data):
         currentRow = self.tablet.rowCount()
         self.tablet.insertRow(currentRow)
@@ -71,6 +77,7 @@ class List(Base):
             if dataAttr.get('edit') == 'check':
                 checkbox_container = CheckBox(dataAttr)
                 checkbox_container.setValue(data[sysName])
+                checkbox_container._editor.setEnabled(False)
                 self.tablet.setCellWidget(currentRow, self.systemName[sysName], checkbox_container)
             else:
                 self.tablet.setItem(currentRow, self.systemName[sysName], QTableWidgetItem(str(data[sysName])))
@@ -91,9 +98,8 @@ class List(Base):
     def _getCheckBox(self, row, col)->CheckBox:
         container = self.tablet.cellWidget(row, col)
         if container and container.layout():
-            chk = container.layout().itemAt(0).widget()
-            if isinstance(chk, CheckBox):
-                return chk
+            if isinstance(container, CheckBox):
+                return container
 
     def _getAttr(self, sysName: str)->Optional[Any]:
         indRow = self.tablet.currentRow()

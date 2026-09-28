@@ -13,7 +13,14 @@
                 "caption": "Жанры",
                 "edit": "edit",
                 "isVisible": true,
-                "order": 70
+                "order": 70,
+                "length": 200
+            },
+            "nSeries": {
+                "length": 100
+            },
+            "bReleased": {
+                "length": 100
             }
         }
     }

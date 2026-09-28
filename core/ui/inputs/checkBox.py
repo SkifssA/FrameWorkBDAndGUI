@@ -34,15 +34,6 @@ class CheckBox(Base):
             pass
         return True
 
-    def mousePressEvent(self, event):
-        """Клик по области ячейки (вне самого индикатора) тоже переключает чекбокс."""
-        if event.button() == Qt.MouseButton.LeftButton and self._editor is not None:
-            if not self._hitCheckbox(event.position().toPoint()):
-                self._editor.click()
-                event.accept()
-                return
-        super().mousePressEvent(event)
-
     def regSetter(self, fun):
         self.fun = fun
 
