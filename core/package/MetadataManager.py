@@ -5,7 +5,7 @@ from core.package import asyncRun
 
 class MetadataManager:
     def get(self, obj)->dict:
-        path = f'../../{self.get_impl_path(obj)}'
+        path = f'{self.get_impl_path(obj)}'
         a = asyncRun(FileManagerPkg.ReadFile(f"{path}.Ameta.json"))
         d = asyncRun(FileManagerPkg.ReadFile(f"{path}.Dmeta.json"))
         if obj.__class__.__name__ in a and d != 'Файл не найден':

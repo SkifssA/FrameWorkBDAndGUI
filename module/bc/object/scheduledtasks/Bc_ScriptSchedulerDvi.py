@@ -1,7 +1,6 @@
 # Системный файл для интерфейса
-from core.empty import EmptyAvi
+from core.sdk import EmptyAvi, SetterEvent
 from .Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi, Bc_ScriptSchedulerObj
-from core.type.Event import SetterEvent
 
 class Bc_ScriptSchedulerDvi(EmptyAvi):
     thisApi = Bc_ScriptSchedulerApi

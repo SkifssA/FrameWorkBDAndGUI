@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Awh_GenreDvi import Awh_GenreDvi
-from core.fabric.Form import FormConstruct
+from core.sdk import FormConstruct
 
 class Awh_GenreAvi(Awh_GenreDvi):
     class List(Awh_GenreDvi.DviList): pass

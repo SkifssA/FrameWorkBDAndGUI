@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal
 
 # Импорты твоих утилит остаются прежними
-from core.package.ActionDispatcher import ActionDispatcherPkg
+from core import ACTIONDISPATCHER
 from core.package.FileManager import FileManagerPkg
 from core.package.AsynRun import asyncRun
 from core.ui.theme import Fonts
@@ -112,11 +112,11 @@ class SelectApp(QWidget):
         self._cards: list[AppCard] = []
 
         # --- ЛОГИКА ЗАГРУЗКИ ---
-        listApp = asyncRun(FileManagerPkg.ReadFile("../../project.yaml"))
+        listApp = asyncRun(FileManagerPkg.ReadFile("project.yaml"))
 
         for app in listApp['modules']:
-            if asyncRun(FileManagerPkg.Exists(f"../../module/{app}/config/app.json")):
-                data = asyncRun(FileManagerPkg.ReadFile(f"../../module/{app}/config/app.json"))
+            if asyncRun(FileManagerPkg.Exists(f"module/{app}/config/app.json")):
+                data = asyncRun(FileManagerPkg.ReadFile(f"module/{app}/config/app.json"))
                 if (data.get('name', None) is not None):
                     card = AppCard(data)
                     # Единая точка навигации: карточка ничего не знает об окне,
@@ -143,4 +143,4 @@ class SelectApp(QWidget):
 
     def openMainMenuModule(self, data):
         module_name = f"{data['nameMainScreen']}Avi.Default"
-        return ActionDispatcherPkg().action(module_name, kattr={'mainWin': self.window()})
+        return ACTIONDISPATCHER.action(module_name, kattr={'mainWin': self.window()})

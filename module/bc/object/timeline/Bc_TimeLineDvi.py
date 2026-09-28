@@ -1,7 +1,6 @@
 # Системный файл для интерфейса
-from core.empty import EmptyAvi
+from core.sdk import EmptyAvi, SetterEvent
 from .Bc_TimeLineApi import Bc_TimeLineApi, Bc_TimeLineObj
-from core.type.Event import SetterEvent
 
 class Bc_TimeLineDvi(EmptyAvi):
     thisApi = Bc_TimeLineApi

@@ -15,7 +15,7 @@ from typing import Any, Optional, TypedDict
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QSplitter
 
-from core import Metadata
+from core import METADATA
 from core.package.Rect import Rect
 from core.ui.widget.menubar import OperUIBuilder, OperRegistry
 from core.ui.widget.groupForm import GroupForm
@@ -48,7 +48,7 @@ class Base(QWidget):
         # 2. Инфраструктура формы.
         self.registry = OperRegistry()
         self.oper = OperUIBuilder(self.registry)
-        self.metaInfo = Metadata.get(self)
+        self.metaInfo = METADATA.get(self)
         self.Rect = Rect(self)
         self.formParent = None
         self.caption = self.metaInfo.get('caption', 'НАЗВАНИЯ НЕТ')

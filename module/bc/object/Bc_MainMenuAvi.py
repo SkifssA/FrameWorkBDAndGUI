@@ -1,5 +1,4 @@
-from core.empty.avi import EmptyAvi
-from core.ui.widget.menubar import SetOper
+from core.sdk import EmptyAvi, SetOper
 
 from module.bc.object.scheduledtasks.Bc_ScriptSchedulerAvi import Bc_ScriptSchedulerAvi
 from module.bc.object.timeline.Bc_TimeLineAvi import Bc_TimeLineAvi

@@ -4,7 +4,7 @@ from libsql_client import create_client
 from core.package.FileManager import FileManagerPkg
 
 class DbManager:
-    _pathConfig = '../config/config.json'
+    _pathConfig = 'core/config/config.json'
     _initialized = False
     url = None
     auth_token = None

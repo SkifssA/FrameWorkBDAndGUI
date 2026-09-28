@@ -5,7 +5,7 @@ from core.package.AsynRun import asyncRun
 def createModule(nameModule:str, captionModule:str):
     '''Создание модуля'''
     
-    beginPath = f"../../module/{nameModule.lower()}/"
+    beginPath = f"module/{nameModule.lower()}/"
     folders = [f"{beginPath}/object"
                , f"{beginPath}/schemas"
                , f"{beginPath}/config"

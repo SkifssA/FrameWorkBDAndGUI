@@ -2,9 +2,8 @@ from .bilderBase import BilderBase
 # {setter}
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
-from core.empty import EmptyAvi
+from core.sdk import EmptyAvi, SetterEvent
 from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
-from core.type.Event import SetterEvent
 
 class {nameClass}Dvi(EmptyAvi):
     thisApi = {nameClass}Api

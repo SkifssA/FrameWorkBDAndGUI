@@ -1,10 +1,10 @@
 from PyQt6.QtWidgets import QComboBox
-from core.package.ActionDispatcher import ActionDispatcherPkg
+from core import ACTIONDISPATCHER
 from core.ui.inputs.base import Base
 
 class LookUp(Base):
     def createInput(self):
-        self.loadDataLookUp = ActionDispatcherPkg().action(f"{self.dataAttr['refTab']}Avi.{self.dataAttr['display']}", kattr={}).getData()
+        self.loadDataLookUp = ACTIONDISPATCHER.action(f"{self.dataAttr['refTab']}Avi.{self.dataAttr['display']}", kattr={}).getData()
         self._editor = QComboBox()
         for dataLook in self.loadDataLookUp:
             self._editor.addItem(dataLook['sHeadLine'], dataLook['id'])

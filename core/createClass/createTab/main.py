@@ -12,21 +12,21 @@ from core.createClass.createTab.tab_manager import TabsManager
 
 def createTab():
     '''Создание таблиц для класса'''
-    listModules = asyncRun(FileManagerPkg.ReadFile("../../project.yaml"))
+    listModules = asyncRun(FileManagerPkg.ReadFile("project.yaml"))
     listModulesWithDep = getListModulesWithDep(listModules['modules'])
     script = []
     for app in listModulesWithDep:
-        pathMod = f"../modules/{app}/schemas"
+        pathMod = f"modules/{app}/schemas"
         lDirModSchemas = asyncRun(FileManagerPkg.GetFoldersList(pathMod, 3))
         for i in lDirModSchemas:
-            odbFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f"../{pathMod}/{i}", '.odb.json', 1))
+            odbFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f"{pathMod}/{i}", '.odb.json', 1))
             for odbFile in odbFiles:
                 tabObject = Tab(**asyncRun(FileManagerPkg.ReadFile(odbFile.__str__())))
                 asyncRun(TabsManager.execute_pending(tabObject))
                 if tabObject.dbData != []:
                     script.append(*tabObject.dbData)
             
-        pkgFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f"../{pathMod}", '.pkg.json', 1))
+        pkgFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f"{pathMod}", '.pkg.json', 1))
         for pkgFile in pkgFiles:
             pkgObject = Tab(**asyncRun(FileManagerPkg.ReadFile(pkgFile.__str__())))
             if pkgObject.dbData != []:
@@ -41,7 +41,7 @@ def getListModulesWithDep(listModules: list)->list:
 
     for modul in listModules:
         if modul not in listModulesWithDep:
-            pathClass = f"../modules/{modul}/config/app.json"
+            pathClass = f"modules/{modul}/config/app.json"
             configMod = asyncRun(FileManagerPkg.ReadFile(pathClass))
             dep = configMod.get("dependenceModules", None)
             for i in dep or []:

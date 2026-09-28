@@ -5,11 +5,12 @@ from core.package.AsynRun import asyncRun
 from core.package.FileManager import FileManagerPkg
 
 class ActionDispatcherPkg:
-    _PATH_APP_CONFIG = "../../module/{module}/config/hooks.json"
-    _PATH_PROJECT = "../../project.yaml"
+    _PATH_APP_CONFIG = "module/{module}/config/hooks.json"
+    _PATH_PROJECT = "project.yaml"
 
     def __init__(self, IsRaise:bool=True):
         self.IsRaise = IsRaise
+        self.cachHooks = {}
 
     def action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
         sNameClass, sNameMetod = sAction.split('.')
@@ -65,13 +66,14 @@ class ActionDispatcherPkg:
         Значение хука — строка вида 'Class.method' (тот же контракт, что и action()).
         Ошибка в одном модуле не роняет приложение и не блокирует остальные модули.
         """
-        dispatcher = ActionDispatcherPkg(IsRaise=False)
-        for moduleName, conf in self.getModulesConfig().items():
+        if self.cachHooks == {}:
+            self.cachHooks = self.getModulesConfig()
+        for moduleName, conf in self.cachHooks.items():
             sAction = conf.get(hookName)
             if not sAction:
                 continue
             try:
-                dispatcher.action(sAction=sAction['name'], kattr=arg, classMethod=sAction['isClassMetod'])
+                self.action(sAction=sAction['name'], kattr=arg, classMethod=sAction['isClassMetod'])
             except Exception as e:
                 print(f"[ActionDispatcher] Хук '{hookName}' модуля '{moduleName}' "
                       f"завершился с ошибкой: {e}")

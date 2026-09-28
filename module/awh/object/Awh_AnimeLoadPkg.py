@@ -1,4 +1,4 @@
-from core.package.AiohttpPkg import AiohttpPkg
+from core.sdk import AiohttpPkg
 
 class Awh_AnimeLoadPkg(AiohttpPkg):
     async def getData(self, urlAnime: str):

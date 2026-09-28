@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_ScriptSchedulerDvi import Bc_ScriptSchedulerDvi
-from core.fabric.Form import FormConstruct
+from core.sdk import FormConstruct
 
 class Bc_ScriptSchedulerAvi(Bc_ScriptSchedulerDvi):
     class List(Bc_ScriptSchedulerDvi.DviList): pass

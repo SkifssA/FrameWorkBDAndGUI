@@ -3,7 +3,7 @@ from .bilderBase import BilderBase
 class BilderAvi(BilderBase):
     temp = """# Пользовательский файл для интерфейса
 from .{nameClass}Dvi import {nameClass}Dvi
-from core.fabric.Form import FormConstruct
+from core.sdk import FormConstruct
 
 class {nameClass}Avi({nameClass}Dvi):
     class List({nameClass}Dvi.DviList): pass
