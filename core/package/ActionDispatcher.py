@@ -34,7 +34,7 @@ class ActionDispatcherPkg:
 
     def action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
         try:
-            self._action(sAction=sAction, kattr=kattr, classMethod=classMethod)
+            return self._action(sAction=sAction, kattr=kattr, classMethod=classMethod)
         except Exception as e:
             print(f"[ActionDispatcher] Вызов '{sAction}' завершился с ошибкой: {e}")
 
