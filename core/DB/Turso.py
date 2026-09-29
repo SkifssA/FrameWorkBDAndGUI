@@ -1,7 +1,18 @@
-import asyncio
+import re
 from libsql_client import create_client
 
 from core.package.FileManager import FileManagerPkg
+
+_RE_FIRST_KEYWORD = re.compile(
+    r"^\s*(?:--[^\n]*\n|\s|/\*.*?\*/)*([A-Za-z]+)",
+    re.DOTALL,
+)
+
+
+def _firstKeyword(SQLstr: str) -> str:
+    """Возвращает ключевое слово, с которого начинается запрос ('insert', 'select', ...)."""
+    m = _RE_FIRST_KEYWORD.match(SQLstr)
+    return m.group(1).lower() if m else ''
 
 class DbManager:
     _pathConfig = 'core/config/config.json'
@@ -28,11 +39,11 @@ class DbManager:
         await self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
-            if 'insert'.upper() in SQLstr.upper():
+            if _firstKeyword(SQLstr) == 'insert' and 'returning' not in SQLstr.lower():
                 SQLstr += " RETURNING id"
             print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
             c = await db.execute(SQLstr, parameters or [])
-            if c.rows != []:
+            if c.rows:
                 d = c.rows[0][0]
             else:
                 d = None
@@ -42,12 +53,9 @@ class DbManager:
         await self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
         async with create_client(url=self.url, auth_token=self.auth_token) as db:
-            try:
-                print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
-                result = await db.execute(SQLstr, parameters or [])
-                return {'columns': list(result.columns), 'data': [dict(zip(result.columns, row)) for row in result.rows]}
-            except:
-                return {'columns': [], 'data': []}
+            print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
+            result = await db.execute(SQLstr, parameters or [])
+            return {'columns': list(result.columns), 'data': [dict(zip(result.columns, row)) for row in result.rows]}
 
     async def _ensure_initialized(self):
         """Гарантирует что конфигурация загружена"""
@@ -63,9 +71,6 @@ class DbManager:
         return parameters
 
 DbManagerPkg = DbManager()
-
-# УДАЛИТЕ ЭТУ СТРОКУ:
-# asyncio.run(DbManagerPkg.setConf())
 
 ATSQL = DbManagerPkg.ATSQL
 ASQL = DbManagerPkg.ASQL

@@ -52,12 +52,17 @@ class EmptyApi(SQLApi):
             return x[0].get('id', None)
         return None 
 
+    def getByMnemocode(self, value):
+        if len(x:=self._findDataBase('sMnemoCode', value)['data']) > 0:
+            return self._createObj(x[0])
+        return None 
+
     def update(self, obj):
         value = obj.__dict__.copy()
-        keys = [k for k in value.keys() if k != 'id']
         value['gid'] = ''#Gid(f'{self.idClass()}/{rop.id}')
         value['sHeadLine'] = self.calcHeadLine(obj)
         value['sMnemoCode'] = self.calcMnemoCode(obj)
+        keys = [k for k in value.keys() if k != 'id']
         self._updateObj(keys, value)
         
     def _createObj(self, data)->EmptyObj:
