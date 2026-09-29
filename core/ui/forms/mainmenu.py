@@ -20,7 +20,6 @@ class MainMenu(Base):
         super().__init__()
 
     def _createMainFrameWidget(self):
-
         self.mainWin.setMenuBar(self.oper.build_menubar(self.mainWin))
 
         self.tab_widget = QTabWidget()
@@ -34,7 +33,7 @@ class MainMenu(Base):
         from core.ui.forms.selectApp import SelectApp
         self.mainWin.returnMainScreen()
 
-    def close_tab_by_title(self, title):
+    def close(self, title):
         """Закрыть вкладку по её заголовку"""
         for i in range(self.tab_widget.count()):
             if self.tab_widget.tabText(i) == title:

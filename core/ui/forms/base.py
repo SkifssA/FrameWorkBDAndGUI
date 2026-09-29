@@ -13,7 +13,8 @@
 
 from typing import Any, Optional, TypedDict
 
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QSplitter
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QSplitter, QSizePolicy
+from PyQt6.QtCore import Qt, QSize
 
 from core import METADATA
 from core.package.Rect import Rect
@@ -73,9 +74,20 @@ class Base(QWidget):
         for chelder in self.getChilders() or []:
             children[chelder.locat].append(chelder)
 
+        self.widMain = self._createMainFrameWidget()
+
         self._addChildrenGroup(children[LEFT], splitter)
-        splitter.addWidget(self._createMainFrameWidget())
+        splitter.addWidget(self.widMain)
         self._addChildrenGroup(children[RIGHT], splitter)
+
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+
+    def sizeHint(self):
+        old = super().sizeHint()
+        return QSize(
+            self.metaInfo.get('width', old.width())
+            , self.metaInfo.get('height', old.height())
+        )
 
     # ------------------------------------------------------------------
     # Публичное API

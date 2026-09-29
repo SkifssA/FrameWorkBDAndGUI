@@ -20,4 +20,7 @@ class Awh_MainMenuAvi:
         @SetOper(label="Жарны", order=30, headOper="mm_res")
         def mm_Awh_Genre(self): 
             Awh_GenreAvi.list().openForm()
+
+        def oneOpen(self):
+            Awh_AnimeAvi.list().openForm()
         

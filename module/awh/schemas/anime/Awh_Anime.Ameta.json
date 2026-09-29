@@ -1,11 +1,18 @@
 {
     "CardImgByAnime": {
         "caption": "Аниме",
-        "isVisibleToolBar": false
+        "isVisibleToolBar": false,
+        "width": 100
     },
     "TextByAnime": {
         "caption": "Аниме",
-        "isVisibleToolBar": false
+        "isVisibleToolBar": false,
+        "width": 100
+    },
+    "CardSetUrlAnime": {
+        "caption": "Загрузить с сайта",
+        "width": 800,
+        "height": 150
     },
     "List": {
         "attr": {
@@ -14,7 +21,7 @@
                 "edit": "edit",
                 "isVisible": true,
                 "order": 70,
-                "length": 200
+                "length": 250
             },
             "nSeries": {
                 "length": 100

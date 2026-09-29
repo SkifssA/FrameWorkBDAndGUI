@@ -36,6 +36,7 @@ class List(Base):
         if self.tablet is None:
             self.head = self._getHeaderLabelsMeta()
             self.tablet = QTableWidget(0, len(self.head))
+            self.tablet.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
             self.tablet.setHorizontalHeaderLabels(self.head)
             self._reSizeColunm()
             self.tablet.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)

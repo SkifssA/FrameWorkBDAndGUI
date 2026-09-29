@@ -32,7 +32,8 @@ class FormConstruct:
     
     def openForm(self):
         form = self._open(self.mainMenu)
-        self.mainMenu.tab_widget.addTab(*form.getForOpen())
+        tab = self.mainMenu.tab_widget.addTab(*form.getForOpen())
+        self.mainMenu.tab_widget.setCurrentIndex(tab)
 
     def openModal(self):
         self.param(modal=True)

@@ -15,16 +15,16 @@ from core.ui.forms.selectApp import SelectApp
 from core.package.FileManager import FileManagerPkg
 from core import ACTIONDISPATCHER
 from core.ui.theme import apply_theme
+from core import PATHICO
 
 class MainWindow(QMainWindow):
     name = "NecoTab"
-    pathIco = FileManagerPkg.getRealPath("core/assets/img/iconApp/app.ico")
 
     def __init__(self):
         super().__init__()
-        self.ico = QIcon(self.pathIco)
+        self.ico = QIcon(PATHICO)
         self.setWindowTitle(self.name)
-        self.setGeometry(100, 100, 1200, 800)
+        self.resize(1200, 800)
         self.setWindowIcon(self.ico)
         self.createSystemTray()
         self.setCentralWidget(SelectApp())

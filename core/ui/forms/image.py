@@ -66,8 +66,6 @@ class Image(Base):
     def _createMainFrameWidget(self):
         self.cachedImg = CachedImageLoader(parent=self)
         self.image_widget = ImageWidget(parent=self)
-
-        self.image_widget.setMinimumSize(300, 250)
         
         def on_image_loaded(pixmap: QPixmap):
             if not pixmap.isNull():

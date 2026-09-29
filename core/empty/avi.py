@@ -31,7 +31,8 @@ class EmptyAvi:
             super()._onRefresh()
             self.checwork()
 
-    class MainMenu(Base, FormMainMenu): pass
+    class MainMenu(Base, FormMainMenu):
+        def oneOpen(self):...
 
     class Default(Base):
         def __init__(self, **kwargs):
@@ -51,7 +52,7 @@ class EmptyAvi:
 
         @SetOper("Закрыть", order=1000, icon='close.png')
         def closeForm(self):
-            self.formParent.close_tab_by_title(self.caption)
+            self.formParent.close(self.caption)
 
         def thisApi(self)->EmptyApi:
             return self._getAvi().thisApi()

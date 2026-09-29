@@ -4,29 +4,41 @@ from PyQt6.QtWidgets import (
     QLineEdit, QLabel, QMessageBox
 )
 from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtGui import QIcon
 import types
 
 from core.ui.forms.base import Base
 from core.ui.widget.menubar import SetOper
+from core.package.FileManager import FileManagerPkg
+from core import PATHICO
 
 class Modal(QDialog):
     def __init__(self, cls:type[Base], result:list[str]):
         super().__init__()
         self._layout = QVBoxLayout()
         self._form = cls()
+        self._form.formParent = self
         self._result = result
         self._addOperOkClose()
         self.setWindowTitle(self._form.caption)
         self._layout.addWidget(self._form)
         self.setLayout(self._layout)
-        self.resize(QSize(800, 600))
-        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
+        self.resize(QSize(
+            self._form.metaInfo.get('width', self._form.width())
+            , self._form.metaInfo.get('height', self._form.height())
+        ))
+
+        self.ico = QIcon(PATHICO)
+        self.setWindowIcon(self.ico)
 
     def getResult(self):
         res = {}
         for i in self._result:
             res[i] = self._form._getAttr(i)
         return res
+
+    def close(self, _):
+        super().close()
 
     def isAccept(self)->bool:
         return self.exec() == QDialog.DialogCode.Accepted

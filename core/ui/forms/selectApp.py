@@ -141,6 +141,7 @@ class SelectApp(QWidget):
         mainWin = self.window()
         self.mainMenu = self.openMainMenuModule(data)
         FormConstruct.mainMenu = self.mainMenu
+        self.mainMenu.oneOpen()
         mainWin.setCentralWidget(self.mainMenu)
 
     def openMainMenuModule(self, data):
