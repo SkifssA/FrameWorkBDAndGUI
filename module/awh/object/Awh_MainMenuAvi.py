@@ -11,13 +11,13 @@ class Awh_MainMenuAvi:
 
         @SetOper(label="Аниме", order=10, headOper="mm_res")
         def mm_Awh_Anime(self): 
-            Awh_AnimeAvi.list().open()
+            Awh_AnimeAvi.list().openForm()
 
         @SetOper(label="Жанры по аниме", order=20, headOper="mm_res")
         def mm_Awh_AnimeGenre(self): 
-            Awh_AnimeGenreAvi.list().open()
+            Awh_AnimeGenreAvi.list().openForm()
 
         @SetOper(label="Жарны", order=30, headOper="mm_res")
         def mm_Awh_Genre(self): 
-            Awh_GenreAvi.list().open()
+            Awh_GenreAvi.list().openForm()
         

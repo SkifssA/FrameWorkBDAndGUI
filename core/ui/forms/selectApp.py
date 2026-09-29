@@ -137,8 +137,10 @@ class SelectApp(QWidget):
 
     def _openModule(self, data):
         """Открывает главное меню модуля и делает его центральным виджетом окна."""
+        from core.fabric.Form import FormConstruct
         mainWin = self.window()
         self.mainMenu = self.openMainMenuModule(data)
+        FormConstruct.mainMenu = self.mainMenu
         mainWin.setCentralWidget(self.mainMenu)
 
     def openMainMenuModule(self, data):

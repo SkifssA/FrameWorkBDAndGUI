@@ -12,7 +12,7 @@ class ActionDispatcherPkg:
         self.IsRaise = IsRaise
         self.cachHooks = {}
 
-    def action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
+    def _action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
         sNameClass, sNameMetod = sAction.split('.')
         sNameModule = f'module.{sNameClass[:sNameClass.find('_')].lower()}'
         try:
@@ -31,6 +31,12 @@ class ActionDispatcherPkg:
         except ImportError as e:
             if self.IsRaise:
                 raise ValueError(f"Не удалось импортировать модуль {sNameModule}: {e}")
+
+    def action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
+        try:
+            self._action(sAction=sAction, kattr=kattr, classMethod=classMethod)
+        except Exception as e:
+            print(f"[ActionDispatcher] Вызов '{sAction}' завершился с ошибкой: {e}")
 
     def getModulesConfig(self) -> dict:
         """Читает hooks.json всех модулей, перечисленных в project.yaml.
@@ -73,7 +79,7 @@ class ActionDispatcherPkg:
             if not sAction:
                 continue
             try:
-                self.action(sAction=sAction['name'], kattr=arg, classMethod=sAction['isClassMetod'])
+                self._action(sAction=sAction['name'], kattr=arg, classMethod=sAction['isClassMetod'])
             except Exception as e:
                 print(f"[ActionDispatcher] Хук '{hookName}' модуля '{moduleName}' "
                       f"завершился с ошибкой: {e}")

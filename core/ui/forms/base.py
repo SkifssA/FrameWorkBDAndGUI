@@ -122,8 +122,7 @@ class Base(QWidget):
         group.setObjectName("SidePanel")  # боковая панель стилизуется темой
         splitter.addWidget(group)
         for form in forms:
-            child = form.open()
-            child.formParent = self
+            child = form._open(self)
             group.addWidget(child)
 
     def refreshCh(self):

@@ -10,4 +10,4 @@ class Bc_MainMenuAvi:
 
         @SetOper(label="Планировщик сценариев", order=10, headOper="mm_res")
         def mm_Bc_ScriptScheduler(self): 
-            Bc_ScriptSchedulerAvi.list().open()
+            Bc_ScriptSchedulerAvi.list().openForm()

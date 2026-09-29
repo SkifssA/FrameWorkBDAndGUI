@@ -6,9 +6,18 @@ from core.ui.forms.card import Card as FormCard
 from core.ui.forms.mainmenu import MainMenu as FormMainMenu
 from core.ui.widget.menubar import SetOper
 from core.empty.api import EmptyApi
+from core.fabric.Form import FormConstruct
 
 class EmptyAvi:
+
+    @classmethod
+    def list(cls): return FormConstruct(cls.List)
+    @classmethod
+    def card(cls): return FormConstruct(cls.Card)
+
     class Base(FormBase):
+        def afterOpen(self):...
+
         def getSelfAttr(self, sysName:str):
             return self._getAttr(sysName)
             
@@ -68,10 +77,7 @@ class EmptyAvi:
     class List(Default, FormList):
         @SetOper("Открыть карточку", icon='open.png', order=-3)
         def editCard(self):
-            card = self._getAvi().card().param(idItem=self.thisRop().id).open()
-            card.formParent = self.formParent
-            card.caption = self.thisApi().calcHeadLine(self.thisRop())
-            self.formParent.tab_widget.addTab(*card.getForOpen())
+            self._getAvi().card().param(idItem=self.thisRop().id).openForm()
 
         @SetOper("Удалить", icon='delete.png')
         def delete(self):
@@ -88,6 +94,10 @@ class EmptyAvi:
     class Card(Default, FormCard):
         def thisRop(self):
             return self.obj
+
+        def afterOpen(self):
+            self.caption = self.thisApi().calcHeadLine(self.thisRop())
+            return super().afterOpen()
 
         def _onRefresh(self):
             if self.updateObj.get(str(self.thisRop())):
