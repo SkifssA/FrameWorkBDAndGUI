@@ -122,9 +122,11 @@ class OperUIBuilder:
         handler = op['handler']
         def make_callback(h):
             def wrapper():
+                QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
                 res = h()
                 if inspect.iscoroutine(res):
                     asyncio.ensure_future(res)
+                QApplication.restoreOverrideCursor()
             return wrapper
         
         action.triggered.connect(make_callback(handler))

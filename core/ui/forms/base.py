@@ -13,7 +13,7 @@
 
 from typing import Any, Optional, TypedDict
 
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QSplitter, QSizePolicy
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QSplitter, QSizePolicy, QApplication
 from PyQt6.QtCore import Qt, QSize
 
 from core import METADATA
@@ -45,6 +45,8 @@ class Base(QWidget):
         # 1. Внешние параметры (Config и всё, что передал модуль).
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+        QApplication.restoreOverrideCursor()
 
         # 2. Инфраструктура формы.
         self.registry = OperRegistry()

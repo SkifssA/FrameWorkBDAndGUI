@@ -46,6 +46,7 @@ class Modal(QDialog):
     def _addOperOkClose(self):
         def OkClose(selfForm):
             self.accept()
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
 
         fun = SetOper(label='Выбрать', order=-1000, icon='selected.png')(OkClose)
         self._form.OkClose = types.MethodType(fun, self._form)
