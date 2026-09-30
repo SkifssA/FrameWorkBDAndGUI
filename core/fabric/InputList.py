@@ -56,7 +56,7 @@ class InputListConstruct:
             value = self._editor.getValue()
             new_user_data = value['user_data']
             sysName = self.formParent._getSysNameAttrByCol(col)
-            colId = self.formParent.systemName[sysName[:-2]]
+            colId = self.formParent.systemName[self.formParent.metaInfo['attr'][sysName].get("attrId")]
             self._set_item_value(row, colId, new_user_data)
             self.formParent._set_value_avi(sysName, SetterEvent(self._editor))
 

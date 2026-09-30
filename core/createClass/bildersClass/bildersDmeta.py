@@ -48,7 +48,8 @@ class BildersDmeta(BilderBase):
                     'isVisible': i['name']+'HL' in self.data['showAttr'],
                     'order': i.get('order', 0),
                     'refTab': i['refTab'],
-                    'display': i.get('display', 'list')
+                    'display': i.get('display', 'list'),
+                    'attrId': i['name']
                 }
                 attr[i['name']]['edit'] = 'edit'
             if  'editType' in i:

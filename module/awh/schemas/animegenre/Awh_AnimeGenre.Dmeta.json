@@ -27,7 +27,8 @@
 "isVisible": true,
 "order": 0,
 "refTab": "Awh_Anime",
-"display": "list"
+"display": "list",
+"attrId": "idAnime"
 },
 "idGenre": {
 "caption": "Жанр",
@@ -41,7 +42,8 @@
 "isVisible": true,
 "order": 0,
 "refTab": "Awh_Genre",
-"display": "list"
+"display": "list",
+"attrId": "idGenre"
 }
 }
 }
