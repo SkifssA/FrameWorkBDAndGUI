@@ -48,7 +48,7 @@ class Rect:
 
     def _getSqlAndParam(self, res, data:dict=None)->tuple[str, list]:
         paternFind = r':([^ \s]*)'
-        par = [self.class_.getAttr(i) if data is None else data[i] for i in re.findall(paternFind, res)]
+        par = [self.class_.getSelfAttr(i) if data is None else data[i] for i in re.findall(paternFind, res)]
         sql = re.sub(paternFind, '?', res)
         return (sql, par)
 
@@ -56,7 +56,7 @@ class Rect:
         pass
 
     def _obj(self, res):
-        self._data = [res.__dict__.copy()]
+        self._data = [res.__dict__]
         self._attr = list(self._data[0].keys())
         self.refreshItem()
         

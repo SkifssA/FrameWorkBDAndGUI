@@ -35,8 +35,8 @@ class Bc_TimeLineDvi(EmptyAvi):
         def thisApi(self)->Bc_TimeLineApi:
             return super().thisApi()
 
-        def setsCode(self, event:SetterEvent): self.thisApi().setsCode(self.thisRop(), event.value); self.afterSetter()
-        def setsName(self, event:SetterEvent): self.thisApi().setsName(self.thisRop(), event.value); self.afterSetter()
+        def setsCode(self, event:SetterEvent): self.thisApi().setsCode(self.thisRop(), event.value); self.afterSetter('sCode')
+        def setsName(self, event:SetterEvent): self.thisApi().setsName(self.thisRop(), event.value); self.afterSetter('sName')
         
     class DviList(DviDefault, EmptyAvi.List): pass
 

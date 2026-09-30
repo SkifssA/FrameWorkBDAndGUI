@@ -39,12 +39,12 @@ class Awh_AnimeDvi(EmptyAvi):
         def thisApi(self)->Awh_AnimeApi:
             return super().thisApi()
 
-        def setsCaption(self, event:SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
-        def setnSeries(self, event:SetterEvent): self.thisApi().setnSeries(self.thisRop(), event.value); self.afterSetter()
-        def setbReleased(self, event:SetterEvent): self.thisApi().setbReleased(self.thisRop(), event.value); self.afterSetter()
-        def setsUrl(self, event:SetterEvent): self.thisApi().setsUrl(self.thisRop(), event.value); self.afterSetter()
-        def setsUrlImg(self, event:SetterEvent): self.thisApi().setsUrlImg(self.thisRop(), event.value); self.afterSetter()
-        def setsComment(self, event:SetterEvent): self.thisApi().setsComment(self.thisRop(), event.value); self.afterSetter()
+        def setsCaption(self, event:SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter('sCaption')
+        def setnSeries(self, event:SetterEvent): self.thisApi().setnSeries(self.thisRop(), event.value); self.afterSetter('nSeries')
+        def setbReleased(self, event:SetterEvent): self.thisApi().setbReleased(self.thisRop(), event.value); self.afterSetter('bReleased')
+        def setsUrl(self, event:SetterEvent): self.thisApi().setsUrl(self.thisRop(), event.value); self.afterSetter('sUrl')
+        def setsUrlImg(self, event:SetterEvent): self.thisApi().setsUrlImg(self.thisRop(), event.value); self.afterSetter('sUrlImg')
+        def setsComment(self, event:SetterEvent): self.thisApi().setsComment(self.thisRop(), event.value); self.afterSetter('sComment')
         
     class DviList(DviDefault, EmptyAvi.List): pass
 

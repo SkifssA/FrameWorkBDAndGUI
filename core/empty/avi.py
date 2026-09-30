@@ -59,7 +59,7 @@ class EmptyAvi:
 
         def thisRop(self)->EmptyObj:...
 
-        def afterSetter(self):
+        def afterSetter(self, nameAttr):
             obj = self.thisRop()
             if (self.updateObj.get(str(obj)) is None):
                 self.updateObj[str(obj)] = obj
@@ -103,13 +103,14 @@ class EmptyAvi:
 
         def _onRefresh(self):
             if self.updateObj.get(str(self.thisRop())):
+                print(self.Rect.getData())
                 self.Rect.refreshItem()
+                print(self.Rect.getData())
                 values = self.Rect.getData()[0]
                 for item in self.Rect.getAttrExt():
                     self._setAttr(item, values[item])
             else:
                 super()._onRefresh()
-
 
     class LookUp:
         def __init__(self):

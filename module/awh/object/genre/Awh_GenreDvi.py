@@ -34,7 +34,7 @@ class Awh_GenreDvi(EmptyAvi):
         def thisApi(self)->Awh_GenreApi:
             return super().thisApi()
 
-        def setsCaption(self, event:SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter()
+        def setsCaption(self, event:SetterEvent): self.thisApi().setsCaption(self.thisRop(), event.value); self.afterSetter('sCaption')
         
     class DviList(DviDefault, EmptyAvi.List): pass
 

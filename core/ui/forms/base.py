@@ -147,6 +147,8 @@ class Base(QWidget):
 
     def _set_value_avi(self, attrName: str, setter: SetterEvent) -> None:
         """Вызывает сеттер атрибута `set<attrName>`, если он определён."""
+        if x:=self.metaInfo['attr'][attrName].get('attrId'):
+            self._setAttr(x, setter.value)
         setName = f'set{attrName}'
         if hasattr(self, setName):
             getattr(self, setName)(setter)
@@ -154,3 +156,6 @@ class Base(QWidget):
     def _refreshToolBar(self) -> None:
         self.registry.register(self)
         self.toolbar = self.oper.build_toolbar(self.toolbar)
+
+    def _getAttr(self, name):...
+    def _setAttr(self, name, value):...

@@ -22,6 +22,7 @@ class InputCardConstruct:
         self._editors[name].setValue(value)
         self._editors[name].setParent(self.formParent)
         self._editors[name].regSetter(lambda: self.formParent._set_value_avi(name, SetterEvent(self._editors[name])))
+        self._editors[name].regSetter(lambda: self.formParent._set_value_avi(name, SetterEvent(self._editors[name])))
 
         self._InputandLable[name] = InputandLable(data.get('caption', name), self._editors[name]) 
         self.formParent._layout.addWidget(self._InputandLable[name])
