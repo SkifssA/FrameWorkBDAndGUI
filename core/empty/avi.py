@@ -5,7 +5,7 @@ from core.ui.forms.list import List as FormList
 from core.ui.forms.card import Card as FormCard
 from core.ui.forms.mainmenu import MainMenu as FormMainMenu
 from core.ui.widget.menubar import SetOper
-from core.empty.api import EmptyApi
+from core.empty.api import EmptyApi, EmptyObj
 from core.fabric.Form import FormConstruct
 
 class EmptyAvi:
@@ -57,7 +57,7 @@ class EmptyAvi:
         def thisApi(self)->EmptyApi:
             return self._getAvi().thisApi()
 
-        def thisRop(self):...
+        def thisRop(self)->EmptyObj:...
 
         def afterSetter(self):
             obj = self.thisRop()
@@ -105,10 +105,11 @@ class EmptyAvi:
             if self.updateObj.get(str(self.thisRop())):
                 self.Rect.refreshItem()
                 values = self.Rect.getData()[0]
-                for item, value in self._editors.items():
-                    value.setValue(values[item])
+                for item in self.Rect.getAttrExt():
+                    self._setAttr(item, values[item])
             else:
                 super()._onRefresh()
+
 
     class LookUp:
         def __init__(self):

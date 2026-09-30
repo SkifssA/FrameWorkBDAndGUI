@@ -35,7 +35,7 @@ class CheckBox(Base):
         return True
 
     def regSetter(self, fun):
-        fun()
+        self._editor.toggled.connect(fun)
 
     def setValue(self, value:bool):
         target = bool(value)
@@ -50,5 +50,5 @@ class CheckBox(Base):
             , 'user_data': None
         }
 
-    def active(self, value, rect, viewport):
+    def active(self, value, viewport):
         self.setValue(not value)

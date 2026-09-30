@@ -15,6 +15,29 @@
         "height": 150
     },
     "List": {
+        "filter": [
+            {
+                "sql": "(t2.id = :filter$flt_lGenres)",
+                "logOper": "and",
+                "attr": {
+                    "flt_lGenres": {
+                        "caption": "Жанры",
+                        "edit": "edit",
+                        "isVisible": false,
+                        "order": 10
+                    },
+                    "flt_lGenresHL": {
+                        "caption": "Жанры",
+                        "edit": "lookUp",
+                        "isVisible": true,
+                        "order": 10.1,
+                        "refTab": "Bc_TimeLine",
+                        "display": "LookUp",
+                        "attrId": "flt_lGenres"
+                    }
+                }
+            }
+        ],
         "attr": {
             "lGenres": {
                 "caption": "Жанры",

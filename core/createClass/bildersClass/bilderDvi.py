@@ -48,7 +48,6 @@ class {nameClass}Dvi(EmptyAvi):
 
     def __getSetters(self):
         tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value); self.afterSetter()'
-        tempSetLookUp = '{setHead}idLook = event.user_data; self.thisApi().set{nameAttr}(self.thisRop(), idLook); self.afterSetter()'
         tempSetButton = '{setHead}\n            {import}\n            {AviClass}().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().set{nameAttr}(self.thisRop(), x[\'id\'])); self.afterSetter()'
         listTepmSet = []
 
@@ -62,7 +61,7 @@ class {nameClass}Dvi(EmptyAvi):
             dictAttr['setHead'] = 'def set{nameAttr}(self, event:SetterEvent): '.format(nameAttr=i['name']+'HL')
             mM = self.data['name'][:self.data['name'].find('_')].lower()
             if editType == 'lookUp':
-                listTepmSet.append(tempSetLookUp.format(**dictAttr))
+                listTepmSet.append(tempSet.format(**dictAttr))
             elif i['name'].startswith('id') and editType is None:
                 w:str = i['refTab']
                 m = i['refTab'][:i['refTab'].find('_')].lower()

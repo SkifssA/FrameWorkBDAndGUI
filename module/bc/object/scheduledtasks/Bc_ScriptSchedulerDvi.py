@@ -45,7 +45,7 @@ class Bc_ScriptSchedulerDvi(EmptyAvi):
         def setbRepeat(self, event:SetterEvent): self.thisApi().setbRepeat(self.thisRop(), event.value); self.afterSetter()
         def setnTime(self, event:SetterEvent): self.thisApi().setnTime(self.thisRop(), event.value); self.afterSetter()
         def setidTimeLine(self, event:SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter()
-        def setidTimeLineHL(self, event:SetterEvent): idLook = event.user_data; self.thisApi().setidTimeLine(self.thisRop(), idLook); self.afterSetter()
+        def setidTimeLineHL(self, event:SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter()
         def setbUsed(self, event:SetterEvent): self.thisApi().setbUsed(self.thisRop(), event.value); self.afterSetter()
         
     class DviList(DviDefault, EmptyAvi.List): pass

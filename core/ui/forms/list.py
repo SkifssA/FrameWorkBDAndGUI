@@ -28,7 +28,7 @@ class List(Base):
         self.tablet.itemSelectionChanged.connect(self.refreshCh)
         self.tablet.itemSelectionChanged.connect(self.checwork)
         self.tablet.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.tablet.cellDoubleClicked.connect(lambda r, c: self.attr.getInput(r, c))
+        self.tablet.cellDoubleClicked.connect(lambda r, c: self.attr.openEditor(r, c))
 
         return self.tablet
 

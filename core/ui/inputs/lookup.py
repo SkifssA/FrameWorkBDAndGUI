@@ -21,9 +21,8 @@ class LookUp(Base):
         return {
             'user_data': self._editor.itemText(index)
             , 'value': self._editor.itemData(index)
-            
         }
 
-    def active(self, value, rect, viewport):
-        super().active(value, rect, viewport)
+    def active(self, value, viewport):
+        super().active(value, viewport)
         self._editor.showPopup()

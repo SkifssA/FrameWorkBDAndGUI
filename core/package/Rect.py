@@ -14,6 +14,9 @@ class Rect:
         
     def getAttr(self):
         return self._attr + self._attrExt
+
+    def getAttrExt(self):
+        return self._attrExt
     
     def getData(self):
         if len(self._dataExt) > 0:

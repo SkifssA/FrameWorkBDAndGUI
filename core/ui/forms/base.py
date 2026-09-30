@@ -52,6 +52,7 @@ class Base(QWidget):
         self.registry = OperRegistry()
         self.oper = OperUIBuilder(self.registry)
         self.metaInfo = METADATA.get(self)
+        self.isReadOnlyForm = not self.metaInfo.get('isReadOnly', False)
         self.Rect = Rect(self)
         self.formParent = None
         self.caption = self.metaInfo.get('caption', 'НАЗВАНИЯ НЕТ')

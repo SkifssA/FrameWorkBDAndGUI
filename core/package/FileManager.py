@@ -99,7 +99,7 @@ class AsyncFileManager:
                 content = await f.read()
             return json.loads(content)
         except FileNotFoundError:
-            return "Файл не найден"
+            return {}
         except Exception as e:
             return f"Ошибка: {e}"
 

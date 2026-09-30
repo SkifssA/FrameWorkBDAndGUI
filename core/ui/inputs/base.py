@@ -18,6 +18,7 @@ class Base(QWidget):
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setSpacing(0)
         self.fun = None
+        self.typeForm = None
 
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         
@@ -33,23 +34,14 @@ class Base(QWidget):
             self._editor.setFocus()
         super().focusInEvent(event)
 
-    def eventFilter(self, obj, event):
-        if obj == self._editor and event.type() == QEvent.Type.FocusOut:
-            if (self.fun):
-                self.fun()
-            return True  # Обработали событие
-        return super().eventFilter(obj, event)
-
-    def active(self, value, rect, viewport):
+    def active(self, value, viewport):
         self.setValue(value)
-        self.setGeometry(rect)
         self.setParent(viewport)
-        self.setFocus()
-        return self
 
-    def regSetter(self, fun):
-            return self
+    def setTypeForm(self, typeForm):
+        self.typeForm = typeForm
 
+    def regSetter(self, fun):...
     def createInput(self)->QWidget:...
     def getValue(self)->dict[str, Any]:...
     def setValue(self, value):...

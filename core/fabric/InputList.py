@@ -1,27 +1,36 @@
 from core.type.Event import SetterEvent
-from core.ui.inputs import inputType, LookUp
+from core.ui.inputs import inputType, LookUp, CheckBox
 
 class InputListConstruct:
     def __init__(self, formParent):
         from core.ui.forms.list import List
         self.formParent: List = formParent
-        self.loadDataLookUp = {}
+        self.row = None
+        self.col = None
+        self._editor = None
 
-    def getInput(self, row, col):
+    def openEditor(self, row, col):
         sysName = self.formParent._getSysNameAttrByCol(col)
         setName = f'set{sysName}'
-        if hasattr(self.formParent, setName):
+        isReadOnlyAttr = not self.formParent.metaInfo['attr'][sysName].get('isReadOnly', False)
+        
+        if hasattr(self.formParent, setName) and isReadOnlyAttr and self.formParent.isReadOnlyForm:
             dataAttr = self.formParent.metaInfo['attr'].get(sysName, {})
             value = self._get_value(row, col)
             
             rect = self.formParent.tablet.visualRect(self.formParent.tablet.model().index(row, col))
             self._current_edit_row = row
             self._current_edit_col = col
-            self._sysName = self._get_sysName()    
+            self._sysName = self._refAttrName()    
 
             self._editor = inputType[dataAttr.get('edit', 'edit')](dataAttr)
-            self._editor.active(value, rect, self.formParent.tablet.viewport())
-            self._editor.regSetter(lambda: self._all_save())
+            self._editor.setGeometry(rect)
+            self._editor.active(value, self.formParent.tablet.viewport())
+            self._editor.setFocus()
+            if isinstance(self._editor, CheckBox):
+                self._saveEditor()
+            else:
+                self._editor.regSetter(lambda: self._saveEditor())
 
     def _get_value(self, row, col):
         if (x:=self.formParent.tablet.item(row, col)):
@@ -29,12 +38,12 @@ class InputListConstruct:
         elif (chk:=self.formParent._getCheckBox(row, col)):
                 return chk.getValue()['value']
 
-    def _get_sysName(self):
+    def _refAttrName(self):
         if x:= self.formParent.metaInfo['attr'][self.formParent._getSysNameAttrByCol(self._current_edit_col)].get("attrId"):
             return x
         return self.formParent._getSysNameAttrByCol(self._current_edit_col)
 
-    def _all_save(self):
+    def _saveEditor(self):
         if isinstance(self._editor, LookUp):
              self.formParent._setAttr(self.formParent._getSysNameAttrByCol(self._current_edit_col), self._editor.getValue()['user_data'])
 

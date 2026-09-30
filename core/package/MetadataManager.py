@@ -8,12 +8,14 @@ class MetadataManager:
         path = f'{self.get_impl_path(obj)}'
         a = asyncRun(FileManagerPkg.ReadFile(f"{path}.Ameta.json"))
         d = asyncRun(FileManagerPkg.ReadFile(f"{path}.Dmeta.json"))
-        if obj.__class__.__name__ in a and d != 'Файл не найден':
-            return self.__fillByDefault(a[obj.__class__.__name__], d['Default'])
-        elif (obj.__class__.__name__ in a):
+        if obj.__class__.__name__ in a and d != {}:
+            aDef = self.__fillByDefault(a['Default'], d['Default'])
+            return self.__fillByDefault(a[obj.__class__.__name__], aDef)
+        elif obj.__class__.__name__ in a:
             return a[obj.__class__.__name__]
         elif 'Default' in d:
-            return d['Default']
+            aDef = self.__fillByDefault(a['Default'], d['Default'])
+            return aDef
         else:
             return {'isVisibleToolBar': False}
 
