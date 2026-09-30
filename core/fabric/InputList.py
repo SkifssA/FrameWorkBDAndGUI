@@ -1,5 +1,5 @@
 from core.type.Event import SetterEvent
-from core.ui.inputs import inputType, Base as BaseInput
+from core.ui.inputs import inputType, LookUp
 
 class InputListConstruct:
     def __init__(self, formParent):
