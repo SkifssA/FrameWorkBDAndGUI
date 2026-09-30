@@ -11,6 +11,7 @@ class Bc_ScriptSchedulerApi(Bc_ScriptSchedulerDpi):
         self.setbRepeat(obj, bRepeat)
         self.setbUsed(obj, bUsed)
         self.update(obj)
+        return obj
     
 
     def setsNameScript(self, obj, value:str):

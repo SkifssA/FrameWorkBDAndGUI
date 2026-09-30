@@ -5,13 +5,11 @@ from core.sdk import asyncRun
 
 class Awh_AnimeApi(Awh_AnimeDpi):
     def register(self, data: dict):
-        obj = self.findByMnemocode(data['url'])
+        obj = self.getByMnemocode(data['url'])
         if obj is None:
             obj = self.insert()
             self.setsUrl(obj, data['url'])
             Awh_AnimeGenreApi().fillGenreByAnime(obj.id, data['genre'])
-        else:
-            obj = self.load(obj)
 
         self.setbReleased(obj, data['released'])
         self.setsCaption(obj, data['name'])

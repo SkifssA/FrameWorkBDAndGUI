@@ -12,12 +12,12 @@ class Bc_TimeLineApi(Bc_TimeLineDpi):
     idSecond = LazyVal(lambda: Bc_TimeLineDpi().findByMnemocode(Bc_TimeLineApi.sSecond))
 
     def register(self, sCode:str, sName:str):
-        obj = self.getByMnemocode(sCode)
-        if obj is None:
+        if obj:=self.getByMnemocode(sCode) is None:
             obj = self.insert()
             self.setsCode(obj, sCode)
         self.setsName(obj, sName)
         self.update(obj)
+        return obj
 
     async def dataInstall(self):
         self.register(Bc_TimeLineApi.sHour, "Час")
