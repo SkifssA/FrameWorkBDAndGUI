@@ -29,7 +29,7 @@ class Awh_AnimeApi(Awh_AnimeDpi):
 
     def updateAnime(self):
         from ..Awh_AnimeLoadPkg import Awh_AnimeLoadPkg
-        lv = self.getAll()
+        lv = self.getAllByAttr('bReleased', 0)
         animeLoad = asyncRun(Awh_AnimeLoadPkg().init())
         for i in lv:
             a = asyncRun(animeLoad.getData(i.sUrl))

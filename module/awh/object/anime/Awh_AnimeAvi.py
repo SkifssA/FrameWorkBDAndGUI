@@ -19,7 +19,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
 
         @SetOper(label='Cайт')
         def openWeb(self):
-            webbrowser.open("https://animego.me/anime")
+            webbrowser.open(self.getSelfAttr("sUrl"))
 
         @SetOper(label='ВК')
         def openWebVk(self):
