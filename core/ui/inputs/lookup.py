@@ -9,16 +9,21 @@ class LookUp(Base):
         for dataLook in self.loadDataLookUp:
             self._editor.addItem(dataLook['sHeadLine'], dataLook['id'])
 
+    def regSetter(self, fun):
+        self.fun = fun
+        self._editor.currentIndexChanged.connect(lambda *a: fun())
+
     def setValue(self, value):
         self._editor.setCurrentText(str(value))
 
     def getValue(self):
         index = self._editor.currentIndex()
         return {
-            'user_data': self._editor.itemData(index)
-            ,'value': self._editor.itemText(index)
+            'user_data': self._editor.itemText(index)
+            , 'value': self._editor.itemData(index)
+            
         }
 
-    def regSetter(self, fun):
-        self.fun = fun
-        self._editor.currentIndexChanged.connect(lambda *a: fun())
+    def active(self, value, rect, viewport):
+        super().active(value, rect, viewport)
+        self._editor.showPopup()

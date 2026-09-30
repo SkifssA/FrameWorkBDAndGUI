@@ -15,8 +15,8 @@ class Base(QWidget):
         self.dataAttr = dataAttr
         self._layout = QHBoxLayout()
         self.setLayout(self._layout)
-        self._layout.setContentsMargins(0, 0, 0, 0)  # <-- Убираем отступы
-        self._layout.setSpacing(0)  # <-- Убираем промежутки между виджетами
+        self._layout.setContentsMargins(0, 0, 0, 0)
+        self._layout.setSpacing(0)
         self.fun = None
 
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
@@ -40,7 +40,16 @@ class Base(QWidget):
             return True  # Обработали событие
         return super().eventFilter(obj, event)
 
+    def active(self, value, rect, viewport):
+        self.setValue(value)
+        self.setGeometry(rect)
+        self.setParent(viewport)
+        self.setFocus()
+        return self
+
+    def regSetter(self, fun):
+            return self
+
     def createInput(self)->QWidget:...
     def getValue(self)->dict[str, Any]:...
     def setValue(self, value):...
-    def regSetter(self, fun):...

@@ -112,6 +112,17 @@ class List(Base):
             return None
         return item.text() if item else None
 
+    def _setAttr(self, sysName: str, value):
+        indRow = self.tablet.currentRow()
+        indCollunm = self.systemName[sysName]
+        item = self.tablet.item(indRow, indCollunm)
+        if item is None:
+            item = self.tablet.cellWidget(indRow, indCollunm)
+            if isinstance(item, CheckBox):
+                item.setValue(bool(value))
+        else:
+            item.setText(str(value))
+
     def _setUserData(self, sysName: str, value):
         indRow = self.tablet.currentRow()
         indCollunm = self.systemName[sysName]

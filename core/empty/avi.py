@@ -61,8 +61,9 @@ class EmptyAvi:
 
         def afterSetter(self):
             obj = self.thisRop()
-            if (self.updateObj.get(str(obj), None) is None):
+            if (self.updateObj.get(str(obj)) is None):
                 self.updateObj[str(obj)] = obj
+            self.checwork()
 
         def _getAvi(self)->'EmptyAvi':
             outer_class_name = self.__class__.__qualname__.rsplit('.', 1)[0]
@@ -118,3 +119,4 @@ class EmptyAvi:
             self.rect.refresh()
             self.data = self.rect.getData()
             return self.data
+        

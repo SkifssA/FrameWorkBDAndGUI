@@ -35,20 +35,20 @@ class CheckBox(Base):
         return True
 
     def regSetter(self, fun):
-        self.fun = fun
+        fun()
 
     def setValue(self, value:bool):
         target = bool(value)
         prev = self._editor.isChecked()
-        # Блокируем сигналы на время программной установки значения,
-        # чтобы не дёргать setter (toggled) лишний раз — уведомим сами ниже.
-        self._editor.blockSignals(True)
         self._editor.setChecked(target)
-        self._editor.blockSignals(False)
         if prev != target and self.fun:
             self.fun()
 
     def getValue(self):
         return {
             'value': self._editor.isChecked()
+            , 'user_data': None
         }
+
+    def active(self, value, rect, viewport):
+        self.setValue(not value)

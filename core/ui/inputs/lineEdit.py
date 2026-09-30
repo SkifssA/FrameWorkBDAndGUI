@@ -18,4 +18,15 @@ class LineEdit(Base):
     def getValue(self):
         return {
             'value': self._editor.text()
+            , 'user_data': None
         }
+
+    def active(self, value, rect, viewport):
+        super().active(value, rect, viewport)
+        from core.ui.theme import C
+        self.setStyleSheet(
+            f"background: {C.CARD}; border: 1px solid {C.ACCENT}; border-radius: 6px; padding: 2px;"
+        )
+        
+        self.show()
+        self._editor.selectAll()
