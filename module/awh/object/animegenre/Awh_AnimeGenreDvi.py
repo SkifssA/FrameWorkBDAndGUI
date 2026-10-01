@@ -19,11 +19,6 @@ class Awh_AnimeGenreDvi(EmptyAvi):
                     LEFT JOIN Awh_Genre t2 ON t2.id = t.idGenre
                 """
 
-        def onRefresh(self):
-            if self.filter and (x:=self.filter._getWhere()) != '':
-                return f'{self.structuredQuery()} where {x}'
-            return self.structuredQuery()
-
         def onRefreshExt(self):
             return """
                 with t as ( select 

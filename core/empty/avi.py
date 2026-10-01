@@ -32,9 +32,16 @@ class EmptyAvi:
                 return x.getAttr(end)
             return attr
 
+        def onRefresh(self):
+            if self.filter and (x:=self.filter._getWhere()) != '':
+                return f'{self.structuredQuery()} where {x}'
+            return self.structuredQuery()
+
         def _onRefresh(self):
             super()._onRefresh()
             self.checwork()
+
+        def structuredQuery(self)->str:...
 
     class MainMenu(Base, FormMainMenu):
         def oneOpen(self):...

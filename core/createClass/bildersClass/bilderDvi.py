@@ -12,11 +12,6 @@ class {nameClass}Dvi(EmptyAvi):
         def structuredQuery(self):
             return \"\"\"{sqlList}\"\"\"
 
-        def onRefresh(self):
-            if self.filter and (x:=self.filter._getWhere()) != '':
-                return f'{{self.structuredQuery()}} where {{x}}'
-            return self.structuredQuery()
-
         def onRefreshExt(self):
             return \"\"\"{sqlListExt}\"\"\"
 

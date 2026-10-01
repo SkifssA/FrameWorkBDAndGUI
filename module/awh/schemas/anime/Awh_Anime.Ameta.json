@@ -18,7 +18,6 @@
         "filter": [
             {
                 "sql": "(EXISTS(select 1 from Awh_AnimeGenre ag where ag.idAnime = t.id and ag.idGenre = :filter$flt_lGenres))",
-                "logOper": "and",
                 "attr": {
                     "flt_lGenres": {
                         "caption": "Жанры",
