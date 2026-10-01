@@ -155,13 +155,15 @@ class Base(QWidget):
         for group in self.findChildren(GroupForm):
             group.refreshCh()
 
+    def _getClassSetter(self): return self
+
     def _set_value_avi(self, attrName: str, setter: SetterEvent) -> None:
         """Вызывает сеттер атрибута `set<attrName>`, если он определён."""
-        if x:=self.metaInfo['attr'][attrName].get('attrId'):
+        if x:=self._getAttrMeta(attrName).get('attrId'):
             self._setAttr(x, setter.value)
         setName = f'set{attrName}'
-        if hasattr(self, setName):
-            getattr(self, setName)(setter)
+        if hasattr(self._getClassSetter(), setName):
+            getattr(self._getClassSetter(), setName)(setter)
 
     def _refreshToolBar(self) -> None:
         self.registry.register(self)
@@ -169,4 +171,5 @@ class Base(QWidget):
 
     def _getAttr(self, name):...
     def _setAttr(self, name, value):...
-    def _setAttrForm():...
+    def _setAttrForm(self):...
+    def _getAttrMeta(self, sysName)->dict:...

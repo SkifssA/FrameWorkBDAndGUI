@@ -35,3 +35,6 @@ class FilterBar(Card):
 
     def _getWhere(self):
         return ' and '.join(x for i in self.metaInfo if (x:=i.get('sql')) and '' not in self.Rect._getSqlAndParam(x)[1])
+
+    def _getClassSetter(self): return self.formParent
+

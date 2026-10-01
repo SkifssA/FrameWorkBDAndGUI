@@ -16,7 +16,7 @@ class Awh_GenreDvi(EmptyAvi):
                 """
 
         def onRefresh(self):
-            if (x:=self.filter._getWhere()) != '':
+            if self.filter and (x:=self.filter._getWhere()) != '':
                 return f'{self.structuredQuery()} where {x}'
             return self.structuredQuery()
 

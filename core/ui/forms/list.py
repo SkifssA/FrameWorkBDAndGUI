@@ -134,4 +134,6 @@ class List(Base):
         indCollunm = self.systemName[sysName]
         if (item:=self.tablet.item(indRow, indCollunm)):
             return item.data(Qt.ItemDataRole.UserRole)
-        
+
+    def _getAttrMeta(self, sysName)->dict:
+        return self.metaInfo['attr'].get(sysName, {})

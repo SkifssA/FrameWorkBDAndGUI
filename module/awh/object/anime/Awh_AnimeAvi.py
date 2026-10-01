@@ -53,6 +53,9 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             super().checwork()
             self.oper.isVisible(['openWebVk', ], self.getSelfAttr('bReleased'))
 
+        def setflt_lGenresHL(self, setter):
+            self.refreshForm()
+
     class Card(Awh_AnimeDvi.DviCard):...
 
     class CardImgByAnime(Awh_AnimeDvi.Default, Image): 

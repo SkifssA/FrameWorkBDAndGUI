@@ -14,7 +14,7 @@ class MetadataManager:
         elif obj.__class__.__name__ in a:
             return a[obj.__class__.__name__]
         elif 'Default' in d:
-            aDef = self.__fillByDefault(a['Default'], d['Default'])
+            aDef = self.__fillByDefault(a.get('Default', {}), d['Default'])
             return aDef
         else:
             return {'isVisibleToolBar': False}
