@@ -6,7 +6,7 @@ class Awh_AnimeDvi(EmptyAvi):
     thisApi = Awh_AnimeApi
 
     class DviDefault(EmptyAvi.Default):
-        def onRefresh(self):
+        def structuredQuery(self):
             return """
                 SELECT t.id,
                     t.gid,
@@ -19,6 +19,11 @@ class Awh_AnimeDvi(EmptyAvi):
                 FROM Awh_Anime AS t
                     
                 """
+
+        def onRefresh(self):
+            if (x:=self.filter._getWhere()) != '':
+                return f'{self.structuredQuery()} where {x}'
+            return self.structuredQuery()
 
         def onRefreshExt(self):
             return """

@@ -12,7 +12,7 @@ from typing import Optional, Any
 class Base(QWidget):
     def __init__(self, dataAttr:dict):
         super().__init__()
-        self.dataAttr = dataAttr
+        self.metaInfo = dataAttr
         self._layout = QHBoxLayout()
         self.setLayout(self._layout)
         self._layout.setContentsMargins(0, 0, 0, 0)

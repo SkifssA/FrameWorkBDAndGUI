@@ -17,7 +17,7 @@
     "List": {
         "filter": [
             {
-                "sql": "(t2.id = :filter$flt_lGenres)",
+                "sql": "(EXISTS(select 1 from Awh_AnimeGenre ag where ag.idAnime = t.id and ag.idGenre = :filter$flt_lGenres))",
                 "logOper": "and",
                 "attr": {
                     "flt_lGenres": {
@@ -31,7 +31,7 @@
                         "edit": "lookUp",
                         "isVisible": true,
                         "order": 10.1,
-                        "refTab": "Bc_TimeLine",
+                        "refTab": "Awh_Genre",
                         "display": "LookUp",
                         "attrId": "flt_lGenres"
                     }

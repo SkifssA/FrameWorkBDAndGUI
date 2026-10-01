@@ -9,7 +9,7 @@ class MetadataManager:
         a = asyncRun(FileManagerPkg.ReadFile(f"{path}.Ameta.json"))
         d = asyncRun(FileManagerPkg.ReadFile(f"{path}.Dmeta.json"))
         if obj.__class__.__name__ in a and d != {}:
-            aDef = self.__fillByDefault(a['Default'], d['Default'])
+            aDef = self.__fillByDefault(a.get('Default', {}), d['Default'])
             return self.__fillByDefault(a[obj.__class__.__name__], aDef)
         elif obj.__class__.__name__ in a:
             return a[obj.__class__.__name__]

@@ -28,7 +28,7 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
             qty = f'1-{self.getAttr('nSeries')}'
             webbrowser.open(temp.format(name=name, qty=qty))
 
-        def onRefresh(self):
+        def structuredQuery(self):
             return f"""
             SELECT t.id,
                    t.gid,
@@ -36,13 +36,13 @@ class Awh_AnimeAvi(Awh_AnimeDvi):
                    t.nSeries,
                    t.bReleased,
                    t.sUrl,
-                   GROUP_CONCAT(t2.sHeadLine, ', ') AS lGenres,
+                   (select GROUP_CONCAT(g.sHeadLine, ', ')
+                    from Awh_Genre g
+                    join Awh_AnimeGenre ag on ag.idGenre = g.id
+                    where ag.idAnime = t.id) AS lGenres,
                    t.sUrlImg,
                    t.sComment
             FROM Awh_Anime AS t
-            LEFT JOIN Awh_AnimeGenre t1 on t1.idAnime = t.id
-            LEFT JOIN Awh_Genre t2 on t2.id = t1.idGenre
-            GROUP BY t.id, t.gid, t.sCaption, t.nSeries, t.bReleased, t.sUrl
             """
 
         def getChilders(self):

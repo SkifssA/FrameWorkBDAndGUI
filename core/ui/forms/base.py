@@ -54,12 +54,19 @@ class Base(QWidget):
         self.metaInfo = METADATA.get(self)
         self.isReadOnlyForm = not self.metaInfo.get('isReadOnly', False)
         self.Rect = Rect(self)
-        self.formParent = None
+        if not hasattr(self, 'formParent'): self.formParent = None
         self.caption = self.metaInfo.get('caption', 'НАЗВАНИЯ НЕТ')
         self.toolbar = None
+        self.filter = None
 
         # 3. Каркас UI.
         layout = QVBoxLayout(self)
+
+        if self.metaInfo.get('filter'):
+            from core.ui.forms.filterBar import FilterBar
+            self.filter = FilterBar(self)
+            layout.addWidget(self.filter)
+                    
         if self.IsToolBar and self.metaInfo.get('isVisibleToolBar', True):
             self._refreshToolBar()
             layout.addWidget(self.toolbar)
@@ -84,6 +91,9 @@ class Base(QWidget):
         self._addChildrenGroup(children[RIGHT], splitter)
 
         self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+
+    def _old_sizeHint(self):
+        return super().sizeHint()
 
     def sizeHint(self):
         old = super().sizeHint()
@@ -159,3 +169,4 @@ class Base(QWidget):
 
     def _getAttr(self, name):...
     def _setAttr(self, name, value):...
+    def _setAttrForm():...

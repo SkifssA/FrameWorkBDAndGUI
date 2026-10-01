@@ -4,10 +4,11 @@ from core.ui.inputs.base import Base
 
 class LookUp(Base):
     def createInput(self):
-        self.loadDataLookUp = ACTIONDISPATCHER.action(f"{self.dataAttr['refTab']}Avi.{self.dataAttr['display']}", kattr={}).getData()
+        self.loadDataLookUp = ACTIONDISPATCHER.action(f"{self.metaInfo['refTab']}Avi.{self.metaInfo['display']}", kattr={}).getData()
         self._editor = QComboBox()
         for dataLook in self.loadDataLookUp:
             self._editor.addItem(dataLook['sHeadLine'], dataLook['id'])
+        self._editor.setCurrentIndex(-1)
 
     def regSetter(self, fun):
         self.fun = fun

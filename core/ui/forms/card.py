@@ -49,8 +49,17 @@ class Card(BaseForm):
     def _getAttr(self, name):
         if self.attr._editors.get(name):
             return self.attr._editors[name].getValue()['value']
-        else:
-            return self.Rect.getData()[0][name]
+        if (self.Rect.getData() != []):
+            return self.Rect.getData()[0].get(name)
+        return None
 
     def _setAttr(self, name, value):
         self.attr._editors[name].setValue(value)
+
+    def _set_value_avi(self, attrName: str, setter: SetterEvent) -> None:
+        """Вызывает сеттер атрибута `set<attrName>`, если он определён."""
+        if x:=self.attr.getEditor(attrName).metaInfo.get('attrId'):
+            self._setAttr(x, setter.value)
+        setName = f'set{attrName}'
+        if hasattr(self, setName):
+            getattr(self, setName)(setter)

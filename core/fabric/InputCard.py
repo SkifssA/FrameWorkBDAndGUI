@@ -15,13 +15,12 @@ class InputCardConstruct:
     def getNameAllEditor(self):
         return tuple(self._editors.keys())
 
-    def createInput(self, name, value):
-        data = self.formParent.metaInfo['attr'].get(name, {})
+    def createInput(self, name, value, dataAttr:dict = None):
+        data = dataAttr or self.formParent.metaInfo['attr'].get(name, {})
         self._editors[name] = inputType[data.get('edit', 'edit')](data)
         self._editors[name].setEnabled(not data.get('isReadOnly', False) and self.formParent.isReadOnlyForm)
         self._editors[name].setValue(value)
         self._editors[name].setParent(self.formParent)
-        self._editors[name].regSetter(lambda: self.formParent._set_value_avi(name, SetterEvent(self._editors[name])))
         self._editors[name].regSetter(lambda: self.formParent._set_value_avi(name, SetterEvent(self._editors[name])))
 
         self._InputandLable[name] = InputandLable(data.get('caption', name), self._editors[name]) 

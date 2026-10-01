@@ -6,7 +6,7 @@ class Bc_ScriptSchedulerDvi(EmptyAvi):
     thisApi = Bc_ScriptSchedulerApi
 
     class DviDefault(EmptyAvi.Default):
-        def onRefresh(self):
+        def structuredQuery(self):
             return """
                 SELECT t.id,
                     t.gid,
@@ -20,6 +20,11 @@ class Bc_ScriptSchedulerDvi(EmptyAvi):
                 FROM Bc_ScriptScheduler AS t
                     LEFT JOIN Bc_TimeLine t1 ON t1.id = t.idTimeLine
                 """
+
+        def onRefresh(self):
+            if (x:=self.filter._getWhere()) != '':
+                return f'{self.structuredQuery()} where {x}'
+            return self.structuredQuery()
 
         def onRefreshExt(self):
             return """
@@ -45,7 +50,7 @@ class Bc_ScriptSchedulerDvi(EmptyAvi):
         def setbRepeat(self, event:SetterEvent): self.thisApi().setbRepeat(self.thisRop(), event.value); self.afterSetter('bRepeat')
         def setnTime(self, event:SetterEvent): self.thisApi().setnTime(self.thisRop(), event.value); self.afterSetter('nTime')
         def setidTimeLine(self, event:SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter('idTimeLine')
-        def setidTimeLineHL(self, event:SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter('idTimeLineHL')
+        def setidTimeLineHL(self, event:SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter('idTimeLine')
         def setbUsed(self, event:SetterEvent): self.thisApi().setbUsed(self.thisRop(), event.value); self.afterSetter('bUsed')
         
     class DviList(DviDefault, EmptyAvi.List): pass

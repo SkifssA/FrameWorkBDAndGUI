@@ -6,7 +6,7 @@ class Awh_GenreDvi(EmptyAvi):
     thisApi = Awh_GenreApi
 
     class DviDefault(EmptyAvi.Default):
-        def onRefresh(self):
+        def structuredQuery(self):
             return """
                 SELECT t.id,
                     t.gid,
@@ -14,6 +14,11 @@ class Awh_GenreDvi(EmptyAvi):
                 FROM Awh_Genre AS t
                     
                 """
+
+        def onRefresh(self):
+            if (x:=self.filter._getWhere()) != '':
+                return f'{self.structuredQuery()} where {x}'
+            return self.structuredQuery()
 
         def onRefreshExt(self):
             return """

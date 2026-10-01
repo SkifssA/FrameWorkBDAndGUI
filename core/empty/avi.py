@@ -22,9 +22,14 @@ class EmptyAvi:
             return self._getAttr(sysName)
             
         def getAttr(self, sysName:str):
-            attr = self.getSelfAttr(sysName)
+            if (indSim:=sysName.find('$')) != -1: begin, end = sysName[:indSim], sysName[indSim+1:]
+            else: begin, end = '', sysName
+
+            attr = None
+            if (begin == 'filter'): return self.filter._getAttr(end)
+            if (begin != 'super'): attr = self.getSelfAttr(end)
             if attr is None and (x:=self.formParent) is not None:
-                return x.getAttr(sysName)
+                return x.getAttr(end)
             return attr
 
         def _onRefresh(self):

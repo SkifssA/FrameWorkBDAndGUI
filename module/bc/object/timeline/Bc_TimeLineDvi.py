@@ -6,7 +6,7 @@ class Bc_TimeLineDvi(EmptyAvi):
     thisApi = Bc_TimeLineApi
 
     class DviDefault(EmptyAvi.Default):
-        def onRefresh(self):
+        def structuredQuery(self):
             return """
                 SELECT t.id,
                     t.gid,
@@ -15,6 +15,11 @@ class Bc_TimeLineDvi(EmptyAvi):
                 FROM Bc_TimeLine AS t
                     
                 """
+
+        def onRefresh(self):
+            if (x:=self.filter._getWhere()) != '':
+                return f'{self.structuredQuery()} where {x}'
+            return self.structuredQuery()
 
         def onRefreshExt(self):
             return """

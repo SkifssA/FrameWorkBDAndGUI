@@ -7,6 +7,8 @@ class Awh_GenreAvi(Awh_GenreDvi):
 
     class Card(Awh_GenreDvi.DviCard): pass
 
+    class LookUp(Awh_GenreDvi.DviLookUp): pass
+
     @classmethod
     def list(cls)->FormConstruct:
         return FormConstruct(cls.List)

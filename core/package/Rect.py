@@ -47,8 +47,8 @@ class Rect:
         return data, attr
 
     def _getSqlAndParam(self, res, data:dict=None)->tuple[str, list]:
-        paternFind = r':([^ \s]*)'
-        par = [self.class_.getSelfAttr(i) if data is None else data[i] for i in re.findall(paternFind, res)]
+        paternFind = r':([^ \s)]*)'
+        par = [self.class_.getAttr(i) if data is None else data[i] for i in re.findall(paternFind, res)]
         sql = re.sub(paternFind, '?', res)
         return (sql, par)
 
