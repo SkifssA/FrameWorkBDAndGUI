@@ -21,8 +21,8 @@ def createModule(nameModule:str, captionModule:str):
     _createFile(f'{beginPath}/__init__.py', '')
     _createFile(f'{beginPath}/README.md', '# Модуль "{captionModule}"({nameModule})'.format(captionModule=captionModule, nameModule=capNameModule))
     _createFile(f'{beginPath}/object/{capNameModule}_MainMenuAvi.py',
-                """from core.empty.avi import EmptyAvi
-from core.fabric.Oper import SetOper
+                """from engineQT.sdk import EmptyAvi
+from core.sdk import SetOper
 
 class {nameModule}_MainMenuAvi:
     class Default(EmptyAvi.MainMenu): pass""".format(nameModule=capNameModule))

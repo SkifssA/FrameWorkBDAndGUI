@@ -30,7 +30,7 @@ class LineEdit(Base):
 
     def active(self, value, viewport):
         super().active(value, viewport)
-        from core.ui.theme import C
+        from engineQT.ui.theme import C
         self.setStyleSheet(
             f"background: {C.CARD}; border: 1px solid {C.ACCENT}; border-radius: 6px; padding: 2px;"
         )
