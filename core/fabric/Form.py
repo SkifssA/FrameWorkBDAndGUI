@@ -2,7 +2,6 @@ from typing import Unpack
 
 from core.ui.forms.base import Base, Config
 from core.ui.forms.modal import Modal
-from core.package.FrameworkContext import FrameworkContext
 from core.ui.forms.mainmenu import MainMenu
 
 class Locat:

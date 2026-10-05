@@ -29,7 +29,9 @@ from core.type.Gid import Gid
 from core.type.Event import SetterEvent
 
 # --- Базовые классы каркаса объектов ---------------------------------------
-from core.empty import EmptyAvi, EmptyApi, EmptyObj
+from core.empty.avi import EmptyAvi
+from core.empty.api import EmptyApi
+from core.empty.obj import EmptyObj
 
 # --- UI-контракты для Avi-слоя модулей --------------------------------------
 from core.fabric.Form import FormConstruct
