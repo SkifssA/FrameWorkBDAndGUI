@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QHeaderView
 from PyQt6.QtGui import QAction, QKeySequence
 
 from core.ui.forms.base import Base
-from core.ui.widget.menubar import SetOper
+from core.fabric.Oper import SetOper
 
 class MainMenu(Base):
 

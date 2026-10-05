@@ -35,7 +35,7 @@ from core.empty import EmptyAvi, EmptyApi, EmptyObj
 from core.fabric.Form import FormConstruct
 from core.ui.forms.image import Image
 from core.ui.forms.text import Text
-from core.ui.widget.menubar import SetOper
+from core.fabric.Oper import SetOper
 
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal

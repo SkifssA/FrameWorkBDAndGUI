@@ -4,7 +4,7 @@ from core.ui.forms.base import Base as FormBase
 from core.ui.forms.list import List as FormList
 from core.ui.forms.card import Card as FormCard
 from core.ui.forms.mainmenu import MainMenu as FormMainMenu
-from core.ui.widget.menubar import SetOper
+from core.fabric.Oper import SetOper
 from core.empty.api import EmptyApi, EmptyObj
 from core.fabric.Form import FormConstruct
 

@@ -8,7 +8,7 @@ from PyQt6.QtGui import QIcon
 import types
 
 from core.ui.forms.base import Base
-from core.ui.widget.menubar import SetOper
+from core.fabric.Oper import SetOper
 from core.package.FileManager import FileManagerPkg
 from core import PATHICO
 
