@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHeaderView
 
-from core.ui.forms.base import Base
+from engineQT.ui.forms.base import Base
 
 class Text(Base):
     def _createMainFrameWidget(self):

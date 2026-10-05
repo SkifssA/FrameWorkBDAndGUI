@@ -7,8 +7,8 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHeaderView
 
-from core.fabric.InputCard import InputCardConstruct
-from core.ui.forms.card import Card, BaseForm
+from engineQT.fabric.InputCard import InputCardConstruct
+from engineQT.ui.forms.card import Card, BaseForm
 from core.package.Rect import Rect
 
 class FilterBar(Card):

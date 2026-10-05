@@ -3,7 +3,7 @@ from PyQt6.QtGui import QPainter, QPixmap, QImage
 from PyQt6.QtCore import Qt
 
 from core.package.CachedImageLoader import CachedImageLoader
-from core.ui.forms.base import Base
+from engineQT.ui.forms.base import Base
 from PIL import Image as ImagePIL
 from core.package.AsynRun import asyncRun
 

@@ -1,4 +1,4 @@
-from core.ui.inputs.base import Base
+from engineQT.ui.inputs.base import Base
 
 class SetterEvent:
     def __init__(self, editor:Base):

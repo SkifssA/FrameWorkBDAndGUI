@@ -1,6 +1,7 @@
 # Пользовательский файл для интерфейса
 from .Awh_AnimeDvi import Awh_AnimeDvi
-from core.sdk import FormConstruct, Image, Text, SetOper
+from engineQT.sdk import FormConstruct, Image, Text
+from core.sdk import SetOper
 import webbrowser
 
 class Awh_AnimeAvi(Awh_AnimeDvi):

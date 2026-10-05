@@ -59,7 +59,6 @@ class EmptyApi(SQLApi):
 
     def update(self, obj):
         value = obj.__dict__.copy()
-        value['gid'] = ''#Gid(f'{self.idClass()}/{rop.id}')
         value['sHeadLine'] = self.calcHeadLine(obj)
         value['sMnemoCode'] = self.calcMnemoCode(obj)
         keys = [k for k in value.keys() if k != 'id']

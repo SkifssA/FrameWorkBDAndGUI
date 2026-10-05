@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.sdk import EmptyAvi, SetterEvent
+from engineQT.sdk import EmptyAvi, SetterEvent
 from .Bc_TimeLineApi import Bc_TimeLineApi, Bc_TimeLineObj
 
 class Bc_TimeLineDvi(EmptyAvi):

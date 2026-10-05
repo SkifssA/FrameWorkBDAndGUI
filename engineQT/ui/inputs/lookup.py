@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QComboBox
 from core import ACTIONDISPATCHER
-from core.ui.inputs.base import Base
+from engineQT.ui.inputs.base import Base
 
 class LookUp(Base):
     def createInput(self):

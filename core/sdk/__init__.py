@@ -26,17 +26,11 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 
 # --- Типы и события ---------------------------------------------------------
 from core.type.Gid import Gid
-from core.type.Event import SetterEvent
 
 # --- Базовые классы каркаса объектов ---------------------------------------
-from core.empty.avi import EmptyAvi
 from core.empty.api import EmptyApi
 from core.empty.obj import EmptyObj
 
-# --- UI-контракты для Avi-слоя модулей --------------------------------------
-from core.fabric.Form import FormConstruct
-from core.ui.forms.image import Image
-from core.ui.forms.text import Text
 from core.fabric.Oper import SetOper
 
 # --- Инструменты ядра --------------------------------------------------------
@@ -54,15 +48,9 @@ __all__ = [
     'ROOT',
     # типы и события
     'Gid',
-    'SetterEvent',
     # базовые классы
-    'EmptyAvi',
     'EmptyApi',
     'EmptyObj',
-    # UI-контракты
-    'FormConstruct',
-    'Image',
-    'Text',
     'SetOper',
     # инструменты
     'LazyVal',

@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QLineEdit, QApplication
 from PyQt6.QtCore import Qt, QEvent, QObject
-from core.ui.inputs.base import Base
+from engineQT.ui.inputs.base import Base
 
 class LineEdit(Base):        
     def createInput(self):
@@ -9,7 +9,7 @@ class LineEdit(Base):
         self._app_filter = None
 
     def regSetter(self, fun):
-        from core.ui.forms.card import Card
+        from engineQT.ui.forms.card import Card
         self.fun = fun
 
         if self._app_filter is None and isinstance(self.parent(), Card):

@@ -1,12 +1,12 @@
 import importlib
 
-from core.ui.forms.base import Base as FormBase
-from core.ui.forms.list import List as FormList
-from core.ui.forms.card import Card as FormCard
-from core.ui.forms.mainmenu import MainMenu as FormMainMenu
+from engineQT.ui.forms.base import Base as FormBase
+from engineQT.ui.forms.list import List as FormList
+from engineQT.ui.forms.card import Card as FormCard
+from engineQT.ui.forms.mainmenu import MainMenu as FormMainMenu
 from core.fabric.Oper import SetOper
 from core.empty.api import EmptyApi, EmptyObj
-from core.fabric.Form import FormConstruct
+from engineQT.sdk import FormConstruct
 
 class EmptyAvi:
 

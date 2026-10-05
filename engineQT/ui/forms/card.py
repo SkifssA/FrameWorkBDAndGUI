@@ -9,11 +9,11 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHeaderView, QAbstractItemView
 from typing import Optional, Any
 
-from core.ui.forms.base import Base as BaseForm
-from core.ui.inputs import Base as BaseInput, inputType
-from core.ui.widget.inputandlable import InputandLable 
-from core.type.Event import SetterEvent
-from core.fabric.InputCard import InputCardConstruct
+from engineQT.ui.forms.base import Base as BaseForm
+from engineQT.ui.inputs import Base as BaseInput, inputType
+from engineQT.ui.widget.inputandlable import InputandLable 
+from engineQT.type.Event import SetterEvent
+from engineQT.fabric.InputCard import InputCardConstruct
 
 class Card(BaseForm):
     def __init__(self, **kwargs):

@@ -1,8 +1,8 @@
 from typing import Unpack
 
-from core.ui.forms.base import Base, Config
-from core.ui.forms.modal import Modal
-from core.ui.forms.mainmenu import MainMenu
+from engineQT.ui.forms.base import Base, Config
+from engineQT.ui.forms.modal import Modal
+from engineQT.ui.forms.mainmenu import MainMenu
 
 class Locat:
     right = 'right'

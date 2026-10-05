@@ -8,7 +8,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHeaderView
 from PyQt6.QtGui import QAction, QKeySequence
 
-from core.ui.forms.base import Base
+from engineQT.ui.forms.base import Base
 from core.fabric.Oper import SetOper
 
 class MainMenu(Base):
@@ -30,7 +30,7 @@ class MainMenu(Base):
 
     @SetOper(label="Выход", headOper="menu_file", order=100, shortcut="Ctrl+Q", icon="icons/exit.png")
     def exit_app(self):
-        from core.ui.forms.selectApp import SelectApp
+        from engineQT.ui.forms.selectApp import SelectApp
         self.mainWin.returnMainScreen()
 
     def close(self, title):

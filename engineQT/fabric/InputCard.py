@@ -1,10 +1,11 @@
-from core.type.Event import SetterEvent
-from core.ui.inputs import inputType, Base as BaseInput, CheckBox
-from core.ui.widget.inputandlable import InputandLable 
+from engineQT.type.Event import SetterEvent
+
+from engineQT.ui.inputs import inputType, Base as BaseInput, CheckBox
+from engineQT.ui.widget.inputandlable import InputandLable 
 
 class InputCardConstruct:
     def __init__(self, formParent):
-        from core.ui.forms.card import Card
+        from engineQT.ui.forms.card import Card
         self.formParent:Card = formParent
         self._editors:dict[str, BaseInput] = {}
         self._InputandLable:dict[str, InputandLable] = {}

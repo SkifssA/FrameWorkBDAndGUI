@@ -13,6 +13,6 @@ if __name__ == "__main__":
         createFile()
     elif (args[0] == 'createModule'):
             createModule('sys', 'система')
-    elif (args[0] == 'launchApp'):
-        from core.main import mainProgram
+    elif (args[0] == 'launchAppQT'):
+        from engineQT.main import mainProgram
         mainProgram()

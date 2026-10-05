@@ -1,4 +1,5 @@
-from core.sdk import EmptyAvi, SetOper
+from engineQT.sdk import EmptyAvi
+from core.sdk import SetOper
 
 from module.awh.object.anime.Awh_AnimeAvi import Awh_AnimeAvi
 from module.awh.object.animegenre.Awh_AnimeGenreAvi import Awh_AnimeGenreAvi

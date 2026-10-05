@@ -9,10 +9,10 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHeaderView, QAbstractItemView
 from typing import Optional, Any
 
-from core.ui.forms.base import Base
-from core.ui.inputs.checkBox import CheckBox
-from core.fabric.InputList import InputListConstruct
-from core.type.Event import SetterEvent
+from engineQT.ui.forms.base import Base
+from engineQT.ui.inputs.checkBox import CheckBox
+from engineQT.fabric.InputList import InputListConstruct
+from engineQT.type.Event import SetterEvent
 
 class List(Base):
     def __init__(self):

@@ -1,9 +1,10 @@
-from core.type.Event import SetterEvent
-from core.ui.inputs import inputType, LookUp, CheckBox
+from engineQT.type.Event import SetterEvent
+
+from engineQT.ui.inputs import inputType, LookUp, CheckBox
 
 class InputListConstruct:
     def __init__(self, formParent):
-        from core.ui.forms.list import List
+        from engineQT.ui.forms.list import List
         self.formParent: List = formParent
         self.row = None
         self.col = None

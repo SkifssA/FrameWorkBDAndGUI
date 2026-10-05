@@ -2,7 +2,7 @@ from .bilderBase import BilderBase
 # {setter}
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
-from core.sdk import EmptyAvi, SetterEvent
+from engineQT.sdk import EmptyAvi, SetterEvent
 from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
 
 class {nameClass}Dvi(EmptyAvi):

@@ -8,7 +8,7 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from core import ACTIONDISPATCHER
 from core.package.FileManager import FileManagerPkg
 from core.package.AsynRun import asyncRun
-from core.ui.theme import Fonts
+from engineQT.ui.theme import Fonts
 
 
 class AppCard(QFrame):
@@ -137,7 +137,7 @@ class SelectApp(QWidget):
 
     def _openModule(self, data):
         """Открывает главное меню модуля и делает его центральным виджетом окна."""
-        from core.fabric.Form import FormConstruct
+        from engineQT.fabric.Form import FormConstruct
         mainWin = self.window()
         self.mainMenu = self.openMainMenuModule(data)
         FormConstruct.mainMenu = self.mainMenu

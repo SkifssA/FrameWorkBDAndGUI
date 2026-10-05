@@ -1,4 +1,5 @@
-from core.sdk import EmptyAvi, SetOper
+from engineQT.sdk import EmptyAvi
+from core.sdk import SetOper
 
 from module.bc.object.scheduledtasks.Bc_ScriptSchedulerAvi import Bc_ScriptSchedulerAvi
 from module.bc.object.timeline.Bc_TimeLineAvi import Bc_TimeLineAvi

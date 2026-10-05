@@ -18,9 +18,10 @@ from PyQt6.QtCore import Qt, QSize
 
 from core import METADATA
 from core.package.Rect import Rect
-from core.ui.widget.menubar import OperUIBuilder, OperRegistry
-from core.ui.widget.groupForm import GroupForm
-from core.type.Event import SetterEvent
+
+from engineQT.type.Event import SetterEvent
+from engineQT.ui.widget.menubar import OperUIBuilder, OperRegistry
+from engineQT.ui.widget.groupForm import GroupForm
 
 LEFT = 'left'
 RIGHT = 'right'
@@ -63,7 +64,7 @@ class Base(QWidget):
         layout = QVBoxLayout(self)
 
         if self.metaInfo.get('filter'):
-            from core.ui.forms.filterBar import FilterBar
+            from engineQT.ui.forms.filterBar import FilterBar
             self.filter = FilterBar(self)
             layout.addWidget(self.filter)
                     

@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.sdk import EmptyAvi, SetterEvent
+from engineQT.sdk import EmptyAvi, SetterEvent
 from .Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi, Bc_ScriptSchedulerObj
 
 class Bc_ScriptSchedulerDvi(EmptyAvi):

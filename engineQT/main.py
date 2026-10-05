@@ -11,10 +11,10 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QAction
 
-from core.ui.forms.selectApp import SelectApp
+from engineQT.ui.forms.selectApp import SelectApp
 from core.package.FileManager import FileManagerPkg
 from core import ACTIONDISPATCHER
-from core.ui.theme import apply_theme
+from engineQT.ui.theme import apply_theme
 from core import PATHICO
 
 class MainWindow(QMainWindow):

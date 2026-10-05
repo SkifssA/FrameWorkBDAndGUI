@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_ScriptSchedulerDvi import Bc_ScriptSchedulerDvi
-from core.sdk import FormConstruct
+from engineQT.sdk import FormConstruct
 
 class Bc_ScriptSchedulerAvi(Bc_ScriptSchedulerDvi):
     class List(Bc_ScriptSchedulerDvi.DviList): pass

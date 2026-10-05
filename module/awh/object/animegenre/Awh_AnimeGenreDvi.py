@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from core.sdk import EmptyAvi, SetterEvent
+from engineQT.sdk import EmptyAvi, SetterEvent
 from .Awh_AnimeGenreApi import Awh_AnimeGenreApi, Awh_AnimeGenreObj
 
 class Awh_AnimeGenreDvi(EmptyAvi):

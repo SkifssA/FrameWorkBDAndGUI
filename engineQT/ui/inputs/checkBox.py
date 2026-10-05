@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QCheckBox, QStyle
 from PyQt6.QtCore import Qt
-from core.ui.inputs.base import Base
+from engineQT.ui.inputs.base import Base
 
 class CheckBox(Base):
     def createInput(self):
