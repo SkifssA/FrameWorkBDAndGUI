@@ -26,6 +26,3 @@ class SQLApi(ABC):
 
     def _getById(self, id):
         return asyncRun(ASQL(f"SELECT * FROM {self._getNameClass()} WHERE id = ?", [id]))
-
-    def _updateObj(self, keys, value):
-        asyncRun(ATSQL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (value['id'],)))
