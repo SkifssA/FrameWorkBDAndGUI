@@ -9,7 +9,6 @@ class Awh_AnimeGenreDvi(EmptyAvi):
         def structuredQuery(self):
             return """
                 SELECT t.id,
-                    t.gid,
                     t.idAnime,
                     t1.sHeadLine as idAnimeHL,
                     t.idGenre,
@@ -41,14 +40,7 @@ class Awh_AnimeGenreDvi(EmptyAvi):
         def thisApi(self)->Awh_AnimeGenreApi:
             return super().thisApi()
 
-        def setidAnime(self, event:SetterEvent): self.thisApi().setidAnime(self.thisRop(), event.value); self.afterSetter('idAnime')
-        def setidAnimeHL(self, event:SetterEvent): 
-            from ...object.anime.Awh_AnimeAvi import Awh_AnimeAvi
-            Awh_AnimeAvi().proccessById(event, self.getAttr('idAnime'), lambda x: self.thisApi().setidAnime(self.thisRop(), x['id'])); self.afterSetter('idAnime')
-        def setidGenre(self, event:SetterEvent): self.thisApi().setidGenre(self.thisRop(), event.value); self.afterSetter('idGenre')
-        def setidGenreHL(self, event:SetterEvent): 
-            from ...object.genre.Awh_GenreAvi import Awh_GenreAvi
-            Awh_GenreAvi().proccessById(event, self.getAttr('idGenre'), lambda x: self.thisApi().setidGenre(self.thisRop(), x['id'])); self.afterSetter('idGenre')
+        
         
     class DviList(DviDefault, EmptyAvi.List): pass
 

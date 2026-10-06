@@ -1,15 +1,16 @@
 # Системный файл для логики
 from core.sdk import EmptyApi, EmptyObj
+from dataclasses import dataclass
 
+@dataclass
 class Awh_AnimeObj(EmptyObj):
-    def __init__(self):
-        self.id:int = None
-        self.sCaption:str = None
-        self.nSeries:int = None
-        self.bReleased:int = None
-        self.sUrl:str = None
-        self.sUrlImg:str = None
-        self.sComment:str = None
+    id:int
+    sCaption:str = None
+    nSeries:int = None
+    bReleased:int = None
+    sUrl:str = None
+    sUrlImg:str = None
+    sComment:str = None
 
 class Awh_AnimeDpi(EmptyApi):
     _classObj = Awh_AnimeObj
@@ -29,11 +30,11 @@ class Awh_AnimeDpi(EmptyApi):
     def getByMnemocode(self, value)->Awh_AnimeObj|None:   
         return super().getByMnemocode(value)
 
-    def delete(self, rop:Awh_AnimeObj)->None:
-        from ...object.animegenre.Awh_AnimeGenreApi import Awh_AnimeGenreApi
-        for i in Awh_AnimeGenreApi().getAllByAttr('idAnime', rop.id) or []:
+    def delete(self, obj:Awh_AnimeObj)->None:
+        from module.awh import Awh_AnimeGenreApi
+        for i in Awh_AnimeGenreApi().getAllByAttr('idAnime', obj.id) or []:
             Awh_AnimeGenreApi().delete(i)
-        return super().delete(rop)
+        return super().delete(obj)
     
     def update(self, rop:Awh_AnimeObj)->None:
         return super().update(rop)

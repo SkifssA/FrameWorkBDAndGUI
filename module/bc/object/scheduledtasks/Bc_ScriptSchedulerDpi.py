@@ -1,15 +1,16 @@
 # Системный файл для логики
 from core.sdk import EmptyApi, EmptyObj
+from dataclasses import dataclass
 
+@dataclass
 class Bc_ScriptSchedulerObj(EmptyObj):
-    def __init__(self):
-        self.id:int = None
-        self.sNameScript:str = None
-        self.sNameModule:str = None
-        self.bRepeat:int = None
-        self.nTime:int = None
-        self.idTimeLine:int = None
-        self.bUsed:int = None
+    id:int
+    sNameScript:str = None
+    sNameModule:str = None
+    bRepeat:int = None
+    nTime:int = None
+    idTimeLine:int = None
+    bUsed:int = None
 
 class Bc_ScriptSchedulerDpi(EmptyApi):
     _classObj = Bc_ScriptSchedulerObj
@@ -29,9 +30,9 @@ class Bc_ScriptSchedulerDpi(EmptyApi):
     def getByMnemocode(self, value)->Bc_ScriptSchedulerObj|None:   
         return super().getByMnemocode(value)
 
-    def delete(self, rop:Bc_ScriptSchedulerObj)->None:
+    def delete(self, obj:Bc_ScriptSchedulerObj)->None:
         
-        return super().delete(rop)
+        return super().delete(obj)
     
     def update(self, rop:Bc_ScriptSchedulerObj)->None:
         return super().update(rop)

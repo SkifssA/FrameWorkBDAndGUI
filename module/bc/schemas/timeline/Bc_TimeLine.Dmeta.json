@@ -1,32 +1,34 @@
-{
-"Default": {
-"caption": "Единица измерения времени",
-"isVisibleToolBar": true,
-"attr": {
-"id": {
-"caption": "id",
-"edit": "edit",
-"isVisible": false,
-"order": -2
-},
-"gid": {
-"caption": "gid",
-"edit": "edit",
-"isVisible": false,
-"order": -1
-},
-"sCode": {
-"caption": "Код",
-"edit": "edit",
-"isVisible": true,
-"order": 0
-},
-"sName": {
-"caption": "Наименование",
-"edit": "edit",
-"isVisible": true,
-"order": 0
-}
-}
-}
-}
+[
+    {
+        "name": "Default",
+        "caption": "Единица измерения времени",
+        "isVisibleToolBar": true,
+        "filter": [],
+        "attr": [
+            {
+                "name": "id",
+                "caption": "id",
+                "type": "INT",
+                "isVisible": false,
+                "order": -2,
+                "editType": "edit"
+            },
+            {
+                "name": "sCode",
+                "caption": "Код",
+                "type": "TEXT",
+                "isVisible": true,
+                "order": 0,
+                "editType": "edit"
+            },
+            {
+                "name": "sName",
+                "caption": "Наименование",
+                "type": "TEXT",
+                "isVisible": true,
+                "order": 0,
+                "editType": "edit"
+            }
+        ]
+    }
+]

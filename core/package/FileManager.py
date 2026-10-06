@@ -81,7 +81,7 @@ class AsyncFileManager:
     async def _createJsonFile(self, real_path, data):
         """Создаёт json файлы"""
         async with aiofiles.open(real_path, 'w', encoding='utf-8') as f:
-            content = json.dumps(data, ensure_ascii=False, indent=0)
+            content = json.dumps(data, ensure_ascii=False, indent=4)
             await f.write(content)
 
     async def _createDefaultFile(self, real_path, data):

@@ -9,7 +9,6 @@ class Bc_ScriptSchedulerDvi(EmptyAvi):
         def structuredQuery(self):
             return """
                 SELECT t.id,
-                    t.gid,
                     t.sNameScript,
                     t.sNameModule,
                     t.bRepeat,
@@ -40,13 +39,7 @@ class Bc_ScriptSchedulerDvi(EmptyAvi):
         def thisApi(self)->Bc_ScriptSchedulerApi:
             return super().thisApi()
 
-        def setsNameScript(self, event:SetterEvent): self.thisApi().setsNameScript(self.thisRop(), event.value); self.afterSetter('sNameScript')
-        def setsNameModule(self, event:SetterEvent): self.thisApi().setsNameModule(self.thisRop(), event.value); self.afterSetter('sNameModule')
-        def setbRepeat(self, event:SetterEvent): self.thisApi().setbRepeat(self.thisRop(), event.value); self.afterSetter('bRepeat')
-        def setnTime(self, event:SetterEvent): self.thisApi().setnTime(self.thisRop(), event.value); self.afterSetter('nTime')
-        def setidTimeLine(self, event:SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter('idTimeLine')
-        def setidTimeLineHL(self, event:SetterEvent): self.thisApi().setidTimeLine(self.thisRop(), event.value); self.afterSetter('idTimeLine')
-        def setbUsed(self, event:SetterEvent): self.thisApi().setbUsed(self.thisRop(), event.value); self.afterSetter('bUsed')
+        
         
     class DviList(DviDefault, EmptyAvi.List): pass
 

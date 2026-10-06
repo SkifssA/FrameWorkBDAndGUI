@@ -18,7 +18,7 @@ class AppCard(QFrame):
     Никаких обращений к родительским окнам — только Qt-сигналы.
 
     Стилизация — через objectName-селекторы #AppCard/#AppCardTitle/...
-    из глобальной темы (core/ui/theme.py). Локальных цветов здесь нет.
+    из глобальной темы (engineQT/ui/theme.py). Локальных цветов здесь нет.
     """
     openRequested = pyqtSignal(dict)
 

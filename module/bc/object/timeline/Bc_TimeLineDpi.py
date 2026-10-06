@@ -1,11 +1,12 @@
 # Системный файл для логики
 from core.sdk import EmptyApi, EmptyObj
+from dataclasses import dataclass
 
+@dataclass
 class Bc_TimeLineObj(EmptyObj):
-    def __init__(self):
-        self.id:int = None
-        self.sCode:str = None
-        self.sName:str = None
+    id:int
+    sCode:str = None
+    sName:str = None
 
 class Bc_TimeLineDpi(EmptyApi):
     _classObj = Bc_TimeLineObj
@@ -25,9 +26,9 @@ class Bc_TimeLineDpi(EmptyApi):
     def getByMnemocode(self, value)->Bc_TimeLineObj|None:   
         return super().getByMnemocode(value)
 
-    def delete(self, rop:Bc_TimeLineObj)->None:
+    def delete(self, obj:Bc_TimeLineObj)->None:
         
-        return super().delete(rop)
+        return super().delete(obj)
     
     def update(self, rop:Bc_TimeLineObj)->None:
         return super().update(rop)

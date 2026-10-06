@@ -7,7 +7,8 @@
 """
 
 from abc import abstractmethod
-
+from dacite import from_dict, Config
+from dataclasses import asdict, is_dataclass
 
 from core.DB.SQLapi import SQLApi
 from core.empty.obj import EmptyObj
@@ -57,8 +58,8 @@ class EmptyApi(SQLApi):
             return self._createObj(x[0])
         return None 
 
-    def update(self, obj):
-        value = obj.__dict__.copy()
+    def update(self, obj:EmptyObj):
+        value = asdict(obj)
         value['sHeadLine'] = self.calcHeadLine(obj)
         value['sMnemoCode'] = self.calcMnemoCode(obj)
         keys = [k for k in value.keys() if k != 'id']
@@ -66,10 +67,7 @@ class EmptyApi(SQLApi):
         
     def _createObj(self, data)->EmptyObj:
         """Получение обьекта с заполнеными полями"""
-        obj = self._classObj()
-        for k, v in data.items():
-            setattr(obj, k, v)
-        return obj
+        return from_dict(data_class=self._classObj, data=data, config=Config(cast=[int, str, bool]))
 
     
         

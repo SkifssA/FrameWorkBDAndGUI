@@ -4,6 +4,9 @@ import inspect
 from core.package.AsynRun import asyncRun
 from core.package.FileManager import FileManagerPkg
 
+def getModuleByClass(nameClass: str)->str:
+    return nameClass[:nameClass.find('_')].lower()
+
 class ActionDispatcherPkg:
     _PATH_APP_CONFIG = "module/{module}/config/hooks.json"
     _PATH_PROJECT = "project.yaml"
@@ -14,7 +17,7 @@ class ActionDispatcherPkg:
 
     def _action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
         sNameClass, sNameMetod = sAction.split('.')
-        sNameModule = f'module.{sNameClass[:sNameClass.find('_')].lower()}'
+        sNameModule = f'module.{getModuleByClass(sNameClass)}'
         try:
             module = importlib.import_module(sNameModule)
             if not hasattr(module, sNameClass):

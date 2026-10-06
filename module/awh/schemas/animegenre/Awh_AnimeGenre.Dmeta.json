@@ -1,50 +1,56 @@
-{
-"Default": {
-"caption": "Жарны аниме",
-"isVisibleToolBar": true,
-"attr": {
-"id": {
-"caption": "id",
-"edit": "edit",
-"isVisible": false,
-"order": -2
-},
-"gid": {
-"caption": "gid",
-"edit": "edit",
-"isVisible": false,
-"order": -1
-},
-"idAnime": {
-"caption": "Аниме",
-"edit": "edit",
-"isVisible": false,
-"order": 0
-},
-"idAnimeHL": {
-"caption": "Аниме",
-"edit": "button",
-"isVisible": true,
-"order": 0,
-"refTab": "Awh_Anime",
-"display": "list",
-"attrId": "idAnime"
-},
-"idGenre": {
-"caption": "Жанр",
-"edit": "edit",
-"isVisible": false,
-"order": 0
-},
-"idGenreHL": {
-"caption": "Жанр",
-"edit": "button",
-"isVisible": true,
-"order": 0,
-"refTab": "Awh_Genre",
-"display": "list",
-"attrId": "idGenre"
-}
-}
-}
-}
+[
+    {
+        "name": "Default",
+        "caption": "Жарны аниме",
+        "isVisibleToolBar": true,
+        "filter": [],
+        "attr": [
+            {
+                "name": "id",
+                "caption": "id",
+                "type": "INT",
+                "isVisible": false,
+                "order": -2,
+                "editType": "edit"
+            },
+            {
+                "name": "idAnime",
+                "caption": "Аниме",
+                "type": "INT",
+                "isVisible": false,
+                "order": 0,
+                "editType": "edit"
+            },
+            {
+                "name": "idAnimeHL",
+                "caption": "Аниме",
+                "type": "INT",
+                "isVisible": true,
+                "order": 0.1,
+                "editType": "edit",
+                "refTab": "Awh_Anime",
+                "display": "LookUp",
+                "attrId": "idAnime"
+            },
+            {
+                "name": "idGenre",
+                "caption": "Жанр",
+                "type": "INT",
+                "isVisible": false,
+                "order": 0,
+                "editType": "edit"
+            },
+            {
+                "name": "idGenreHL",
+                "caption": "Жанр",
+                "type": "INT",
+                "isVisible": true,
+                "order": 0.1,
+                "editType": "edit",
+                "refTab": "Awh_Genre",
+                "display": "LookUp",
+                "attrId": "idGenre"
+            }
+        ]
+    }
+]

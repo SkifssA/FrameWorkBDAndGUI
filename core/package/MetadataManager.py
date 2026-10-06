@@ -2,39 +2,22 @@ import inspect
 
 from core.package.FileManager import FileManagerPkg
 from core.package import asyncRun
+from core.fabric.dataClass.metaDataClass import metaShema, getDataClass
 
 class MetadataManager:
-    def get(self, obj)->dict:
+    def get(self, obj)->metaShema:
         path = f'{self.get_impl_path(obj)}'
-        a = asyncRun(FileManagerPkg.ReadFile(f"{path}.Ameta.json"))
-        d = asyncRun(FileManagerPkg.ReadFile(f"{path}.Dmeta.json"))
-        if obj.__class__.__name__ in a and d != {}:
-            aDef = self.__fillByDefault(a.get('Default', {}), d['Default'])
-            return self.__fillByDefault(a[obj.__class__.__name__], aDef)
-        elif obj.__class__.__name__ in a:
-            return a[obj.__class__.__name__]
-        elif 'Default' in d:
-            aDef = self.__fillByDefault(a.get('Default', {}), d['Default'])
-            return aDef
-        else:
-            return {'isVisibleToolBar': False}
+        Ameta = getDataClass(f"{path}.Ameta.json") or {}
+        Dmeta = getDataClass(f"{path}.Dmeta.json") or {'Default':{'isVisibleToolBar': False}}
 
-    def __fillByDefault(self, a, d):
-        self.__w(a, d, 'caption')
-        self.__w(a, d, 'isVisibleToolBar')
-        self.__w(a, d, 'attr')
-
-        for i in d['attr']:
-            self.__w(a['attr'], d['attr'], i)
-            for j in d['attr'][i]:
-                self.__w(a['attr'][i], d['attr'][i], j)
+        if Dmeta and Ameta:
+            return Dmeta['Default'].merge(Ameta[obj.__class__.__name__])
+        elif Ameta.get(obj.__class__.__name__):
+            return Ameta[obj.__class__.__name__]
+        elif Dmeta:
+            return Dmeta['Default']
             
-        return a
-
-    def __w(self, a, d, sNAme):
-        if(sNAme not in a):
-            a[sNAme] = d[sNAme]
-
+        
     def get_impl_path(self, obj):
         """Путь к файлу, где определён класс"""
         file = inspect.getfile(obj.__class__)

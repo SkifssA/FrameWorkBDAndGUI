@@ -1,65 +1,77 @@
-{
-"Default": {
-"caption": "Планировщик сценариев",
-"isVisibleToolBar": true,
-"attr": {
-"id": {
-"caption": "id",
-"edit": "edit",
-"isVisible": false,
-"order": -2
-},
-"gid": {
-"caption": "gid",
-"edit": "edit",
-"isVisible": false,
-"order": -1
-},
-"sNameScript": {
-"caption": "Скрипт",
-"edit": "edit",
-"isVisible": true,
-"order": 10
-},
-"sNameModule": {
-"caption": "Наименование модуля",
-"edit": "edit",
-"isVisible": true,
-"order": 20
-},
-"bRepeat": {
-"caption": "Повторять",
-"edit": "check",
-"isVisible": true,
-"order": 30
-},
-"nTime": {
-"caption": "Время",
-"edit": "edit",
-"isVisible": true,
-"order": 40
-},
-"idTimeLine": {
-"caption": "Временой промежуток",
-"edit": "edit",
-"isVisible": false,
-"order": 50
-},
-"idTimeLineHL": {
-"caption": "Временой промежуток",
-"edit": "lookUp",
-"isVisible": true,
-"order": 50.1,
-"refTab": "Bc_TimeLine",
-"display": "LookUp",
-"attrId": "idTimeLine"
-},
-"bUsed": {
-"caption": "Использовать",
-"edit": "check",
-"isVisible": true,
-"order": 60
-}
-}
-}
-}
+[
+    {
+        "name": "Default",
+        "caption": "Планировщик сценариев",
+        "isVisibleToolBar": true,
+        "filter": [],
+        "attr": [
+            {
+                "name": "id",
+                "caption": "id",
+                "type": "INT",
+                "isVisible": false,
+                "order": -2,
+                "editType": "edit"
+            },
+            {
+                "name": "sNameScript",
+                "caption": "Скрипт",
+                "type": "TEXT",
+                "isVisible": true,
+                "order": 10,
+                "editType": "edit"
+            },
+            {
+                "name": "sNameModule",
+                "caption": "Наименование модуля",
+                "type": "TEXT",
+                "isVisible": true,
+                "order": 20,
+                "editType": "edit"
+            },
+            {
+                "name": "bRepeat",
+                "caption": "Повторять",
+                "type": "INT",
+                "isVisible": true,
+                "order": 30,
+                "editType": "check"
+            },
+            {
+                "name": "nTime",
+                "caption": "Время",
+                "type": "TEXT",
+                "isVisible": true,
+                "order": 40,
+                "editType": "edit"
+            },
+            {
+                "name": "idTimeLine",
+                "caption": "Временой промежуток",
+                "type": "INT",
+                "isVisible": false,
+                "order": 50,
+                "editType": "lookUp"
+            },
+            {
+                "name": "idTimeLineHL",
+                "caption": "Временой промежуток",
+                "type": "INT",
+                "isVisible": true,
+                "order": 50.1,
+                "editType": "lookUp",
+                "refTab": "Bc_TimeLine",
+                "display": "LookUp",
+                "attrId": "idTimeLine"
+            },
+            {
+                "name": "bUsed",
+                "caption": "Использовать",
+                "type": "INT",
+                "isVisible": true,
+                "order": 60,
+                "editType": "check"
+            }
+        ]
+    }
+]

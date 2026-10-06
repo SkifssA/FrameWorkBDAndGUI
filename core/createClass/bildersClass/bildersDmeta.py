@@ -1,72 +1,52 @@
+from dataclasses import dataclass, field, asdict
+from dacite import from_dict, Config
+
 from core.package.FileManager import FileManagerPkg
 from .bilderBase import BilderBase
+from core.fabric.dataClass.tabDataClass import tabShema, BASE_ATTR
+from core.fabric.dataClass.metaDataClass import metaShema, attrMetaShema
 
 class BildersDmeta(BilderBase):
     suffixFile = '.Dmeta.json'
 
-    baseAttr = {
-        'id': {
-                'caption': 'id',
-                'edit': 'edit',
-                'isVisible': False,
-                'order': -2
-            },
-        'gid': {
-                'caption': 'gid',
-                'edit': 'edit',
-                'isVisible': False,
-                'order': -1
-            }
-        }
-    
-    baseForm =  {'Default':{
-            'caption': None,
-            'isVisibleToolBar': True,
-            'attr': []
-        }}
-
-    def __init__(self, data):
-        super().__init__(data)
-        self.form = self.baseForm.copy()
-        self.form['Default']['caption'] = self.data['caption']
-        self.data['showAttr'] = self.__getShowAttr()
-
     async def createFile(self, path):
         pathWhitFileD = self._getPathAndFile(path)
-        attr = {}
-        for i in self.data['attr']:
-            attr[i['name']] = {
-                    "caption": i['caption'],
-                    "edit": i.get('editType', 'edit'),
-                    'isVisible': i['name'] in self.data['showAttr'],
-                    'order': i.get('order', 0)
-                }
-            if i['name'].startswith('id'):
-                attr[i['name']+'HL'] = {
-                    "caption": i['caption'],
-                    "edit": i['editType'] if 'editType' in i else 'button',
-                    'isVisible': i['name']+'HL' in self.data['showAttr'],
-                    'order': i.get('order', 0),
-                    'refTab': i['refTab'],
-                    'display': i.get('display', 'list'),
-                    'attrId': i['name']
-                }
-                attr[i['name']]['edit'] = 'edit'
-            if  'editType' in i:
-                if i['editType'] == 'lookUp':
-                    attr[i['name']+'HL']['display'] = 'LookUp'
-                    attr[i['name']+'HL']['refTab'] = i['refTab']
-                    attr[i['name']+'HL']['order'] = i.get('order', 0)+0.1
+        metaVisible = self.__getShowAttr()
+        attrMeta = list(from_dict(data_class=attrMetaShema, data=i) for i in BASE_ATTR)
+        for attr in self.data.attr:
+            attrMeta.append(attrMetaShema(
+                name=attr.name
+                , caption=attr.caption
+                , type=attr.type
+                , editType=attr.editType
+                , isVisible=attr.name in metaVisible
+                , order=attr.order
+                ))  
+            if attr.name.startswith('id'):
+                attrMeta.append(attrMetaShema(
+                    name=attr.name+'HL'
+                    , caption=attr.caption
+                    , type=attr.type
+                    , editType=attr.editType
+                    , isVisible=attr.name+'HL' in metaVisible
+                    , order=attr.order+0.1
+                    , refTab=attr.refTab
+                    , display='LookUp'
+                    , attrId=attr.name
+                ))
 
-        self.form['Default']['attr'] = {**self.baseAttr, **attr} 
-
-        await FileManagerPkg.CreateFile(pathWhitFileD, self.form)
+        formDefault = metaShema(
+            name='Default'
+            , caption=self.data.caption
+            , isVisibleToolBar=True
+            , attr=attrMeta
+        )
+        await FileManagerPkg.CreateFile(pathWhitFileD, [formDefault.getDict()])
 
     def __getShowAttr(self):
         res = []
-        for i in self.data['attr']:
-            if 'isVisible' in i:
-                if not i['isVisible']:
-                    continue
-            res.append(i['name']+('HL' if i['name'].startswith('id') else ''))
+        for i in self.data.attr:
+            if not i.isVisible:
+                continue
+            res.append(i.name+('HL' if i.name.startswith('id') else ''))
         return res

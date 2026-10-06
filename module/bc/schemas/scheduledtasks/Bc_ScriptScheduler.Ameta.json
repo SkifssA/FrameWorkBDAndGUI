@@ -1,9 +1,11 @@
-{
-    "Default": {
-        "attr": {
-            "sNameModule": {
+[
+    {
+        "name": "Default",
+        "attr": [
+            {
+                "name": "sNameModule",
                 "isReadOnly": true
             }
-        }
+        ]
     }
-}
+]

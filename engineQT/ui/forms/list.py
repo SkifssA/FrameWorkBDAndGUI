@@ -51,7 +51,7 @@ class List(Base):
                 self.tablet.setColumnHidden(self.systemName[i], True)
 
     def _getHeaderLabelsMeta(self):
-        dataAttrs = self.metaInfo['attr']
+        dataAttrs = self.metaInfo.attr
         res = []
         for i in sorted(list(dict.fromkeys(list(dataAttrs.keys()) + self.Rect.getAttr()))
                         , key=lambda x: self.metaInfo['attr'].get(x, {}).get('order', 10000)):

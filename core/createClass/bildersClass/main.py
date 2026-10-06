@@ -6,6 +6,7 @@ from .bilderAmeta import BildersAmeta
 from .bildersDmeta import BildersDmeta
 
 from core.package.FileManager import FileManagerPkg
+from core.fabric.dataClass.tabDataClass import getDataClass
 from core import asyncRun
 from pathlib import Path
 
@@ -20,7 +21,7 @@ def createFile():
             for cl in asyncRun(FileManagerPkg.GetFoldersList(pathClass)):
                 lFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f'{pathClass}/{cl}', '.odb.json'))
                 for File in lFiles:
-                    data = asyncRun(FileManagerPkg.ReadFile(File.__str__()))
+                    data = getDataClass(File.__str__())
                     pathPyFile = pathModile(app, f"/object/{cl}")
                     print(f"Запись в Dpi в классе {cl}")
                     asyncRun(BilderDpi(data).createFileD(pathPyFile))

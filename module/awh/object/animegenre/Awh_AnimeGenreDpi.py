@@ -1,11 +1,12 @@
 # Системный файл для логики
 from core.sdk import EmptyApi, EmptyObj
+from dataclasses import dataclass
 
+@dataclass
 class Awh_AnimeGenreObj(EmptyObj):
-    def __init__(self):
-        self.id:int = None
-        self.idAnime:int = None
-        self.idGenre:int = None
+    id:int
+    idAnime:int = None
+    idGenre:int = None
 
 class Awh_AnimeGenreDpi(EmptyApi):
     _classObj = Awh_AnimeGenreObj
@@ -25,9 +26,9 @@ class Awh_AnimeGenreDpi(EmptyApi):
     def getByMnemocode(self, value)->Awh_AnimeGenreObj|None:   
         return super().getByMnemocode(value)
 
-    def delete(self, rop:Awh_AnimeGenreObj)->None:
+    def delete(self, obj:Awh_AnimeGenreObj)->None:
         
-        return super().delete(rop)
+        return super().delete(obj)
     
     def update(self, rop:Awh_AnimeGenreObj)->None:
         return super().update(rop)

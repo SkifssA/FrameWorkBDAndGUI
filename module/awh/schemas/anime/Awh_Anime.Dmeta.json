@@ -1,56 +1,66 @@
-{
-"Default": {
-"caption": "Аниме",
-"isVisibleToolBar": true,
-"attr": {
-"id": {
-"caption": "id",
-"edit": "edit",
-"isVisible": false,
-"order": -2
-},
-"gid": {
-"caption": "gid",
-"edit": "edit",
-"isVisible": false,
-"order": -1
-},
-"sCaption": {
-"caption": "Название",
-"edit": "edit",
-"isVisible": true,
-"order": 10
-},
-"nSeries": {
-"caption": "Кол-во серий",
-"edit": "edit",
-"isVisible": true,
-"order": 20
-},
-"bReleased": {
-"caption": "Вышло",
-"edit": "check",
-"isVisible": true,
-"order": 30
-},
-"sUrl": {
-"caption": "Ссылка",
-"edit": "edit",
-"isVisible": false,
-"order": 40
-},
-"sUrlImg": {
-"caption": "Ссылка на постер",
-"edit": "edit",
-"isVisible": false,
-"order": 50
-},
-"sComment": {
-"caption": "Описание",
-"edit": "edit",
-"isVisible": false,
-"order": 60
-}
-}
-}
-}
+[
+    {
+        "name": "Default",
+        "caption": "Аниме",
+        "isVisibleToolBar": true,
+        "filter": [],
+        "attr": [
+            {
+                "name": "id",
+                "caption": "id",
+                "type": "INT",
+                "isVisible": false,
+                "order": -2,
+                "editType": "edit"
+            },
+            {
+                "name": "sCaption",
+                "caption": "Название",
+                "type": "TEXT",
+                "isVisible": true,
+                "order": 10,
+                "editType": "edit"
+            },
+            {
+                "name": "nSeries",
+                "caption": "Кол-во серий",
+                "type": "INT",
+                "isVisible": true,
+                "order": 20,
+                "editType": "edit"
+            },
+            {
+                "name": "bReleased",
+                "caption": "Вышло",
+                "type": "INT",
+                "isVisible": true,
+                "order": 30,
+                "editType": "check"
+            },
+            {
+                "name": "sUrl",
+                "caption": "Ссылка",
+                "type": "TEXT",
+                "isVisible": false,
+                "order": 40,
+                "editType": "edit"
+            },
+            {
+                "name": "sUrlImg",
+                "caption": "Ссылка на постер",
+                "type": "TEXT",
+                "isVisible": false,
+                "order": 50,
+                "editType": "edit"
+            },
+            {
+                "name": "sComment",
+                "caption": "Описание",
+                "type": "TEXT",
+                "isVisible": false,
+                "order": 60,
+                "editType": "edit"
+            }
+        ]
+    }
+]

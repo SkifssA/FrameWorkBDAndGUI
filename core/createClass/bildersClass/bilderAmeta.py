@@ -7,4 +7,4 @@ class BildersAmeta(BilderBase):
     async def createFile(self, path):
         pathWhitFileA = self._getPathAndFile(path)
         if not await FileManagerPkg.Exists(pathWhitFileA):
-            await FileManagerPkg.CreateFile(pathWhitFileA, {})
+            await FileManagerPkg.CreateFile(pathWhitFileA, [])

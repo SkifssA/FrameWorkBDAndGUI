@@ -3,10 +3,10 @@ from .bilderBase import BilderBase
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
 from engineQT.sdk import EmptyAvi, SetterEvent
-from .{nameClass}Api import {nameClass}Api, {nameClass}Obj
+from .{name}Api import {name}Api, {name}Obj
 
-class {nameClass}Dvi(EmptyAvi):
-    thisApi = {nameClass}Api
+class {name}Dvi(EmptyAvi):
+    thisApi = {name}Api
 
     class DviDefault(EmptyAvi.Default):
         def structuredQuery(self):
@@ -15,10 +15,10 @@ class {nameClass}Dvi(EmptyAvi):
         def onRefreshExt(self):
             return \"\"\"{sqlListExt}\"\"\"
 
-        def thisRop(self)->{nameClass}Obj:
+        def thisRop(self)->{name}Obj:
             return super().thisRop()
 
-        def thisApi(self)->{nameClass}Api:
+        def thisApi(self)->{name}Api:
             return super().thisApi()
 
         {setter}
@@ -34,7 +34,7 @@ class {nameClass}Dvi(EmptyAvi):
             return \"\"\"
             SELECT t.id
                 ,t.sHeadLine 
-            FROM {nameClass} AS t
+            FROM {name} AS t
             \"\"\"
 """
     suffixFile = 'Dvi.py'
@@ -42,49 +42,39 @@ class {nameClass}Dvi(EmptyAvi):
     def __init__(self, data):
         super().__init__(data)
         w = self.__getSqlList()
-        self.data['setter'] = self.__getSetters()
-        self.data['sqlList'] = w[0]
-        self.data['sqlListExt'] = w[1]
+        self.dictData['setter'] = self.__getSetters()
+        self.dictData['sqlList'] = w[0]
+        self.dictData['sqlListExt'] = w[1]
 
     def __getSetters(self):
+        def getSetterStr(nameAttr, tempSet):
+            setHead = 'def set{nameAttr}(self, event:SetterEvent): '.format(nameAttr=nameAttr)
+            return tempSet.format(nameAttr=nameAttr, setHead=setHead)
+        
         tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value); self.afterSetter(\'{nameAttr}\')'
-        tempSetButton = '{setHead}\n            {import}\n            {AviClass}().proccessById(event, self.getAttr(\'{nameAttr}\'), lambda x: self.thisApi().set{nameAttr}(self.thisRop(), x[\'id\'])); self.afterSetter(\'{nameAttr}\')'
         listTepmSet = []
 
-        dictAttr = {}
-        for i in self.data['attr']:
-            dictAttr['nameAttr'] = i['name']
-            dictAttr['setHead'] = 'def set{nameAttr}(self, event:SetterEvent): '.format(**dictAttr)
-            listTepmSet.append(tempSet.format(**dictAttr))
+        for attr in self.data.attr:
+            getSetterStr(attr.name, tempSet)
 
-            editType = i.get('editType', None)
-            dictAttr['setHead'] = 'def set{nameAttr}(self, event:SetterEvent): '.format(nameAttr=i['name']+'HL')
-            mM = self.data['name'][:self.data['name'].find('_')].lower()
-            if editType == 'lookUp':
-                listTepmSet.append(tempSet.format(**dictAttr))
-            elif i['name'].startswith('id') and editType is None:
-                w:str = i['refTab']
-                m = i['refTab'][:i['refTab'].find('_')].lower()
-                mtemp = '...' if mM == m else f'{m}.'
-                dictAttr['import']=f'from {mtemp}object.{x+'_' if (x:=w.split('_')[-1].lower()) == 'class' else x}.{w}Avi import {w}Avi'
-                dictAttr['AviClass'] = f'{w}Avi'
-                listTepmSet.append(tempSetButton.format(**dictAttr))
+            if attr.editType == 'lookUp':
+                getSetterStr(attr.name+'HL', tempSet)
 
         return f'\n{self.tabSpace*2}'.join(listTepmSet)
     
     def __getSqlList(self)->str:
-        nameTabl = self.data['name']
-        dataAttr = self.data['attr']
+        nameTabl = self.data.name
+        dataAttr = self.data.attr
         sqlstr = {
             'int': 1,
-            'attr': ['t.id', 't.gid'],
+            'attr': ['t.id'],
             'join': []
         }
-        for i in dataAttr:
-            sqlstr['attr'].append(f"t.{i['name']}")
-            if 'refTab' in i:
-                sqlstr['attr'].append(f"t{sqlstr['int']}.sHeadLine as {i['name']}HL")
-                sqlstr['join'].append(f"LEFT JOIN {i['refTab']} t{sqlstr['int']} ON t{sqlstr['int']}.id = t.{i['name']}")
+        for attr in dataAttr:
+            sqlstr['attr'].append(f"t.{attr.name}")
+            if attr.refTab:
+                sqlstr['attr'].append(f"t{sqlstr['int']}.sHeadLine as {attr.name}HL")
+                sqlstr['join'].append(f"LEFT JOIN {attr.refTab} t{sqlstr['int']} ON t{sqlstr['int']}.id = t.{attr.name}")
                 sqlstr['int'] += 1
 
         getSel = f',\n{self.tabSpace*3}'.join(f":{i[i.rfind('.')+1:]} as {i[i.rfind('.')+1:]}" for i in sqlstr['join'])

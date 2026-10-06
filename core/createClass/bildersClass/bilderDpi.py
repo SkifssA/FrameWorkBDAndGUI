@@ -3,38 +3,39 @@ from .bilderBase import BilderBase
 class BilderDpi(BilderBase):
     temp = """# Системный файл для логики
 from core.sdk import EmptyApi, EmptyObj
+from dataclasses import dataclass
 
-class {nameClass}Obj(EmptyObj):
-    def __init__(self):
-        self.id:int = None
-        self.{attrObj} = None
+@dataclass
+class {name}Obj(EmptyObj):
+    id:int
+    {attrObj} = None
 
-class {nameClass}Dpi(EmptyApi):
-    _classObj = {nameClass}Obj
+class {name}Dpi(EmptyApi):
+    _classObj = {name}Obj
 
     def _getNameClass(self):
-        return "{nameClass}"
+        return "{name}"
 
-    def calcHeadLine(self, rop:{nameClass}Obj)->str:
+    def calcHeadLine(self, rop:{name}Obj)->str:
         return f'{isHeadLine}'
 
-    def calcMnemoCode(self, rop:{nameClass}Obj)->str:
+    def calcMnemoCode(self, rop:{name}Obj)->str:
         return f'{isMnemoCode}'
 
-    def insert(self)->{nameClass}Obj:
+    def insert(self)->{name}Obj:
         return super().insert()
 
-    def getByMnemocode(self, value)->{nameClass}Obj|None:   
+    def getByMnemocode(self, value)->{name}Obj|None:   
         return super().getByMnemocode(value)
 
-    def delete(self, rop:{nameClass}Obj)->None:
+    def delete(self, obj:{name}Obj)->None:
         {deleteDetails}
-        return super().delete(rop)
+        return super().delete(obj)
     
-    def update(self, rop:{nameClass}Obj)->None:
+    def update(self, rop:{name}Obj)->None:
         return super().update(rop)
     
-    def load(self, id: int)->{nameClass}Obj:
+    def load(self, id: int)->{name}Obj:
         return super().load(id)
 
     {setter}
@@ -43,53 +44,51 @@ class {nameClass}Dpi(EmptyApi):
 
     def __init__(self, data):
         super().__init__(data)
-        self.data['attrObj'] = self.__getRopAttr()
-        self.data['isHeadLine'] = self.__getHeadLine()
-        self.data['isMnemoCode'] = self.__getMnemoCode()
-        self.data['deleteDetails'] = self.__getDelete()
-        self.data['setter'] = self.__getSetter()
+        self.dictData['attrObj'] = self.__getRopAttr()
+        self.dictData['isHeadLine'] = self.__getHeadLine()
+        self.dictData['isMnemoCode'] = self.__getMnemoCode()
+        self.dictData['deleteDetails'] = self.__getDelete()
+        self.dictData['setter'] = self.__getSetter()
 
     def __getRopAttr(self):
         rop = []
-        for i in self.data['attr']:
-            if i['name'].startswith('id') or i['name'].startswith('n') or i['name'].startswith('b'):
+        for i in self.data.attr:
+            if i.name.startswith('id') or i.name.startswith('n') or i.name.startswith('b'):
                 typeAttr = 'int'
-            elif i['name'].startswith('gid'):
+            elif i.name.startswith('gid'):
                 typeAttr = 'gid'
             else:
                 typeAttr = 'str'
-            rop.append(f'{i['name']}:{typeAttr}')
-        return f' = None\n{' '*8}self.'.join(rop)
+            rop.append(f'{i.name}:{typeAttr}')
+        return f' = None\n{' '*4}'.join(rop)
     
     def __getHeadLine(self):
-        rop = []
-        for i in self.data['attr']:
-            if 'isHeadLine' in i:
-                rop.append(f'rop.{i['name']}')
-        return '{' + ('} {'.join(rop) if rop != [] else 'rop.id') + '}'
+        attrByHL = []
+        for attr in self.data.attr:
+            if attr.isHeadLine:
+                attrByHL.append(f'rop.{attr.name}')
+        return '{' + ('} {'.join(attrByHL) if attrByHL != [] else 'rop.id') + '}'
 
     def __getMnemoCode(self):
-        rop = []
-        for i in self.data['attr']:
-            if 'isMnemoCode' in i:
-                rop.append(f'rop.{i['name']}')
-        return '{' + ('} {'.join(rop) if rop != [] else 'rop.id') + '}'
+        attrByMC = []
+        for attr in self.data.attr:
+            if attr.isMnemoCode:
+                attrByMC.append(f'rop.{attr.name}')
+        return '{' + ('} {'.join(attrByMC) if attrByMC != [] else 'rop.id') + '}'
     
     def __getDelete(self):
+        from core.package.ActionDispatcher import getModuleByClass
         res = []
-        if 'collections' in self.data.keys():
-            mM = self.data['name'][:self.data['name'].find('_')].lower()
-            for i in self.data['collections']:
-                w:str = i['name']
-                m = i['name'][:i['name'].find('_')].lower()
-                mtemp = '...' if mM == m else f'{m}.'
-                res.append(f'from {mtemp}object.{w.split('_')[-1].lower()}.{w}Api import {w}Api')
-                res.append(f'for i in {w}Api().getAllByAttr(\'{i['attr']}\', rop.{'id' if i['attr'].startswith('id') else 'gid'}) or []:')
-                res.append(f'    {w}Api().delete(i)')
+        myModule = getModuleByClass(self.data.name)
+        for collection in self.data.collections:
+            module = getModuleByClass(collection.name)
+            res.append(f'from module.{module} import {collection.name}Api')
+            res.append(f'for i in {collection.name}Api().getAllByAttr(\'{collection.attr}\', obj.{'id' if collection.attr.startswith('id') else 'gid'}) or []:')
+            res.append(f'    {collection.name}Api().delete(i)')
                 
         return '\n        '.join(res)
 
     def __getSetter(self):
         tempSet = 'def set{nameAttr}(self, obj:{nameClass}Obj, value): obj.{nameAttr} = value'
-        listTepmSet = tuple(tempSet.format(nameAttr=i['name'], nameClass=self.data['name']) for i in self.data['attr'])
+        listTepmSet = tuple(tempSet.format(nameAttr=i.name, nameClass=self.data.name) for i in self.data.attr)
         return '\n    '.join(listTepmSet)
