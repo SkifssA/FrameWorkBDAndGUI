@@ -1,11 +1,10 @@
 # Системный файл для интерфейса
-from engineQT.sdk import EmptyAvi, SetterEvent
 from .Bc_TimeLineApi import Bc_TimeLineApi, Bc_TimeLineObj
 
-class Bc_TimeLineDvi(EmptyAvi):
+class Bc_TimeLineDvi:
     thisApi = Bc_TimeLineApi
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault:
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -36,13 +35,13 @@ class Bc_TimeLineDvi(EmptyAvi):
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault): pass
 
-    class DviCard(DviDefault, EmptyAvi.Card): 
+    class DviCard(DviDefault): 
         def onRefresh(self):
             return self.thisApi().load(self.idItem)
 
-    class DviLookUp(EmptyAvi.LookUp):
+    class DviLookUp:
         def onRefresh(self):
             return """
             SELECT t.id

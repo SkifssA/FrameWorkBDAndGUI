@@ -2,6 +2,7 @@ import re
 
 from core import asyncRun
 from core.DB.Turso import ASQL
+from core.empty.obj import EmptyObj
 
 class Rect:
     """Класс для привода onRefresh к одному формату"""
@@ -55,8 +56,8 @@ class Rect:
     def _list(self, res):
         pass
 
-    def _obj(self, res):
-        self._data = [res.__dict__]
+    def _obj(self, res:EmptyObj):
+        self._data = [res.getDict(isNotNone=False)]
         self._attr = list(self._data[0].keys())
         self.refreshItem()
         

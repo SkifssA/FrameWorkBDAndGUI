@@ -2,13 +2,12 @@ from .bilderBase import BilderBase
 # {setter}
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
-from engineQT.sdk import EmptyAvi, SetterEvent
 from .{name}Api import {name}Api, {name}Obj
 
-class {name}Dvi(EmptyAvi):
+class {name}Dvi:
     thisApi = {name}Api
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault:
         def structuredQuery(self):
             return \"\"\"{sqlList}\"\"\"
 
@@ -21,15 +20,15 @@ class {name}Dvi(EmptyAvi):
         def thisApi(self)->{name}Api:
             return super().thisApi()
 
-        {setter}
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+        
+    class DviList(DviDefault): pass
 
-    class DviCard(DviDefault, EmptyAvi.Card): 
+    class DviCard(DviDefault): 
         def onRefresh(self):
             return self.thisApi().load(self.idItem)
 
-    class DviLookUp(EmptyAvi.LookUp):
+    class DviLookUp:
         def onRefresh(self):
             return \"\"\"
             SELECT t.id

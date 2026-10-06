@@ -1,11 +1,10 @@
 # Системный файл для интерфейса
-from engineQT.sdk import EmptyAvi, SetterEvent
 from .Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi, Bc_ScriptSchedulerObj
 
-class Bc_ScriptSchedulerDvi(EmptyAvi):
+class Bc_ScriptSchedulerDvi:
     thisApi = Bc_ScriptSchedulerApi
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault:
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -41,13 +40,13 @@ class Bc_ScriptSchedulerDvi(EmptyAvi):
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault): pass
 
-    class DviCard(DviDefault, EmptyAvi.Card): 
+    class DviCard(DviDefault): 
         def onRefresh(self):
             return self.thisApi().load(self.idItem)
 
-    class DviLookUp(EmptyAvi.LookUp):
+    class DviLookUp:
         def onRefresh(self):
             return """
             SELECT t.id

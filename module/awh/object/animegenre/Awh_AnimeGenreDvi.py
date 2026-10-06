@@ -1,11 +1,10 @@
 # Системный файл для интерфейса
-from engineQT.sdk import EmptyAvi, SetterEvent
 from .Awh_AnimeGenreApi import Awh_AnimeGenreApi, Awh_AnimeGenreObj
 
-class Awh_AnimeGenreDvi(EmptyAvi):
+class Awh_AnimeGenreDvi:
     thisApi = Awh_AnimeGenreApi
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault:
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -42,13 +41,13 @@ class Awh_AnimeGenreDvi(EmptyAvi):
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault): pass
 
-    class DviCard(DviDefault, EmptyAvi.Card): 
+    class DviCard(DviDefault): 
         def onRefresh(self):
             return self.thisApi().load(self.idItem)
 
-    class DviLookUp(EmptyAvi.LookUp):
+    class DviLookUp:
         def onRefresh(self):
             return """
             SELECT t.id

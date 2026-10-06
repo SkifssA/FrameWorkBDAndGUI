@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
 
+from core.fabric.dataClass.baseDataClass import Base
+
 @dataclass
-class EmptyObj:
+class EmptyObj(Base):
     def __init__(self):
         self.id:int = None
         self.gid:str = None

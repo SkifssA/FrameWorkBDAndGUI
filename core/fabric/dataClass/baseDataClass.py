@@ -2,7 +2,7 @@ from dataclasses import dataclass, asdict, is_dataclass
 
 @dataclass
 class Base:
-    def getDict(self)->dict:
+    def getDict(self, isNotNone:bool=True)->dict:
 
         def _clean(value):
             # Если это вложенный dataclass, обрабатываем его рекурсивно
@@ -22,7 +22,9 @@ class Base:
             # Возвращаем обычное значение
             return value
 
-        return _clean(asdict(self))
+        if isNotNone:
+            return _clean(asdict(self))
+        return asdict(self)
 
     def merge(self, other: 'Base'):
         """Объединяет текущий объект с другим, приоритет у 'other'."""
