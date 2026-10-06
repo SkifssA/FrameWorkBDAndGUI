@@ -1,4 +1,3 @@
-from engineQT.sdk import EmptyAvi
 from core.sdk import SetOper
 
 from module.awh.object.anime.Awh_AnimeAvi import Awh_AnimeAvi
@@ -6,7 +5,7 @@ from module.awh.object.animegenre.Awh_AnimeGenreAvi import Awh_AnimeGenreAvi
 from module.awh.object.genre.Awh_GenreAvi import Awh_GenreAvi
 
 class Awh_MainMenuAvi:
-    class Default(EmptyAvi.MainMenu): 
+    class Default: 
         @SetOper(label="Справочник", order=10)
         def mm_res(self): pass
 
