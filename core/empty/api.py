@@ -13,10 +13,6 @@ from dataclasses import asdict, is_dataclass
 from core.DB.SQLapi import SQLApi
 from core.empty.obj import EmptyObj
 
-from core.DB.Turso import ASQL, ATSQL
-from core.package.AsynRun import asyncRun
-
-
 class EmptyApi(SQLApi):
     _classObj = EmptyObj
 
@@ -67,7 +63,7 @@ class EmptyApi(SQLApi):
         value['sHeadLine'] = self.calcHeadLine(obj)
         value['sMnemoCode'] = self.calcMnemoCode(obj)
         keys = [k for k in value.keys() if k != 'id']
-        asyncRun(ATSQL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (value['id'],)))
+        self._updateObj(keys, value)
         
     def _createObj(self, data)->EmptyObj:
         """Получение обьекта с заполнеными полями"""

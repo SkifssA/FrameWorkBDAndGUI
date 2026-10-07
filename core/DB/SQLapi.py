@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from core.DB.Turso import ASQL, ATSQL
 from core.package.AsynRun import asyncRun
+import re
 
 class SQLApi(ABC):
     """Прослойка между sql и api"""
@@ -26,3 +27,10 @@ class SQLApi(ABC):
 
     def _getById(self, id):
         return asyncRun(ASQL(f"SELECT * FROM {self._getNameClass()} WHERE id = ?", [id]))
+
+    def _updateObj(self, keys:list[str], value):
+        for key in keys:
+            if not re.fullmatch(r'\w+', key):
+                raise ValueError(f"[SQLValidate] Не выполнен UPDATE из-за подозрений на иньекцию")
+            
+        asyncRun(ATSQL(f"UPDATE {self._getNameClass()} SET {' = ?, '.join(keys)} = ? WHERE id = ?", tuple(value[i] for i in keys) + (value['id'],)))
