@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from .Awh_GenreApi import Awh_GenreApi, Awh_GenreObj
+from .Awh_GenreLogic import Awh_GenreLogic, Awh_GenreObj
 from core.sdk import EmptyAvi
 
 class Awh_GenreDvi:

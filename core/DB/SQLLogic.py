@@ -4,7 +4,7 @@ from core.DB.Turso import ASQL, ATSQL
 from core.package.AsynRun import asyncRun
 import re
 
-class SQLApi(ABC):
+class SQLLogic(ABC):
     """Прослойка между sql и api"""
     @abstractmethod
     def _getNameClass(self)->str:...

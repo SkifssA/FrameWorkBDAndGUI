@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from .Awh_AnimeApi import Awh_AnimeApi, Awh_AnimeObj
+from .Awh_AnimeLogic import Awh_AnimeLogic, Awh_AnimeObj
 from core.sdk import EmptyAvi
 
 class Awh_AnimeDvi:

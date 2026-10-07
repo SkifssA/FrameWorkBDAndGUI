@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from .Bc_TimeLineApi import Bc_TimeLineApi, Bc_TimeLineObj
+from .Bc_TimeLineLogic import Bc_TimeLineLogic, Bc_TimeLineObj
 from core.sdk import EmptyAvi
 
 class Bc_TimeLineDvi:

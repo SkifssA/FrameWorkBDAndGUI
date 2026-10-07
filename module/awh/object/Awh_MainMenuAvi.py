@@ -1,6 +1,6 @@
 from core.sdk import SetOper
 
-from module.awh.object.anime.Awh_AnimeAvi import Awh_AnimeAvi
+from module.awh.object.anime.Awh_AnimePub import Awh_AnimeAvi
 from module.awh.object.animegenre.Awh_AnimeGenreAvi import Awh_AnimeGenreAvi
 from module.awh.object.genre.Awh_GenreAvi import Awh_GenreAvi
 

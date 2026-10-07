@@ -1,5 +1,5 @@
-from .bilderApi import BilderApi
-from .bilderAvi import BilderAvi
+from .bilderLogic import BilderLogic
+from .bilderPub import BilderPub
 from .bilderDvi import BilderDvi
 from .bilderDpi import BilderDpi
 from .bilderAmeta import BildersAmeta
@@ -27,10 +27,10 @@ def createFile():
                     asyncRun(BilderDpi(data).createFileD(pathPyFile))
                     print(f"Запись в Dvi в классе {cl}")
                     asyncRun(BilderDvi(data).createFileD(pathPyFile))
-                    print(f"Запись в Api в классе {cl}")
-                    asyncRun(BilderApi(data).createFileA(pathPyFile))
-                    print(f"Запись в Avi в классе {cl}")
-                    asyncRun(BilderAvi(data).createFileA(pathPyFile))
+                    print(f"Запись в Logic в классе {cl}")
+                    asyncRun(BilderLogic(data).createFileA(pathPyFile))
+                    print(f"Запись в Pub в классе {cl}")
+                    asyncRun(BilderPub(data).createFileA(pathPyFile))
 
                     pathMetaFile = f'{pathClass}/{cl}'
                     asyncRun(BildersDmeta(data).createFile(pathMetaFile))

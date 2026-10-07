@@ -1,5 +1,5 @@
 # Системный файл для интерфейса
-from .Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi, Bc_ScriptSchedulerObj
+from .Bc_ScriptSchedulerLogic import Bc_ScriptSchedulerLogic, Bc_ScriptSchedulerObj
 from core.sdk import EmptyAvi
 
 class Bc_ScriptSchedulerDvi:

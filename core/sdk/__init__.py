@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 from core.type.Gid import Gid
 
 # --- Базовые классы каркаса объектов ---------------------------------------
-from core.empty.api import EmptyApi
+from core.empty.logic import EmptyLogic
 from core.empty.obj import EmptyObj
 from core.empty.avi import EmptyAvi
 
@@ -50,7 +50,7 @@ __all__ = [
     # типы и события
     'Gid',
     # базовые классы
-    'EmptyApi',
+    'EmptyLogic',
     'EmptyObj',
     'EmptyAvi',
     'SetOper',

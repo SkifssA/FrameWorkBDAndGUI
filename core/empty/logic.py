@@ -10,10 +10,10 @@ from abc import abstractmethod
 from dacite import from_dict, Config
 from dataclasses import asdict, is_dataclass
 
-from core.DB.SQLapi import SQLApi
+from core.DB.SQLLogic import SQLLogic
 from core.empty.obj import EmptyObj
 
-class EmptyApi(SQLApi):
+class EmptyLogic(SQLLogic):
     _classObj = EmptyObj
 
     @abstractmethod

@@ -2,11 +2,11 @@ from .bilderBase import BilderBase
 # {setter}
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
-from .{name}Api import {name}Api, {name}Obj
+from .{name}Logic import {name}Logic, {name}Obj
 from core.sdk import EmptyAvi
 
 class {name}Dvi:
-    thisApi = {name}Api
+    thisApi = {name}Logic
 
     class DviDefault(EmptyAvi.Default):
         def structuredQuery(self):
