@@ -82,9 +82,9 @@ class {name}Dpi(EmptyLogic):
         myModule = getModuleByClass(self.data.name)
         for collection in self.data.collections:
             module = getModuleByClass(collection.name)
-            res.append(f'from module.{module} import {collection.name}Api')
-            res.append(f'for i in {collection.name}Api().getAllByAttr(\'{collection.attr}\', obj.{'id' if collection.attr.startswith('id') else 'gid'}) or []:')
-            res.append(f'    {collection.name}Api().delete(i)')
+            res.append(f'from module.{module} import {collection.name}Logic')
+            res.append(f'for i in {collection.name}Logic().getAllByAttr(\'{collection.attr}\', obj.{'id' if collection.attr.startswith('id') else 'gid'}) or []:')
+            res.append(f'    {collection.name}Logic().delete(i)')
                 
         return '\n        '.join(res)
 

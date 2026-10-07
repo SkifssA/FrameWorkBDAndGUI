@@ -44,7 +44,7 @@ async def _getInitModule(app):
     paths = [f for f in w if not (f.stem.endswith('Dvi') or f.stem.endswith('Dpi'))]
     base_path = Path(FileManagerPkg._getObjPath(pathModile(app))['real_path'])
     imports = []
-    classApi = []
+    classLogic = []
     for p in paths:
         # Относительный путь от base_path (без расширения .py)
         rel_path = p.relative_to(base_path).with_suffix('')
@@ -54,7 +54,7 @@ async def _getInitModule(app):
         class_name = p.stem  # то же, что и rel_path.name
         # Формируем строку импорта
         import_line = f'from .{module_path} import {class_name}'
-        classApi.append(f'\'{class_name}\'')
+        classLogic.append(f'\'{class_name}\'')
         imports.append(import_line)
     
-    await FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + f'\n\n__all__ = [\n    {'\n    ,'.join(classApi)}\n]')
+    await FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + f'\n\n__all__ = [\n    {'\n    ,'.join(classLogic)}\n]')

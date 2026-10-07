@@ -149,7 +149,7 @@
         "properties": {
           "dependence": {
             "type": "string",
-            "description": "Путь к зависимости (например, Hbc_StudentApi.dataInstall)"
+            "description": "Путь к зависимости (например, Hbc_StudentLogic.dataInstall)"
           },
           "name": {
             "type": "string",

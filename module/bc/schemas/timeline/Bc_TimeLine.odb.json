@@ -17,7 +17,7 @@
     ],
     "dbData": [
         {
-            "name": "Bs_TimeLineApi.dataInstall",
+            "name": "Bs_TimeLineLogic.dataInstall",
             "version": 4
         }
     ]

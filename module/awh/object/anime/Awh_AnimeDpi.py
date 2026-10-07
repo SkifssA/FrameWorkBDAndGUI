@@ -31,9 +31,9 @@ class Awh_AnimeDpi(EmptyLogic):
         return super().getByMnemocode(value)
 
     def delete(self, obj:Awh_AnimeObj)->None:
-        from module.awh import Awh_AnimeGenreApi
-        for i in Awh_AnimeGenreApi().getAllByAttr('idAnime', obj.id) or []:
-            Awh_AnimeGenreApi().delete(i)
+        from module.awh import Awh_AnimeGenreLogic
+        for i in Awh_AnimeGenreLogic().getAllByAttr('idAnime', obj.id) or []:
+            Awh_AnimeGenreLogic().delete(i)
         return super().delete(obj)
     
     def update(self, rop:Awh_AnimeObj)->None:

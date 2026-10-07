@@ -5,7 +5,7 @@ from core.package.AsynRun import asyncRun
 import re
 
 class SQLLogic(ABC):
-    """Прослойка между sql и api"""
+    """Прослойка между sql и Logic"""
     @abstractmethod
     def _getNameClass(self)->str:...
     
