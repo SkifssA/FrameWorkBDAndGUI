@@ -34,3 +34,4 @@ class MetaInfo:
             data['filter'] = f
     
             res[data['name']] = from_dict(data_class=metaShema, data=data)
+        return res

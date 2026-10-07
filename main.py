@@ -18,5 +18,6 @@ if __name__ == "__main__":
         sNameTab = 'Bc_TimeLinePub'
         form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
         if form:
-            print(form.List().getData())
+            print('form.List().getData():\n', form.List().getData())
+            print('form.List().getInfoMeta():\n', form.List().getInfoMeta())
             print('\n\n\n\n')

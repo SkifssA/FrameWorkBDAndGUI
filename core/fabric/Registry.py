@@ -2,17 +2,16 @@ import inspect
 
 from core.decorator import TypeDecorator
 
-from core.decorator import TypeDecorator
-
-
 class Registry:
     def __init__(self, cls):
         self.cls = cls
         self._flat_ops = []
+        self._flat_ops_handler = {}
         self._flat_set = []
 
     def oper(self):
         self._flat_ops = []
+        self._flat_ops_handler = {}
         for name, method in inspect.getmembers(self.cls, predicate=inspect.ismethod):
             if getattr(method, '_type', False) == TypeDecorator.Oper:
                 self._flat_ops.append({
@@ -24,15 +23,17 @@ class Registry:
                     'icon': method._icon_path,
                     'shortcut': method._shortcut,
                     'checkable': method._isCheckable,
-                    'tooltip': method._tooltip,
-                    'handler': method
+                    'tooltip': method._tooltip
                 })
+
+                self._flat_ops_handler[method._oper_id] = method
+
         self._flat_ops.sort(key=lambda x: x['order'])
 
     def setter(self):
         self._flat_set = []
         for name, method in inspect.getmembers(self.cls, predicate=inspect.ismethod):
-            if getattr(method, '_is_oper_handler', False) == TypeDecorator.Setter:
+            if getattr(method, '_type', False) == TypeDecorator.Setter:
                 self._flat_set.append({
                     'id': method._oper_id
                 })

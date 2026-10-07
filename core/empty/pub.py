@@ -16,6 +16,12 @@ class EmptyPub:
             self.rect.refresh()
             return self.rect.getData()
 
+        def getInfoMeta(self):
+            return {
+                'operForm': self.registry.get_children_oper()
+                , 'metaForm': self.metaInfo.getDict(isNotNone=False)
+            }
+
         def onRefresh(self):...
         def onRefreshExt(self):...
         def getAttr(self):...
