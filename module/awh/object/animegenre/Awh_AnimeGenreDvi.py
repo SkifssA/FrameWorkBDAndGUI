@@ -1,10 +1,11 @@
 # Системный файл для интерфейса
 from .Awh_AnimeGenreApi import Awh_AnimeGenreApi, Awh_AnimeGenreObj
+from core.sdk import EmptyAvi
 
 class Awh_AnimeGenreDvi:
     thisApi = Awh_AnimeGenreApi
 
-    class DviDefault:
+    class DviDefault(EmptyAvi.Default):
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -41,7 +42,7 @@ class Awh_AnimeGenreDvi:
 
         
         
-    class DviList(DviDefault): pass
+    class DviList(DviDefault, EmptyAvi.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):

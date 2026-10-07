@@ -3,11 +3,12 @@ from .bilderBase import BilderBase
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
 from .{name}Api import {name}Api, {name}Obj
+from core.sdk import EmptyAvi
 
 class {name}Dvi:
     thisApi = {name}Api
 
-    class DviDefault:
+    class DviDefault(EmptyAvi.Default):
         def structuredQuery(self):
             return \"\"\"{sqlList}\"\"\"
 
@@ -22,7 +23,7 @@ class {name}Dvi:
 
         
         
-    class DviList(DviDefault): pass
+    class DviList(DviDefault, EmptyAvi.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):

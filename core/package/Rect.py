@@ -7,7 +7,8 @@ from core.empty.obj import EmptyObj
 class Rect:
     """Класс для привода onRefresh к одному формату"""
     def __init__(self, class_):
-        self.class_ = class_
+        from core.empty.avi import EmptyAvi
+        self.class_:EmptyAvi = class_
         self._data = []
         self._attr = []
         self._dataExt = []

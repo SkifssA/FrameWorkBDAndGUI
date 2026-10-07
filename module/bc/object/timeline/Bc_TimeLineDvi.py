@@ -1,10 +1,11 @@
 # Системный файл для интерфейса
 from .Bc_TimeLineApi import Bc_TimeLineApi, Bc_TimeLineObj
+from core.sdk import EmptyAvi
 
 class Bc_TimeLineDvi:
     thisApi = Bc_TimeLineApi
 
-    class DviDefault:
+    class DviDefault(EmptyAvi.Default):
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -35,7 +36,7 @@ class Bc_TimeLineDvi:
 
         
         
-    class DviList(DviDefault): pass
+    class DviList(DviDefault, EmptyAvi.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):

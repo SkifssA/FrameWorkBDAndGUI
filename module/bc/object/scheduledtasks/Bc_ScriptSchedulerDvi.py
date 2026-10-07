@@ -1,10 +1,11 @@
 # Системный файл для интерфейса
 from .Bc_ScriptSchedulerApi import Bc_ScriptSchedulerApi, Bc_ScriptSchedulerObj
+from core.sdk import EmptyAvi
 
 class Bc_ScriptSchedulerDvi:
     thisApi = Bc_ScriptSchedulerApi
 
-    class DviDefault:
+    class DviDefault(EmptyAvi.Default):
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -40,7 +41,7 @@ class Bc_ScriptSchedulerDvi:
 
         
         
-    class DviList(DviDefault): pass
+    class DviList(DviDefault, EmptyAvi.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):

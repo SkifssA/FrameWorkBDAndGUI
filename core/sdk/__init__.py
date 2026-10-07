@@ -30,6 +30,7 @@ from core.type.Gid import Gid
 # --- Базовые классы каркаса объектов ---------------------------------------
 from core.empty.api import EmptyApi
 from core.empty.obj import EmptyObj
+from core.empty.avi import EmptyAvi
 
 from core.fabric.Oper import SetOper
 
@@ -51,6 +52,7 @@ __all__ = [
     # базовые классы
     'EmptyApi',
     'EmptyObj',
+    'EmptyAvi',
     'SetOper',
     # инструменты
     'LazyVal',
