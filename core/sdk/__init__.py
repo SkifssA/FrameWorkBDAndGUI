@@ -7,14 +7,6 @@
 Внутренняя структура `core` (package/, type/, empty/, fabric/, ui/, DB/) может
 свободно рефакториться — контрактом является только этот файл.
 
-Разделы фасада:
-  * Типы и события       — Gid, SetterEvent
-  * Базовые классы       — EmptyAvi / EmptyApi / EmptyObj (каркас объектов)
-  * UI-контракты         — FormConstruct, Image, Text, SetOper
-  * Инструменты ядра     — asyncRun, LazyVal, диспетчер действий, файловый менеджер,
-                           фоновый воркер, HTTP-клиент, Metadata
-  * Прочее               — ROOT, MetadataManager
-
 Модуль намеренно НЕ тянет тяжёлые зависимости (aiohttp, libsql) на уровне
 импорта — они подключаются лениво, внутри соответствующих классов.
 """
@@ -32,7 +24,7 @@ from core.empty.logic import EmptyLogic
 from core.empty.obj import EmptyObj
 from core.empty.pub import EmptyPub
 
-from core.fabric.Oper import SetOper
+from core.decorator import Oper, Setter
 
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal
@@ -52,8 +44,10 @@ __all__ = [
     # базовые классы
     'EmptyLogic',
     'EmptyObj',
-    'EmptyAvi',
-    'SetOper',
+    'EmptyPub',
+    # декораторы
+    'Oper',
+    'Setter',
     # инструменты
     'LazyVal',
     'asyncRun',

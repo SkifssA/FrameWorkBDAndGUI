@@ -19,15 +19,9 @@ class ActionDispatcherPkg:
         sNameClass, sNameMetod = sAction.split('.')
         sNameModule = f'module.{getModuleByClass(sNameClass)}'
         try:
-            module = importlib.import_module(sNameModule)
-            if not hasattr(module, sNameClass):
-                if self.IsRaise:
-                    raise AttributeError(f"Класс {sNameClass} не найден в модуле {sNameModule}")
-                
-            cls =  getattr(module, sNameClass)
+            cls = self._getClass(sNameModule, sNameClass)
             if not hasattr(cls, sNameMetod):
-                if self.IsRaise:
-                    raise AttributeError(f"Метод {sNameMetod} не найден в классе {sNameClass}")
+                raise AttributeError(f"Метод {sNameMetod} не найден в классе {sNameClass}")
             
             attr = self._getMethod(cls, sNameMetod, classMethod)
             return self._runMethod(attr, kattr)
@@ -40,6 +34,21 @@ class ActionDispatcherPkg:
             return self._action(sAction=sAction, kattr=kattr, classMethod=classMethod)
         except Exception as e:
             print(f"[ActionDispatcher] Вызов '{sAction}' завершился с ошибкой: {e}")
+
+
+    def _getClass(self, sNameModule, sNameClass):
+        module = importlib.import_module(sNameModule)
+        if not hasattr(module, sNameClass):
+            raise AttributeError(f"Класс {sNameClass} не найден в модуле {sNameModule}")
+            
+        return getattr(module, sNameClass)
+        
+    
+    def getClassByName(self, sNameClass:str):
+        from core.empty.pub import EmptyPub
+        sNameModule = f'module.{getModuleByClass(sNameClass)}'
+        pub:EmptyPub = self._getClass(sNameModule, sNameClass)
+        return pub
 
     def getModulesConfig(self) -> dict:
         """Читает hooks.json всех модулей, перечисленных в project.yaml.

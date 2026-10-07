@@ -16,6 +16,6 @@ if __name__ == "__main__":
             createModule('sys', 'система')
     elif (args[0] == 'launchAppQT'):
         sNameTab = 'Bc_TimeLinePub'
-        form = ACTIONDISPATCHER.action(f'{sNameTab}.List')
+        form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
         if form:
-            print(form.getData())
+            print(form.List().getData())
