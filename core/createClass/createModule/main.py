@@ -20,12 +20,11 @@ def createModule(nameModule:str, captionModule:str):
 
     _createFile(f'{beginPath}/__init__.py', '')
     _createFile(f'{beginPath}/README.md', '# Модуль "{captionModule}"({nameModule})'.format(captionModule=captionModule, nameModule=capNameModule))
-    _createFile(f'{beginPath}/object/{capNameModule}_MainMenuAvi.py',
-                """from engineQT.sdk import EmptyAvi
-from core.sdk import SetOper
+    _createFile(f'{beginPath}/object/{capNameModule}_MainMenuPub.py',
+                """from core.sdk import Oper
 
-class {nameModule}_MainMenuAvi:
-    class Default(EmptyAvi.MainMenu): pass""".format(nameModule=capNameModule))
+class {nameModule}_MainMenuPub:
+    class Default(EmptyPub.MainMenu): pass""".format(nameModule=capNameModule))
 
 def _createFile(path, fileData):
     asyncRun(FileManagerPkg.CreateFile(path, fileData))
