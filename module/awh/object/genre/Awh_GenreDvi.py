@@ -3,7 +3,7 @@ from .Awh_GenreLogic import Awh_GenreLogic, Awh_GenreObj
 from core.sdk import EmptyPub
 
 class Awh_GenreDvi:
-    thisApi = Awh_GenreLogic
+    thisLogic = Awh_GenreLogic
 
     class DviDefault(EmptyPub.Default):
         def structuredQuery(self):

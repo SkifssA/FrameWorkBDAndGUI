@@ -1,55 +1,49 @@
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent.parent))
-
 from core.package.FileManager import FileManagerPkg
-from core import asyncRun
-from core.DB.Turso import ASQL
-
-from core.createClass.createTab.class_for_tab import Tab
-from core.createClass.createTab.script_manager import ScriptsManager
+from core.dataClass.tabDataClass import dbDataShema
+from core.fabric.MetaInfo import MetaInfo
 from core.createClass.createTab.tab_manager import TabsManager
 
-def createTab():
-    '''Создание таблиц для класса'''
-    listModules = asyncRun(FileManagerPkg.ReadFile("project.yaml"))
-    listModulesWithDep = getListModulesWithDep(listModules['modules'])
-    script = []
+
+async def createTab():
+    '''Создание таблиц для классов модулей (DDL из *.odb.json).'''
+    listModules = await FileManagerPkg.ReadFile("project.yaml")
+    listModulesWithDep = await getListModulesWithDep(listModules['modules'])
+    scripts: list[dbDataShema] = []
     for app in listModulesWithDep:
-        pathMod = f"modules/{app}/schemas"
-        lDirModSchemas = asyncRun(FileManagerPkg.GetFoldersList(pathMod, 3))
+        pathMod = f"module/{app}/schemas"
+        lDirModSchemas = await FileManagerPkg.GetFoldersList(pathMod, 3)
         for i in lDirModSchemas:
-            odbFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f"{pathMod}/{i}", '.odb.json', 1))
+            odbFiles = await FileManagerPkg.getFilesWithExtension(f"{pathMod}/{i}", '.odb.json', 1)
             for odbFile in odbFiles:
-                tabObject = Tab(**asyncRun(FileManagerPkg.ReadFile(odbFile.__str__())))
-                asyncRun(TabsManager.execute_pending(tabObject))
-                if tabObject.dbData != []:
-                    script.append(*tabObject.dbData)
-            
-        pkgFiles = asyncRun(FileManagerPkg.getFilesWithExtension(f"{pathMod}", '.pkg.json', 1))
+                schema = MetaInfo().getMetaTab(odbFile.__str__())
+                await TabsManager.execute_pending(schema)
+                scripts += schema.dbData
+
+        pkgFiles = await FileManagerPkg.getFilesWithExtension(f"{pathMod}", '.pkg.json', 1)
         for pkgFile in pkgFiles:
-            pkgObject = Tab(**asyncRun(FileManagerPkg.ReadFile(pkgFile.__str__())))
-            if pkgObject.dbData != []:
-                script.append(*pkgObject.dbData)
-    print('-'*10 + 'Начало выполнение скриптов' + '-'*10)
-    asyncRun(ScriptsManager.execute_pending(script))
-            
+            schema = MetaInfo().getMetaTab(pkgFile.__str__())
+            scripts += schema.dbData
+    print('-' * 10 + 'Найденные скрипты данных (выполнение не реализовано)' + '-' * 10)
+    for s in scripts:
+        print(s)
 
 
-def getListModulesWithDep(listModules: list)->list:
+async def getListModulesWithDep(listModules: list) -> list:
     listModulesWithDep = []
 
     for modul in listModules:
         if modul not in listModulesWithDep:
-            pathClass = f"modules/{modul}/config/app.json"
-            configMod = asyncRun(FileManagerPkg.ReadFile(pathClass))
+            pathClass = f"module/{modul}/config/app.json"
+            configMod = await FileManagerPkg.ReadFile(pathClass)
             dep = configMod.get("dependenceModules", None)
             for i in dep or []:
-                if i not in listModulesWithDep:
-                    w = getListModulesWithDep([i])
-                    listModulesWithDep += w
-            listModulesWithDep.append(modul)
+                w = await getListModulesWithDep([i])
+                listModulesWithDep += [m for m in w if m not in listModulesWithDep]
+            if modul not in listModulesWithDep:
+                listModulesWithDep.append(modul)
     return listModulesWithDep
 
+
 if __name__ == '__main__':
+    from core import asyncRun
     asyncRun(createTab())

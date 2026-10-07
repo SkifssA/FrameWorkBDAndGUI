@@ -2,13 +2,14 @@ import inspect
 
 from core.package.FileManager import FileManagerPkg
 from core.package import asyncRun
-from core.fabric.dataClass.metaDataClass import metaShema, getDataClass
+from core.fabric.MetaInfo import MetaInfo
+from core.dataClass.metaDataClass import metaShema
 
 class MetadataManager:
     def get(self, obj)->metaShema:
         path = f'{self.get_impl_path(obj)}'
-        Ameta = getDataClass(f"{path}.Ameta.json") or {}
-        Dmeta = getDataClass(f"{path}.Dmeta.json") or {'Default':{'isVisibleToolBar': False}}
+        Ameta = MetaInfo().getMetaUI(f"{path}.Ameta.json") or {}
+        Dmeta = MetaInfo().getMetaUI(f"{path}.Dmeta.json") or {'Default':{'isVisibleToolBar': False}}
 
         if Dmeta and Ameta:
             return Dmeta['Default'].merge(Ameta[obj.__class__.__name__])

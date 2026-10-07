@@ -3,7 +3,7 @@ from .Awh_AnimeGenreLogic import Awh_AnimeGenreLogic, Awh_AnimeGenreObj
 from core.sdk import EmptyPub
 
 class Awh_AnimeGenreDvi:
-    thisApi = Awh_AnimeGenreLogic
+    thisLogic = Awh_AnimeGenreLogic
 
     class DviDefault(EmptyPub.Default):
         def structuredQuery(self):

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from core.fabric.dataClass.baseDataClass import Base
+from core.dataClass.baseDataClass import Base
 
 @dataclass
 class EmptyObj(Base):

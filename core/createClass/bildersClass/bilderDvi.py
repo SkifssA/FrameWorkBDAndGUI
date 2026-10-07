@@ -6,7 +6,7 @@ from .{name}Logic import {name}Logic, {name}Obj
 from core.sdk import EmptyPub
 
 class {name}Dvi:
-    thisApi = {name}Logic
+    thisLogic = {name}Logic
 
     class DviDefault(EmptyPub.Default):
         def structuredQuery(self):
@@ -51,7 +51,7 @@ class {name}Dvi:
             setHead = 'def set{nameAttr}(self, event:SetterEvent): '.format(nameAttr=nameAttr)
             return tempSet.format(nameAttr=nameAttr, setHead=setHead)
         
-        tempSet = '{setHead}self.thisApi().set{nameAttr}(self.thisRop(), event.value); self.afterSetter(\'{nameAttr}\')'
+        tempSet = '{setHead}self.thisLogic().set{nameAttr}(self.thisRop(), event.value); self.afterSetter(\'{nameAttr}\')'
         listTepmSet = []
 
         for attr in self.data.attr:

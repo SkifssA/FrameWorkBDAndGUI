@@ -3,7 +3,7 @@ from .Bc_ScriptSchedulerLogic import Bc_ScriptSchedulerLogic, Bc_ScriptScheduler
 from core.sdk import EmptyPub
 
 class Bc_ScriptSchedulerDvi:
-    thisApi = Bc_ScriptSchedulerLogic
+    thisLogic = Bc_ScriptSchedulerLogic
 
     class DviDefault(EmptyPub.Default):
         def structuredQuery(self):

@@ -1,5 +1,5 @@
 from core.package.FileManager import FileManagerPkg
-from core.fabric.dataClass.tabDataClass import tabShema
+from core.dataClass.tabDataClass import tabShema
 
 class BilderBase:
     temp = None

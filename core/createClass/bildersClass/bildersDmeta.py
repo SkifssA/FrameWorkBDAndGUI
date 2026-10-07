@@ -3,8 +3,8 @@ from dacite import from_dict, Config
 
 from core.package.FileManager import FileManagerPkg
 from .bilderBase import BilderBase
-from core.fabric.dataClass.tabDataClass import tabShema, BASE_ATTR
-from core.fabric.dataClass.metaDataClass import metaShema, attrMetaShema
+from core.dataClass.tabDataClass import tabShema, BASE_ATTR
+from core.dataClass.metaDataClass import metaShema, attrMetaShema
 
 class BildersDmeta(BilderBase):
     suffixFile = '.Dmeta.json'

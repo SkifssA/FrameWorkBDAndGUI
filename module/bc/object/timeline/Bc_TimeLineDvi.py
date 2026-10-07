@@ -3,7 +3,7 @@ from .Bc_TimeLineLogic import Bc_TimeLineLogic, Bc_TimeLineObj
 from core.sdk import EmptyPub
 
 class Bc_TimeLineDvi:
-    thisApi = Bc_TimeLineLogic
+    thisLogic = Bc_TimeLineLogic
 
     class DviDefault(EmptyPub.Default):
         def structuredQuery(self):
