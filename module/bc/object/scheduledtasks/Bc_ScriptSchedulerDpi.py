@@ -1,5 +1,5 @@
 # Системный файл для логики
-from core.sdk import EmptyApi, EmptyObj
+from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
 
 @dataclass
@@ -12,7 +12,7 @@ class Bc_ScriptSchedulerObj(EmptyObj):
     idTimeLine:int = None
     bUsed:int = None
 
-class Bc_ScriptSchedulerDpi(EmptyApi):
+class Bc_ScriptSchedulerDpi(EmptyLogic):
     _classObj = Bc_ScriptSchedulerObj
 
     def _getNameClass(self):

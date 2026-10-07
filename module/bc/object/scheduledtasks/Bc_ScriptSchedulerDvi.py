@@ -1,11 +1,11 @@
 # Системный файл для интерфейса
 from .Bc_ScriptSchedulerLogic import Bc_ScriptSchedulerLogic, Bc_ScriptSchedulerObj
-from core.sdk import EmptyAvi
+from core.sdk import EmptyPub
 
 class Bc_ScriptSchedulerDvi:
-    thisApi = Bc_ScriptSchedulerApi
+    thisApi = Bc_ScriptSchedulerLogic
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault(EmptyPub.Default):
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -36,16 +36,16 @@ class Bc_ScriptSchedulerDvi:
         def thisRop(self)->Bc_ScriptSchedulerObj:
             return super().thisRop()
 
-        def thisApi(self)->Bc_ScriptSchedulerApi:
-            return super().thisApi()
+        def thisLogic(self)->Bc_ScriptSchedulerLogic:
+            return super().thisLogic()
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault, EmptyPub.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):
-            return self.thisApi().load(self.idItem)
+            return self.thisLogic().load(self.idItem)
 
     class DviLookUp:
         def onRefresh(self):

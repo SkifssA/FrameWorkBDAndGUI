@@ -3,12 +3,12 @@ from .bilderBase import BilderBase
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
 from .{name}Logic import {name}Logic, {name}Obj
-from core.sdk import EmptyAvi
+from core.sdk import EmptyPub
 
 class {name}Dvi:
     thisApi = {name}Logic
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault(EmptyPub.Default):
         def structuredQuery(self):
             return \"\"\"{sqlList}\"\"\"
 
@@ -18,16 +18,16 @@ class {name}Dvi:
         def thisRop(self)->{name}Obj:
             return super().thisRop()
 
-        def thisApi(self)->{name}Api:
-            return super().thisApi()
+        def thisLogic(self)->{name}Logic:
+            return super().thisLogic()
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault, EmptyPub.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):
-            return self.thisApi().load(self.idItem)
+            return self.thisLogic().load(self.idItem)
 
     class DviLookUp:
         def onRefresh(self):

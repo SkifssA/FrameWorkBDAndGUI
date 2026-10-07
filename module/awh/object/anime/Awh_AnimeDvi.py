@@ -1,11 +1,11 @@
 # Системный файл для интерфейса
 from .Awh_AnimeLogic import Awh_AnimeLogic, Awh_AnimeObj
-from core.sdk import EmptyAvi
+from core.sdk import EmptyPub
 
 class Awh_AnimeDvi:
-    thisApi = Awh_AnimeApi
+    thisApi = Awh_AnimeLogic
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault(EmptyPub.Default):
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -35,16 +35,16 @@ class Awh_AnimeDvi:
         def thisRop(self)->Awh_AnimeObj:
             return super().thisRop()
 
-        def thisApi(self)->Awh_AnimeApi:
-            return super().thisApi()
+        def thisLogic(self)->Awh_AnimeLogic:
+            return super().thisLogic()
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault, EmptyPub.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):
-            return self.thisApi().load(self.idItem)
+            return self.thisLogic().load(self.idItem)
 
     class DviLookUp:
         def onRefresh(self):

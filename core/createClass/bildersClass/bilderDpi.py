@@ -2,7 +2,7 @@ from .bilderBase import BilderBase
 
 class BilderDpi(BilderBase):
     temp = """# Системный файл для логики
-from core.sdk import EmptyApi, EmptyObj
+from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
 
 @dataclass
@@ -10,7 +10,7 @@ class {name}Obj(EmptyObj):
     id:int
     {attrObj} = None
 
-class {name}Dpi(EmptyApi):
+class {name}Dpi(EmptyLogic):
     _classObj = {name}Obj
 
     def _getNameClass(self):

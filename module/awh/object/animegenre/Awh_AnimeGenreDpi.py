@@ -1,5 +1,5 @@
 # Системный файл для логики
-from core.sdk import EmptyApi, EmptyObj
+from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
 
 @dataclass
@@ -8,7 +8,7 @@ class Awh_AnimeGenreObj(EmptyObj):
     idAnime:int = None
     idGenre:int = None
 
-class Awh_AnimeGenreDpi(EmptyApi):
+class Awh_AnimeGenreDpi(EmptyLogic):
     _classObj = Awh_AnimeGenreObj
 
     def _getNameClass(self):

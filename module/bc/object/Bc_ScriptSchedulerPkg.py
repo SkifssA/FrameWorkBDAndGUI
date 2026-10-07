@@ -3,8 +3,8 @@ import time
 import datetime
 
 from core.sdk import ACTIONDISPATCHER, ThreadWorkerPkg
-from module.bc.object.scheduledtasks.Bc_ScriptSchedulerApi import Bc_ScriptSchedulerObj, Bc_ScriptSchedulerApi
-from module.bc.object.timeline.Bc_TimeLineApi import Bc_TimeLineApi
+from module.bc.object.scheduledtasks.Bc_ScriptSchedulerLogic import Bc_ScriptSchedulerObj, Bc_ScriptSchedulerLogic
+from module.bc.object.timeline.Bc_TimeLineLogic import Bc_TimeLineLogic
 
 class Bc_ScriptSchedulerPkg:
     nHour = -1
@@ -19,7 +19,7 @@ class Bc_ScriptSchedulerPkg:
 
     @classmethod
     def run(cls):
-        data = Bc_ScriptSchedulerApi().getAllByAttr('bUsed', 1)
+        data = Bc_ScriptSchedulerLogic().getAllByAttr('bUsed', 1)
         obj = Bc_ScriptSchedulerPkg(data)
         obj.runMe = True
         ThreadWorkerPkg.submit(obj._run)
@@ -35,11 +35,11 @@ class Bc_ScriptSchedulerPkg:
             ,'sec': {}    
         }
         for obj in objScript:
-            if obj.idTimeLine == Bc_TimeLineApi.idHour:
+            if obj.idTimeLine == Bc_TimeLineLogic.idHour:
                 self._fillDict(obj, 'hour')
-            elif obj.idTimeLine == Bc_TimeLineApi.idMinute:
+            elif obj.idTimeLine == Bc_TimeLineLogic.idMinute:
                 self._fillDict(obj, 'minute')
-            elif obj.idTimeLine == Bc_TimeLineApi.idSecond:
+            elif obj.idTimeLine == Bc_TimeLineLogic.idSecond:
                 self._fillDict(obj, 'sec')
 
     def _fillDict(self, obj:Bc_ScriptSchedulerObj, TimeLine):

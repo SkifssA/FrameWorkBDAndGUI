@@ -1,11 +1,11 @@
 # Системный файл для интерфейса
 from .Awh_GenreLogic import Awh_GenreLogic, Awh_GenreObj
-from core.sdk import EmptyAvi
+from core.sdk import EmptyPub
 
 class Awh_GenreDvi:
-    thisApi = Awh_GenreApi
+    thisApi = Awh_GenreLogic
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault(EmptyPub.Default):
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -30,16 +30,16 @@ class Awh_GenreDvi:
         def thisRop(self)->Awh_GenreObj:
             return super().thisRop()
 
-        def thisApi(self)->Awh_GenreApi:
-            return super().thisApi()
+        def thisLogic(self)->Awh_GenreLogic:
+            return super().thisLogic()
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault, EmptyPub.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):
-            return self.thisApi().load(self.idItem)
+            return self.thisLogic().load(self.idItem)
 
     class DviLookUp:
         def onRefresh(self):

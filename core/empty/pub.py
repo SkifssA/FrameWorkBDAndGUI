@@ -1,6 +1,6 @@
 from core.package.Rect import Rect
 
-class EmptyAvi:
+class EmptyPub:
     class Default:
         def __init__(self):
             self.rect = Rect(self)

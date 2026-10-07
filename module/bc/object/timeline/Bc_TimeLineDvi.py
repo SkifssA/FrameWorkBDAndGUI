@@ -1,11 +1,11 @@
 # Системный файл для интерфейса
 from .Bc_TimeLineLogic import Bc_TimeLineLogic, Bc_TimeLineObj
-from core.sdk import EmptyAvi
+from core.sdk import EmptyPub
 
 class Bc_TimeLineDvi:
-    thisApi = Bc_TimeLineApi
+    thisApi = Bc_TimeLineLogic
 
-    class DviDefault(EmptyAvi.Default):
+    class DviDefault(EmptyPub.Default):
         def structuredQuery(self):
             return """
                 SELECT t.id,
@@ -31,16 +31,16 @@ class Bc_TimeLineDvi:
         def thisRop(self)->Bc_TimeLineObj:
             return super().thisRop()
 
-        def thisApi(self)->Bc_TimeLineApi:
-            return super().thisApi()
+        def thisLogic(self)->Bc_TimeLineLogic:
+            return super().thisLogic()
 
         
         
-    class DviList(DviDefault, EmptyAvi.List): pass
+    class DviList(DviDefault, EmptyPub.List): pass
 
     class DviCard(DviDefault): 
         def onRefresh(self):
-            return self.thisApi().load(self.idItem)
+            return self.thisLogic().load(self.idItem)
 
     class DviLookUp:
         def onRefresh(self):

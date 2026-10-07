@@ -30,7 +30,7 @@ from core.type.Gid import Gid
 # --- Базовые классы каркаса объектов ---------------------------------------
 from core.empty.logic import EmptyLogic
 from core.empty.obj import EmptyObj
-from core.empty.avi import EmptyAvi
+from core.empty.pub import EmptyPub
 
 from core.fabric.Oper import SetOper
 

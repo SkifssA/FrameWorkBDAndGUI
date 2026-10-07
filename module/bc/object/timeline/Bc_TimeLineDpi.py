@@ -1,5 +1,5 @@
 # Системный файл для логики
-from core.sdk import EmptyApi, EmptyObj
+from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
 
 @dataclass
@@ -8,7 +8,7 @@ class Bc_TimeLineObj(EmptyObj):
     sCode:str = None
     sName:str = None
 
-class Bc_TimeLineDpi(EmptyApi):
+class Bc_TimeLineDpi(EmptyLogic):
     _classObj = Bc_TimeLineObj
 
     def _getNameClass(self):
