@@ -4,7 +4,6 @@
             "name": "Default",
             "caption": "Единица измерения времени",
             "isVisibleToolBar": true,
-            "filter": [],
             "attr": [
                 {
                     "name": "id",
@@ -31,6 +30,16 @@
                     "editType": "edit"
                 }
             ]
+        },
+        {
+            "name": "List",
+            "isVisibleToolBar": true,
+            "typeForm": "list"
+        },
+        {
+            "name": "Card",
+            "isVisibleToolBar": true,
+            "typeForm": "card"
         }
     ]
 }

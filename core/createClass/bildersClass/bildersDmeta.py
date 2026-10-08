@@ -41,7 +41,18 @@ class BildersDmeta(BilderBase):
             , isVisibleToolBar=True
             , attr=attrMeta
         )
-        await FileManagerPkg.CreateFile(pathWhitFile, {'repres':[formDefault.getDict()]})
+
+        formList = metaShema(
+            name='List'
+            , typeForm='list'    
+        )
+
+        formCard = metaShema(
+            name='Card'
+            , typeForm='card'    
+        )
+
+        await FileManagerPkg.CreateFile(pathWhitFile, {'repres':[formDefault.getDict(), formList.getDict(), formCard.getDict()]})
         return {f'{self.data.name}{self.suffixFile}': pathWhitFile}
 
     def __getShowAttr(self):

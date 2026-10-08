@@ -4,7 +4,6 @@
             "name": "Default",
             "caption": "Планировщик сценариев",
             "isVisibleToolBar": true,
-            "filter": [],
             "attr": [
                 {
                     "name": "id",
@@ -74,6 +73,16 @@
                     "editType": "check"
                 }
             ]
+        },
+        {
+            "name": "List",
+            "isVisibleToolBar": true,
+            "typeForm": "list"
+        },
+        {
+            "name": "Card",
+            "isVisibleToolBar": true,
+            "typeForm": "card"
         }
     ]
 }

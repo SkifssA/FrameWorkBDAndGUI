@@ -22,4 +22,4 @@ if __name__ == "__main__":
             print('form.List().getData():\n', form.List().getData())
             print('form.List().getInfoMeta():\n', form.List().getInfoMeta())
             print('\n\n\n\n')
-        # runServer()
+        runServer()

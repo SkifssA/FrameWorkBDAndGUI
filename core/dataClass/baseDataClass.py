@@ -3,7 +3,6 @@ from dataclasses import dataclass, asdict, is_dataclass, fields
 @dataclass
 class Base:
     def getDict(self, isNotNone:bool=True)->dict:
-
         def _clean(value):
             # Если это вложенный dataclass, обрабатываем его рекурсивно
             if is_dataclass(value):
@@ -13,14 +12,16 @@ class Base:
             if isinstance(value, (list, tuple)):
                 cleaned_list = [_clean(item) for item in value]
                 # Убираем из списка элементы, которые стали None после очистки
-                return [item for item in cleaned_list if item is not None]
+                l = [item for item in cleaned_list if item is not None]
+
+                return l if l != [] else None
                 
             # Если это словарь, убираем ключи с None
             if isinstance(value, dict):
-                return {k: _clean(v) for k, v in value.items() if v is not None}
+                return {k: x for k, v in value.items() if (x:=_clean(v)) is not None}
                 
             # Возвращаем обычное значение
-            return value
+            return value 
 
         if isNotNone:
             return _clean(asdict(self))

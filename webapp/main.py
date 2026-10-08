@@ -7,18 +7,16 @@ from core.sdk import ACTIONDISPATCHER
 
 app = FastAPI()
 templates = Jinja2Templates(directory="webapp/templates")
-templates.env.cache = None  # <-- Добавь эту строку
 
 app.mount("/static", StaticFiles(directory="webapp/static"), name="static")
 
 
 
-@app.get("/api/open/{sNameTab}")
+@app.get("/api/open/{sNameTab}#{sForm}")
 def read_item(sNameTab: str, request: Request):
     form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
     if form:
         form = form.List()
-        print(form.getData())
         return templates.TemplateResponse(request=request, name="partials/list.html", context={
             "data": form.getData()
             , 'meta': form.getInfoMeta()

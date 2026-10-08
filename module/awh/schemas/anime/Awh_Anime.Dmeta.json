@@ -4,7 +4,6 @@
             "name": "Default",
             "caption": "Аниме",
             "isVisibleToolBar": true,
-            "filter": [],
             "attr": [
                 {
                     "name": "id",
@@ -63,6 +62,16 @@
                     "editType": "edit"
                 }
             ]
+        },
+        {
+            "name": "List",
+            "isVisibleToolBar": true,
+            "typeForm": "list"
+        },
+        {
+            "name": "Card",
+            "isVisibleToolBar": true,
+            "typeForm": "card"
         }
     ]
 }
