@@ -12,18 +12,20 @@ app.mount("/static", StaticFiles(directory="webapp/static"), name="static")
 
 
 
-@app.get("/api/open/{sNameTab}#{sForm}")
-def read_item(sNameTab: str, request: Request):
-    form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
-    if form:
-        form = form.List()
-        return templates.TemplateResponse(request=request, name="partials/list.html", context={
-            "data": form.getData()
-            , 'meta': form.getInfoMeta()
-        })
+@app.get("/{sNameTab}#{sForm}")
+def read_item(sNameTab: str, sForm:str, request: Request):
+    class_ = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
+    if class_:
+        form = class_._getFormByName(sForm)()
+        if form:
+            return templates.TemplateResponse(request=request, name=f"partials/{sForm.lower()}.html", context={
+                "data": form.getData()
+                , 'meta': form.getInfoMeta()
+            })
+        raise HTTPException(status_code=404, detail=f"Отображение {sForm} таблицы {sNameTab} не найдено")
     raise HTTPException(status_code=404, detail=f"Таблица {sNameTab} не найдена")
 
-@app.get("/api/oper/{sNameTab}/{oper}")
+@app.get("/api/oper/{sNameTab}#{sForm}/{oper}")
 def read_item(sNameTab: str, oper: str):
     form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
     if form:

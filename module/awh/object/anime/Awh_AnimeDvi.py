@@ -2,7 +2,7 @@
 from .Awh_AnimeLogic import Awh_AnimeLogic, Awh_AnimeObj
 from core.sdk import EmptyPub
 
-class Awh_AnimeDvi:
+class Awh_AnimeDvi(EmptyPub):
     thisLogic = Awh_AnimeLogic
 
     class DviDefault(EmptyPub.Default):

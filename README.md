@@ -79,24 +79,14 @@ module/<mod>/
 ```bash
 pip install -r requirements.txt
 
-# сервер (браузер)
-uvicorn server.main:app --reload
+python main.py launchServer
 
 # вспомогательные генераторы
 python main.py createTab        # создать объект (таб)
 python main.py createModule     # создать модуль
 ```
 
-Десктопный режим — запуск того же веб-интерфейса в нативном окне-обёртке
-(локальный сервер + WebView). Пример каркаса:
-
-```python
-import webview, uvicorn, threading
-
-threading.Thread(target=lambda: uvicorn.run(app, port=8000), daemon=True).start()
-webview.create_window('MyApp', 'http://127.0.0.1:8000')
-webview.start()
-```
+Десктопный режим — запуск того же веб-интерфейса в нативном окне-обёртке (В планах)
 
 ---
 

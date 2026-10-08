@@ -2,7 +2,7 @@
 from .Bc_TimeLineLogic import Bc_TimeLineLogic, Bc_TimeLineObj
 from core.sdk import EmptyPub
 
-class Bc_TimeLineDvi:
+class Bc_TimeLineDvi(EmptyPub):
     thisLogic = Bc_TimeLineLogic
 
     class DviDefault(EmptyPub.Default):

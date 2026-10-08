@@ -2,7 +2,7 @@
 from .Awh_AnimeGenreLogic import Awh_AnimeGenreLogic, Awh_AnimeGenreObj
 from core.sdk import EmptyPub
 
-class Awh_AnimeGenreDvi:
+class Awh_AnimeGenreDvi(EmptyPub):
     thisLogic = Awh_AnimeGenreLogic
 
     class DviDefault(EmptyPub.Default):

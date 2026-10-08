@@ -35,13 +35,13 @@
             ]
         },
         {
-            "name": "Основное приложение",
+            "name": "Запуск сервера",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "args": [
-                "launchAppQT"
+                "launchServer"
             ]
         }
     ]

@@ -2,7 +2,7 @@
 from .Awh_GenreLogic import Awh_GenreLogic, Awh_GenreObj
 from core.sdk import EmptyPub
 
-class Awh_GenreDvi:
+class Awh_GenreDvi(EmptyPub):
     thisLogic = Awh_GenreLogic
 
     class DviDefault(EmptyPub.Default):

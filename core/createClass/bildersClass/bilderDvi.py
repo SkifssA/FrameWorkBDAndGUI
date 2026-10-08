@@ -5,7 +5,7 @@ class BilderDvi(BilderBase):
 from .{name}Logic import {name}Logic, {name}Obj
 from core.sdk import EmptyPub
 
-class {name}Dvi:
+class {name}Dvi(EmptyPub):
     thisLogic = {name}Logic
 
     class DviDefault(EmptyPub.Default):

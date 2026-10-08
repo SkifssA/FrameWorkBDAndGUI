@@ -3,6 +3,13 @@ from core.fabric.Registry import Registry
 from core.package.MetadataManager import MetadataManager
 
 class EmptyPub:
+
+    @classmethod
+    def _getFormByName(cls, sForm:str)->'Default':
+        if x:=getattr(cls, sForm):
+            return x
+        return None
+
     class Default:
         def __init__(self):
             self.rect = Rect(self)

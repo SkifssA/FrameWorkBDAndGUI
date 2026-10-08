@@ -2,7 +2,7 @@
 from .Bc_ScriptSchedulerLogic import Bc_ScriptSchedulerLogic, Bc_ScriptSchedulerObj
 from core.sdk import EmptyPub
 
-class Bc_ScriptSchedulerDvi:
+class Bc_ScriptSchedulerDvi(EmptyPub):
     thisLogic = Bc_ScriptSchedulerLogic
 
     class DviDefault(EmptyPub.Default):
