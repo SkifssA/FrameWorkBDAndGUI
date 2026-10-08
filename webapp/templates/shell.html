@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Моя ERP Система{% endblock %}</title>
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/global.css">
+</head>
+
+<body>
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="main-content" id="app-content">
+        {% block content %}
+        <h1>Добро пожаловать!</h1>
+        {% endblock %}
+    </main>
+
+    <!-- КОНТЕЙНЕР ДЛЯ УВЕДОМЛЕНИЙ (Опционально) -->
+    <div id="notification-area"></div>
+
+    <!-- СКРИПТЫ ДЛЯ МОДАЛОК И SSE (Если нужно) -->
+    <script></script>
+
+</body>
+
+</html>

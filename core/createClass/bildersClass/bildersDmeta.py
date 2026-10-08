@@ -10,7 +10,7 @@ class BildersDmeta(BilderBase):
     suffixFile = '.Dmeta.json'
 
     async def createFile(self, path):
-        pathWhitFileD = self._getPathAndFile(path)
+        pathWhitFile = self._getPathAndFile(path)
         metaVisible = self.__getShowAttr()
         attrMeta = list(from_dict(data_class=attrMetaShema, data=i) for i in BASE_ATTR)
         for attr in self.data.attr:
@@ -41,7 +41,8 @@ class BildersDmeta(BilderBase):
             , isVisibleToolBar=True
             , attr=attrMeta
         )
-        await FileManagerPkg.CreateFile(pathWhitFileD, [formDefault.getDict()])
+        await FileManagerPkg.CreateFile(pathWhitFile, {'repres':[formDefault.getDict()]})
+        return {f'{self.data.name}{self.suffixFile}': pathWhitFile}
 
     def __getShowAttr(self):
         res = []

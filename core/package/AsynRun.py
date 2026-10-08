@@ -1,15 +1,14 @@
 import asyncio
 import nest_asyncio
 
-# Применяем один раз при импорте или старте приложения
-nest_asyncio.apply()
 
 def asyncRun(coroutine):
     """Выполнить корутину, поддерживая вложенные вызовы"""
     try:
         loop = asyncio.get_running_loop()
-        # Loop уже запущен - используем его
-        return loop.run_until_complete(coroutine)
+        # Если цикл уже есть, создаем задачу и ждем её выполнения синхронно
+        # Внимание: это может быть опасно в некоторых GUI-потоках, но для CLI/Scripts ок
+        return asyncio.run_coroutine_threadsafe(coroutine, loop).result()
     except RuntimeError:
-        # Нет активного loop - создаём новый
+        # Если цикла нет, просто запускаем как обычно
         return asyncio.run(coroutine)

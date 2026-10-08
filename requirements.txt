@@ -1,5 +1,4 @@
 libsql_client
-nest_asyncio
 pyyaml
 aiofiles
 beautifulsoup4

@@ -1,11 +1,3 @@
-[
-    {
-        "name": "Default",
-        "attr": [
-            {
-                "name": "sNameModule",
-                "isReadOnly": true
-            }
-        ]
-    }
-]
+{
+    "dep": "Bc_ScriptScheduler.Dmeta.json"
+}

@@ -16,6 +16,7 @@ def createFile():
     '''Создание файлов для класса'''
     listApp = asyncRun(FileManagerPkg.ReadFile("project.yaml"))
     for app in listApp['modules']:
+        metaFile = {}
         pathClass = pathModile(app, '/schemas')
         if asyncRun(FileManagerPkg.Exists(pathClass)):
             for cl in asyncRun(FileManagerPkg.GetFoldersList(pathClass)):
@@ -33,9 +34,10 @@ def createFile():
                     asyncRun(BilderPub(data).createFileA(pathPyFile))
 
                     pathMetaFile = f'{pathClass}/{cl}'
-                    asyncRun(BildersDmeta(data).createFile(pathMetaFile))
-                    asyncRun(BildersAmeta(data).createFile(pathMetaFile))
+                    metaFile = metaFile | asyncRun(BildersDmeta(data).createFile(pathMetaFile))
+                    metaFile = metaFile | asyncRun(BildersAmeta(data).createFile(pathMetaFile))
 
+            asyncRun(FileManagerPkg.CreateFile(pathModile(app, '/cache/meta.json'), metaFile))
             asyncRun(_getInitModule(app))
 
 async def _getInitModule(app):
@@ -57,4 +59,6 @@ async def _getInitModule(app):
         classLogic.append(f'\'{class_name}\'')
         imports.append(import_line)
     
-    await FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + f'\n\n__all__ = [\n    {'\n    ,'.join(classLogic)}\n]')
+    await FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + 
+                                    f'\n\nfrom core.sdk import FileManagerPkg, asyncRun\nMETA_FILE = asyncRun(FileManagerPkg.ReadFile(\'{pathModile(app, '/cache/meta.json')}\'))' +
+                                    f'\n\n__all__ = [\n    {'\n    ,'.join(classLogic)}\n]')

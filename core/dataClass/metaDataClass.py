@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
-from dacite import from_dict, Config
 
-from core.package.FileManager import FileManagerPkg
 from core.dataClass.baseDataClass import Base
-from core.package.AsynRun import asyncRun
 
 @dataclass
 class attrMetaShema(Base):
@@ -27,6 +24,7 @@ class metaShema(Base):
     name: str
     caption: str = None
     isVisibleToolBar: bool = True
+    typeForm: str = None
     width: int = None
     height: int = None
     filter: list[filterMetaShema] = field(default_factory=list)

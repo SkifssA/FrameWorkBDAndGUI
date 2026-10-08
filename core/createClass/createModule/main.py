@@ -9,6 +9,7 @@ def createModule(nameModule:str, captionModule:str):
     folders = [f"{beginPath}/object"
                , f"{beginPath}/schemas"
                , f"{beginPath}/config"
+               , f"{beginPath}/cache"
             ]
     for folder in folders:
         Path(FileManagerPkg.getRealPath(folder)).mkdir(parents=True, exist_ok=True)
@@ -25,6 +26,7 @@ def createModule(nameModule:str, captionModule:str):
 
 class {nameModule}_MainMenuPub:
     class Default(EmptyPub.MainMenu): pass""".format(nameModule=capNameModule))
+    _createFile(f'{beginPath}/cache/meta.json', {})
 
 def _createFile(path, fileData):
     asyncRun(FileManagerPkg.CreateFile(path, fileData))

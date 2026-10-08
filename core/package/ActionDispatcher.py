@@ -4,7 +4,7 @@ import inspect
 from core.package.AsynRun import asyncRun
 from core.package.FileManager import FileManagerPkg
 
-def getModuleByClass(nameClass: str)->str:
+def getModule(nameClass: str)->str:
     return nameClass[:nameClass.find('_')].lower()
 
 class ActionDispatcherPkg:
@@ -17,7 +17,7 @@ class ActionDispatcherPkg:
 
     def _action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
         sNameClass, sNameMetod = sAction.split('.')
-        sNameModule = f'module.{getModuleByClass(sNameClass)}'
+        sNameModule = f'module.{getModule(sNameClass)}'
         try:
             cls = self._getClass(sNameModule, sNameClass)
             if not hasattr(cls, sNameMetod):
@@ -36,19 +36,26 @@ class ActionDispatcherPkg:
             print(f"[ActionDispatcher] Вызов '{sAction}' завершился с ошибкой: {e}")
 
 
-    def _getClass(self, sNameModule, sNameClass):
-        module = importlib.import_module(sNameModule)
+    def _getModule(self, sNameModule):
+        return importlib.import_module(f'module.{sNameModule}')
+
+    def _getClass(self, sNameClass):
+        sNameModule = getModule(sNameClass)
+        module = self._getModule(sNameModule)
         if not hasattr(module, sNameClass):
             raise AttributeError(f"Класс {sNameClass} не найден в модуле {sNameModule}")
             
         return getattr(module, sNameClass)
         
-    
     def getClassByName(self, sNameClass:str):
         from core.empty.pub import EmptyPub
-        sNameModule = f'module.{getModuleByClass(sNameClass)}'
-        pub:EmptyPub = self._getClass(sNameModule, sNameClass)
+        pub:EmptyPub = self._getClass(sNameClass)
         return pub
+
+    def getMetaCache(self, sNameMetaFile:str)->dict:
+        sNameModule = getModule(sNameMetaFile)
+        module = self._getModule(sNameModule)
+        return getattr(module, 'META_FILE')
 
     def getModulesConfig(self) -> dict:
         """Читает hooks.json всех модулей, перечисленных в project.yaml.

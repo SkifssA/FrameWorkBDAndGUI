@@ -1,26 +1,28 @@
-[
-    {
-        "name": "Default",
-        "caption": "Жанры",
-        "isVisibleToolBar": true,
-        "filter": [],
-        "attr": [
-            {
-                "name": "id",
-                "caption": "id",
-                "type": "INT",
-                "isVisible": false,
-                "order": -2,
-                "editType": "edit"
-            },
-            {
-                "name": "sCaption",
-                "caption": "Название",
-                "type": "TEXT",
-                "isVisible": true,
-                "order": 0,
-                "editType": "edit"
-            }
-        ]
-    }
-]
+{
+    "repres": [
+        {
+            "name": "Default",
+            "caption": "Жанры",
+            "isVisibleToolBar": true,
+            "filter": [],
+            "attr": [
+                {
+                    "name": "id",
+                    "caption": "id",
+                    "type": "INT",
+                    "isVisible": false,
+                    "order": -2,
+                    "editType": "edit"
+                },
+                {
+                    "name": "sCaption",
+                    "caption": "Название",
+                    "type": "TEXT",
+                    "isVisible": true,
+                    "order": 0,
+                    "editType": "edit"
+                }
+            ]
+        }
+    ]
+}

@@ -1,25 +1,36 @@
 import inspect
 
-from core.package.FileManager import FileManagerPkg
+from core.package.ActionDispatcher import ActionDispatcherPkg
 from core.package import asyncRun
 from core.fabric.MetaInfo import MetaInfo
 from core.dataClass.metaDataClass import metaShema
 
 class MetadataManager:
-    def get(self, obj)->metaShema:
-        path = f'{self.get_impl_path(obj)}'
-        Ameta = MetaInfo().getMetaUI(f"{path}.Ameta.json") or {}
-        Dmeta = MetaInfo().getMetaUI(f"{path}.Dmeta.json") or {'Default':{'isVisibleToolBar': False}}
-
-        if Dmeta and Ameta:
-            return Dmeta['Default'].merge(Ameta[obj.__class__.__name__])
-        elif Ameta.get(obj.__class__.__name__):
-            return Ameta[obj.__class__.__name__]
-        elif Dmeta:
-            return Dmeta['Default']
-            
+    def get(self, obj:object|str)->metaShema:
+        path = self.get_impl_path(obj)
+        clsName = obj.__class__.__name__
+        return self._get(f"{path}.Ameta.json", clsName)
         
-    def get_impl_path(self, obj):
+    def _get(self, path:str, clsName: str)->metaShema:
+        meta = MetaInfo()
+        meta.readMeta(path)
+        mataRepre:dict = meta.getMetaUI()
+        ui:metaShema = mataRepre.get(clsName, metaShema(name=clsName))
+        depMeta = None
+        if (x:=meta.getDep()):
+            pathDep = ActionDispatcherPkg().getMetaCache(x)[x]
+            depMeta = self._get(pathDep, clsName)
+
+        if metaDef:=mataRepre.get('Default'):
+            ui = metaDef.merge(ui)
+        if depMeta:
+            ui = depMeta.merge(ui)
+
+        ui.attr.sort(key=lambda x: x.order)
+
+        return ui
+            
+    def get_impl_path(self, obj:object|str)->str:
         """Путь к файлу, где определён класс"""
         file = inspect.getfile(obj.__class__)
         w = file.find('module')

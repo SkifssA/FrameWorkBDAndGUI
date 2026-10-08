@@ -8,7 +8,8 @@ from core.package.FileManager import FileManagerPkg
 
 class MetaInfo:
     def __init__(self):
-        pass
+        self._dictMetaUi = {}
+        self._dep = None
 
     def getMetaTab(self, path)->tabShema:
         data = asyncRun(FileManagerPkg.ReadFile(path))
@@ -20,11 +21,15 @@ class MetaInfo:
         data['dbData'] = list(from_dict(data_class=dbDataShema, data=i) for i in data.get('dbData', []))
     
         return from_dict(data_class=tabShema, data=data)
-    
-    def getMetaUI(self, path)->dict[str, metaShema]:
-        res = {}
+
+    def readMeta(self, path):
         datas = asyncRun(FileManagerPkg.ReadFile(path))
-        for data in datas:
+        self._dictMetaUi = {}
+
+        if x:=datas.get('dep'):
+            self._dep = x
+
+        for data in datas.get('repres', []):
             attrGen = lambda x: list(from_dict(data_class=attrMetaShema, data=i) for i in x.get('attr', []))
             data['attr'] = attrGen(data)
             f = []
@@ -33,5 +38,10 @@ class MetaInfo:
                 f.append(from_dict(data_class=filterMetaShema, data=filter))
             data['filter'] = f
     
-            res[data['name']] = from_dict(data_class=metaShema, data=data)
-        return res
+            self._dictMetaUi[data['name']] = from_dict(data_class=metaShema, data=data)
+    
+    def getMetaUI(self)->dict[str, metaShema]:
+        return self._dictMetaUi
+
+    def getDep(self)->str:
+        return self._dep

@@ -1,1 +1,18 @@
-{}
+{
+    "dep": "Bc_TimeLine.Dmeta.json",
+    "repres": [
+        {
+            "name": "List",
+            "attr": [
+                {
+                    "name": "sCode",
+                    "order": 10
+                },
+                {
+                    "name": "sName",
+                    "order": 20
+                }
+            ]
+        }
+    ]
+}

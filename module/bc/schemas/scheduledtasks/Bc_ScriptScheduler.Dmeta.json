@@ -1,77 +1,79 @@
-[
-    {
-        "name": "Default",
-        "caption": "Планировщик сценариев",
-        "isVisibleToolBar": true,
-        "filter": [],
-        "attr": [
-            {
-                "name": "id",
-                "caption": "id",
-                "type": "INT",
-                "isVisible": false,
-                "order": -2,
-                "editType": "edit"
-            },
-            {
-                "name": "sNameScript",
-                "caption": "Скрипт",
-                "type": "TEXT",
-                "isVisible": true,
-                "order": 10,
-                "editType": "edit"
-            },
-            {
-                "name": "sNameModule",
-                "caption": "Наименование модуля",
-                "type": "TEXT",
-                "isVisible": true,
-                "order": 20,
-                "editType": "edit"
-            },
-            {
-                "name": "bRepeat",
-                "caption": "Повторять",
-                "type": "INT",
-                "isVisible": true,
-                "order": 30,
-                "editType": "check"
-            },
-            {
-                "name": "nTime",
-                "caption": "Время",
-                "type": "TEXT",
-                "isVisible": true,
-                "order": 40,
-                "editType": "edit"
-            },
-            {
-                "name": "idTimeLine",
-                "caption": "Временой промежуток",
-                "type": "INT",
-                "isVisible": false,
-                "order": 50,
-                "editType": "lookUp"
-            },
-            {
-                "name": "idTimeLineHL",
-                "caption": "Временой промежуток",
-                "type": "INT",
-                "isVisible": true,
-                "order": 50.1,
-                "editType": "lookUp",
-                "refTab": "Bc_TimeLine",
-                "display": "LookUp",
-                "attrId": "idTimeLine"
-            },
-            {
-                "name": "bUsed",
-                "caption": "Использовать",
-                "type": "INT",
-                "isVisible": true,
-                "order": 60,
-                "editType": "check"
-            }
-        ]
-    }
-]
+{
+    "repres": [
+        {
+            "name": "Default",
+            "caption": "Планировщик сценариев",
+            "isVisibleToolBar": true,
+            "filter": [],
+            "attr": [
+                {
+                    "name": "id",
+                    "caption": "id",
+                    "type": "INT",
+                    "isVisible": false,
+                    "order": -2,
+                    "editType": "edit"
+                },
+                {
+                    "name": "sNameScript",
+                    "caption": "Скрипт",
+                    "type": "TEXT",
+                    "isVisible": true,
+                    "order": 10,
+                    "editType": "edit"
+                },
+                {
+                    "name": "sNameModule",
+                    "caption": "Наименование модуля",
+                    "type": "TEXT",
+                    "isVisible": true,
+                    "order": 20,
+                    "editType": "edit"
+                },
+                {
+                    "name": "bRepeat",
+                    "caption": "Повторять",
+                    "type": "INT",
+                    "isVisible": true,
+                    "order": 30,
+                    "editType": "check"
+                },
+                {
+                    "name": "nTime",
+                    "caption": "Время",
+                    "type": "TEXT",
+                    "isVisible": true,
+                    "order": 40,
+                    "editType": "edit"
+                },
+                {
+                    "name": "idTimeLine",
+                    "caption": "Временой промежуток",
+                    "type": "INT",
+                    "isVisible": false,
+                    "order": 50,
+                    "editType": "lookUp"
+                },
+                {
+                    "name": "idTimeLineHL",
+                    "caption": "Временой промежуток",
+                    "type": "INT",
+                    "isVisible": true,
+                    "order": 50.1,
+                    "editType": "lookUp",
+                    "refTab": "Bc_TimeLine",
+                    "display": "LookUp",
+                    "attrId": "idTimeLine"
+                },
+                {
+                    "name": "bUsed",
+                    "caption": "Использовать",
+                    "type": "INT",
+                    "isVisible": true,
+                    "order": 60,
+                    "editType": "check"
+                }
+            ]
+        }
+    ]
+}

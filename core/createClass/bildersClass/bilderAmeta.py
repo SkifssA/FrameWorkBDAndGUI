@@ -3,8 +3,8 @@ from .bilderBase import BilderBase
 
 class BildersAmeta(BilderBase):
     suffixFile = '.Ameta.json'
-
+# if not await FileManagerPkg.Exists(pathWhitFileA):
     async def createFile(self, path):
-        pathWhitFileA = self._getPathAndFile(path)
-        if not await FileManagerPkg.Exists(pathWhitFileA):
-            await FileManagerPkg.CreateFile(pathWhitFileA, [])
+        pathWhitFile = self._getPathAndFile(path)
+        await FileManagerPkg.CreateFile(pathWhitFile, {'dep': f'{self.data.name}.Dmeta.json'})
+        return {f'{self.data.name}{self.suffixFile}': pathWhitFile}
