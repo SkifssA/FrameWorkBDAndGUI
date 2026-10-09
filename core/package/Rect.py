@@ -27,12 +27,13 @@ class Rect:
 
     def refresh(self):
         self.refreshRes = self.class_.onRefresh()
-        if isinstance(self.refreshRes, str):
-            self._data, self._attr = self._str(self.refreshRes)
-        elif isinstance(self.refreshRes, list):
-            print('list')
-        else:
-            self._obj(self.refreshRes)
+        if self.refreshRes:
+            if isinstance(self.refreshRes, str):
+                self._data, self._attr = self._str(self.refreshRes)
+            elif isinstance(self.refreshRes, list):
+                print('list')
+            else:
+                self._obj(self.refreshRes)
 
     def refreshItem(self):
         refreshExtRes = self.class_.onRefreshExt()

@@ -19,9 +19,9 @@ if __name__ == "__main__":
         elif (args[0] == 'launchServer'):
             runServer()
     else: 
-        sNameTab = 'Bc_TimeLinePub'
+        sNameTab = 'Bc_MainMenuPub'
         form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
         if form:
-            print('form.List().getData():\n', form.List().getData())
-            print('form.List().getInfoMeta():\n', form.List().getInfoMeta())
+            print('form.List().getData():\n', form.Default().getData())
+            print('form.List().getInfoMeta():\n', form.Default().getInfoMeta())
             print('\n\n\n\n')

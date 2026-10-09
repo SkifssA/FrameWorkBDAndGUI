@@ -64,7 +64,7 @@ class ActionDispatcherPkg:
         except Exception:
             return result
         for name in (projects or {}).get('modules', []):
-            conf = self.getModuleConfig(name, self._PATH_HOOKS)
+            conf = self.getModuleInfo(name, self._PATH_HOOKS)
             if isinstance(conf, dict):
                 result[name] = conf
         return result
@@ -76,7 +76,7 @@ class ActionDispatcherPkg:
             except Exception:
                 return result
             for name in (projects or {}).get('modules', []):
-                conf = self.getModuleConfig(name, self._PATH_APP_CONFIG)
+                conf = self.getModuleInfo(name, self._PATH_APP_CONFIG)
                 if isinstance(conf, dict):
                     result[name] = conf
             return result
