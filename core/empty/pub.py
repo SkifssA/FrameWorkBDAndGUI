@@ -5,7 +5,7 @@ from core.package.MetadataManager import MetadataManager
 class EmptyPub:
 
     @classmethod
-    def _getFormByName(cls, sForm:str)->'Default':
+    def _getFormByName(cls, sForm:str)->type['Default']:
         if x:=getattr(cls, sForm):
             return x
         return None
