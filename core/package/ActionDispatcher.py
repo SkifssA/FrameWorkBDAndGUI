@@ -19,7 +19,7 @@ class ActionDispatcherPkg:
         sNameClass, sNameMetod = sAction.split('.')
         sNameModule = f'module.{getModule(sNameClass)}'
         try:
-            cls = self._getClass(sNameModule, sNameClass)
+            cls = self._getClass(sNameClass)
             if not hasattr(cls, sNameMetod):
                 raise AttributeError(f"Метод {sNameMetod} не найден в классе {sNameClass}")
             

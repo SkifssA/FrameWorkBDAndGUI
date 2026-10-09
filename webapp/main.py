@@ -21,17 +21,19 @@ def read_item(sNameTab: str, sForm:str, request: Request):
             return templates.TemplateResponse(request=request, name=f"partials/{sForm.lower()}.html", context={
                 "data": form.getData()
                 , 'meta': form.getInfoMeta()
+                , 'name': f'{sNameTab}%23{sForm}'
             })
         raise HTTPException(status_code=404, detail=f"Отображение {sForm} таблицы {sNameTab} не найдено")
     raise HTTPException(status_code=404, detail=f"Таблица {sNameTab} не найдена")
 
-@app.get("/api/oper/{sNameTab}#{sForm}/{oper}")
+@app.get("/{sNameTab}#{sForm}/action/{oper}")
 def read_item(sNameTab: str, oper: str):
     form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
     if form:
         idOpers = list(i['id'] for i in form.List().getInfoMeta()['operForm'])
         if oper in idOpers:
-            ACTIONDISPATCHER.action(f'{sNameTab}.{oper}')
+            getattr(form.List(), oper)()
+            return {"success": True, "operation": oper}
     raise HTTPException(status_code=404, detail=f"В таблице {sNameTab} не найдена опрерация {oper}")
 
 def runServer():
