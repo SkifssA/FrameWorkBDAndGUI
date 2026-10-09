@@ -9,6 +9,7 @@ def getModule(nameClass: str)->str:
 
 class ActionDispatcherPkg:
     _PATH_APP_CONFIG = "module/{module}/config/hooks.json"
+    _PATH_HOOKS = "module/{module}/config/hooks.json"
     _PATH_PROJECT = "project.yaml"
 
     def __init__(self, IsRaise:bool=True):
@@ -35,7 +36,6 @@ class ActionDispatcherPkg:
         except Exception as e:
             print(f"[ActionDispatcher] Вызов '{sAction}' завершился с ошибкой: {e}")
 
-
     def _getModule(self, sNameModule):
         return importlib.import_module(f'module.{sNameModule}')
 
@@ -57,28 +57,33 @@ class ActionDispatcherPkg:
         module = self._getModule(sNameModule)
         return getattr(module, 'META_FILE')
 
-    def getModulesConfig(self) -> dict:
-        """Читает hooks.json всех модулей, перечисленных в project.yaml.
-
-        Ключ — имя модуля, значение — содержимое module/<имя>/config/hooks.json.
-        Модули без конфигурации (или с битым json) пропускаются.
-        Путь разрешается относительно файла, из которого вызван метод,
-        поэтому поведение совпадает с остальными обращениями к файлам в core.
-        """
+    def getModulesHooks(self) -> dict:
         result = {}
         try:
             projects = asyncRun(FileManagerPkg.ReadFile(self._PATH_PROJECT))
         except Exception:
             return result
         for name in (projects or {}).get('modules', []):
-            conf = self.getModuleConfig(name)
+            conf = self.getModuleConfig(name, self._PATH_HOOKS)
             if isinstance(conf, dict):
                 result[name] = conf
         return result
 
-    def getModuleConfig(self, moduleName:str):
+    def getModulesConfig(self) -> dict:
+            result = {}
+            try:
+                projects = asyncRun(FileManagerPkg.ReadFile(self._PATH_PROJECT))
+            except Exception:
+                return result
+            for name in (projects or {}).get('modules', []):
+                conf = self.getModuleConfig(name, self._PATH_APP_CONFIG)
+                if isinstance(conf, dict):
+                    result[name] = conf
+            return result
+
+    def getModuleInfo(self, moduleName:str, sPath):
         """Читает hooks.json одного модуля или возвращает None."""
-        path = self._PATH_APP_CONFIG.format(module=moduleName)
+        path = sPath.format(module=moduleName)
         try:
             conf = asyncRun(FileManagerPkg.ReadFile(path))
         except Exception:

@@ -76,7 +76,7 @@ class AsyncFileManager:
             # Определяем тип файла
             typeFile = path.rsplit('.', 1)[-1] if '.' in path else None
             
-            return {'real_path': path if path.startswith(ROOT) else f'{ROOT}\\{path}', 'type': typeFile}
+            return {'real_path': path if path.startswith(str(ROOT)) else str(Path(ROOT) / path), 'type': typeFile}
 
     async def _createJsonFile(self, real_path, data):
         """Создаёт json файлы"""
