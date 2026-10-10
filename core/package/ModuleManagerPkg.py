@@ -8,16 +8,26 @@ def getModule(nameClass: str)->str:
     return nameClass[:nameClass.find('_')].lower()
 
 class ModuleManagerPkg:
-    _PATH_APP_CONFIG = "module/{module}/config/hooks.json"
+    _PATH_APP_CONFIG = "module/{module}/config/app.json"
     _PATH_HOOKS = "module/{module}/config/hooks.json"
     _PATH_PROJECT = "project.yaml"
 
-    def __init__(self, IsRaise:bool=True):
-        self.IsRaise = IsRaise
+    def __init__(self):
         self.cachHooks = {}
 
+    def _parseAction(self, sAction:str)->tuple[str, str]:
+        sNameClass, x, sNameMetod = sAction.partition('.')
+
+        if sNameMetod == '' or sNameClass == '' or sNameMetod.find('.') != -1:
+            raise AttributeError(f"Не верные данные для \'sAction\'")
+
+        if sNameMetod.startswith('_'):
+            raise AttributeError(f"Можно вызывать методы без _")
+            
+        return sNameClass, sNameMetod
+
     def _action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
-        sNameClass, sNameMetod = sAction.split('.')
+        sNameClass, sNameMetod = self._parseAction(sAction)
         sNameModule = f'module.{getModule(sNameClass)}'
         try:
             cls = self._getClass(sNameClass)
@@ -27,7 +37,6 @@ class ModuleManagerPkg:
             attr = self._getMethod(cls, sNameMetod, classMethod)
             return self._runMethod(attr, kattr)
         except ImportError as e:
-            if self.IsRaise:
                 raise ValueError(f"Не удалось импортировать модуль {sNameModule}: {e}")
 
     def action(self, sAction:str, kattr:dict={}, classMethod:bool=False):
@@ -65,15 +74,15 @@ class ModuleManagerPkg:
         return (projects or {}).get('modules', [])
 
     def getModulesHooks(self) -> dict:
-        self._getModulesInfo(self._PATH_HOOKS)
+        return self._getModulesInfo(self._PATH_HOOKS)
 
     def getModulesConfig(self) -> dict:
-            self._getModulesInfo(self._PATH_APP_CONFIG)
+        return self._getModulesInfo(self._PATH_APP_CONFIG)
 
     def _getModulesInfo(self, sPath) -> dict:
             result = {}
             for name in self.getNameModule():
-                conf = self.getModuleInfo(name, sPath)
+                conf = self._getModuleInfo(name, sPath)
                 if isinstance(conf, dict):
                     result[name] = conf
             return result
