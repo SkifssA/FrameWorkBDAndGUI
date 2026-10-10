@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 from core.package.Rect import Rect
 from core.fabric.Registry import Registry
 from core.package.MetadataManager import MetadataManager
@@ -10,7 +12,7 @@ class EmptyPub:
             return x
         return None
 
-    class Default:
+    class Default(ABC):
         def __init__(self):
             self.rect = Rect(self)
             self.metaInfo = MetadataManager().get(self)
@@ -29,14 +31,20 @@ class EmptyPub:
                 , 'metaForm': self.metaInfo.getDict(isNotNone=False)
             }
 
+        @abstractmethod
         def onRefresh(self):...
+        @abstractmethod
         def onRefreshExt(self):...
+        @abstractmethod
         def getAttr(self):...
+        @abstractmethod
         def save(self):...
+        @abstractmethod
         def delete(self):...
 
     class List(Default):
         def onRefresh(self):
             return self.structuredQuery()
-
+        
+        @abstractmethod
         def structuredQuery(self)->str:...
