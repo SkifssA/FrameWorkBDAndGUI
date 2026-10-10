@@ -3,8 +3,8 @@ from .LazyVal import LazyVal
 from .AsynRun import asyncRun
 from .MetadataManager import MetadataManager 
 from .ThreadWorkerPkg import ThreadWorkerPkg
-from .ActionDispatcher import ActionDispatcherPkg
+from .ModuleManagerPkg import ModuleManagerPkg
 
 
 METADATA = MetadataManager()
-ACTIONDISPATCHER = ActionDispatcherPkg()
+ACTIONDISPATCHER = ModuleManagerPkg()

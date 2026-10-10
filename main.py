@@ -13,7 +13,7 @@ if __name__ == "__main__":
         if (args[0] == 'createClass'):
             asyncRun(createTab())
         elif (args[0] == 'createSours'):
-            createFile()
+            createFile(args[2])
         elif (args[0] == 'createModule'):
             createModule('sys', 'система')
         elif (args[0] == 'launchServer'):

@@ -2,12 +2,12 @@ from core.package.FileManager import FileManagerPkg
 from core.dataClass.tabDataClass import dbDataShema
 from core.fabric.MetaInfo import MetaInfo
 from core.createClass.createTab.tab_manager import TabsManager
+from core.package.ModuleManagerPkg import ModuleManagerPkg
 
 
 async def createTab():
     '''Создание таблиц для классов модулей (DDL из *.odb.json).'''
-    listModules = await FileManagerPkg.ReadFile("project.yaml")
-    listModulesWithDep = await getListModulesWithDep(listModules['modules'])
+    listModulesWithDep = await getListModulesWithDep(ModuleManagerPkg().getNameModule())
     scripts: list[dbDataShema] = []
     for app in listModulesWithDep:
         pathMod = f"module/{app}/schemas"

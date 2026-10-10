@@ -1,6 +1,6 @@
 import inspect
 
-from core.package.ActionDispatcher import ActionDispatcherPkg
+from core.package.ModuleManagerPkg import ModuleManagerPkg
 from core.package import asyncRun
 from core.fabric.MetaInfo import MetaInfo
 from core.dataClass.metaDataClass import metaShema
@@ -18,7 +18,7 @@ class MetadataManager:
         ui:metaShema = mataRepre.get(clsName, metaShema(name=clsName))
         depMeta = None
         if (x:=meta.getDep()):
-            pathDep = ActionDispatcherPkg().getMetaCache(x)[x]
+            pathDep = ModuleManagerPkg().getMetaCache(x)[x]
             depMeta = self._get(pathDep, clsName)
 
         if metaDef:=mataRepre.get('Default'):

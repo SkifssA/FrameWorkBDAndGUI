@@ -77,7 +77,7 @@ class {name}Dpi(EmptyLogic):
         return '{' + ('} {'.join(attrByMC) if attrByMC != [] else 'rop.id') + '}'
     
     def __getDelete(self):
-        from core.package.ActionDispatcher import getModule
+        from core.package.ModuleManagerPkg import getModule
         res = []
         myModule = getModule(self.data.name)
         for collection in self.data.collections:

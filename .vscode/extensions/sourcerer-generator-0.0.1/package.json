@@ -1,0 +1,28 @@
+{
+    "name": "sourcerer-generator",
+    "displayName": "Sourcerer Generator",
+    "description": "Быстрый запуск генератора исходников из контекстного меню",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "main": "./extension.js",
+    "activationEvents": [],
+    "contributes": {
+        "commands": [
+            {
+                "command": "sourcerer.generateSours",
+                "when": "resourcePath =~ /module/",
+                "title": "⚡ Генератор исходников"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "sourcerer.generateSours",
+                    "group": "navigation@2"
+                }
+            ]
+        }
+    }
+}

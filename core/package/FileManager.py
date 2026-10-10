@@ -33,7 +33,7 @@ class AsyncFileManager:
         obj = self._getObjPath(path)
         return await asyncio.to_thread(os.path.exists, obj['real_path'])
     
-    async def GetFoldersList(self, path, index=0):
+    async def GetFoldersList(self, path):
         """Асинхронно возвращает список папок"""
         try:
             obj = self._getObjPath(path)
@@ -46,7 +46,7 @@ class AsyncFileManager:
         except Exception as e:
             return []
         
-    async def getFilesWithExtension(self, directory: str| dict, extension: str, index=0) -> list[Path]:
+    async def getFilesWithExtension(self, directory: str| dict, extension: str) -> list[Path]:
         """Асинхронно возвращает список файлов с заданным расширением."""
         if (type(directory) == str):
             obj = self._getObjPath(directory)
