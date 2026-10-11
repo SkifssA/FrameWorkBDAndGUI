@@ -13,7 +13,7 @@ class ModuleManagerPkg:
     _PATH_PROJECT = "project.yaml"
 
     def __init__(self):
-        self.cachHooks = {}
+        self.cacheHooks = {}
 
     def _parseAction(self, sAction:str)->tuple[str, str]:
         sNameClass, x, sNameMetod = sAction.partition('.')
@@ -102,9 +102,9 @@ class ModuleManagerPkg:
         Значение хука — строка вида 'Class.method' (тот же контракт, что и action()).
         Ошибка в одном модуле не роняет приложение и не блокирует остальные модули.
         """
-        if self.cachHooks == {}:
-            self.cachHooks = self.getModulesConfig()
-        for moduleName, conf in self.cachHooks.items():
+        if self.cacheHooks == {}:
+            self.cacheHooks = self.getModulesHooks()
+        for moduleName, conf in self.cacheHooks.items():
             sAction = conf.get(hookName)
             if not sAction:
                 continue

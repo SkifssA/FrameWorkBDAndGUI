@@ -12,7 +12,7 @@
 from pathlib import Path
 
 # --- Пути проекта -----------------------------------------------------------
-ROOT = Path(__file__).resolve().parent.parent.parent
+from core import ROOT
 
 # --- Базовые классы каркаса объектов ---------------------------------------
 from core.empty.logic import EmptyLogic
@@ -47,7 +47,7 @@ __all__ = [
     'Oper',
     'Setter',
     #Фабрики
-    'Form'
+    'Form',
     # инструменты
     'LazyVal',
     'asyncRun',
