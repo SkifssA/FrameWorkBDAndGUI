@@ -1,12 +1,20 @@
-OPER = 'oper'
+OPER = "oper"
 
-def Oper(label: str = None, order: int = 0, headOper: str = None, 
-            isVisible: bool = True, icon: str = None, shortcut: str = None, 
-            isCheckable: bool = False, tooltip: str = None):
+
+def Oper(
+    label: str = None,
+    order: int = 0,
+    headOper: str = None,
+    isVisible: bool = True,
+    icon: str = None,
+    shortcut: str = None,
+    isCheckable: bool = False,
+    tooltip: str = None,
+):
     def decorator(func):
         func._type = OPER
         func._id = func.__name__
-        func._oper_label = label or func._id.replace('_', ' ').title()
+        func._oper_label = label or func._id.replace("_", " ").title()
         func._order = order
         func._headOper = headOper
         func._isVisible = isVisible
@@ -15,4 +23,5 @@ def Oper(label: str = None, order: int = 0, headOper: str = None,
         func._isCheckable = isCheckable
         func._tooltip = tooltip
         return func
+
     return decorator

@@ -2,6 +2,7 @@
 from .Bc_ScriptSchedulerLogic import Bc_ScriptSchedulerLogic, Bc_ScriptSchedulerObj
 from core.sdk import EmptyPub
 
+
 class Bc_ScriptSchedulerDvi(EmptyPub):
     thisLogic = Bc_ScriptSchedulerLogic
 
@@ -33,17 +34,16 @@ class Bc_ScriptSchedulerDvi(EmptyPub):
                     LEFT JOIN Bc_TimeLine t1 ON t1.id = t.idTimeLine
                 """
 
-        def thisRop(self)->Bc_ScriptSchedulerObj:
+        def thisRop(self) -> Bc_ScriptSchedulerObj:
             return super().thisRop()
 
-        def thisLogic(self)->Bc_ScriptSchedulerLogic:
+        def thisLogic(self) -> Bc_ScriptSchedulerLogic:
             return super().thisLogic()
 
-        
-        
-    class DviList(DviDefault, EmptyPub.List): pass
+    class DviList(DviDefault, EmptyPub.List):
+        pass
 
-    class DviCard(DviDefault): 
+    class DviCard(DviDefault):
         def onRefresh(self):
             return self.thisLogic().load(self.idItem)
 

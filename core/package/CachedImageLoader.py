@@ -60,7 +60,7 @@ class CachedImageLoader(ImageLoader):
         # 1. Проверяем кэш
         if cached_path.exists():
             try:
-                # PIL лениво загружает данные, поэтому используем copy() 
+                # PIL лениво загружает данные, поэтому используем copy()
                 # чтобы файл можно было безопасно удалить/изменить позже
                 return Image.open(cached_path).copy()
             except Exception as e:

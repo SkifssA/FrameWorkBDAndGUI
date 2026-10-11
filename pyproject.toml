@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "sourcerer-generator"
+version = "0.1.0"
+description = "Modular web application platform"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "jinja2>=3.1.0",
+    "htmx>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+    "black>=23.0.0",
+    "mypy>=1.5.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = ["E", "W", "F", "I", "N", "UP", "B", "C4"]
+ignore = []
+
+[tool.ruff.isort]
+known-first-party = ["module"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_unused_configs = true
+disallow_untyped_defs = false
+strict_optional = false       # Временно разрешаем None везде
+check_untyped_defs = false    # Не проверяем функции без аннотаций
+disable_error_code = ["override", "misc"] # Игнорируем сложные ошибки переопределения и заглушки
+warn_return_any = false # Временно отключаем ругань на возврат Any
+
+# Решаем проблему с дублированием модулей (awh vs module.awh)
+explicit_package_bases = true
+mypy_path = ["."]
+
+# Игнорируем библиотеки без типизации (Turso, YAML и др.)
+[[tool.mypy.overrides]]
+module = [
+    "libsql_client",
+    "yaml",
+    "htmx", 
+    "jinja2",
+    "uvicorn"
+]
+ignore_missing_imports = true

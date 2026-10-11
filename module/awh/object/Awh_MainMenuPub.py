@@ -4,23 +4,24 @@ from module.awh.object.anime.Awh_AnimePub import Awh_AnimePub
 from module.awh.object.animegenre.Awh_AnimeGenrePub import Awh_AnimeGenrePub
 from module.awh.object.genre.Awh_GenrePub import Awh_GenrePub
 
+
 class Awh_MainMenuPub:
-    class Default: 
+    class Default:
         @Oper(label="Справочник", order=10)
-        def mm_res(self): pass
+        def mm_res(self):
+            pass
 
         @Oper(label="Аниме", order=10, headOper="mm_res")
-        def mm_Awh_Anime(self): 
+        def mm_Awh_Anime(self):
             Awh_AnimePub.list().openForm()
 
         @Oper(label="Жанры по аниме", order=20, headOper="mm_res")
-        def mm_Awh_AnimeGenre(self): 
+        def mm_Awh_AnimeGenre(self):
             Awh_AnimeGenrePub.list().openForm()
 
         @Oper(label="Жарны", order=30, headOper="mm_res")
-        def mm_Awh_Genre(self): 
+        def mm_Awh_Genre(self):
             Awh_GenrePub.list().openForm()
 
         def oneOpen(self):
             Awh_AnimePub.list().openForm()
-        

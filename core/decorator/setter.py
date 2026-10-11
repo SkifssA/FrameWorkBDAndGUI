@@ -1,4 +1,5 @@
-SETTER = 'setter'
+SETTER = "setter"
+
 
 def Setter(func):
     """Декоратор для методов-сеттеров"""

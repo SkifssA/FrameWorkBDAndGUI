@@ -2,6 +2,7 @@
 from .Awh_AnimeLogic import Awh_AnimeLogic, Awh_AnimeObj
 from core.sdk import EmptyPub
 
+
 class Awh_AnimeDvi(EmptyPub):
     thisLogic = Awh_AnimeLogic
 
@@ -32,17 +33,16 @@ class Awh_AnimeDvi(EmptyPub):
                     
                 """
 
-        def thisRop(self)->Awh_AnimeObj:
+        def thisRop(self) -> Awh_AnimeObj:
             return super().thisRop()
 
-        def thisLogic(self)->Awh_AnimeLogic:
+        def thisLogic(self) -> Awh_AnimeLogic:
             return super().thisLogic()
 
-        
-        
-    class DviList(DviDefault, EmptyPub.List): pass
+    class DviList(DviDefault, EmptyPub.List):
+        pass
 
-    class DviCard(DviDefault): 
+    class DviCard(DviDefault):
         def onRefresh(self):
             return self.thisLogic().load(self.idItem)
 

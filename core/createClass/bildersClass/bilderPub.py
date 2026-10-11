@@ -1,5 +1,6 @@
 from .bilderBase import BilderBase
 
+
 class BilderPub(BilderBase):
     temp = """# Пользовательский файл для интерфейса
 from .{name}Dvi import {name}Dvi
@@ -21,4 +22,4 @@ class {name}Pub({name}Dvi):
     @classmethod
     def card(cls): return Form(cls.Card, cls)
 """
-    suffixFile = 'Pub.py'
+    suffixFile = "Pub.py"

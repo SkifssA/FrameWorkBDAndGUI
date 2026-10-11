@@ -3,11 +3,13 @@ from core.sdk import Oper, EmptyPub
 from module.bc.object.scheduledtasks.Bc_ScriptSchedulerPub import Bc_ScriptSchedulerPub
 from module.bc.object.timeline.Bc_TimeLinePub import Bc_TimeLinePub
 
+
 class Bc_MainMenuPub(EmptyPub):
-    class Default(EmptyPub.Default): 
+    class Default(EmptyPub.Default):
         @Oper(label="Справочник", order=10)
-        def mm_res(self): pass
+        def mm_res(self):
+            pass
 
         @Oper(label="Планировщик сценариев", order=10, headOper="mm_res")
-        def mm_Bc_ScriptScheduler(self): 
+        def mm_Bc_ScriptScheduler(self):
             Bc_ScriptSchedulerPub.list().openForm()

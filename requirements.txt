@@ -7,3 +7,6 @@ dacite
 fastapi
 uvicorn
 pydantic
+mypy
+black
+ruff

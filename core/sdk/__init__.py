@@ -29,29 +29,30 @@ from core.package.FileManager import FileManager, FileManagerPkg
 from core.package.ThreadWorkerPkg import ThreadWorkerPkg
 
 # --- Готовые экземпляры (синглтоны ядра) ------------------------------------
-from core.package.MetadataManager import MetadataManager 
+from core.package.MetadataManager import MetadataManager
 from core.package.ModuleManagerPkg import ModuleManagerPkg
+
 METADATA = MetadataManager()
 ACTIONDISPATCHER = ModuleManagerPkg()
 
 __all__ = [
     # пути
-    'ROOT',
+    "ROOT",
     # базовые классы
-    'EmptyLogic',
-    'EmptyObj',
-    'EmptyPub',
+    "EmptyLogic",
+    "EmptyObj",
+    "EmptyPub",
     # декораторы
-    'Oper',
-    'Setter',
-    #Фабрики
-    'Form',
+    "Oper",
+    "Setter",
+    # Фабрики
+    "Form",
     # инструменты
-    'LazyVal',
-    'FileManager',
-    'FileManagerPkg',
-    'ThreadWorkerPkg',
-    #Готовые экземпляры
-    'METADATA',
-    'ACTIONDISPATCHER',
+    "LazyVal",
+    "FileManager",
+    "FileManagerPkg",
+    "ThreadWorkerPkg",
+    # Готовые экземпляры
+    "METADATA",
+    "ACTIONDISPATCHER",
 ]

@@ -5,25 +5,34 @@ from core.DB.Turso import ASQL
 from core.dataClass.baseDataClass import Base
 
 BASE_ATTR = [
-    {'name': 'id', 'caption': 'id', "type": "INT", 'edit': 'edit', 'isVisible': False, 'order': -2}
+    {
+        "name": "id",
+        "caption": "id",
+        "type": "INT",
+        "edit": "edit",
+        "isVisible": False,
+        "order": -2,
+    }
 ]
 
 TYPE_MAPPING: dict[str, str] = {
-    "TEXT": "TEXT"
-    , "STRING": "TEXT"
-    , "INT": "INTEGER"
-    , "INTEGER": "INTEGER"
-    , "LONG": "INTEGER"
-    , "BOOLEAN": "INTEGER"
-    , "DATE": "TEXT"
+    "TEXT": "TEXT",
+    "STRING": "TEXT",
+    "INT": "INTEGER",
+    "INTEGER": "INTEGER",
+    "LONG": "INTEGER",
+    "BOOLEAN": "INTEGER",
+    "DATE": "TEXT",
 }
 
-SERVICE_COLUMNS = ('id', 'sHeadLine', 'sMnemoCode')
+SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode")
+
 
 @dataclass
 class collectionsShema(Base):
     name: str
     attr: str
+
 
 @dataclass
 class attrShema(Base):
@@ -34,20 +43,23 @@ class attrShema(Base):
     isMnemoCode: bool = False
     isVisible: bool = True
     order: int = 0
-    editType: str = 'edit'
+    editType: str = "edit"
     display: str = None
     refTab: str = None
 
     def getSql(self) -> str:
         """SQL-объявление колонки таблицы."""
-        return f'{self.name} {TYPE_MAPPING.get(self.type, "TEXT")}'
+        return f"{self.name} {TYPE_MAPPING.get(self.type, 'TEXT')}"
+
 
 @dataclass
 class dbDataShema(Base):
     """Скрипт установки/накатки данных таблицы (*.odb.json -> dbData)."""
+
     name: str
     version: int = None
     dependence: str | list = None
+
 
 @dataclass
 class tabShema(Base):
@@ -61,10 +73,10 @@ class tabShema(Base):
     minListAttr: list[str] = field(default_factory=list)
 
     def getSQL(self) -> str:
-            """DDL таблицы: служебные колонки + колонки из attr."""
-            columns = ',\n    '.join(attr.getSql() for attr in self.attr)
-            return f"""
-    CREATE TABLE {self.name}{'_new' if self.isNew else ''} (
+        """DDL таблицы: служебные колонки + колонки из attr."""
+        columns = ",\n    ".join(attr.getSql() for attr in self.attr)
+        return f"""
+    CREATE TABLE {self.name}{"_new" if self.isNew else ""} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         sHeadLine TEXT,
         sMnemoCode TEXT UNIQUE,
@@ -72,15 +84,14 @@ class tabShema(Base):
     )
     """
 
-    async def execute_pending(self):
+    def execute_pending(self):
         """Создать таблицу; если это миграция (isNew) — перенести данные и переименовать."""
         ASQL(self.getSQL())
         if self.isNew:
-            sListAttr = ', '.join(self.minListAttr)
+            sListAttr = ", ".join(self.minListAttr)
             ASQL(f"""
                 INSERT INTO {self.name}_new({sListAttr})
                 SELECT {sListAttr} FROM {self.name};
             """)
             ASQL(f"""DROP TABLE {self.name};""")
             ASQL(f"""ALTER TABLE {self.name}_new RENAME TO {self.name};""")
-    

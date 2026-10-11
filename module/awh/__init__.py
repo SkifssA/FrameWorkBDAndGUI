@@ -8,15 +8,16 @@ from .object.genre.Awh_GenreLogic import Awh_GenreLogic
 from .object.genre.Awh_GenrePub import Awh_GenrePub
 
 from core.sdk import FileManagerPkg
-META_FILE = FileManagerPkg.ReadFile('module/awh/cache/meta.json')
+
+META_FILE = FileManagerPkg.ReadFile("module/awh/cache/meta.json")
 
 __all__ = [
-    'Awh_AnimeLoadPkg'
-    ,'Awh_MainMenuPub'
-    ,'Awh_AnimeLogic'
-    ,'Awh_AnimePub'
-    ,'Awh_AnimeGenreLogic'
-    ,'Awh_AnimeGenrePub'
-    ,'Awh_GenreLogic'
-    ,'Awh_GenrePub'
+    "Awh_AnimeLoadPkg",
+    "Awh_MainMenuPub",
+    "Awh_AnimeLogic",
+    "Awh_AnimePub",
+    "Awh_AnimeGenreLogic",
+    "Awh_AnimeGenrePub",
+    "Awh_GenreLogic",
+    "Awh_GenrePub",
 ]

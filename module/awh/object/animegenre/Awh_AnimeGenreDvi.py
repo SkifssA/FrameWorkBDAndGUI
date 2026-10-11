@@ -2,6 +2,7 @@
 from .Awh_AnimeGenreLogic import Awh_AnimeGenreLogic, Awh_AnimeGenreObj
 from core.sdk import EmptyPub
 
+
 class Awh_AnimeGenreDvi(EmptyPub):
     thisLogic = Awh_AnimeGenreLogic
 
@@ -34,17 +35,16 @@ class Awh_AnimeGenreDvi(EmptyPub):
             LEFT JOIN Awh_Genre t2 ON t2.id = t.idGenre
                 """
 
-        def thisRop(self)->Awh_AnimeGenreObj:
+        def thisRop(self) -> Awh_AnimeGenreObj:
             return super().thisRop()
 
-        def thisLogic(self)->Awh_AnimeGenreLogic:
+        def thisLogic(self) -> Awh_AnimeGenreLogic:
             return super().thisLogic()
 
-        
-        
-    class DviList(DviDefault, EmptyPub.List): pass
+    class DviList(DviDefault, EmptyPub.List):
+        pass
 
-    class DviCard(DviDefault): 
+    class DviCard(DviDefault):
         def onRefresh(self):
             return self.thisLogic().load(self.idItem)
 

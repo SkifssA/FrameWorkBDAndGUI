@@ -6,13 +6,14 @@ from .object.timeline.Bc_TimeLineLogic import Bc_TimeLineLogic
 from .object.timeline.Bc_TimeLinePub import Bc_TimeLinePub
 
 from core.sdk import FileManagerPkg
-META_FILE = FileManagerPkg.ReadFile('module/bc/cache/meta.json')
+
+META_FILE = FileManagerPkg.ReadFile("module/bc/cache/meta.json")
 
 __all__ = [
-    'Bc_MainMenuPub'
-    ,'Bc_ScriptSchedulerPkg'
-    ,'Bc_ScriptSchedulerLogic'
-    ,'Bc_ScriptSchedulerPub'
-    ,'Bc_TimeLineLogic'
-    ,'Bc_TimeLinePub'
+    "Bc_MainMenuPub",
+    "Bc_ScriptSchedulerPkg",
+    "Bc_ScriptSchedulerLogic",
+    "Bc_ScriptSchedulerPub",
+    "Bc_TimeLineLogic",
+    "Bc_TimeLinePub",
 ]

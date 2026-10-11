@@ -1,13 +1,14 @@
 from dataclasses import dataclass, asdict, is_dataclass, fields
 
+
 @dataclass
 class Base:
-    def getDict(self, isNotNone:bool=True)->dict:
+    def getDict(self, isNotNone: bool = True) -> dict:
         def _clean(value):
             # Если это вложенный dataclass, обрабатываем его рекурсивно
             if is_dataclass(value):
                 return value.getDict()
-            
+
             # Если это список или кортеж, чистим каждый элемент внутри
             if isinstance(value, (list, tuple)):
                 cleaned_list = [_clean(item) for item in value]
@@ -15,19 +16,19 @@ class Base:
                 l = [item for item in cleaned_list if item is not None]
 
                 return l if l != [] else None
-                
+
             # Если это словарь, убираем ключи с None
             if isinstance(value, dict):
-                return {k: x for k, v in value.items() if (x:=_clean(v)) is not None}
-                
+                return {k: x for k, v in value.items() if (x := _clean(v)) is not None}
+
             # Возвращаем обычное значение
-            return value 
+            return value
 
         if isNotNone:
             return _clean(asdict(self))
         return asdict(self)
 
-    def merge(self, other: 'Base') -> 'Base':
+    def merge(self, other: "Base") -> "Base":
         """
         Глубокое слияние двух датаклассов.
         Приоритет у значений из 'other'.
@@ -37,7 +38,7 @@ class Base:
             return other
 
         current_data = {}
-        
+
         for f in fields(self):
             key = f.name
             curr_val = getattr(self, key)
@@ -51,11 +52,11 @@ class Base:
             # 2. Рекурсия для вложенных датаклассов
             if is_dataclass(curr_val) and is_dataclass(other_val):
                 current_data[key] = curr_val.merge(other_val)
-            
+
             # 3. Обработка списков датаклассов (самое сложное)
             elif isinstance(curr_val, list) and isinstance(other_val, list):
                 current_data[key] = self._merge_lists(curr_val, other_val)
-                
+
             # 4. Обычные типы (строки, числа, bool) - просто заменяем
             else:
                 current_data[key] = other_val
@@ -69,16 +70,20 @@ class Base:
         """
         if not new_list:
             return current_list
-        
+
         if not current_list:
             return new_list
 
         # Проверяем, являются ли элементы списка датаклассами с полем 'name'
-        if current_list and is_dataclass(current_list[0]) and hasattr(current_list[0], 'name'):
+        if (
+            current_list
+            and is_dataclass(current_list[0])
+            and hasattr(current_list[0], "name")
+        ):
             # Создаем словарь для быстрого поиска: {name: object}
             curr_map = {item.name: item for item in current_list if item.name}
             new_map = {item.name: item for item in new_list if item.name}
-            
+
             merged_items = []
             processed_names = set()
 
@@ -96,7 +101,7 @@ class Base:
             for name, curr_item in curr_map.items():
                 if name not in processed_names:
                     merged_items.append(curr_item)
-                    
+
             # Сохраняем порядок? Обычно лучше отсортировать по order или оставить как в new
             # Для простоты вернем объединенный список
             return merged_items
