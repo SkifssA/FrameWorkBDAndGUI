@@ -55,8 +55,6 @@ class {name}Dpi(EmptyLogic):
         for i in self.data.attr:
             if i.name.startswith('id') or i.name.startswith('n') or i.name.startswith('b'):
                 typeAttr = 'int'
-            elif i.name.startswith('gid'):
-                typeAttr = 'gid'
             else:
                 typeAttr = 'str'
             rop.append(f'{i.name}:{typeAttr}')

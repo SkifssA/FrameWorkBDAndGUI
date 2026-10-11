@@ -18,7 +18,7 @@ TYPE_MAPPING: dict[str, str] = {
     , "DATE": "TEXT"
 }
 
-SERVICE_COLUMNS = ('id', 'gid', 'sHeadLine', 'sMnemoCode')
+SERVICE_COLUMNS = ('id', 'sHeadLine', 'sMnemoCode')
 
 @dataclass
 class collectionsShema(Base):
@@ -66,7 +66,6 @@ class tabShema(Base):
             return f"""
     CREATE TABLE {self.name}{'_new' if self.isNew else ''} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        gid TEXT,
         sHeadLine TEXT,
         sMnemoCode TEXT UNIQUE,
         {columns}

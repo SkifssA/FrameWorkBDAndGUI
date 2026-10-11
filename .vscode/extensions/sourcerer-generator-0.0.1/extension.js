@@ -2,23 +2,37 @@ const vscode = require('vscode');
 const path = require('path');
 
 function activate(context) {
-    let disposable = vscode.commands.registerCommand('sourcerer.generateSours', (uri) => {
-        if (!uri) return;
+    let disposable1 = vscode.commands.registerCommand('sourcerer.generateSours', (uri) => {
+        if (validateUri(uri)) return
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        if (!workspaceFolder) {
-            vscode.window.showErrorMessage('Ошибка: Не найдена корневая папка проекта!');
-            return;
-        }
-
-        const targetFile = uri.fsPath;
-
-        workPythonCode(`createSours --file "${targetFile}"`, workspaceFolder)
+        workPythonCode(`createSours --file "${uri.fsPath}"`, workspaceFolder)
 
         vscode.window.showInformationMessage(`Генерация запущена для: ${path.basename(targetFile)}`);
     });
+    context.subscriptions.push(disposable1);
 
-    context.subscriptions.push(disposable);
+    let disposable2 = vscode.commands.registerCommand('sourcerer.generateTab', (uri) => {
+        if (validateUri(uri)) return
+
+        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+        workPythonCode(`createClass --file "${uri.fsPath}"`, workspaceFolder)
+
+        vscode.window.showInformationMessage(`Генерация запущена для: ${path.basename(targetFile)}`);
+    });
+    context.subscriptions.push(disposable2);
+}
+
+function validateUri(uri) {
+    if (!uri) return true;
+
+    const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+    if (!workspaceFolder) {
+        vscode.window.showErrorMessage('Ошибка: Не найдена корневая папка проекта!');
+        return true;
+    }
+
+    return false
 }
 
 function workPythonCode(commandPy, workspaceFolder) {

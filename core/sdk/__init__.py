@@ -14,9 +14,6 @@ from pathlib import Path
 # --- Пути проекта -----------------------------------------------------------
 ROOT = Path(__file__).resolve().parent.parent.parent
 
-# --- Типы и события ---------------------------------------------------------
-from core.type.Gid import Gid
-
 # --- Базовые классы каркаса объектов ---------------------------------------
 from core.empty.logic import EmptyLogic
 from core.empty.obj import EmptyObj
@@ -34,13 +31,14 @@ from core.package.ThreadWorkerPkg import ThreadWorkerPkg
 from core.package.AiohttpPkg import AiohttpPkg
 
 # --- Готовые экземпляры (синглтоны ядра) ------------------------------------
-from core.package import ACTIONDISPATCHER, METADATA
+from core.package.MetadataManager import MetadataManager 
+from core.package.ModuleManagerPkg import ModuleManagerPkg
+METADATA = MetadataManager()
+ACTIONDISPATCHER = ModuleManagerPkg()
 
 __all__ = [
     # пути
     'ROOT',
-    # типы и события
-    'Gid',
     # базовые классы
     'EmptyLogic',
     'EmptyObj',

@@ -11,13 +11,14 @@ from .bildersDmeta import BildersDmeta
 from core.package.FileManager import FileManagerPkg
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 from core.fabric.MetaInfo import MetaInfo
-from core import asyncRun
+from core.package.AsynRun import asyncRun
 
 pathModile = lambda app, end='': f"module/{app}" + end
 
 def createFile(sPath: str):
     '''Создание файлов для класса'''
     lFiles = asyncRun(FileManagerPkg.getFilesWithExtension(sPath, '.odb.json'))
+    
     for File in lFiles:
         app, dirName, cl = re.findall(r'module/(\w+)/\w+/(\w+)/([^.]+)', File.as_uri())[0]
         
@@ -33,14 +34,14 @@ def createFile(sPath: str):
         print(f"Запись в Logic в классе {dirName}")
         asyncRun(BilderLogic(data).createFileA(pathPyFile))
         print(f"Запись в Pub в классе {dirName}")
-        asyncRun(BilderPub(data).createFileD(pathPyFile))
+        asyncRun(BilderPub(data).createFileA(pathPyFile))
 
         pathMetaFile = pathModile(app, f"/schemas/{dirName}")
         metaFile = metaFile | asyncRun(BildersDmeta(data).createFile(pathMetaFile))
         metaFile = metaFile | asyncRun(BildersAmeta(data).createFile(pathMetaFile))
 
-    # asyncRun(FileManagerPkg.CreateFile(pathModile(app, '/cache/meta.json'), metaFile))
-    # asyncRun(_getInitModule(app))
+        asyncRun(FileManagerPkg.CreateFile(pathModile(app, '/cache/meta.json'), metaFile))
+        asyncRun(_getInitModule(app))
 
 async def _getInitModule(app):
     dir = pathModile(app, "/object")

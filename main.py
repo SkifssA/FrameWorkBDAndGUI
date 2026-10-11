@@ -11,7 +11,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         args = sys.argv[1:]  # первый элемент — имя скрипта
         if (args[0] == 'createClass'):
-            asyncRun(createTab())
+            createTab(args[2])
         elif (args[0] == 'createSours'):
             createFile(args[2])
         elif (args[0] == 'createModule'):

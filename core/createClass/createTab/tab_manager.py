@@ -1,7 +1,7 @@
 from core.DB.Turso import ASQL
 from core.dataClass.tabDataClass import tabShema
 
-SERVICE_COLUMNS = ('id', 'gid', 'sHeadLine', 'sMnemoCode')
+SERVICE_COLUMNS = ('id', 'sHeadLine', 'sMnemoCode')
 
 
 class TabManager:

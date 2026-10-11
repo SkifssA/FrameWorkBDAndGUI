@@ -64,10 +64,6 @@ class DbManager:
 
     def rebaseParameters(self, parameters):
         parameters = list(parameters or [])
-        from .. import Gid
-        for x, i in enumerate(parameters):
-            if type(i) == Gid:
-                parameters[x] = i.get()
         return parameters
 
 DbManagerPkg = DbManager()

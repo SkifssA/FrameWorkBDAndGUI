@@ -21,8 +21,8 @@
                 "title": "Генератор исходников"
             },
             {
-                "command": "sourcerer.anotherCommand",
-                "title": "Другая команда"
+                "command": "sourcerer.generateTab",
+                "title": "Генератор таблиц"
             }
         ],
         "menus": {
@@ -40,7 +40,7 @@
                     "group": "1_main@1"
                 },
                 {
-                    "command": "sourcerer.anotherCommand",
+                    "command": "sourcerer.generateTab",
                     "when": "resourcePath =~ /module/",
                     "group": "1_main@2"
                 }
