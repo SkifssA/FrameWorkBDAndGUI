@@ -24,4 +24,5 @@ if __name__ == "__main__":
             form = classPub.list()
             print('form.List().getData():\n', form.getData())
             print('form.List().getInfoMeta():\n', form.getInfoMeta())
+            print('form.List().getSetterAndOperName():\n', form.getSetterAndOperName())
             print('\n\n\n\n')

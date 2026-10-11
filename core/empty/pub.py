@@ -29,15 +29,18 @@ class EmptyPub:
             self.registry = self._initRegistry()
             
 
-        def getData(self):
+        def _getData(self):
             self.dataFetcher.refresh()
             return self.dataFetcher.getData()
 
-        def getInfoMeta(self):
+        def _getInfoMeta(self):
             return {
                 'operForm': self.registry.get_children_oper()
                 , 'metaForm': self.metaInfo.getDict(isNotNone=False)
             }
+
+        def _getSetterAndOperName(self):
+            return [i['id'] for i in self.registry.get_setter() + self.registry.get_oper()]
 
         def _initRegistry(self)->OperRegistry:
             registry = OperRegistry(self)

@@ -5,7 +5,10 @@ class Form:
         self.object:EmptyPub.Default  = cls(clsParent)
 
     def getInfoMeta(self):
-        return self.object.getInfoMeta()
+        return self.object._getInfoMeta()
+
+    def getSetterAndOperName(self):
+        return self.object._getSetterAndOperName()
 
     def getData(self):
-        return self.object.getData()
+        return self.object._getData()

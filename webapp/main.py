@@ -27,13 +27,14 @@ def read_item(sNameTab: str, sForm:str, request: Request):
     raise HTTPException(status_code=404, detail=f"Таблица {sNameTab} не найдена")
 
 @app.get("/{sNameTab}#{sForm}/action/{oper}")
-def read_item(sNameTab: str, oper: str):
-    form = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
-    if form:
-        idOpers = list(i['id'] for i in form.List().getInfoMeta()['operForm'])
-        if oper in idOpers:
-            getattr(form.List(), oper)()
-            return {"success": True, "operation": oper}
+def read_item(sNameTab: str, sForm:str, oper: str):
+    class_ = ACTIONDISPATCHER.getClassByName(f'{sNameTab}')
+    if class_:
+        form = class_._getFormByName(sForm)()
+        if form:
+            if oper in form.getSetterAndOperName():
+                getattr(form.List(), oper)()
+                return {"success": True, "operation": oper}
     raise HTTPException(status_code=404, detail=f"В таблице {sNameTab} не найдена опрерация {oper}")
 
 def runServer():

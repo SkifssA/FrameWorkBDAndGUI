@@ -5,8 +5,8 @@ def Oper(label: str = None, order: int = 0, headOper: str = None,
             isCheckable: bool = False, tooltip: str = None):
     def decorator(func):
         func._type = OPER
-        func._oper_id = func.__name__
-        func._oper_label = label or func._oper_id.replace('_', ' ').title()
+        func._id = func.__name__
+        func._oper_label = label or func._id.replace('_', ' ').title()
         func._order = order
         func._headOper = headOper
         func._isVisible = isVisible

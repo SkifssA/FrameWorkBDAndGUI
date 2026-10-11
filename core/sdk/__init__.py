@@ -51,7 +51,6 @@ __all__ = [
     'FileManager',
     'FileManagerPkg',
     'ThreadWorkerPkg',
-    'AiohttpPkg',
     #Готовые экземпляры
     'METADATA',
     'ACTIONDISPATCHER',

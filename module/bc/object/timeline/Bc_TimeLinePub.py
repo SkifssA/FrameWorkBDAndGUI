@@ -1,6 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_TimeLineDvi import Bc_TimeLineDvi
-from core.sdk import Form, Oper
+from core.sdk import Form, Oper, Setter
 
 class Bc_TimeLinePub(Bc_TimeLineDvi):
 
@@ -15,6 +15,9 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
 
         @Oper(label="Справочник3", order=30)
         def mm_res3(self): pass
+
+        @Setter
+        def setsCaption(self): pass
 
     class Card(Bc_TimeLineDvi.DviCard): pass
 
