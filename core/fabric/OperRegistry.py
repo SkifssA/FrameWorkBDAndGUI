@@ -2,7 +2,8 @@ import inspect
 
 from core.decorator import TypeDecorator
 
-class Registry:
+class OperRegistry:
+    """Реестр операций и сеттеров класса"""
     def __init__(self, cls):
         self.cls = cls
         self._flat_ops = []

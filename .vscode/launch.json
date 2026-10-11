@@ -15,16 +15,6 @@
             ]
         },
         {
-            "name": "Генератор исходников",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/main.py",
-            "console": "integratedTerminal",
-            "args": [
-                "createSours"
-            ]
-        },
-        {
             "name": "Генератор таблиц",
             "type": "debugpy",
             "request": "launch",
@@ -43,6 +33,13 @@
             "args": [
                 "launchServer"
             ]
+        },
+        {
+            "name": "www",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal"
         }
     ]
 }

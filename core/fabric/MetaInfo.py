@@ -39,6 +39,8 @@ class MetaInfo:
             data['filter'] = f
     
             self._dictMetaUi[data['name']] = from_dict(data_class=metaShema, data=data)
+
+        return self
     
     def getMetaUI(self)->dict[str, metaShema]:
         return self._dictMetaUi

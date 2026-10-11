@@ -1,10 +1,12 @@
 # Пользовательский файл для интерфейса
-from core.sdk import Oper
-
 from .Bc_TimeLineDvi import Bc_TimeLineDvi
+from core.sdk import Form, Oper
 
 class Bc_TimeLinePub(Bc_TimeLineDvi):
-    class List(Bc_TimeLineDvi.DviList):
+
+    metaFile = 'Bc_TimeLine.Ameta.json'
+
+    class List(Bc_TimeLineDvi.DviList): 
         @Oper(label="Справочник1", order=10)
         def mm_res1(self): pass
 
@@ -17,3 +19,9 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
     class Card(Bc_TimeLineDvi.DviCard): pass
 
     class LookUp(Bc_TimeLineDvi.DviLookUp): pass
+
+    @classmethod
+    def list(cls): return Form(cls.List, cls)
+
+    @classmethod
+    def card(cls): return Form(cls.Card, cls)

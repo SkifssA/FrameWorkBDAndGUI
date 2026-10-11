@@ -1,11 +1,11 @@
 import re
 
-from core import asyncRun
+from core.package.AsynRun import asyncRun
 from core.DB.Turso import ASQL
 from core.empty.obj import EmptyObj
 
-class Rect:
-    """Класс для привода onRefresh к одному формату"""
+class DataFetcher:
+    """Класс для унификации получения данных через onRefresh"""
     def __init__(self, class_):
         from core.empty.pub import EmptyPub
         self.class_:EmptyPub = class_
@@ -24,6 +24,9 @@ class Rect:
         if len(self._dataExt) > 0:
             return list(d | dE for d, dE in zip(self._data, self._dataExt))
         return self._data
+
+    def getDateExt(self):
+        return self._dataExt
 
     def refresh(self):
         self.refreshRes = self.class_.onRefresh()

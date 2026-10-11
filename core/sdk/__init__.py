@@ -24,6 +24,8 @@ from core.empty.pub import EmptyPub
 
 from core.decorator import Oper, Setter
 
+from core.fabric.Form import Form
+
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal
 from core.package.AsynRun import asyncRun
@@ -46,6 +48,8 @@ __all__ = [
     # декораторы
     'Oper',
     'Setter',
+    #Фабрики
+    'Form'
     # инструменты
     'LazyVal',
     'asyncRun',

@@ -20,7 +20,6 @@ def createFile(sPath: str):
     lFiles = asyncRun(FileManagerPkg.getFilesWithExtension(sPath, '.odb.json'))
     for File in lFiles:
         app, dirName, cl = re.findall(r'module/(\w+)/\w+/(\w+)/([^.]+)', File.as_uri())[0]
-        print(app, dirName, cl)
         
         module = ModuleManagerPkg()._getModule(app)
         metaFile = getattr(module, 'META_FILE')
@@ -34,7 +33,7 @@ def createFile(sPath: str):
         print(f"Запись в Logic в классе {dirName}")
         asyncRun(BilderLogic(data).createFileA(pathPyFile))
         print(f"Запись в Pub в классе {dirName}")
-        asyncRun(BilderPub(data).createFileA(pathPyFile))
+        asyncRun(BilderPub(data).createFileD(pathPyFile))
 
         pathMetaFile = pathModile(app, f"/schemas/{dirName}")
         metaFile = metaFile | asyncRun(BildersDmeta(data).createFile(pathMetaFile))
