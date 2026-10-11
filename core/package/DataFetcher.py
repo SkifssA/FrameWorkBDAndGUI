@@ -1,6 +1,5 @@
 import re
 
-from core.package.AsynRun import asyncRun
 from core.DB.Turso import ASQL
 from core.empty.obj import EmptyObj
 
@@ -47,7 +46,7 @@ class DataFetcher:
         attr = []
         if res != '' and res != None:
             sqlAndParam = self._getSqlAndParam(res)
-            resSQL = asyncRun(ASQL(*sqlAndParam))
+            resSQL = ASQL(*sqlAndParam)
             data = resSQL['data']
             attr = resSQL['columns']
         return data, attr

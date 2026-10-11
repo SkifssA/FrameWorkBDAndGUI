@@ -7,8 +7,8 @@ from .object.animegenre.Awh_AnimeGenrePub import Awh_AnimeGenrePub
 from .object.genre.Awh_GenreLogic import Awh_GenreLogic
 from .object.genre.Awh_GenrePub import Awh_GenrePub
 
-from core.sdk import FileManagerPkg, asyncRun
-META_FILE = asyncRun(FileManagerPkg.ReadFile('module/awh/cache/meta.json'))
+from core.sdk import FileManagerPkg
+META_FILE = FileManagerPkg.ReadFile('module/awh/cache/meta.json')
 
 __all__ = [
     'Awh_AnimeLoadPkg'

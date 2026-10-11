@@ -1,5 +1,5 @@
 import re
-from libsql_client import create_client
+from libsql_client import create_client_sync  # Синхронный клиент
 
 from core.package.FileManager import FileManagerPkg
 
@@ -20,9 +20,9 @@ class DbManager:
     url = None
     auth_token = None
 
-    async def setConf(self):
+    def setConf(self):
         if not self._initialized:
-            conf = await FileManagerPkg.ReadFile(self._pathConfig)
+            conf = FileManagerPkg.ReadFile(self._pathConfig)
             # config.json не хранится в git (секреты) — шаблон: config.example.json
             if not isinstance(conf, dict) or 'database' not in conf:
                 raise FileNotFoundError(
@@ -35,32 +35,32 @@ class DbManager:
             self.auth_token = conf['auth_token']
             self._initialized = True
 
-    async def ATSQL(self, SQLstr: str, parameters=None):
-        await self._ensure_initialized()
+    def ATSQL(self, SQLstr: str, parameters=None):
+        self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
-        async with create_client(url=self.url, auth_token=self.auth_token) as db:
+        with create_client_sync(url=self.url, auth_token=self.auth_token) as db:
             if _firstKeyword(SQLstr) == 'insert' and 'returning' not in SQLstr.lower():
                 SQLstr += " RETURNING id"
             print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
-            c = await db.execute(SQLstr, parameters or [])
+            c = db.execute(SQLstr, parameters or [])
             if c.rows:
                 d = c.rows[0][0]
             else:
                 d = None
             return d
             
-    async def ASQL(self, SQLstr: str, parameters=None) -> dict[str, list]:
-        await self._ensure_initialized()
+    def ASQL(self, SQLstr: str, parameters=None) -> dict[str, list]:
+        self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
-        async with create_client(url=self.url, auth_token=self.auth_token) as db:
+        with create_client_sync(url=self.url, auth_token=self.auth_token) as db:
             print(' '.join(SQLstr.replace('\n', ' ').strip().split()), parameters or [])
-            result = await db.execute(SQLstr, parameters or [])
+            result = db.execute(SQLstr, parameters or [])
             return {'columns': list(result.columns), 'data': [dict(zip(result.columns, row)) for row in result.rows]}
 
-    async def _ensure_initialized(self):
+    def _ensure_initialized(self):
         """Гарантирует что конфигурация загружена"""
         if not self._initialized:
-            await self.setConf()
+            self.setConf()
 
     def rebaseParameters(self, parameters):
         parameters = list(parameters or [])

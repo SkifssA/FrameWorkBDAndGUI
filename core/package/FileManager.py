@@ -1,40 +1,38 @@
 import json
 import os
-import asyncio
-import aiofiles
 from pathlib import Path
 import yaml
 
 from core import ROOT
 
-class AsyncFileManager:
+class FileManager:
     """Менеджер файлов"""
-    async def CreateFile(self, path: str, data):
-        """Асинхронно создаёт файлы файлы"""
+    def CreateFile(self, path: str, data):
+        """Создаёт файлы"""
         obj = self._getObjPath(path)
         if obj['type'] in ['json', 'code-workspace']:
-            await self._createJsonFile(obj['real_path'], data)
+            self._createJsonFile(obj['real_path'], data)
         else:
-            await self._createDefaultFile(obj['real_path'], data)
+            self._createDefaultFile(obj['real_path'], data)
 
-    async def ReadFile(self, path):
-        """Асинхронно читает файлы"""
+    def ReadFile(self, path):
+        """Читает файлы"""
         obj = self._getObjPath(path)
 
         if obj['type'] == 'json':
-            return await self._readJsonFile(obj['real_path'])
+            return self._readJsonFile(obj['real_path'])
         elif obj['type'] == 'yaml':
-            return await self._readYamlFile(obj['real_path'])
+            return self._readYamlFile(obj['real_path'])
         else:
-            return await self._readDefaultFile(obj['real_path'])
+            return self._readDefaultFile(obj['real_path'])
 
-    async def Exists(self, path):
-        """Асинхронно проверяет существование"""
+    def Exists(self, path):
+        """Проверяет существование"""
         obj = self._getObjPath(path)
-        return await asyncio.to_thread(os.path.exists, obj['real_path'])
+        return os.path.exists(obj['real_path'])
     
-    async def GetFoldersList(self, path):
-        """Асинхронно возвращает список папок"""
+    def GetFoldersList(self, path):
+        """Возвращает список папок"""
         try:
             obj = self._getObjPath(path)
             folders = []
@@ -46,8 +44,8 @@ class AsyncFileManager:
         except Exception as e:
             return []
         
-    async def getFilesWithExtension(self, directory: str| dict, extension: str) -> list[Path]:
-        """Асинхронно возвращает список файлов с заданным расширением."""
+    def getFilesWithExtension(self, directory: str| dict, extension: str) -> list[Path]:
+        """Возвращает список файлов с заданным расширением."""
         if (type(directory) == str):
             obj = self._getObjPath(directory)
         else:
@@ -66,61 +64,57 @@ class AsyncFileManager:
                     w += _sync_scan(d)
             return w
         
-        return await asyncio.to_thread(_sync_scan)
+        return _sync_scan()
 
     def getRealPath(self, path:str)->str:
         return self._getObjPath(path=path)['real_path']
 
     def _getObjPath(self, path: str):
-            """Получает обьект пути по строке с ."""  
-            # Определяем тип файла
-            typeFile = path.rsplit('.', 1)[-1] if '.' in path else None
-            
-            return {'real_path': path if path.startswith(str(ROOT)) else str(Path(ROOT) / path), 'type': typeFile}
+        """Получает объект пути по строке с ."""  
+        # Определяем тип файла
+        typeFile = path.rsplit('.', 1)[-1] if '.' in path else None
+        
+        return {'real_path': path if path.startswith(str(ROOT)) else str(Path(ROOT) / path), 'type': typeFile}
 
-    async def _createJsonFile(self, real_path, data):
+    def _createJsonFile(self, real_path, data):
         """Создаёт json файлы"""
-        async with aiofiles.open(real_path, 'w', encoding='utf-8') as f:
+        with open(real_path, 'w', encoding='utf-8') as f:
             content = json.dumps(data, ensure_ascii=False, indent=4)
-            await f.write(content)
+            f.write(content)
 
-    async def _createDefaultFile(self, real_path, data):
+    def _createDefaultFile(self, real_path, data):
         """Создаёт файлы"""
         os.makedirs(os.path.dirname(real_path), exist_ok=True)
         if isinstance(data, str):
             data = data.encode('utf-8')
-        async with aiofiles.open(real_path, 'wb') as f:
-            await f.write(data)
+        with open(real_path, 'wb') as f:
+            f.write(data)
 
-    async def _readJsonFile(self, real_path):
+    def _readJsonFile(self, real_path):
         """Читает json файлы"""
         try:
-            async with aiofiles.open(real_path, 'r', encoding='utf-8') as f:
-                content = await f.read()
+            with open(real_path, 'r', encoding='utf-8') as f:
+                content = f.read()
             return json.loads(content)
         except FileNotFoundError:
             return {}
         except Exception as e:
             return f"Ошибка: {e}"
 
-    async def _readYamlFile(self, real_path):
+    def _readYamlFile(self, real_path):
         """Читает yaml файлы"""
-        def _read():
-            with open(real_path, 'r', encoding='utf-8') as file:
-                return yaml.safe_load(file)
+        with open(real_path, 'r', encoding='utf-8') as file:
+            return yaml.safe_load(file)
 
-        data = await asyncio.to_thread(_read)
-        return data
-
-    async def _readDefaultFile(self, real_path):
+    def _readDefaultFile(self, real_path):
         """Читает файлы"""
         try:
-            async with aiofiles.open(real_path, 'r', encoding='utf-8') as f:
-                content = await f.read()
+            with open(real_path, 'r', encoding='utf-8') as f:
+                content = f.read()
             return content
         except FileNotFoundError:
             return "Файл не найден"
         except Exception as e:
             return f"Ошибка: {e}"
 
-FileManagerPkg = AsyncFileManager()
+FileManagerPkg = FileManager()

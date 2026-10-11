@@ -13,15 +13,15 @@ class BilderBase:
     def _getPathAndFile(self, path):
         return f'{path}/{self.data.name}{self.suffixFile}'
     
-    async def createFileA(self, path):
+    def createFileA(self, path):
         pathWhitFile = self._getPathAndFile(path)
-        if not await FileManagerPkg.Exists(pathWhitFile):
-            await self._createFile(pathWhitFile)
+        if not FileManagerPkg.Exists(pathWhitFile):
+            self._createFile(pathWhitFile)
 
-    async def createFileD(self, path):
-        await self._createFile(self._getPathAndFile(path))
+    def createFileD(self, path):
+        self._createFile(self._getPathAndFile(path))
 
-    async def _createFile(self, path):
+    def _createFile(self, path):
         allData = self.data.getDict() | self.dictData
         f = self.temp.format(**allData)
-        await FileManagerPkg.CreateFile(path, f)
+        FileManagerPkg.CreateFile(path, f)

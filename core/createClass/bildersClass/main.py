@@ -11,13 +11,12 @@ from .bildersDmeta import BildersDmeta
 from core.package.FileManager import FileManagerPkg
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 from core.fabric.MetaInfo import MetaInfo
-from core.package.AsynRun import asyncRun
 
 pathModile = lambda app, end='': f"module/{app}" + end
 
 def createFile(sPath: str):
     '''Создание файлов для класса'''
-    lFiles = asyncRun(FileManagerPkg.getFilesWithExtension(sPath, '.odb.json'))
+    lFiles = FileManagerPkg.getFilesWithExtension(sPath, '.odb.json')
     
     for File in lFiles:
         app, dirName, cl = re.findall(r'module/(\w+)/\w+/(\w+)/([^.]+)', File.as_uri())[0]
@@ -28,24 +27,24 @@ def createFile(sPath: str):
         data = MetaInfo().getMetaTab(File.__str__())
         pathPyFile = pathModile(app, f"/object/{dirName}")
         print(f"Запись в Dpi в классе {dirName}")
-        asyncRun(BilderDpi(data).createFileD(pathPyFile))
+        BilderDpi(data).createFileD(pathPyFile)
         print(f"Запись в Dvi в классе {dirName}")
-        asyncRun(BilderDvi(data).createFileD(pathPyFile))
+        BilderDvi(data).createFileD(pathPyFile)
         print(f"Запись в Logic в классе {dirName}")
-        asyncRun(BilderLogic(data).createFileA(pathPyFile))
+        BilderLogic(data).createFileA(pathPyFile)
         print(f"Запись в Pub в классе {dirName}")
-        asyncRun(BilderPub(data).createFileA(pathPyFile))
+        BilderPub(data).createFileA(pathPyFile)
 
         pathMetaFile = pathModile(app, f"/schemas/{dirName}")
-        metaFile = metaFile | asyncRun(BildersDmeta(data).createFile(pathMetaFile))
-        metaFile = metaFile | asyncRun(BildersAmeta(data).createFile(pathMetaFile))
+        metaFile = metaFile | BildersDmeta(data).createFile(pathMetaFile)
+        metaFile = metaFile | BildersAmeta(data).createFile(pathMetaFile)
 
-        asyncRun(FileManagerPkg.CreateFile(pathModile(app, '/cache/meta.json'), metaFile))
-        asyncRun(_getInitModule(app))
+        FileManagerPkg.CreateFile(pathModile(app, '/cache/meta.json'), metaFile)
+        _getInitModule(app)
 
-async def _getInitModule(app):
+def _getInitModule(app):
     dir = pathModile(app, "/object")
-    w = await FileManagerPkg.getFilesWithExtension(dir, '.py')
+    w = FileManagerPkg.getFilesWithExtension(dir, '.py')
     paths = [f for f in w if not (f.stem.endswith('Dvi') or f.stem.endswith('Dpi'))]
     base_path = Path(FileManagerPkg._getObjPath(pathModile(app))['real_path'])
     imports = []
@@ -62,6 +61,6 @@ async def _getInitModule(app):
         classLogic.append(f'\'{class_name}\'')
         imports.append(import_line)
     
-    await FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + 
-                                    f'\n\nfrom core.sdk import FileManagerPkg, asyncRun\nMETA_FILE = asyncRun(FileManagerPkg.ReadFile(\'{pathModile(app, '/cache/meta.json')}\'))' +
-                                    f'\n\n__all__ = [\n    {'\n    ,'.join(classLogic)}\n]')
+    FileManagerPkg.CreateFile(pathModile(app, "/__init__.py"), '\n'.join(imports) + 
+                              f'\n\nfrom core.sdk import FileManagerPkg\nMETA_FILE = FileManagerPkg.ReadFile(\'{pathModile(app, '/cache/meta.json')}\')' +
+                              f'\n\n__all__ = [\n    {'\n    ,'.join(classLogic)}\n]')

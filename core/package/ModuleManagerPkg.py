@@ -1,7 +1,6 @@
 import importlib
 import inspect
 
-from core.package.AsynRun import asyncRun
 from core.package.FileManager import FileManagerPkg
 
 def getModule(nameClass: str)->str:
@@ -68,7 +67,7 @@ class ModuleManagerPkg:
 
     def getNameModule(self)->list[str]:
         try:
-            projects = asyncRun(FileManagerPkg.ReadFile(self._PATH_PROJECT))
+            projects = FileManagerPkg.ReadFile(self._PATH_PROJECT)
         except Exception:
             return []
         return (projects or {}).get('modules', [])
@@ -91,7 +90,7 @@ class ModuleManagerPkg:
         """Читает hooks.json одного модуля или возвращает None."""
         path = sPath.format(module=moduleName)
         try:
-            conf = asyncRun(FileManagerPkg.ReadFile(path))
+            conf = FileManagerPkg.ReadFile(path)
         except Exception:
             return None
         return conf if isinstance(conf, dict) else None
@@ -122,10 +121,5 @@ class ModuleManagerPkg:
     
     def _runMethod(self, attr, kattr:dict={}):
         '''Выполнение метода класса'''
-        if inspect.iscoroutinefunction(attr):
-            # Это async def метод → вызываем и ждём
-            return asyncRun(attr(**kattr))
-        elif callable(attr):
-            # Обычный метод
-            return attr(**kattr)
+        return attr(**kattr)
         

@@ -5,8 +5,8 @@ from .object.scheduledtasks.Bc_ScriptSchedulerPub import Bc_ScriptSchedulerPub
 from .object.timeline.Bc_TimeLineLogic import Bc_TimeLineLogic
 from .object.timeline.Bc_TimeLinePub import Bc_TimeLinePub
 
-from core.sdk import FileManagerPkg, asyncRun
-META_FILE = asyncRun(FileManagerPkg.ReadFile('module/bc/cache/meta.json'))
+from core.sdk import FileManagerPkg
+META_FILE = FileManagerPkg.ReadFile('module/bc/cache/meta.json')
 
 __all__ = [
     'Bc_MainMenuPub'

@@ -74,13 +74,13 @@ class tabShema(Base):
 
     async def execute_pending(self):
         """Создать таблицу; если это миграция (isNew) — перенести данные и переименовать."""
-        await ASQL(self.getSQL())
+        ASQL(self.getSQL())
         if self.isNew:
             sListAttr = ', '.join(self.minListAttr)
-            await ASQL(f"""
+            ASQL(f"""
                 INSERT INTO {self.name}_new({sListAttr})
                 SELECT {sListAttr} FROM {self.name};
             """)
-            await ASQL(f"""DROP TABLE {self.name};""")
-            await ASQL(f"""ALTER TABLE {self.name}_new RENAME TO {self.name};""")
+            ASQL(f"""DROP TABLE {self.name};""")
+            ASQL(f"""ALTER TABLE {self.name}_new RENAME TO {self.name};""")
     

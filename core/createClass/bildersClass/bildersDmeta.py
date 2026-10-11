@@ -9,7 +9,7 @@ from core.dataClass.metaDataClass import metaShema, attrMetaShema
 class BildersDmeta(BilderBase):
     suffixFile = '.Dmeta.json'
 
-    async def createFile(self, path):
+    def createFile(self, path):
         pathWhitFile = self._getPathAndFile(path)
         metaVisible = self.__getShowAttr()
         attrMeta = list(from_dict(data_class=attrMetaShema, data=i) for i in BASE_ATTR)
@@ -52,7 +52,7 @@ class BildersDmeta(BilderBase):
             , typeForm='card'    
         )
 
-        await FileManagerPkg.CreateFile(pathWhitFile, {'repres':[formDefault.getDict(), formList.getDict(), formCard.getDict()]})
+        FileManagerPkg.CreateFile(pathWhitFile, {'repres':[formDefault.getDict(), formList.getDict(), formCard.getDict()]})
         return {f'{self.data.name}{self.suffixFile}': pathWhitFile}
 
     def __getShowAttr(self):

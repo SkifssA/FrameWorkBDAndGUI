@@ -1,6 +1,5 @@
 from pathlib import Path
 from core.package.FileManager import FileManagerPkg
-from core.package.AsynRun import asyncRun
 
 def createModule(nameModule:str, captionModule:str):
     '''Создание модуля'''
@@ -29,4 +28,4 @@ class {nameModule}_MainMenuPub:
     _createFile(f'{beginPath}/cache/meta.json', {})
 
 def _createFile(path, fileData):
-    asyncRun(FileManagerPkg.CreateFile(path, fileData))
+    FileManagerPkg.CreateFile(path, fileData)

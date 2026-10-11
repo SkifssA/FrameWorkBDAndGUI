@@ -3,7 +3,6 @@ from dacite import from_dict, Config
 
 from core.dataClass.metaDataClass import metaShema, attrMetaShema, filterMetaShema
 from core.dataClass.tabDataClass import tabShema, attrShema, collectionsShema, dbDataShema
-from core.package.AsynRun import asyncRun
 from core.package.FileManager import FileManagerPkg
 
 class MetaInfo:
@@ -12,7 +11,7 @@ class MetaInfo:
         self._dep = None
 
     def getMetaTab(self, path)->tabShema:
-        data = asyncRun(FileManagerPkg.ReadFile(path))
+        data = FileManagerPkg.ReadFile(path)
         attrListByData = data.get('attr', [])
     
         data['attr'] = list(from_dict(data_class=attrShema, data=i) for i in attrListByData)
@@ -23,7 +22,7 @@ class MetaInfo:
         return from_dict(data_class=tabShema, data=data)
 
     def readMeta(self, path):
-        datas = asyncRun(FileManagerPkg.ReadFile(path))
+        datas = FileManagerPkg.ReadFile(path)
         self._dictMetaUi = {}
 
         if x:=datas.get('dep'):

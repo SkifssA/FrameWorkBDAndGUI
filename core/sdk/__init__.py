@@ -25,10 +25,8 @@ from core.fabric.Form import Form
 
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal
-from core.package.AsynRun import asyncRun
-from core.package.FileManager import AsyncFileManager, FileManagerPkg
+from core.package.FileManager import FileManager, FileManagerPkg
 from core.package.ThreadWorkerPkg import ThreadWorkerPkg
-from core.package.AiohttpPkg import AiohttpPkg
 
 # --- Готовые экземпляры (синглтоны ядра) ------------------------------------
 from core.package.MetadataManager import MetadataManager 
@@ -50,8 +48,7 @@ __all__ = [
     'Form',
     # инструменты
     'LazyVal',
-    'asyncRun',
-    'AsyncFileManager',
+    'FileManager',
     'FileManagerPkg',
     'ThreadWorkerPkg',
     'AiohttpPkg',

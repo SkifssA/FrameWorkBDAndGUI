@@ -3,7 +3,6 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.createClass import createFile, createTab, createModule
-from core.package.AsynRun import asyncRun
 from core.sdk import ACTIONDISPATCHER
 from webapp.main import runServer
 
