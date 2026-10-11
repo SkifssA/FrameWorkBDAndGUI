@@ -1,6 +1,6 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:system",
-    "python.defaultInterpreterPath": "d:\\Desktop\\FrameWorkBDAndGUI\\python\\python.exe",
+    "python.defaultInterpreterPath": ".\/python/python.exe",
     "json.schemas": [
         {
             "fileMatch": [

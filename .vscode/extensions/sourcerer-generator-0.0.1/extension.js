@@ -11,30 +11,35 @@ function activate(context) {
             return;
         }
 
-        // Формируем команду как в твоем launch.json
-        const mainPy = path.join(workspaceFolder, 'main.py');
         const targetFile = uri.fsPath;
 
-        // 1. Получаем путь к выбранному интерпретатору
-        const pythonPath = vscode.workspace.getConfiguration('python').get('defaultInterpreterPath')
-            || 'python'; // Фолбэк, если настройка не задана
-
-        // 2. Формируем команду с правильным питоном
-        const command = `& "${pythonPath}" "${mainPy}" createSours --file "${targetFile}"`;
-
-        // Создаем терминал и запускаем
-        const terminal = vscode.window.createTerminal({
-            name: 'Sourcerer Gen',
-            cwd: workspaceFolder
-        });
-
-        terminal.show();
-        terminal.sendText(command);
+        workPythonCode(`createSours --file "${targetFile}"`, workspaceFolder)
 
         vscode.window.showInformationMessage(`Генерация запущена для: ${path.basename(targetFile)}`);
     });
 
     context.subscriptions.push(disposable);
+}
+
+function workPythonCode(commandPy, workspaceFolder) {
+    // Формируем команду как в твоем launch.json
+    const mainPy = path.join(workspaceFolder, 'main.py');
+
+    // 1. Получаем путь к выбранному интерпретатору
+    const pythonPath = vscode.workspace.getConfiguration('python').get('defaultInterpreterPath')
+        || 'python'; // Фолбэк, если настройка не задана
+
+    // 2. Формируем команду с правильным питоном
+    const command = `& "${pythonPath}" "${mainPy}" ${commandPy}`;
+
+    // Создаем терминал и запускаем
+    const terminal = vscode.window.createTerminal({
+        name: 'Sourcerer Gen',
+        cwd: workspaceFolder
+    });
+
+    terminal.show();
+    terminal.sendText(command);
 }
 
 exports.activate = activate;
