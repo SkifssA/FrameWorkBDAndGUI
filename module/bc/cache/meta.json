@@ -1,6 +1,7 @@
 {
-    "Bc_ScriptScheduler.Dmeta.json": "module/bc/schemas/scheduledtasks/Bc_ScriptScheduler.Dmeta.json",
+    "Bc_MainMenu.Ameta.json": "module/bc/schemas/Bc_MainMenu.Ameta.json",
     "Bc_ScriptScheduler.Ameta.json": "module/bc/schemas/scheduledtasks/Bc_ScriptScheduler.Ameta.json",
-    "Bc_TimeLine.Dmeta.json": "module/bc/schemas/timeline/Bc_TimeLine.Dmeta.json",
-    "Bc_TimeLine.Ameta.json": "module/bc/schemas/timeline/Bc_TimeLine.Ameta.json"
+    "Bc_TimeLine.Ameta.json": "module/bc/schemas/timeline/Bc_TimeLine.Ameta.json",
+    "Bc_ScriptScheduler.Dmeta.json": "module/bc/schemas/scheduledtasks/Bc_ScriptScheduler.Dmeta.json",
+    "Bc_TimeLine.Dmeta.json": "module/bc/schemas/timeline/Bc_TimeLine.Dmeta.json"
 }

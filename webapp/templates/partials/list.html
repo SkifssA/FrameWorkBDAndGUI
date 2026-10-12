@@ -1,15 +1,14 @@
 {% from "macros/toolbar.html" import render_action_buttons %}
 
-{% extends "shell.html" %}
+{% extends "partials/mainmenu.html" %}
 
 {% block title %}{{ meta.metaForm.caption }}{% endblock %}
 
-{% block content %}
+{% block mainForm %}
 <section class="panel panel--list">
 
-    <header class="panel__head">
-        <h2 class="panel__title">{{ meta.metaForm.caption }}</h2>
-        {{ render_action_buttons(meta.operForm, url, "#nonexistent") }}
+    <header class="action_panel">
+        {{ render_action_buttons(meta.operForm, main_menu, active_form, "#nonexistent") }}
     </header>
 
     {# Панель фильтров — Этап 4 ROADMAP, сюда позже вставляется partial filters.html #}

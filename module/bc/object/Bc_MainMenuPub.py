@@ -7,6 +7,9 @@ from core.sdk import Form
 
 
 class Bc_MainMenuPub(EmptyPub):
+
+    metaFile = 'Bc_MainMenu.Ameta.json'
+
     class Default(EmptyPub.MainMenu):
         @Oper(label="Справочник", order=10)
         def mm_res(self):

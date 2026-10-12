@@ -12,4 +12,3 @@ class BildersAmeta(BilderBase):
             FileManagerPkg.CreateFile(
                 pathWhitFile, {"dep": f"{self.data.name}.Dmeta.json"}
             )
-        return {f"{self.data.name}{self.suffixFile}": pathWhitFile}

@@ -44,7 +44,7 @@ class OperRegistry:
     def get_children_oper(self, parent_id=None):
         # Для корневых элементов headOper должен быть None
         return [
-            op
+            op | {"child": self.get_children_oper(op['id'])}
             for op in self._flat_ops
             if op["isVisible"] and op["headOper"] == parent_id
         ]

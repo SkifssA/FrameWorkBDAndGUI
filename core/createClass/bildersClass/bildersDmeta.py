@@ -55,7 +55,6 @@ class BildersDmeta(BilderBase):
             pathWhitFile,
             {"repres": [formDefault.getDict(), formList.getDict(), formCard.getDict()]},
         )
-        return {f"{self.data.name}{self.suffixFile}": pathWhitFile}
 
     def __getShowAttr(self):
         res = []

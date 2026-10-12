@@ -1,0 +1,37 @@
+{% macro bilder_sub_mainmenu(item) %}
+{% if item.child %}
+<div class="dd-item has-submenu">
+    <span>{{ item.label }}</span>
+    <span class="arrow">▶</span>
+    <!-- ПОДМЕНЮ ДОЛЖНО БЫТЬ ВНУТРИ ЭТОГО DIV -->
+    <div class="submenu">
+        {% for child in item.child %}
+        {{ bilder_sub_mainmenu(child) }}
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="dd-item"><span>{{ item.label }}</span>
+        {% if item.shortcut %}
+        <span class="shortcut">{{ item.shortcut }}</span>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro bilder_mainmenu(items) %}
+
+<nav class="menubar">
+    {% for item in items.operForm %}
+    <div class="menu-item" id="editMenu">
+        {{ item.label }}
+        <div class="dropdown"> <!-- Корневой контейнер -->
+            {% for child in item.child %}
+            {{ bilder_sub_mainmenu(child) }}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</nav>
+{% endmacro %}

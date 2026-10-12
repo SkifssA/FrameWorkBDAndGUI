@@ -18,11 +18,13 @@ pathModile = lambda app, end="": f"module/{app}" + end
 def createFile(sPath: str):
     """Создание файлов для класса"""
     lFiles = FileManagerPkg.getFilesWithExtension(sPath, ".odb.json")
-
+    apps = [] 
     for File in lFiles:
         app, dirName, cl = re.findall(r"module/(\w+)/\w+/(\w+)/([^.]+)", File.as_uri())[
             0
         ]
+
+        apps.append(app)
 
         module = ModuleManagerPkg()._getModule(app)
         metaFile = getattr(module, "META_FILE")
@@ -39,9 +41,14 @@ def createFile(sPath: str):
         BilderPub(data).createFileA(pathPyFile)
 
         pathMetaFile = pathModile(app, f"/schemas/{dirName}")
-        metaFile = metaFile | BildersDmeta(data).createFile(pathMetaFile)
-        metaFile = metaFile | BildersAmeta(data).createFile(pathMetaFile)
+        BildersDmeta(data).createFile(pathMetaFile)
+        BildersAmeta(data).createFile(pathMetaFile)
 
+    for app in set(apps):
+        lFiles = FileManagerPkg.getFilesWithExtension(pathModile(app), ".Ameta.json") + \
+            FileManagerPkg.getFilesWithExtension(pathModile(app), ".Dmeta.json")
+        metaFile = {i.as_uri()[i.as_uri().rfind('/')+1:]: i.as_uri()[i.as_uri().rfind('module'):] for i in lFiles}
+        print(metaFile)
         FileManagerPkg.CreateFile(pathModile(app, "/cache/meta.json"), metaFile)
         _getInitModule(app)
 

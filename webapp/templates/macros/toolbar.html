@@ -1,7 +1,7 @@
-{% macro render_action_buttons(operations, base_url, target, swap="outerHTML") %}
+{% macro render_action_buttons(operations, main_menu, base_url, target, swap="outerHTML") %}
 <div class="panel__actions">
     {% for oper in operations %}
-    <button class="btn" hx-get="{{ base_url }}/action/{{ oper.id }}" hx-swap="none">
+    <button class="btn" hx-get="/{{ main_menu }}/{{ base_url }}/action/{{ oper.id }}" hx-swap="none">
         {{ oper.label }}
     </button>
     {% endfor %}

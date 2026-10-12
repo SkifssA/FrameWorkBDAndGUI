@@ -27,7 +27,11 @@ class EmptyPub:
 
         return Form(cls.List, cls)
 
-    class Default(ABC):
+    @classmethod
+    def get_name(cls)->str:
+        return cls.__name__
+
+    class Base(ABC):
         def __init__(self, parentClass: "EmptyPub"):
             self._parent_class = parentClass
             self.dataFetcher = DataFetcher(self)
@@ -42,9 +46,11 @@ class EmptyPub:
             return self.dataFetcher.getData()
 
         def _getInfoMeta(self):
+            metaForm = self.metaInfo.getDict(isNotNone=False)
+            metaForm['name'] = f'{self._parent_class.get_name()}/{metaForm['name']}'
             return {
                 "operForm": self.registry.get_children_oper(),
-                "metaForm": self.metaInfo.getDict(isNotNone=False),
+                "metaForm": metaForm,
             }
 
         def _getSetterAndOperName(self):
@@ -53,17 +59,13 @@ class EmptyPub:
             ]
 
         def _get_form_event(self, typeEvent: str):
-            return formEvent(form=f'{self._parent_class.__name__}#{self.__class__.__name__}', type=typeEvent)
+            return formEvent(form=f'{self._parent_class.get_name()}#{self.__class__.__name__}', type=typeEvent)
 
         def _initRegistry(self) -> OperRegistry:
             registry = OperRegistry(self)
             registry.oper()
             registry.setter()
             return registry
-
-        @Oper(label='Обновить', order=10)
-        def refresh(self):
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
 
         @abstractmethod
         def onRefresh(self): ...
@@ -77,9 +79,21 @@ class EmptyPub:
         # @abstractmethod
         # def delete(self):...
 
-    class MainMenu(Default):
+    class MainMenu(Base):
         def onRefreshExt(self): ""
         def onRefresh(self): ""
+
+        @Oper(label='Приложение', order=-10)
+        def project(self):...
+
+        @Oper(label='Закрыть', order=10000, headOper='project')
+        def refresh(self):
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
+
+    class Default(Base):
+        @Oper(label='Обновить', order=10)
+        def refresh(self):
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
 
     class List(Default):
         def onRefresh(self):
