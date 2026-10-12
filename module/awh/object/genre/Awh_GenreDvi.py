@@ -2,7 +2,6 @@
 from .Awh_GenreLogic import Awh_GenreLogic, Awh_GenreObj
 from core.sdk import EmptyPub
 
-
 class Awh_GenreDvi(EmptyPub):
     thisLogic = Awh_GenreLogic
 
@@ -28,16 +27,17 @@ class Awh_GenreDvi(EmptyPub):
                     
                 """
 
-        def thisRop(self) -> Awh_GenreObj:
+        def thisRop(self)->Awh_GenreObj:
             return super().thisRop()
 
-        def thisLogic(self) -> Awh_GenreLogic:
+        def thisLogic(self)->Awh_GenreLogic:
             return super().thisLogic()
 
-    class DviList(DviDefault, EmptyPub.List):
-        pass
+        
+        
+    class DviList(DviDefault, EmptyPub.List): pass
 
-    class DviCard(DviDefault):
+    class DviCard(DviDefault): 
         def onRefresh(self):
             return self.thisLogic().load(self.idItem)
 

@@ -4,11 +4,12 @@ from typing import Any
 from core.package.DataFetcher import DataFetcher
 from core.fabric.OperRegistry import OperRegistry
 from core.package.MetadataManager import MetadataManager
+from core.empty.logic import EmptyLogic
 
 
 class EmptyPub:
-    metaFile: Any = ...
-    thisLogic: Any = ...
+    metaFile: str
+    thisLogic: EmptyLogic
 
     @classmethod
     def _getFormByName(cls, sForm: str) -> type["EmptyPub.Default"]:

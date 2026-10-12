@@ -11,7 +11,7 @@ templates = Jinja2Templates(directory="webapp/templates")
 app.mount("/static", StaticFiles(directory="webapp/static"), name="static")
 
 
-@app.get("/{sNameTab}#{sForm}")
+@app.get("/{sNameTab}/{sForm}")
 def oper_form(sNameTab: str, sForm: str, request: Request):
     class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
     if class_:
@@ -32,7 +32,7 @@ def oper_form(sNameTab: str, sForm: str, request: Request):
     raise HTTPException(status_code=404, detail=f"Таблица {sNameTab} не найдена")
 
 
-@app.get("/{sNameTab}#{sForm}/action/{oper}")
+@app.get("/{sNameTab}/{sForm}/action/{oper}")
 def action_oper(sNameTab: str, sForm: str, oper: str):
     class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
     if class_:

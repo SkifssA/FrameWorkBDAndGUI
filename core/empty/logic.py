@@ -9,18 +9,20 @@
 from abc import abstractmethod
 from dacite import from_dict, Config
 from dataclasses import asdict, is_dataclass
+from typing import TypeVar, Generic, Type
 
 from core.DB.SQLLogic import SQLLogic
 from core.empty.obj import EmptyObj
 
+T = TypeVar('T')
 
-class EmptyLogic(SQLLogic):
-    _classObj = EmptyObj
+class EmptyLogic(SQLLogic, Generic[T]):
+    _classObj: Type[T]
 
     @abstractmethod
-    def calcHeadLine(self, obj: EmptyObj) -> str: ...
+    def calcHeadLine(self, obj: T) -> str: ...
     @abstractmethod
-    def calcMnemoCode(self, obj: EmptyObj) -> str: ...
+    def calcMnemoCode(self, obj: T) -> str: ...
 
     def insert(self):
         """Создание новой записи"""
@@ -28,23 +30,23 @@ class EmptyLogic(SQLLogic):
         obj.id = self._insert()
         return obj
 
-    def delete(self, obj: EmptyObj):
+    def delete(self, obj: T):
         """Удаление записи по obj"""
         return self._deleteById(obj.id)
 
-    def load(self, id: int) -> EmptyObj:
+    def load(self, id: int) -> T:
         """Получение обьекта по id"""
         data = self._getById(id)
         return self._createObj(data=data["data"][0])
 
-    def getAll(self) -> list[EmptyObj]:
-        res: list[EmptyObj] = []
+    def getAll(self) -> list[T]:
+        res: list[T] = []
         for data in self._getAll()["data"]:
             res.append(self._createObj(data=data))
         return res
 
     def getAllByAttr(self, attr: str, value):
-        res: list[EmptyObj] = []
+        res: list[T] = []
         for data in self._findDataBase(attr, value)["data"]:
             res.append(self._createObj(data=data))
         return res
@@ -59,14 +61,14 @@ class EmptyLogic(SQLLogic):
             return self._createObj(x[0])
         return None
 
-    def update(self, obj: EmptyObj):
+    def update(self, obj: T):
         value = asdict(obj)
         value["sHeadLine"] = self.calcHeadLine(obj)
         value["sMnemoCode"] = self.calcMnemoCode(obj)
         keys = [k for k in value.keys() if k != "id"]
         self._updateObj(keys, value)
 
-    def _createObj(self, data) -> EmptyObj:
+    def _createObj(self, data) -> T:
         """Получение обьекта с заполнеными полями"""
         return from_dict(
             data_class=self._classObj, data=data, config=Config(cast=[int, str, bool])

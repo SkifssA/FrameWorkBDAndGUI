@@ -11,7 +11,7 @@ class {name}Obj(EmptyObj):
     id:int
     {attrObj} = None
 
-class {name}Dpi(EmptyLogic):
+class {name}Dpi(EmptyLogic[{name}Obj]):
     _classObj = {name}Obj
 
     def _getNameClass(self):
@@ -22,22 +22,6 @@ class {name}Dpi(EmptyLogic):
 
     def calcMnemoCode(self, rop:{name}Obj)->str:
         return f'{isMnemoCode}'
-
-    def insert(self)->{name}Obj:
-        return super().insert()
-
-    def getByMnemocode(self, value)->{name}Obj|None:   
-        return super().getByMnemocode(value)
-
-    def delete(self, obj:{name}Obj)->None:
-        {deleteDetails}
-        return super().delete(obj)
-    
-    def update(self, rop:{name}Obj)->None:
-        return super().update(rop)
-    
-    def load(self, id: int)->{name}Obj:
-        return super().load(id)
 
     {setter}
 """

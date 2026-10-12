@@ -2,7 +2,6 @@
 from .Bc_TimeLineLogic import Bc_TimeLineLogic, Bc_TimeLineObj
 from core.sdk import EmptyPub
 
-
 class Bc_TimeLineDvi(EmptyPub):
     thisLogic = Bc_TimeLineLogic
 
@@ -29,16 +28,17 @@ class Bc_TimeLineDvi(EmptyPub):
                     
                 """
 
-        def thisRop(self) -> Bc_TimeLineObj:
+        def thisRop(self)->Bc_TimeLineObj:
             return super().thisRop()
 
-        def thisLogic(self) -> Bc_TimeLineLogic:
+        def thisLogic(self)->Bc_TimeLineLogic:
             return super().thisLogic()
 
-    class DviList(DviDefault, EmptyPub.List):
-        pass
+        
+        
+    class DviList(DviDefault, EmptyPub.List): pass
 
-    class DviCard(DviDefault):
+    class DviCard(DviDefault): 
         def onRefresh(self):
             return self.thisLogic().load(self.idItem)
 

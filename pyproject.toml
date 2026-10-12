@@ -11,7 +11,6 @@ dependencies = [
     "fastapi>=0.100.0",
     "uvicorn>=0.23.0",
     "jinja2>=3.1.0",
-    "htmx>=0.1.0",
 ]
 
 [project.optional-dependencies]
@@ -29,7 +28,8 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-v --tb=short"
+# libtmux бросает несовместимый маркер на этапе загрузки плагина (pytest>=8)
+addopts = "-v --tb=short -p no:libtmux"
 
 [tool.ruff]
 line-length = 88
@@ -46,12 +46,7 @@ target-version = ["py312"]
 
 [tool.mypy]
 python_version = "3.12"
-warn_unused_configs = true
-disallow_untyped_defs = false
-strict_optional = false       # Временно разрешаем None везде
-check_untyped_defs = false    # Не проверяем функции без аннотаций
-disable_error_code = ["override", "misc"] # Игнорируем сложные ошибки переопределения и заглушки
-warn_return_any = false # Временно отключаем ругань на возврат Any
+warn_unused_configs = false
 
 # Решаем проблему с дублированием модулей (awh vs module.awh)
 explicit_package_bases = true

@@ -10,3 +10,5 @@ pydantic
 mypy
 black
 ruff
+pytest
+pytest-cov
