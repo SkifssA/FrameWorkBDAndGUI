@@ -1,11 +1,15 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from blinker import signal
 
 from core.package.DataFetcher import DataFetcher
 from core.fabric.OperRegistry import OperRegistry
 from core.package.MetadataManager import MetadataManager
 from core.empty.logic import EmptyLogic
+from core.dataClass.formEvent import formEvent, typeEvent
+from core.decorator.oper import Oper
 
+
+eventSignal = signal('form-all-events')
 
 class EmptyPub:
     metaFile: str
@@ -48,11 +52,18 @@ class EmptyPub:
                 i["id"] for i in self.registry.get_setter() + self.registry.get_oper()
             ]
 
+        def _get_form_event(self, typeEvent: str):
+            return formEvent(form=f'{self._parent_class.__name__}#{self.__class__.__name__}', type=typeEvent)
+
         def _initRegistry(self) -> OperRegistry:
             registry = OperRegistry(self)
             registry.oper()
             registry.setter()
             return registry
+
+        @Oper(label='Обновить', order=10)
+        def refresh(self):
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
 
         @abstractmethod
         def onRefresh(self): ...
@@ -65,6 +76,10 @@ class EmptyPub:
         # def save(self):...
         # @abstractmethod
         # def delete(self):...
+
+    class MainMenu(Default):
+        def onRefreshExt(self): ""
+        def onRefresh(self): ""
 
     class List(Default):
         def onRefresh(self):

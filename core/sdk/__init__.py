@@ -17,7 +17,7 @@ from core import ROOT
 # --- Базовые классы каркаса объектов ---------------------------------------
 from core.empty.logic import EmptyLogic
 from core.empty.obj import EmptyObj
-from core.empty.pub import EmptyPub
+from core.empty.pub import EmptyPub, eventSignal
 
 from core.decorator import Oper, Setter
 
@@ -55,4 +55,6 @@ __all__ = [
     # Готовые экземпляры
     "METADATA",
     "ACTIONDISPATCHER",
+    # Сигналы
+    "eventSignal"
 ]

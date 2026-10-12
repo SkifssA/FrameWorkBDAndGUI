@@ -1,18 +1,23 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 
-from core.sdk import ACTIONDISPATCHER
+from core.sdk import ACTIONDISPATCHER, eventSignal
 
 app = FastAPI()
 templates = Jinja2Templates(directory="webapp/templates")
 
 app.mount("/static", StaticFiles(directory="webapp/static"), name="static")
 
+def handler(sender, **kwargs):
+    print(kwargs.get('fromEvent'))
+
+eventSignal.connect(handler)
+
 
 @app.get("/{sNameTab}/{sForm}")
-def oper_form(sNameTab: str, sForm: str, request: Request):
+async def oper_form(sNameTab: str, sForm: str, request: Request):
     class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
     if class_:
         form = class_._getFormByName(sForm)()
@@ -23,7 +28,7 @@ def oper_form(sNameTab: str, sForm: str, request: Request):
                 context={
                     "data": form.getData(),
                     "meta": form.getInfoMeta(),
-                    "name": f"{sNameTab}%23{sForm}",
+                    "url": f"{sForm}",
                 },
             )
         raise HTTPException(
@@ -33,14 +38,14 @@ def oper_form(sNameTab: str, sForm: str, request: Request):
 
 
 @app.get("/{sNameTab}/{sForm}/action/{oper}")
-def action_oper(sNameTab: str, sForm: str, oper: str):
+async def action_oper(sNameTab: str, sForm: str, oper: str, request: Request):
     class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
     if class_:
         form = class_._getFormByName(sForm)()
         if form:
             if oper in form.getSetterAndOperName():
-                getattr(form.List(), oper)()
-                return {"success": True, "operation": oper}
+                form.get_oper_handler()[oper]()
+                return Response(content="", status_code=200)
     raise HTTPException(
         status_code=404, detail=f"В таблице {sNameTab} не найдена опрерация {oper}"
     )
@@ -49,6 +54,4 @@ def action_oper(sNameTab: str, sForm: str, oper: str):
 def runServer():
     import uvicorn
 
-    # Запускаем uvicorn напрямую в этом же процессе
-    # loop="asyncio" помогает избежать конфликта с patch_asyncio
     uvicorn.run(app, host="127.0.0.1", port=8000)

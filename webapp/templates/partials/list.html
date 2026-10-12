@@ -1,3 +1,5 @@
+{% from "macros/toolbar.html" import render_action_buttons %}
+
 {% extends "shell.html" %}
 
 {% block title %}{{ meta.metaForm.caption }}{% endblock %}
@@ -7,15 +9,7 @@
 
     <header class="panel__head">
         <h2 class="panel__title">{{ meta.metaForm.caption }}</h2>
-        <div class="panel__actions">
-            {# Кнопки операций (@Oper) рендерятся здесь списком:
-            {% for oper in meta.operForm %}
-            <button class="btn" hx-post="{{ url }}/action/{{ oper.id }}" hx-target="#list-body" hx-swap="outerHTML">
-                {{ oper.label }}
-            </button>
-            {% endfor %}
-            #}
-        </div>
+        {{ render_action_buttons(meta.operForm, url, "#nonexistent") }}
     </header>
 
     {# Панель фильтров — Этап 4 ROADMAP, сюда позже вставляется partial filters.html #}
@@ -25,7 +19,9 @@
             <thead>
                 <tr>
                     {% for col in meta.metaForm.attr %}
+                    {% if col.isVisible %}
                     <th class="table__th table__th--{{ col.type }}">{{ col.caption or col.name }}</th>
+                    {% endif %}
                     {% endfor %}
                 </tr>
             </thead>
@@ -33,21 +29,15 @@
                 {% for row in data %}
                 <tr class="table__row" style="cursor: pointer;">
                     {% for col in meta.metaForm.attr %}
+                    {% if col.isVisible %}
                     <td class="table__td">{{ row.get(col.name, '') }}</td>
+                    {% endif %}
                     {% endfor %}
-                </tr>
-                {% else %}
-                <tr>
-                    <td class="table__empty" colspan="{{ data|length }}">Нет данных</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <footer class="panel__foot">
-        <span class="muted">Всего записей: {{ data|length }}</span>
-    </footer>
 
 </section>
 {% endblock %}

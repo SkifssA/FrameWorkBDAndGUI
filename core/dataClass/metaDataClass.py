@@ -8,7 +8,7 @@ class attrMetaShema(Base):
     name: str
     caption: str = None
     type: str = None
-    isVisible: bool = False
+    isVisible: bool = None
     order: float = 0
     editType: str = "edit"
     refTab: str = None

@@ -13,3 +13,6 @@ class Form:
 
     def getData(self):
         return self.object._getData()
+
+    def get_oper_handler(self):
+        return self.object.registry._flat_ops_handler
