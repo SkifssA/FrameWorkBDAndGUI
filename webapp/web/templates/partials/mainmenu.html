@@ -1,7 +1,8 @@
 {% from "macros/mainmenu.html" import bilder_mainmenu %}
 
-{% extends "shell.html" %}
-
+{% if not partial %}
+{% extends "main.html" %}
+{% endif %}
 
 
 {% block content %}

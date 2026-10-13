@@ -33,7 +33,8 @@ async def oper_form_endpoint(request: Request, sNameMainMenu:str, sNameTab: str,
             "open_forms": forms,
             "active_form": f'{sNameTab}/{sForm}',
             "meta_main_memu": meta_main_memu,
-            "main_menu": sNameMainMenu
+            "main_menu": sNameMainMenu,
+            "partial": False
         },
     )
         

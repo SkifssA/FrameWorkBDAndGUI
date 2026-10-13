@@ -3,14 +3,38 @@ from threading import current_thread
 
 from core.sdk import eventSignal, formEvent, typeEvent
 
-from webapp.logic import get_session
+from webapp.logic import get_session, get_form, get_open_form
+from webapp.logic.var import current_request, templates
 
 dataForEvent:dict[typeEvent, str] = {
-    typeEvent.openForm:'<div hx-get="/{main_menu_form}/{form}" hx-trigger="load" hx-target="body" hx-swap="outerHTML" hx-push-url="true"></div>'
+    typeEvent.openForm:'''<div hx-get="/{main_menu_form}/{form}" 
+     hx-trigger="load" 
+     hx-target="this" 
+     hx-swap="outerHTML transition:true" 
+     hx-push-url="true" 
+     style="display:none;">
+</div>'''
     , typeEvent.refresh:'Типо обновил {form}'
 }
 
 _main_loop: asyncio.AbstractEventLoop = None
+
+def getHtmlNotMain(event: formEvent):
+    session = get_session()
+    oper_form_object = get_form(event.form)
+    return templates.TemplateResponse(
+            request=current_request.get(),
+            name=f"partials/{event.form.split('/')[-1]}.html",
+            context={
+                "data": oper_form_object.getData(),
+                "meta": oper_form_object.getInfoMeta(),
+                "open_forms": get_open_form(),
+                "active_form": event.form,
+                "meta_main_memu": session.main_menu_form.getInfoMeta(),
+                "main_menu": session.main_menu_form._get_parent_name(),
+                "partial": True
+            },
+        )
 
 def set_main_loop(loop: asyncio.AbstractEventLoop):
     global _main_loop
@@ -25,6 +49,9 @@ async def emit_event(event: formEvent):
             'form': event.form
         }
         print(f'Отправлено {event.personType} c data={data}')
+
+        print(getHtmlNotMain(event).body.decode('utf-8'))
+
         await queue.put({
             "event": event.personType,
             "data": dataForEvent[event.type].format(**data)

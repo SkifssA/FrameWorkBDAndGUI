@@ -5,7 +5,7 @@ import asyncio
 
 from core.sdk import current_session_id
 
-from webapp.logic import registrSignal, set_main_loop
+from webapp.logic import registrSignal, set_main_loop, current_request
 from webapp.api.projectEndPoint import router as roputerProject
 from webapp.api.staticEndPoint import router as staticProject
 
@@ -36,12 +36,14 @@ async def session_context_middleware(request: Request, call_next):
     session_id = request.cookies.get("session_id", "default")
     
     # 2. Устанавливаем контекст
-    token = current_session_id.set(session_id)
+    token_session_id = current_session_id.set(session_id)
+    token_request = current_request.set(request)
     
     try:
         response = await call_next(request)
     finally:
-        current_session_id.reset(token)
+        current_session_id.reset(token_session_id)
+        current_request.reset(token_request)
         
     return response
 
