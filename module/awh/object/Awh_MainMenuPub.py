@@ -1,12 +1,16 @@
-from core.sdk import Oper
+from core.sdk import Oper, EmptyPub, Form
 
 from module.awh.object.anime.Awh_AnimePub import Awh_AnimePub
 from module.awh.object.animegenre.Awh_AnimeGenrePub import Awh_AnimeGenrePub
 from module.awh.object.genre.Awh_GenrePub import Awh_GenrePub
 
 
-class Awh_MainMenuPub:
-    class Default:
+
+class Awh_MainMenuPub(EmptyPub):
+
+    metaFile = 'Awh_MainMenu.Ameta.json'
+
+    class Default(EmptyPub.MainMenu):
         @Oper(label="Справочник", order=10)
         def mm_res(self):
             pass
@@ -25,3 +29,7 @@ class Awh_MainMenuPub:
 
         def oneOpen(self):
             Awh_AnimePub.list().openForm()
+
+    @classmethod
+    def default(cls):
+        return Form(cls.Default, cls)

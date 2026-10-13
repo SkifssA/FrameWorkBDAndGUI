@@ -1,4 +1,5 @@
 {
+    "Awh_MainMenu.Ameta.json": "module/awh/schemas/Awh_MainMenu.Ameta.json",
     "Awh_Anime.Ameta.json": "module/awh/schemas/anime/Awh_Anime.Ameta.json",
     "Awh_AnimeGenre.Ameta.json": "module/awh/schemas/animegenre/Awh_AnimeGenre.Ameta.json",
     "Awh_Genre.Ameta.json": "module/awh/schemas/genre/Awh_Genre.Ameta.json",

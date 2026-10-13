@@ -1,5 +1,6 @@
 from enum import StrEnum
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
+import json
 
 class typeEvent(StrEnum):
     refresh = 'refresh'
@@ -10,3 +11,7 @@ class typeEvent(StrEnum):
 class formEvent:
     type: str
     form: str
+    session_id: str
+
+    def to_json(self) -> str:
+        return json.dumps(asdict(self))

@@ -1,0 +1,9 @@
+{% extends "shell.html" %}
+
+{% block content %}
+{% for name, data in mata_app.items() %}
+<a href="/{{ data.nameMainScreen }}">
+    {{ data.name }}
+</a>
+{% endfor %}
+{% endblock %}

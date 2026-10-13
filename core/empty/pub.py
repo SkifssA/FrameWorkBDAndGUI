@@ -41,6 +41,8 @@ class EmptyPub:
 
             self.registry = self._initRegistry()
 
+            self.session_id:str = None
+
         def _getData(self):
             self.dataFetcher.refresh()
             return self.dataFetcher.getData()
@@ -59,7 +61,9 @@ class EmptyPub:
             ]
 
         def _get_form_event(self, typeEvent: str):
-            return formEvent(form=f'{self._parent_class.get_name()}#{self.__class__.__name__}', type=typeEvent)
+            return formEvent(form=f'{self._parent_class.get_name()}#{self.__class__.__name__}'
+                             , type=typeEvent
+                             , session_id=self.session_id)
 
         def _initRegistry(self) -> OperRegistry:
             registry = OperRegistry(self)

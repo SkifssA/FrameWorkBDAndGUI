@@ -23,6 +23,8 @@ from core.decorator import Oper, Setter
 
 from core.fabric.Form import Form
 
+from core.dataClass.formEvent import formEvent, typeEvent
+
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal
 from core.package.FileManager import FileManager, FileManagerPkg
@@ -57,4 +59,7 @@ __all__ = [
     "ACTIONDISPATCHER",
     # Сигналы
     "eventSignal"
+    #Разное
+    "formEvent",
+    "typeEvent"
 ]

@@ -5,6 +5,7 @@ beautifulsoup4
 Pillow
 dacite
 fastapi
+sse-starlette
 uvicorn
 pydantic
 blinker

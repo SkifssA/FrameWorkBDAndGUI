@@ -20,10 +20,5 @@ if __name__ == "__main__":
             runServer()
     else:
         sNameTab = "Bc_MainMenuPub"
-        classPub = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
-        if classPub:
-            form = classPub.default()
-            print("form.List().getData():\n", form.getData())
-            print("form.List().getInfoMeta():\n", form.getInfoMeta())
-            print("form.List().getSetterAndOperName():\n", form.getSetterAndOperName())
-            print("\n\n\n\n")
+        classPub = ACTIONDISPATCHER.getModulesConfig()
+        print(classPub)
