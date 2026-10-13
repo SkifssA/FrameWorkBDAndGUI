@@ -1,12 +1,14 @@
-from fastapi import APIRouter, HTTPException, Request, Response, Cookie
+from fastapi import APIRouter, HTTPException, Request, Response
+
 
 from webapp.logic import templates, get_form, get_open_form, get_main_menu
 
 router = APIRouter()
 
 @router.get('/{sNameMainMenu}')
-async def openMainMenu(request: Request, sNameMainMenu:str, session_id: str = Cookie(default="default")):
-    form = get_main_menu(sNameMainMenu, session_id)
+async def openMainMenu(request: Request, sNameMainMenu:str):
+    
+    form = get_main_menu(sNameMainMenu=sNameMainMenu)
     return templates.TemplateResponse(
                     request=request,
                     name=f"partials/mainmenu.html",
@@ -17,10 +19,10 @@ async def openMainMenu(request: Request, sNameMainMenu:str, session_id: str = Co
                 )
 
 @router.get("/{sNameMainMenu}/{sNameTab}/{sForm}")
-async def oper_form_endpoint(request: Request, sNameMainMenu:str, sNameTab: str, sForm: str, session_id: str = Cookie(default="default")):
-    meta_main_memu = get_main_menu(sNameMainMenu, session_id).getInfoMeta()
-    oper_form_object = get_form(session_id, f'{sNameTab}/{sForm}')
-    forms = get_open_form(session_id)
+async def oper_form_endpoint(request: Request, sNameMainMenu:str, sNameTab: str, sForm: str):
+    meta_main_memu = get_main_menu(sNameMainMenu=sNameMainMenu).getInfoMeta()
+    oper_form_object = get_form(f'{sNameTab}/{sForm}')
+    forms = get_open_form()
 
     return templates.TemplateResponse(
         request=request,
@@ -36,8 +38,8 @@ async def oper_form_endpoint(request: Request, sNameMainMenu:str, sNameTab: str,
     )
         
 @router.get("/{sNameMainMenu}/{sNameTab}/{sForm}/action/{oper}")
-async def action_oper(request: Request, sNameTab: str, sForm: str, oper: str, session_id: str = Cookie(default="default")):
-    form = get_form(session_id, f'{sNameTab}/{sForm}')
+async def action_oper(request: Request, sNameTab: str, sForm: str, oper: str):
+    form = get_form(f'{sNameTab}/{sForm}')
     if form:
         if oper in form.getSetterAndOperName():
             form.get_oper_handler()[oper]()

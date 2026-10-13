@@ -1,5 +1,6 @@
 # Пользовательский файл для интерфейса
 from .Bc_TimeLineDvi import Bc_TimeLineDvi
+from module.bc.object.scheduledtasks.Bc_ScriptSchedulerPub import Bc_ScriptSchedulerPub
 from core.sdk import Form, Oper, Setter
 
 
@@ -9,7 +10,7 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
     class List(Bc_TimeLineDvi.DviList):
         @Oper(label="Справочник1", order=10)
         def mm_res1(self):
-            pass
+            Bc_ScriptSchedulerPub.list().open()
 
         @Oper(label="Справочник2", order=20)
         def mm_res2(self):

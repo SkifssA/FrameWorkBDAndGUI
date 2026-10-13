@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Cookie
+from fastapi import APIRouter, Request
 from sse_starlette import EventSourceResponse
 
 from core.sdk import ACTIONDISPATCHER
@@ -8,7 +8,7 @@ from webapp.logic import templates, get_session_queue
 router = APIRouter()
 
 @router.get('/selectProject')
-async def openMainMenu(request: Request, session_id: str = Cookie(default="default")):
+async def openMainMenu(request: Request):
     form = ACTIONDISPATCHER.getModulesConfig()
     return templates.TemplateResponse(
                     request=request,
@@ -19,9 +19,9 @@ async def openMainMenu(request: Request, session_id: str = Cookie(default="defau
                 )
 
 @router.get("/events")
-async def event_stream(request: Request, session_id: str = Cookie(default="default")):
+async def event_stream(request: Request):
     # Регистрируем сессию
-    queues = get_session_queue(session_id)
+    queues = get_session_queue()
     
     async def generate():
         queue = queues

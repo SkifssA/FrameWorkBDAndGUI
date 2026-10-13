@@ -7,6 +7,7 @@ from core.package.MetadataManager import MetadataManager
 from core.empty.logic import EmptyLogic
 from core.dataClass.formEvent import formEvent, typeEvent
 from core.decorator.oper import Oper
+from core.context import current_session_id
 
 
 eventSignal = signal('form-all-events')
@@ -41,8 +42,6 @@ class EmptyPub:
 
             self.registry = self._initRegistry()
 
-            self.session_id:str = None
-
         def _getData(self):
             self.dataFetcher.refresh()
             return self.dataFetcher.getData()
@@ -60,10 +59,13 @@ class EmptyPub:
                 i["id"] for i in self.registry.get_setter() + self.registry.get_oper()
             ]
 
+        def _get_parent_name(self):
+            return self._parent_class.get_name()
+
         def _get_form_event(self, typeEvent: str):
-            return formEvent(form=f'{self._parent_class.get_name()}#{self.__class__.__name__}'
+            return formEvent(form=f'{self._get_parent_name()}/{self.__class__.__name__}'
                              , type=typeEvent
-                             , session_id=self.session_id)
+                             , session_id=current_session_id.get())
 
         def _initRegistry(self) -> OperRegistry:
             registry = OperRegistry(self)

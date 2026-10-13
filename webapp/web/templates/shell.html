@@ -4,25 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>{% block title %}Моя ERP Система{% endblock %}</title>
 
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Ядро htmx -->
+    <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/sse.js"></script>
 </head>
 
 <body>
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
-    <main class="main-content" id="app-content">
-        {% block content %}
-        {% endblock %}
-    </main>
+    <div hx-ext="sse" sse-connect="/events" sse-swap="openForm">
+        <main class="main-content" id="app-content">
+            {% block content %}
+            {% endblock %}
+        </main>
 
-    <!-- КОНТЕЙНЕР ДЛЯ УВЕДОМЛЕНИЙ (Опционально) -->
-    <div id="notification-area"></div>
-
-    <!-- СКРИПТЫ ДЛЯ МОДАЛОК И SSE (Если нужно) -->
-    <script></script>
-
+        <div id="status-box" sse-swap="refresh:Bc_TimeLinePub/List">
+            Ожидание обновлений...
+        </div>
+    </div>
 </body>
 
 </html>

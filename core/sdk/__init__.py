@@ -34,6 +34,9 @@ from core.package.ThreadWorkerPkg import ThreadWorkerPkg
 from core.package.MetadataManager import MetadataManager
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 
+# --- Переменые контекста  ---------------------------------------------------
+from core.context import current_session_id
+
 METADATA = MetadataManager()
 ACTIONDISPATCHER = ModuleManagerPkg()
 
@@ -58,7 +61,9 @@ __all__ = [
     "METADATA",
     "ACTIONDISPATCHER",
     # Сигналы
-    "eventSignal"
+    "eventSignal",
+    # Переменые контекста
+    'current_session_id',
     #Разное
     "formEvent",
     "typeEvent"

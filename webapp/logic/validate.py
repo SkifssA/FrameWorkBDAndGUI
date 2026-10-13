@@ -6,7 +6,6 @@ def validateOpenClass(sNameTab:str, session_id:str, sForm:str = 'Default'):
     class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
     if class_:
         form = class_._getFormByName(sForm)()
-        form.getSessionId(session_id)
         if form:
             return form
         raise HTTPException(
