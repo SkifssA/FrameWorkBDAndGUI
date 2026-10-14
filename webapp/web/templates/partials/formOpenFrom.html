@@ -1,0 +1,24 @@
+{% if not partial %}
+{% extends "partials/mainmenu.html" %}
+{% endif %}
+
+{% block formsbar %}
+<!-- ПОЛОСА ОТКРЫТЫХ ФОРМ -->
+<div id="forms-bar" class="forms-bar" data-push-url="/{{ main_menu }}/{{ active_form }}">
+    {% for tab in open_forms %}
+    <a href="/{{ main_menu }}/{{ tab.nameClass }}/{{ tab.nameForm }}"
+        class="form-tab {% if tab.name == active_form %}active{% endif %}">
+        <span>{{ tab.caption }}</span>
+        <!-- Закрытие через HTMX POST -->
+        <button class="close-tab" hx-post="/api/session/close-form"
+            hx-vals='{"form_id": "{{ tab.id }}", "module": "{{ current_module }}"}' hx-target="#forms-bar"
+            hx-swap="innerHTML">×</button>
+    </a>
+    {% endfor %}
+</div>
+
+{% block mainForm %}
+Х_Й
+{% endblock %}
+
+{% endblock %}

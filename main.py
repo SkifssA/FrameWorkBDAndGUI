@@ -18,7 +18,3 @@ if __name__ == "__main__":
             createModule("sys", "система")
         elif args[0] == "launchServer":
             runServer()
-    else:
-        sNameTab = "Bc_MainMenuPub"
-        classPub = ACTIONDISPATCHER.getModulesConfig()
-        print(classPub)

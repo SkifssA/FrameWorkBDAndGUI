@@ -6,32 +6,17 @@
 
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/mainmenu.css') }}">
 <section class="mainMenu">
-
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/mainmenu.css') }}">
 
     <!-- ВЕРХНЕЕ МЕНЮ -->
     {{ bilder_mainmenu(meta_main_memu) }}
 
-    <!-- ПОЛОСА ОТКРЫТЫХ ФОРМ -->
-    <div id="forms-bar" class="forms-bar">
-        {% for tab in open_forms %}
-        <a href="/{{ main_menu }}/{{ tab.nameClass }}/{{ tab.nameForm }}"
-            class="form-tab {% if tab.name == active_form %}active{% endif %}">
-            <span>{{ tab.caption }}</span>
-            <!-- Закрытие через HTMX POST -->
-            <button class="close-tab" hx-post="/api/session/close-form"
-                hx-vals='{"form_id": "{{ tab.id }}", "module": "{{ current_module }}"}' hx-target="#forms-bar"
-                hx-swap="innerHTML">×</button>
-        </a>
-        {% endfor %}
-    </div>
-
-    {% block mainForm %}
-    Х_Й
-    {% endblock %}
-
-    <script src="{{ url_for('static', path='/js/mainmenu.js') }}" defer></script>
-
 </section>
+<div id="openForm" sse-swap="openForm">
+    {% block formsbar %}
+    {% endblock %}
+</div>
+
+<script src="{{ url_for('static', path='/js/mainmenu.js') }}" defer></script>
 {% endblock %}

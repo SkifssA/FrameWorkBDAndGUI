@@ -1,6 +1,6 @@
 from .validate import validateOpenClass
 from .sessionManager import get_open_form, get_form, remove_from, get_main_menu, get_session
-from .putEvent import get_session_queue, registrSignal, set_main_loop
+from .putEvent import get_session_queue, registrSignal, set_main_loop, getHtmlNotMain
 from .var import templates, current_request
 
 
@@ -15,6 +15,7 @@ __all__ = [
     , "get_session_queue"
     , "registrSignal"
     , "set_main_loop"
+    , "getHtmlNotMain"
 
     , "templates"    
     , "current_request"    

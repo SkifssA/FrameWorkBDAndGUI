@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Моя ERP Система{% endblock %}</title>
+    <title id="page-title">{% block title %}Моя ERP Система{% endblock %}</title>
 
     <!-- Ядро htmx -->
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
@@ -13,19 +13,30 @@
     <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}">
 </head>
 
-<!-- Добавили hx-indicator="body" -->
-
-<body hx-indicator="body">
+<body>
     <div hx-ext="sse" sse-connect="/events">
-        <main class="main-content" id="app-content" sse-swap="openForm">
+        <main class="main-content" id="app-content">
             {% block content %}
             {% endblock %}
+            <div id="status-box" sse-swap="refresh:Bc_TimeLinePub/List">
+                Ожидание обновлений...
+            </div>
         </main>
-
-        <div id="status-box" sse-swap="refresh:Bc_TimeLinePub/List">
-            Ожидание обновлений...
-        </div>
     </div>
+
+    <script>
+        document.body.addEventListener('htmx:sseMessage', function (event) {
+            setTimeout(() => {
+                const openFormDiv = document.getElementById('openForm');
+                if (openFormDiv) {
+                    const urlElement = openFormDiv.querySelector('[data-push-url]');
+                    if (urlElement) {
+                        history.pushState(null, '', urlElement.dataset.pushUrl);
+                    }
+                }
+            }, 100);
+        });
+    </script>
 </body>
 
 </html>

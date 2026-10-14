@@ -9,3 +9,4 @@ class Session:
     queue: asyncio.Queue = None
     main_menu_form: Form = None
     open_form: dict[Form] = None
+    active_form: str = None
