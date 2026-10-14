@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from sse_starlette import EventSourceResponse
+from sse_starlette import EventSourceResponse, ServerSentEvent
 
 from core.sdk import ACTIONDISPATCHER
 
@@ -29,6 +29,7 @@ async def event_stream(request: Request):
             if await request.is_disconnected():
                 break
             data = await queue.get()
-            yield data
+            print(data)
+            yield ServerSentEvent(data=data['data'], event=data['event'])
 
     return EventSourceResponse(generate())

@@ -3,11 +3,10 @@
 {% endif %}
 
 {% block formsbar %}
-<!-- ПОЛОСА ОТКРЫТЫХ ФОРМ -->
 <div id="forms-bar" class="forms-bar" data-push-url="/{{ main_menu }}/{{ active_form }}">
     {% for tab in open_forms %}
     <a class="form-tab {% if tab.name == active_form %}active{% endif %}"
-        hx-post="/{{ main_menu }}/{{ tab.nameClass }}/{{ tab.nameForm }}" hx-target="#openForm" hx-swap="innerHTML"
+        hx-post="/{{ main_menu }}/{{ tab.nameClass }}/{{ tab.nameForm }}" hx-target="none"
         hx-vals='{"form_id": "{{ tab.nameClass }}", "module": "{{ current_module }}"}' hx-push-url="true">
         <span>123</span>
         <!-- Закрытие через HTMX POST -->
