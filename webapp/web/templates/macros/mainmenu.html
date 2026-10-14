@@ -10,8 +10,8 @@
     </div>
 </div>
 {% else %}
-<button hx-get="/{{ name_main_menu }}/action/{{ item.id }}" hx-target="#openForm" hx-swap="innerHTML"
-    hx-push-url="false" class="dd-item">
+<button hx-get="/Bc_MainMenuPub/Default/action/mm_Bc_ScriptScheduler" hx-swap="none" hx-push-url="false"
+    class="dd-item">
     <span>{{ item.label }}</span>
     {% if item.shortcut %}<span class="shortcut">{{ item.shortcut }}</span>{% endif %}
 </button>

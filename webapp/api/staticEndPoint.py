@@ -29,7 +29,8 @@ async def event_stream(request: Request):
             if await request.is_disconnected():
                 break
             data = await queue.get()
-            print(data)
-            yield ServerSentEvent(data=data['data'], event=data['event'])
+            print(f"[PUT] pushing to {queue.name}")
+            print("=== GENERATE GOT:", data)
+            yield data
 
-    return EventSourceResponse(generate())
+    return EventSourceResponse(generate(), ping=None)

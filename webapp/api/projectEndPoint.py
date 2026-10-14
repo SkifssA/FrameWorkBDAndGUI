@@ -23,7 +23,7 @@ async def action_oper(request: Request, sNameMainMenu:str, sForm: str, oper: str
     if form:
         if oper in form.getSetterAndOperName():
             form.get_oper_handler()[oper]()
-            return Response(content="", status_code=200)
+            return Response(content="", status_code=204)
     raise HTTPException(
         status_code=404, detail=f"В таблице {sNameMainMenu} не найдена опрерация {oper}"
     )
@@ -39,7 +39,7 @@ async def action_oper(request: Request, sNameTab: str, sForm: str, oper: str):
     if form:
         if oper in form.getSetterAndOperName():
             form.get_oper_handler()[oper]()
-            return Response(content="", status_code=200)
+            return Response(content="", status_code=204)
     raise HTTPException(
         status_code=404, detail=f"В таблице {sNameTab} не найдена опрерация {oper}"
     )

@@ -37,17 +37,16 @@ def set_main_loop(loop: asyncio.AbstractEventLoop):
 
 async def emit_event(event: formEvent):
     """Отправляет событие в очередь текущей сессии"""
-    session = get_session()
-    if queue := session.queue:
+    if queue := get_session_queue():
         data = {
-            'main_menu_form': session.main_menu_form._get_parent_name(),
+            'main_menu_form': get_session().main_menu_form._get_parent_name(),
             'form': event.form,
             'dataHtml': getHtmlNotMain(event.form, True).body.decode('utf-8'),
             'formCaption': get_form(event.form).getInfoMeta()['metaForm'].get('caption', '')
         }
 
         await queue.put({
-            "event": event.personType,
+            "event": 'openForm',
             "data": dataForEvent[event.type].format(**data)
         })
 
@@ -75,7 +74,10 @@ def registrSignal():
     eventSignal.connect(sync_signal_handler)
 
 def get_session_queue():
+    import uuid
     w = get_session().queue
     if not w:
         get_session().queue = w = asyncio.Queue()
+        w.name = f"q-{uuid.uuid4().hex[:6]}"   # ← свой тег
+        print(f"[NEW QUEUE] created {w.name} for session_id={id(w)}")
     return w
