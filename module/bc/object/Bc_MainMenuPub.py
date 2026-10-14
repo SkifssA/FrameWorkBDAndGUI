@@ -16,7 +16,7 @@ class Bc_MainMenuPub(EmptyPub):
 
         @Oper(label="Планировщик сценариев", order=10, headOper="mm_res")
         def mm_Bc_ScriptScheduler(self):
-            Bc_ScriptSchedulerPub.list().openForm()
+            Bc_ScriptSchedulerPub.list().open()
 
         def onRefreshExt(self): return ""
 

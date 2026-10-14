@@ -18,21 +18,23 @@
         <main class="main-content" id="app-content">
             {% block content %}
             {% endblock %}
-            <div id="status-box" sse-swap="refresh:Bc_TimeLinePub/List">
-                Ожидание обновлений...
-            </div>
         </main>
     </div>
 
     <script>
         document.body.addEventListener('htmx:sseMessage', function (event) {
+            console.log('📡 [SSE] Получено сырое сообщение:');
+            console.log('  - event.detail:', event.detail);
+            console.log('  - event.detail.message:', event.detail.message);
+            console.log('  - event.detail.message.data:', event.detail.message?.data);
+            console.log('  - event.detail.elt:', event.detail.elt);
+            console.log('  - event.detail.elt.id:', event.detail.elt?.id);
+
             setTimeout(() => {
                 const openFormDiv = document.getElementById('openForm');
                 if (openFormDiv) {
-                    const urlElement = openFormDiv.querySelector('[data-push-url]');
-                    if (urlElement) {
-                        history.pushState(null, '', urlElement.dataset.pushUrl);
-                    }
+                    console.log(' [SSE] #openForm найден, внутри элементов:', openFormDiv.children.length);
+                    console.log('📄 [SSE] Содержимое #openForm:', openFormDiv.innerHTML.substring(0, 500));
                 }
             }, 100);
         });

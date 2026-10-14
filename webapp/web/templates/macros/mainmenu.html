@@ -1,4 +1,4 @@
-{% macro bilder_sub_mainmenu(item) %}
+{% macro bilder_sub_mainmenu(item, name_main_menu) %}
 {% if item.child %}
 <div class="dd-item has-submenu">
     <span>{{ item.label }}</span>
@@ -10,10 +10,11 @@
     </div>
 </div>
 {% else %}
-<div class="dd-item">
+<button hx-get="/{{ name_main_menu }}/action/{{ item.id }}" hx-target="#openForm" hx-swap="innerHTML"
+    hx-push-url="false" class="dd-item">
     <span>{{ item.label }}</span>
     {% if item.shortcut %}<span class="shortcut">{{ item.shortcut }}</span>{% endif %}
-</div>
+</button>
 {% endif %}
 {% endmacro %}
 
@@ -24,7 +25,7 @@
         {{ item.label }}
         <div class="dropdown"> <!-- Корневой контейнер -->
             {% for child in item.child %}
-            {{ bilder_sub_mainmenu(child) }}
+            {{ bilder_sub_mainmenu(child, items.metaForm.name) }}
             {% endfor %}
         </div>
     </div>

@@ -42,7 +42,7 @@ async def emit_event(event: formEvent):
         data = {
             'main_menu_form': session.main_menu_form._get_parent_name(),
             'form': event.form,
-            'dataHtml': getHtmlNotMain(event.form, True).body.decode('utf-8'),
+            'dataHtml': getHtmlNotMain(event.form, True).body.decode('utf-8').replace('\n\n', '\n'),
             'formCaption': get_form(event.form).getInfoMeta()['metaForm'].get('caption', '')
         }
 
