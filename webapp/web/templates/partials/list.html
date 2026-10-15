@@ -5,7 +5,7 @@
 {% block title %}{{ meta.metaForm.caption }}{% endblock %}
 
 {% block mainForm %}
-<section class="panel panel--list">
+<section id="refresh:{{ active_form }}" class="panel panel--list" sse-swap="refresh:{{ active_form }}">
 
     <header class="action_panel">
         {{ render_action_buttons(meta.operForm, main_menu, active_form, "#nonexistent") }}

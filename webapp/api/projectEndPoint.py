@@ -5,6 +5,15 @@ from webapp.logic import templates, get_form, getHtmlNotMain, get_main_menu, get
 
 router = APIRouter()
 
+@router.post("/api/session/close-form")
+async def action_oper(request: Request, form_id: str = Form(...)):
+    name_form = remove_from(form_id)
+    if name_form == '':
+        get_session().main_menu_form.open()
+    else:
+        get_session().open_form[name_form].open()
+    return Response(content="", status_code=204)
+
 @router.get('/{sNameMainMenu}')
 async def openMainMenu(request: Request, sNameMainMenu:str):
     form = get_main_menu(sNameMainMenu=sNameMainMenu)
@@ -44,13 +53,25 @@ async def action_oper(request: Request, sNameTab: str, sForm: str, oper: str):
         status_code=404, detail=f"В таблице {sNameTab} не найдена опрерация {oper}"
     )
 
+
+"""
+--------------------------------------------------------
+EndPoints для клиентских действий
+--------------------------------------------------------
+"""
+
+@router.post("/{sNameMainMenu}/{sNameTab}/{sForm}")
+async def action_oper(request: Request, form_id: str = Form(...)):
+    "Переключение вкладки"
+    get_form(form_id).open()
+    return Response(content="", status_code=204)
+
 @router.post("/api/session/close-form")
 async def action_oper(request: Request, form_id: str = Form(...)):
+    "Закрытие формы"
     name_form = remove_from(form_id)
     if name_form == '':
         get_session().main_menu_form.open()
     else:
         get_session().open_form[name_form].open()
     return Response(content="", status_code=204)
-
-

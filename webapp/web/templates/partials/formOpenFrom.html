@@ -5,14 +5,15 @@
 {% block formsbar %}
 <div id="forms-bar" class="forms-bar" data-push-url="/{{ main_menu }}/{{ active_form }}">
     {% for tab in open_forms %}
-    <a class="form-tab {% if tab.name == active_form %}active{% endif %}"
-        hx-post="/{{ main_menu }}/{{ tab.nameClass }}/{{ tab.nameForm }}" hx-target="none"
-        hx-vals='{"form_id": "{{ tab.nameClass }}", "module": "{{ current_module }}"}' hx-push-url="true">
+    <a class="form-tab {% if tab.name == active_form %}active{% endif %}" {% if tab.name !=active_form %}
+        hx-post="/{{ main_menu }}/{{ tab.nameClass }}/{{ tab.nameForm }}" hx-swap="none"
+        hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}", "module": "{{ current_module }}"}'
+        hx-push-url="true" {% endif %}>
         <span>123</span>
         <!-- Закрытие через HTMX POST -->
         <button class="close-tab" hx-post="/api/session/close-form"
-            hx-vals='{"form_id": "{{ active_form }}", "module": "{{ current_module }}"}' hx-target="#forms-bar"
-            hx-swap="innerHTML" hx-stop-propagation>×</button>
+            hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}", "module": "{{ current_module }}"}'
+            hx-target="#forms-bar" hx-swap="innerHTML" hx-trigger="click consume">×</button>
     </a>
     {% endfor %}
 </div>

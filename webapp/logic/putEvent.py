@@ -60,7 +60,7 @@ async def emit_event(event: formEvent):
         }
 
         await queue.put({
-            "event": 'openForm',
+            "event": event.personType,
             "data": dataForEvent[event.type].format(**data)
         })
 
