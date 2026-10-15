@@ -14,21 +14,35 @@ dataForEvent:dict[typeEvent, str] = {
 _main_loop: asyncio.AbstractEventLoop = None
 
 def getHtmlNotMain(form:str, isPartial:bool = False):
+    isMainMenu = len(x:=form.split('/')) > 1
     session = get_session()
-    oper_form_object = get_form(form)
-    session.active_form = form
+    context = {}
+    if isMainMenu:
+        oper_form_object = get_form(form)
+        session.active_form = form
+        name_template = f"partials/{x[-1]}.html"
+        context = {
+            "data": oper_form_object.getData(),
+            "meta": oper_form_object.getInfoMeta(),
+            "open_forms": get_open_form(),
+            "active_form": form,
+            "meta_main_memu": session.main_menu_form.getInfoMeta(),
+            "main_menu": session.main_menu_form._get_parent_name(),
+            "partial": isPartial
+        }
+    else:
+        name_template = f"partials/formOpenFrom.html"
+        context = {
+            "open_forms": get_open_form(),
+            "meta_main_memu": session.main_menu_form.getInfoMeta(),
+            "main_menu": session.main_menu_form._get_parent_name(),
+            "partial": isPartial
+        }
+    
     return templates.TemplateResponse(
             request=current_request.get(),
-            name=f"partials/{form.split('/')[-1]}.html",
-            context={
-                "data": oper_form_object.getData(),
-                "meta": oper_form_object.getInfoMeta(),
-                "open_forms": get_open_form(),
-                "active_form": form,
-                "meta_main_memu": session.main_menu_form.getInfoMeta(),
-                "main_menu": session.main_menu_form._get_parent_name(),
-                "partial": isPartial
-            },
+            name=name_template,
+            context=context,
         )
 
 def set_main_loop(loop: asyncio.AbstractEventLoop):

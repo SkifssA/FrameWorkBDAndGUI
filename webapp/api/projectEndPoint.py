@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException, Request, Response
+from fastapi import APIRouter, HTTPException, Request, Response, Form
 
 
-from webapp.logic import templates, get_form, getHtmlNotMain, get_main_menu, get_session
+from webapp.logic import templates, get_form, getHtmlNotMain, get_main_menu, get_session, remove_from
 
 router = APIRouter()
 
@@ -43,4 +43,14 @@ async def action_oper(request: Request, sNameTab: str, sForm: str, oper: str):
     raise HTTPException(
         status_code=404, detail=f"В таблице {sNameTab} не найдена опрерация {oper}"
     )
+
+@router.post("/api/session/close-form")
+async def action_oper(request: Request, form_id: str = Form(...)):
+    name_form = remove_from(form_id)
+    if name_form == '':
+        get_session().main_menu_form.open()
+    else:
+        get_session().open_form[name_form].open()
+    return Response(content="", status_code=204)
+
 

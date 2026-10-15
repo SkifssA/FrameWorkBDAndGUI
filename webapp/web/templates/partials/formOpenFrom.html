@@ -11,7 +11,7 @@
         <span>123</span>
         <!-- Закрытие через HTMX POST -->
         <button class="close-tab" hx-post="/api/session/close-form"
-            hx-vals='{"form_id": "{{ tab.nameClass }}", "module": "{{ current_module }}"}' hx-target="#forms-bar"
+            hx-vals='{"form_id": "{{ active_form }}", "module": "{{ current_module }}"}' hx-target="#forms-bar"
             hx-swap="innerHTML" hx-stop-propagation>×</button>
     </a>
     {% endfor %}

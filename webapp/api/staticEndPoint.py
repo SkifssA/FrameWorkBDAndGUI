@@ -30,7 +30,6 @@ async def event_stream(request: Request):
                 break
             data = await queue.get()
             print(f"[PUT] pushing to {queue.name}")
-            print("=== GENERATE GOT:", data)
             yield data
 
     return EventSourceResponse(generate(), ping=None)

@@ -18,6 +18,10 @@ class Bc_MainMenuPub(EmptyPub):
         def mm_Bc_ScriptScheduler(self):
             Bc_ScriptSchedulerPub.list().open()
 
+        @Oper(label="Единица измерения времени", order=20, headOper="mm_res")
+        def mm_Bc_TimeLine(self):
+            Bc_TimeLinePub.list().open()
+
         def onRefreshExt(self): return ""
 
     @classmethod

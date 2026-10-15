@@ -5,6 +5,7 @@ beautifulsoup4
 Pillow
 dacite
 fastapi
+python-multipart
 sse-starlette
 uvicorn
 pydantic

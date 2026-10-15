@@ -22,34 +22,16 @@
     </div>
 
     <script>
-        // 1. Проверка загрузки
-        document.body.addEventListener('htmx:load', function (evt) {
-            console.log('✅ HTMX загружен, версия:', htmx.version);
-        });
-
-        // 2. Самое важное: сырое сообщение от EventSource
         document.body.addEventListener('htmx:sseMessage', function (event) {
-            console.log('📡 [SSE] Полное событие:', event);
-            // В htmx-ext-sse event.detail - это нативный MessageEvent
-            console.log('📡 [SSE] Имя события (type):', event.detail.type);
-            console.log('📡 [SSE] Данные (data):', event.detail.data);
-        });
-
-        // 3. Ошибки подключения
-        document.body.addEventListener('htmx:sseError', function (event) {
-            console.error('❌ [SSE ERROR] Ошибка подключения или парсинга:', event.detail);
-        });
-
-        // 4. Момент перед вставкой HTML в DOM
-        document.body.addEventListener('htmx:beforeSwap', function (event) {
-            console.log('🔄 [SWAP] Весь event.detail:', event.detail);
-            console.log('🔄 [SWAP] Цель:', event.detail.target);
-
-            // Попробуем разные возможные свойства
-            console.log('🔄 [SWAP] content:', event.detail.content);
-            console.log('🔄 [SWAP] serverResponse:', event.detail.serverResponse);
-            console.log('🔄 [SWAP] response:', event.detail.response);
-            console.log('🔄 [SWAP] xhr:', event.detail.xhr);
+            setTimeout(() => {
+                const openFormDiv = document.getElementById('openForm');
+                if (openFormDiv) {
+                    const urlElement = openFormDiv.querySelector('[data-push-url]');
+                    if (urlElement) {
+                        history.pushState(null, '', urlElement.dataset.pushUrl);
+                    }
+                }
+            }, 100);
         });
     </script>
 </body>

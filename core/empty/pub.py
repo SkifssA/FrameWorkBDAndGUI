@@ -89,6 +89,11 @@ class EmptyPub:
         def onRefreshExt(self): ""
         def onRefresh(self): ""
 
+        def _get_form_event(self, typeEvent: str):
+            return formEvent(form=f'{self._get_parent_name()}'
+                                , type=typeEvent
+                                , session_id=current_session_id.get())
+
         @Oper(label='Приложение', order=-10)
         def project(self):...
 

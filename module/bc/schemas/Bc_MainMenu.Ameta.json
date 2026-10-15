@@ -1,6 +1,7 @@
 {
     "repres": [
         {
+            "caption": "Настройки",
             "name": "Default",
             "typeForm": "mainnemu"
         }

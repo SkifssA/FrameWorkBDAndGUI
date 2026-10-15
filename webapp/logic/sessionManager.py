@@ -16,16 +16,26 @@ def get_open_form()->list[dict]:
 
 def get_form(form_name:str):
     session = get_session()
+    isMainMenu = len(x:=form_name.split('/')) > 1
+    if isMainMenu:
+        if not any(f == form_name for f in session.open_form.keys()):
+            sNameTab, sForm = x
+            session.open_form[form_name] = validateOpenClass(sNameTab=sNameTab, sForm=sForm, session_id=get_session())
 
-    if not any(f == form_name for f in session.open_form.keys()):
-        sNameTab, sForm = form_name.split('/')
-        session.open_form[form_name] = validateOpenClass(sNameTab=sNameTab, sForm=sForm, session_id=get_session())
+        return session.open_form[form_name]
 
-    return session.open_form[form_name]
+    return session.main_menu_form
 
-def remove_from(form_name:str):
-    session_id = get_session_id()
-    get_session().open_form = {f_name:f_data for f_name, f_data in user_sessions[session_id].open_form if f_name != form_name}
+def remove_from(form_name:str)->str:
+    keys = list(get_session().open_form.keys())
+    idx = keys.index(form_name)
+
+    get_session().open_form.pop(form_name)
+
+    if len(get_session().open_form) <= idx:
+        idx -= 1
+
+    return list(get_session().open_form.keys())[idx] if idx >= 0 else ""
 
 def get_main_menu(sNameMainMenu: str):
     session = get_session()
