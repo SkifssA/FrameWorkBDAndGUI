@@ -1,6 +1,8 @@
 {% from "macros/toolbar.html" import render_action_buttons %}
 
+{% if not onlyForm %}
 {% extends "partials/formOpenFrom.html" %}
+{% endif %}
 
 {% block title %}{{ meta.metaForm.caption }}{% endblock %}
 

@@ -98,13 +98,13 @@ class EmptyPub:
         def project(self):...
 
         @Oper(label='Закрыть', order=10000, headOper='project')
-        def refresh(self):
+        def closeProject(self):
             eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
 
     class Default(Base):
         @Oper(label='Обновить', order=10)
         def refresh(self):
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.openForm))
 
     class List(Default):
         def onRefresh(self):

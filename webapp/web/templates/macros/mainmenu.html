@@ -10,10 +10,11 @@
     </div>
 </div>
 {% else %}
-<button hx-get="/Bc_MainMenuPub/Default/action/{{ item.id }}" hx-swap="none" hx-push-url="false" class="dd-item">
+<a hx-get="/Bc_MainMenuPub/Default/action/{{ item.id }}" hx-swap="none" hx-push-url="false" hx-swap="none"
+    class="dd-item">
     <span>{{ item.label }}</span>
     {% if item.shortcut %}<span class="shortcut">{{ item.shortcut }}</span>{% endif %}
-</button>
+</a>
 {% endif %}
 {% endmacro %}
 
