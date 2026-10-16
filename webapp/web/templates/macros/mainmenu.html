@@ -5,13 +5,12 @@
     <span class="arrow">▶</span>
     <div class="submenu">
         {% for child in item.child %}
-        {{ bilder_sub_mainmenu(child) }}
+        {{ bilder_sub_mainmenu(child, name_main_menu) }}
         {% endfor %}
     </div>
 </div>
 {% else %}
-<a hx-get="/Bc_MainMenuPub/Default/action/{{ item.id }}" hx-swap="none" hx-push-url="false" hx-swap="none"
-    class="dd-item">
+<a hx-get="/Bc_MainMenuPub/Default/action/{{ item.id }}" hx-swap="none" hx-push-url="false" class="dd-item">
     <span>{{ item.label }}</span>
     {% if item.shortcut %}<span class="shortcut">{{ item.shortcut }}</span>{% endif %}
 </a>
@@ -21,9 +20,10 @@
 {% macro bilder_mainmenu(items) %}
 <nav class="menubar">
     {% for item in items.operForm %}
-    <div class="menu-item" id="editMenu">
-        {{ item.label }}
-        <div class="dropdown"> <!-- Корневой контейнер -->
+    <!-- УБРАЛИ id="editMenu". Если ID критически нужен, делай его уникальным: id="menu-{{ item.id }}" -->
+    <div class="menu-item">
+        <span class="menu-label">{{ item.label }}</span>
+        <div class="dropdown">
             {% for child in item.child %}
             {{ bilder_sub_mainmenu(child, items.metaForm.name) }}
             {% endfor %}

@@ -1,7 +1,7 @@
 import asyncio
 from threading import current_thread
 
-from core.sdk import eventSignal, formEvent, typeEvent
+from core.sdk import eventSignal, formEvent, typeEvent, ACTIONDISPATCHER
 
 from webapp.logic import get_session, get_form, get_open_form
 from webapp.logic.var import current_request, templates
@@ -9,15 +9,17 @@ from webapp.logic.var import current_request, templates
 dataForEvent:dict[typeEvent, str] = {
     typeEvent.openForm:'{dataHtml}\n<title id="page-title" hx-swap-oob="true">{formCaption}</title>'
     , typeEvent.refresh:'{dataHtml}'
+    , typeEvent.openApp:'{dataHtml}\n<title id="page-title" hx-swap-oob="true">{formCaption}</title>'
+    , typeEvent.closeApp:'{dataHtml}'
 }
 
 _main_loop: asyncio.AbstractEventLoop = None
 
-def getHtmlNotMain(event:formEvent, isPartial:bool = False):
-    isMainMenu = len(x:=event.form.split('/')) > 1
+def getHtmlNotMain(event:formEvent, isRenderMainMenu:bool = True):
+    isMainMenu = len(x:=event.form.split('/')) <= 1
     session = get_session()
     context = {}
-    if isMainMenu:
+    if not isMainMenu:
         oper_form_object = get_form(event.form)
         session.active_form = event.form
         name_template = f"partials/{x[-1]}.html"
@@ -28,16 +30,23 @@ def getHtmlNotMain(event:formEvent, isPartial:bool = False):
             "active_form": event.form,
             "meta_main_memu": session.main_menu_form.getInfoMeta(),
             "main_menu": session.main_menu_form._get_parent_name(),
-            "partial": isPartial,
-            "onlyForm": event.type == typeEvent.refresh
+            "isRenderMainMenu": event.type == typeEvent.openApp,
+            "isRenderFormLine": not event.type == typeEvent.refresh,
         }
+    elif event.type == typeEvent.closeApp:
+        name_template = f"partials/selectProject.html"
+        context = {
+                    "mata_app": ACTIONDISPATCHER.getModulesConfig(),
+                    "isMain": False
+                }
     else:
         name_template = f"partials/formOpenFrom.html"
         context = {
             "open_forms": get_open_form(),
             "meta_main_memu": session.main_menu_form.getInfoMeta(),
             "main_menu": session.main_menu_form._get_parent_name(),
-            "partial": isPartial
+            "isRenderMainMenu": event.type == typeEvent.openApp,
+            "isRenderFormLine": not event.type == typeEvent.refresh,
         }
     
     return templates.TemplateResponse(
@@ -56,7 +65,7 @@ async def emit_event(event: formEvent):
         data = {
             'main_menu_form': get_session().main_menu_form._get_parent_name(),
             'form': event.form,
-            'dataHtml': getHtmlNotMain(event, True).body.decode('utf-8'),
+            'dataHtml': getHtmlNotMain(event, False).body.decode('utf-8'),
             'formCaption': get_form(event.form).getInfoMeta()['metaForm'].get('caption', '')
         }
 

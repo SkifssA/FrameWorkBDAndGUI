@@ -1,22 +1,19 @@
 {% from "macros/mainmenu.html" import bilder_mainmenu %}
 
-{% if not partial %}
-{% extends "main.html" %}
-{% endif %}
-
-
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', path='/css/mainmenu.css') }}">
-<section class="mainMenu">
+<div id="closeApp" sse-swap="closeApp" hx-swap="outerHTML">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/mainmenu.css') }}">
+    <section class="mainMenu">
 
-    <!-- ВЕРХНЕЕ МЕНЮ -->
-    {{ bilder_mainmenu(meta_main_memu) }}
+        <!-- ВЕРХНЕЕ МЕНЮ -->
+        {{ bilder_mainmenu(meta_main_memu) }}
 
-</section>
-<div id="openForm" sse-swap="openForm">
-    {% block formsbar %}
-    {% endblock %}
+    </section>
+    <div id="openForm" sse-swap="openForm" hx-swap="innerHTML">
+        {% block formsbar %}
+        {% endblock %}
+    </div>
+
+
 </div>
-
-<script src="{{ url_for('static', path='/js/mainmenu.js') }}" defer></script>
 {% endblock %}

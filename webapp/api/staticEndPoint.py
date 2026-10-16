@@ -9,12 +9,14 @@ router = APIRouter()
 
 @router.get('/selectProject')
 async def openMainMenu(request: Request):
-    form = ACTIONDISPATCHER.getModulesConfig()
+    modules = ACTIONDISPATCHER.getModulesConfig()
+    print(modules)
     return templates.TemplateResponse(
                     request=request,
                     name=f"partials/selectProject.html",
                     context={
-                        "mata_app": form,
+                        "mata_app": modules,
+                        "isMain": True
                     }
                 )
 

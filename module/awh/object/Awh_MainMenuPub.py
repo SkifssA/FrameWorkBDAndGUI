@@ -17,18 +17,18 @@ class Awh_MainMenuPub(EmptyPub):
 
         @Oper(label="Аниме", order=10, headOper="mm_res")
         def mm_Awh_Anime(self):
-            Awh_AnimePub.list().openForm()
+            Awh_AnimePub.list().open()
 
         @Oper(label="Жанры по аниме", order=20, headOper="mm_res")
         def mm_Awh_AnimeGenre(self):
-            Awh_AnimeGenrePub.list().openForm()
+            Awh_AnimeGenrePub.list().open()
 
         @Oper(label="Жарны", order=30, headOper="mm_res")
         def mm_Awh_Genre(self):
-            Awh_GenrePub.list().openForm()
+            Awh_GenrePub.list().open()
 
         def oneOpen(self):
-            Awh_AnimePub.list().openForm()
+            Awh_AnimePub.list().open()
 
     @classmethod
     def default(cls):

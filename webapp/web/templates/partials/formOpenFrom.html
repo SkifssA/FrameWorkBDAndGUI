@@ -1,4 +1,4 @@
-{% if not partial %}
+{% if isRenderMainMenu %}
 {% extends "partials/mainmenu.html" %}
 {% endif %}
 
@@ -6,14 +6,13 @@
 <div id="forms-bar" class="forms-bar" data-push-url="/{{ main_menu }}/{{ active_form }}">
     {% for tab in open_forms %}
     <a class="form-tab {% if tab.name == active_form %}active{% endif %}" {% if tab.name !=active_form %}
-        hx-post="/{{ main_menu }}/{{ tab.nameClass }}/{{ tab.nameForm }}" hx-swap="none"
-        hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}", "module": "{{ current_module }}"}'
+        hx-post="/api/selected-form" hx-swap="none" hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}"}'
         hx-push-url="true" {% endif %}>
         <span>123</span>
         <!-- Закрытие через HTMX POST -->
-        <button class="close-tab" hx-post="/api/session/close-form"
-            hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}", "module": "{{ current_module }}"}'
-            hx-target="#forms-bar" hx-swap="innerHTML" hx-trigger="click consume">×</button>
+        <button class="close-tab" hx-post="/api/close-form"
+            hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}"}' hx-target="#forms-bar" hx-swap="innerHTML"
+            hx-trigger="click consume">×</button>
     </a>
     {% endfor %}
 </div>

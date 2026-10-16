@@ -6,6 +6,8 @@ class typeEvent(StrEnum):
     refresh = 'refresh'
     openForm = 'openForm'
     openFormLookUp = 'openFormLookUp'
+    openApp = 'openApp'
+    closeApp = 'closeApp'
 
 @dataclass
 class formEvent:

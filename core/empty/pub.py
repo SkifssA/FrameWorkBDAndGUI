@@ -99,7 +99,7 @@ class EmptyPub:
 
         @Oper(label='Закрыть', order=10000, headOper='project')
         def closeProject(self):
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeApp))
 
     class Default(Base):
         @Oper(label='Обновить', order=10)
