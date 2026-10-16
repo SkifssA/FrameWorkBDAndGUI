@@ -39,8 +39,18 @@ class EmptyPub:
             self.metaInfo = MetadataManager().get(
                 parentClass.metaFile, self.__class__.__name__
             )
-
             self.registry = self._initRegistry()
+            self._param = {}
+
+        def thisLogic(self)->EmptyLogic:
+            return self._parent_class.thisLogic()
+
+        def getAttr(self, nameAttr):
+            if (x:=self.dataFetcher.getData()) != []:
+                return x[0].get(nameAttr, self._param.get(nameAttr))
+            else: 
+                return self._param.get(nameAttr)
+            
 
         def _getData(self):
             self.dataFetcher.refresh()
@@ -51,6 +61,7 @@ class EmptyPub:
             metaForm['name'] = f'{self._parent_class.get_name()}/{metaForm['name']}'
             return {
                 "operForm": self.registry.get_children_oper(),
+                "setterForm": self.registry.setter(),
                 "metaForm": metaForm,
             }
 
@@ -62,8 +73,11 @@ class EmptyPub:
         def _get_parent_name(self):
             return self._parent_class.get_name()
 
+        def full_name(self):
+            return f'{self._get_parent_name()}/{self.__class__.__name__}'
+
         def _get_form_event(self, typeEvent: str):
-            return formEvent(form=f'{self._get_parent_name()}/{self.__class__.__name__}'
+            return formEvent(form=self.full_name()
                              , type=typeEvent
                              , session_id=current_session_id.get())
 
@@ -89,10 +103,8 @@ class EmptyPub:
         def onRefreshExt(self): ""
         def onRefresh(self): ""
 
-        def _get_form_event(self, typeEvent: str):
-            return formEvent(form=f'{self._get_parent_name()}'
-                                , type=typeEvent
-                                , session_id=current_session_id.get())
+        def full_name(self):
+            return self._get_parent_name()
 
         @Oper(label='Приложение', order=-10)
         def project(self):...
@@ -112,3 +124,7 @@ class EmptyPub:
 
         @abstractmethod
         def structuredQuery(self) -> str: ...
+
+    class Card(Default):
+        def onRefresh(self):
+            return self.thisLogic().load(self.getAttr('idItem'))

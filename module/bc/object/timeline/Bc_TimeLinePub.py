@@ -10,7 +10,7 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
     class List(Bc_TimeLineDvi.DviList):
         @Oper(label="Справочник1", order=10)
         def mm_res1(self):
-            Bc_ScriptSchedulerPub.list().open()
+            Bc_TimeLinePub.card().param('idItem', 1).open()
 
         @Oper(label="Справочник2", order=20)
         def mm_res2(self):

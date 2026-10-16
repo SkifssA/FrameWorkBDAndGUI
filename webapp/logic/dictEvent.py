@@ -24,6 +24,7 @@ def selected_app(event: formEvent) -> PutData:
 def get_base_context(event: formEvent) -> dict:
     session = get_session()
     return {
+        "active_form":event.form,
         "open_forms": get_open_form(),
         "meta_main_menu": session.main_menu_form.getInfoMeta(), 
         "main_menu": session.main_menu_form._get_parent_name(), 
@@ -36,9 +37,9 @@ def open_and_refresh_form(event: formEvent) -> PutData:
     session = get_session()
     oper_form_object = get_form(event.form)
     session.active_form = event.form
-    
+    meta_form = oper_form_object.getInfoMeta()
     if '/' in event.form:
-        form_name = event.form.rsplit('/', 1)[1]
+        form_name = f'form/{meta_form['metaForm']['typeForm']}'
     else:
         form_name = 'formOpenFrom'
         
@@ -46,7 +47,7 @@ def open_and_refresh_form(event: formEvent) -> PutData:
     
     context = {
         "data": oper_form_object.getData(),
-        "meta": oper_form_object.getInfoMeta(),
+        "meta": meta_form,
         "open_forms": get_open_form(),
     } | get_base_context(event)
 

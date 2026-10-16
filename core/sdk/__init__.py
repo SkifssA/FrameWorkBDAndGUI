@@ -35,7 +35,7 @@ from core.package.MetadataManager import MetadataManager
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 
 # --- Переменые контекста  ---------------------------------------------------
-from core.context import current_session_id
+from core.context import current_session_id, current_session_form
 
 METADATA = MetadataManager()
 ACTIONDISPATCHER = ModuleManagerPkg()
@@ -64,6 +64,7 @@ __all__ = [
     "eventSignal",
     # Переменые контекста
     'current_session_id',
+    'current_session_form'
     #Разное
     "formEvent",
     "typeEvent"

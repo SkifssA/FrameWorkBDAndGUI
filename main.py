@@ -18,3 +18,12 @@ if __name__ == "__main__":
             createModule("sys", "система")
         elif args[0] == "launchServer":
             runServer()
+    else:
+        sNameTab, sForm = 'Bc_TimeLinePub', 'Card'
+        class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
+        if class_:
+            form = class_._getFormByName(sForm)()
+            if form:
+                form.param('idItem', 1)
+                print(form.getData())
+                print(form.getInfoMeta())

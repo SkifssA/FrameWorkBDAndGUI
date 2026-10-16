@@ -38,9 +38,7 @@ class Bc_TimeLineDvi(EmptyPub):
         
     class DviList(DviDefault, EmptyPub.List): pass
 
-    class DviCard(DviDefault): 
-        def onRefresh(self):
-            return self.thisLogic().load(self.idItem)
+    class DviCard(DviDefault, EmptyPub.Card):...
 
     class DviLookUp:
         def onRefresh(self):

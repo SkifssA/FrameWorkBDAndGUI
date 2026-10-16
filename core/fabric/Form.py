@@ -1,3 +1,5 @@
+from typing import Any
+
 from core.empty.pub import EmptyPub, eventSignal
 from core.dataClass.formEvent import formEvent, typeEvent
 
@@ -20,5 +22,15 @@ class Form:
     def _get_parent_name(self):
         return self.object._get_parent_name()
 
+    def _get_full_name(self):
+        return self.object.full_name()
+
+    def param(self, nameParam: str, value: Any):
+        self.object._param[nameParam] = value
+        return self
+
     def open(self):
+        from core.context import current_session_form
+        current_session_form.set(self)
         eventSignal.send(fromEvent=self.object._get_form_event(typeEvent.openForm))
+        
