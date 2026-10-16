@@ -5,54 +5,17 @@ from core.sdk import eventSignal, formEvent, typeEvent, ACTIONDISPATCHER
 
 from webapp.logic import get_session, get_form, get_open_form
 from webapp.logic.var import current_request, templates
-
-dataForEvent:dict[typeEvent, str] = {
-    typeEvent.openForm:'{dataHtml}\n<title id="page-title" hx-swap-oob="true">{formCaption}</title>'
-    , typeEvent.refresh:'{dataHtml}'
-    , typeEvent.openApp:'{dataHtml}\n<title id="page-title" hx-swap-oob="true">{formCaption}</title>'
-    , typeEvent.closeApp:'{dataHtml}'
-}
+from webapp.logic.dictEvent import dataForEvent
+from webapp.logic.dataClass import PutData
 
 _main_loop: asyncio.AbstractEventLoop = None
 
-def getHtmlNotMain(event:formEvent, isRenderMainMenu:bool = True):
-    isMainMenu = len(x:=event.form.split('/')) <= 1
-    session = get_session()
-    context = {}
-    if not isMainMenu:
-        oper_form_object = get_form(event.form)
-        session.active_form = event.form
-        name_template = f"partials/{x[-1]}.html"
-        context = {
-            "data": oper_form_object.getData(),
-            "meta": oper_form_object.getInfoMeta(),
-            "open_forms": get_open_form(),
-            "active_form": event.form,
-            "meta_main_memu": session.main_menu_form.getInfoMeta(),
-            "main_menu": session.main_menu_form._get_parent_name(),
-            "isRenderMainMenu": event.type == typeEvent.openApp,
-            "isRenderFormLine": not event.type == typeEvent.refresh,
-        }
-    elif event.type == typeEvent.closeApp:
-        name_template = f"partials/selectProject.html"
-        context = {
-                    "mata_app": ACTIONDISPATCHER.getModulesConfig(),
-                    "isMain": False
-                }
-    else:
-        name_template = f"partials/formOpenFrom.html"
-        context = {
-            "open_forms": get_open_form(),
-            "meta_main_memu": session.main_menu_form.getInfoMeta(),
-            "main_menu": session.main_menu_form._get_parent_name(),
-            "isRenderMainMenu": event.type == typeEvent.openApp,
-            "isRenderFormLine": not event.type == typeEvent.refresh,
-        }
-    
+def getHtmlNotMain(event:formEvent):
+    data:PutData = dataForEvent[event.type]['data'](event)
     return templates.TemplateResponse(
             request=current_request.get(),
-            name=name_template,
-            context=context,
+            name=data.name_template,
+            context=data.context,
         )
 
 def set_main_loop(loop: asyncio.AbstractEventLoop):
@@ -65,13 +28,13 @@ async def emit_event(event: formEvent):
         data = {
             'main_menu_form': get_session().main_menu_form._get_parent_name(),
             'form': event.form,
-            'dataHtml': getHtmlNotMain(event, False).body.decode('utf-8'),
+            'dataHtml': getHtmlNotMain(event).body.decode('utf-8'),
             'formCaption': get_form(event.form).getInfoMeta()['metaForm'].get('caption', '')
         }
 
         await queue.put({
             "event": event.personType,
-            "data": dataForEvent[event.type].format(**data)
+            "data": dataForEvent[event.type]['templates'].format(**data)
         })
 
 def sync_signal_handler(sender, **kwargs):

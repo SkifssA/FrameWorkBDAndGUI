@@ -77,7 +77,7 @@ async def openMainMenu(request: Request, sNameMainMenu:str):
                     request=request,
                     name=f"partials/formOpenFrom.html",
                     context={
-                        "meta_main_memu": form.getInfoMeta(),
+                        "meta_main_menu": form.getInfoMeta(),
                         "main_menu": form._get_parent_name(),
                     }
                 )

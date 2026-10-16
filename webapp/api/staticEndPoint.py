@@ -15,7 +15,7 @@ async def openMainMenu(request: Request):
                     request=request,
                     name=f"partials/selectProject.html",
                     context={
-                        "mata_app": modules,
+                        "meta_app": modules,
                         "isMain": True
                     }
                 )
