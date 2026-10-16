@@ -5,7 +5,7 @@
 {% block content %}
 <div id="openApp" sse-swap="openApp" hx-swap="outerHTML">
     {% for name, data in mata_app.items() %}
-    <div>
+    <div data-push-url="/selectProject">
         <a class="select-app" hx-post="/api/selected-app" hx-swap="none"
             hx-vals='{"form_id": "{{ data.nameMainScreen }}"}' hx-push-url="true">
             {{ data.name }}

@@ -69,6 +69,19 @@ EndPoints для первого открытия
 --------------------------------------------------------
 """
 
+@router.get('/{sNameMainMenu}')
+async def openMainMenu(request: Request, sNameMainMenu:str):
+    "Открытие главного меню"
+    form = get_main_menu(sNameMainMenu=sNameMainMenu)
+    return templates.TemplateResponse(
+                    request=request,
+                    name=f"partials/formOpenFrom.html",
+                    context={
+                        "meta_main_memu": form.getInfoMeta(),
+                        "main_menu": form._get_parent_name(),
+                    }
+                )
+
 @router.get("/{sNameMainMenu}/{sNameTab}/{sForm}")
 async def oper_form_endpoint(request: Request, sNameMainMenu:str, sNameTab: str, sForm: str):
     "Открытие формы"

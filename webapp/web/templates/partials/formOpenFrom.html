@@ -3,7 +3,7 @@
 {% endif %}
 
 {% block formsbar %}
-<div id="forms-bar" class="forms-bar" data-push-url="/{{ main_menu }}/{{ active_form }}">
+<div id="forms-bar" class="forms-bar" data-push-url="/{{ main_menu }}{% if active_form %}/{{ active_form }}{% endif %}">
     {% for tab in open_forms %}
     <a class="form-tab {% if tab.name == active_form %}active{% endif %}" {% if tab.name !=active_form %}
         hx-post="/api/selected-form" hx-swap="none" hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}"}'
