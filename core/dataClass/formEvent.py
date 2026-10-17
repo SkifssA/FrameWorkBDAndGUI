@@ -14,6 +14,7 @@ class formEvent:
     type: str
     form: str
     session_id: str
+    formObject: object | None = None
     personType: str = field(init=False)
 
     def __post_init__(self):

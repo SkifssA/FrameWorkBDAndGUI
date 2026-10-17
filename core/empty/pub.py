@@ -36,6 +36,7 @@ class EmptyPub:
         def __init__(self, parentClass: "EmptyPub"):
             self._parent_class = parentClass
             self.dataFetcher = DataFetcher(self)
+
             self.metaInfo = MetadataManager().get(
                 parentClass.metaFile, self.__class__.__name__
             )
@@ -53,7 +54,6 @@ class EmptyPub:
             
 
         def _getData(self):
-            self.dataFetcher.refresh()
             return self.dataFetcher.getData()
 
         def _getInfoMeta(self):
@@ -116,6 +116,7 @@ class EmptyPub:
     class Default(Base):
         @Oper(label='Обновить', order=10)
         def refresh(self):
+            self.dataFetcher.refresh()
             eventSignal.send(fromEvent=self._get_form_event(typeEvent.openForm))
 
     class List(Default):

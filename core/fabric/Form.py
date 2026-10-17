@@ -30,7 +30,9 @@ class Form:
         return self
 
     def open(self):
-        from core.context import current_session_form
-        current_session_form.set(self)
-        eventSignal.send(fromEvent=self.object._get_form_event(typeEvent.openForm))
+        if len(self.object.dataFetcher.getData()) == 0:
+            self.object.dataFetcher.refresh()
+        event = self.object._get_form_event(typeEvent.openForm)
+        event.formObject = self
+        eventSignal.send(fromEvent=event)
         
