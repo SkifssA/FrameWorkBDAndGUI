@@ -14,13 +14,17 @@ def get_open_form()->list[dict]:
              'name': f_name} \
              for f_name, f_object in forms_data.open_form.items()]
 
-def get_form(form_name:str):
+def get_form(form_name:str, default=None):
     session = get_session()    
     isMainMenu = len(x:=form_name.split('/')) > 1
     if isMainMenu:
         if not any(f == form_name for f in session.open_form.keys()):
-            sNameTab, sForm = x
-            session.open_form[form_name] = validateOpenClass(sNameTab=sNameTab, sForm=sForm, session_id=get_session())
+            if (default):
+                default.object.refresh()
+                session.open_form[form_name] = default
+            else:
+                sNameTab, sForm = x
+                session.open_form[form_name] = validateOpenClass(sNameTab=sNameTab, sForm=sForm, session_id=session)
 
         return session.open_form[form_name]
 

@@ -14,7 +14,7 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
 
         @Oper(label="Справочник2", order=20)
         def mm_res2(self):
-            pass
+            Bc_TimeLinePub.card().param('idItem', 2).open()
 
         @Oper(label="Справочник3", order=30)
         def mm_res3(self):

@@ -51,16 +51,16 @@ async def action_oper(request: Request, sNameMainMenu:str, sForm: str, oper: str
         status_code=404, detail=f"В таблице {sNameMainMenu} не найдена опрерация {oper}"
     )
 
-@router.get("/{sNameMainMenu}/{sNameTab}/{sForm}/action/{oper}")
-async def action_oper(request: Request, sNameTab: str, sForm: str, oper: str):
+@router.get("/action/{oper}")
+async def action_oper(request: Request, oper: str):
     "Операции формы"
-    form = get_form(f'{sNameTab}/{sForm}')
-    if form:
+    form_name = get_session().active_form
+    if form:=get_session().open_form.get(form_name):
         if oper in form.getSetterAndOperName():
             form.get_oper_handler()[oper]()
             return Response(content="", status_code=204)
     raise HTTPException(
-        status_code=404, detail=f"В таблице {sNameTab} не найдена опрерация {oper}"
+        status_code=404, detail=f"В таблице {form_name} не найдена опрерация {oper}"
     )
 
 """

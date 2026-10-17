@@ -35,11 +35,8 @@ def get_base_context(event: formEvent) -> dict:
 
 def open_and_refresh_form(event: formEvent) -> PutData:
     session = get_session()
-    if event.formObject:
-        oper_form_object = event.formObject
-        session.open_form[oper_form_object._get_full_name()] = oper_form_object
-    else:
-        oper_form_object = get_form(event.form)
+    
+    oper_form_object = get_form(event.form, event.formObject)
     
     meta_form = oper_form_object.getInfoMeta()
     if '/' in event.form:

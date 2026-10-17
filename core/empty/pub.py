@@ -18,7 +18,7 @@ class EmptyPub:
 
     @classmethod
     def _getFormByName(cls, sForm: str) -> type["EmptyPub.Default"]:
-        if x := getattr(cls, sForm.lower()):
+        if x := getattr(cls, sForm.split('?')[0].lower()):
             return x
         return None
 
@@ -74,7 +74,7 @@ class EmptyPub:
             return self._parent_class.get_name()
 
         def full_name(self):
-            return f'{self._get_parent_name()}/{self.__class__.__name__}'
+            return f'{self._get_parent_name()}/{self.__class__.__name__}{f'?id={x}' if (x:=self.getAttr('idItem')) else ''}'
 
         def _get_form_event(self, typeEvent: str):
             return formEvent(form=self.full_name()
