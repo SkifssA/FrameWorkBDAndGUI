@@ -8,7 +8,7 @@
     <a class="form-tab {% if tab.name == active_form %}active{% endif %}" {% if tab.name !=active_form %}
         hx-post="/api/selected-form" hx-swap="none" hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}"}'
         hx-push-url="true" {% endif %}>
-        <span>123</span>
+        <span>{{ tab.caption }}</span>
         <!-- Закрытие через HTMX POST -->
         <button class="close-tab" hx-post="/api/close-form"
             hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}"}' hx-target="#forms-bar" hx-swap="innerHTML"

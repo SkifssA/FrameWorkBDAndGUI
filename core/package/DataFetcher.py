@@ -11,6 +11,7 @@ class DataFetcher:
         from core.empty.pub import EmptyPub
 
         self.class_: EmptyPub = class_
+        self._obj_res = None
         self._data = []
         self._attr = []
         self._dataExt = []
@@ -67,6 +68,7 @@ class DataFetcher:
         pass
 
     def _obj(self, res: EmptyObj):
+        self._obj_res = res
         self._data = [res.getDict(isNotNone=False)]
         self._attr = list(self._data[0].keys())
         self.refreshItem()

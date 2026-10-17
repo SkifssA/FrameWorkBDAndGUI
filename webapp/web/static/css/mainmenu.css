@@ -118,78 +118,37 @@ body {
 .forms-bar {
     display: flex;
     flex-wrap: wrap;
-    /* Разрешает перенос табов на новую строку */
-
     background: #2d2d3d;
     border-bottom: 1px solid #1e1e2e;
-
-    /* Убираем горизонтальный скролл полностью */
-    overflow-x: hidden;
+    overflow-x: visible;
     overflow-y: auto;
-    /* Оставляем вертикальный, если табов станет очень много */
-
-    /* Убираем фиксированную height: 35px, чтобы блок мог расти в высоту */
     min-height: 35px;
+    height: auto;
+    max-height: 150px;
+    width: 100%;
 }
 
+/* ЕДИНСТВЕННЫЙ блок .form-tab */
 .form-tab {
     display: flex;
     align-items: center;
     padding: 0 15px;
-
-    /* Гибкая ширина: минимум 120px, но может растягиваться */
-    flex: 1 1 120px;
-
+    width: max-content;
+    flex-shrink: 0;
     font-size: 13px;
     color: #969696;
     text-decoration: none;
-
-    /* Добавляем нижнюю границу для разделения строк */
     border-right: 1px solid #1e1e2e;
     border-bottom: 1px solid #1e1e2e;
-
     transition: all 0.2s;
-
-    /* Обрезка длинного текста троеточием */
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-/* === ПОЛОСА ТАБОВ === */
-.forms-bar {
-    display: flex;
-    flex-wrap: wrap;
-    /* Разрешает перенос */
-
-    background: #2d2d3d;
-    border-bottom: 1px solid #1e1e2e;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-    min-height: 35px;
-}
-
-.form-tab {
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-
-    /* ИСПРАВЛЕНИЕ: 0 0 150px означает "не сжимайся, не расти, база 150px" */
-    flex: 0 0 150px;
-
-    font-size: 13px;
-    color: #969696;
-    text-decoration: none;
-
-    border-right: 1px solid #1e1e2e;
-    border-bottom: 1px solid #1e1e2e;
-
-    transition: all 0.2s;
-
+.form-tab span {
+    overflow: visible !important;
+    text-overflow: clip !important;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: inline-block;
 }
 
 .form-tab:last-child {
@@ -200,6 +159,8 @@ body {
     background: #1e1e2e;
     color: #fff;
     border-top: 2px solid #007acc;
+    pointer-events: none;
+    cursor: default;
 }
 
 .form-tab:hover {
@@ -217,6 +178,7 @@ body {
     transition: opacity 0.2s;
     padding: 0 2px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .form-tab:hover .close-tab,
@@ -229,13 +191,6 @@ body {
     border-radius: 3px;
 }
 
-/* Отключаем клики на активной вкладке и меняем курсор */
-.form-tab.active {
-    pointer-events: none;
-    cursor: default;
-}
-
-/* Включаем клики обратно для кнопки закрытия внутри активной вкладки */
 .form-tab.active .close-tab {
     pointer-events: auto;
     cursor: pointer;
