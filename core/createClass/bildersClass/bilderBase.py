@@ -26,5 +26,6 @@ class BilderBase:
 
     def _createFile(self, path):
         allData = self.data.getDict() | self.dictData
+        print(self.dictData.get('setter'))
         f = self.temp.format(**allData)
         FileManagerPkg.CreateFile(path, f)

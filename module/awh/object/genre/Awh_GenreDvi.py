@@ -1,6 +1,6 @@
 # Системный файл для интерфейса
 from .Awh_GenreLogic import Awh_GenreLogic, Awh_GenreObj
-from core.sdk import EmptyPub
+from core.sdk import EmptyPub, SetterEvent, Setter
 
 class Awh_GenreDvi(EmptyPub):
     thisLogic = Awh_GenreLogic
@@ -27,19 +27,15 @@ class Awh_GenreDvi(EmptyPub):
                     
                 """
 
-        def thisRop(self)->Awh_GenreObj:
-            return super().thisRop()
-
         def thisLogic(self)->Awh_GenreLogic:
             return super().thisLogic()
 
+        @Setter
+        def setsCaption(self, event:SetterEvent): self.thisLogic().setsCaption(self.thisObj(), event.value); self.afterSetter('sCaption')
         
-        
-    class DviList(DviDefault, EmptyPub.List): pass
+    class DviList(DviDefault, EmptyPub.List):...
 
-    class DviCard(DviDefault): 
-        def onRefresh(self):
-            return self.thisLogic().load(self.idItem)
+    class DviCard(DviDefault, EmptyPub.Card):...
 
     class DviLookUp:
         def onRefresh(self):

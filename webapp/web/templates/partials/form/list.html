@@ -28,7 +28,8 @@
             </thead>
             <tbody id="list-body">
                 {% for row in data %}
-                <tr class="table__row" style="cursor: pointer;">
+                <tr class="table__row" style="cursor: pointer;" hx-post="/api/select-row" hx-swap="none"
+                    hx-vals='{"idSelect": {{ row.id }} }'>
                     {% for col in meta.metaForm.attr %}
                     {% if col.isVisible %}
                     <td class="table__td">{{ row.get(col.name, '') }}</td>

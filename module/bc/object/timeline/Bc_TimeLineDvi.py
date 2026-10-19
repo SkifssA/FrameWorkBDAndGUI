@@ -1,6 +1,6 @@
 # Системный файл для интерфейса
 from .Bc_TimeLineLogic import Bc_TimeLineLogic, Bc_TimeLineObj
-from core.sdk import EmptyPub
+from core.sdk import EmptyPub, SetterEvent, Setter
 
 class Bc_TimeLineDvi(EmptyPub):
     thisLogic = Bc_TimeLineLogic
@@ -28,15 +28,15 @@ class Bc_TimeLineDvi(EmptyPub):
                     
                 """
 
-        def thisRop(self)->Bc_TimeLineObj:
-            return super().thisRop()
-
         def thisLogic(self)->Bc_TimeLineLogic:
             return super().thisLogic()
 
+        @Setter
+        def setsCode(self, event:SetterEvent): self.thisLogic().setsCode(self.thisObj(), event.value); self.afterSetter('sCode')
+        @Setter
+        def setsName(self, event:SetterEvent): self.thisLogic().setsName(self.thisObj(), event.value); self.afterSetter('sName')
         
-        
-    class DviList(DviDefault, EmptyPub.List): pass
+    class DviList(DviDefault, EmptyPub.List):...
 
     class DviCard(DviDefault, EmptyPub.Card):...
 

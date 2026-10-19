@@ -24,6 +24,7 @@ from core.decorator import Oper, Setter
 from core.fabric.Form import Form
 
 from core.dataClass.formEvent import formEvent, typeEvent
+from core.dataClass.setterEvent import SetterEvent
 
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal
@@ -66,5 +67,6 @@ __all__ = [
     'current_session_id'
     #Разное
     "formEvent",
-    "typeEvent"
+    "typeEvent",
+    "SetterEvent"
 ]

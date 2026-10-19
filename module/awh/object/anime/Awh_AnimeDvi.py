@@ -1,6 +1,6 @@
 # Системный файл для интерфейса
 from .Awh_AnimeLogic import Awh_AnimeLogic, Awh_AnimeObj
-from core.sdk import EmptyPub
+from core.sdk import EmptyPub, SetterEvent, Setter
 
 class Awh_AnimeDvi(EmptyPub):
     thisLogic = Awh_AnimeLogic
@@ -32,19 +32,25 @@ class Awh_AnimeDvi(EmptyPub):
                     
                 """
 
-        def thisRop(self)->Awh_AnimeObj:
-            return super().thisRop()
-
         def thisLogic(self)->Awh_AnimeLogic:
             return super().thisLogic()
 
+        @Setter
+        def setsCaption(self, event:SetterEvent): self.thisLogic().setsCaption(self.thisObj(), event.value); self.afterSetter('sCaption')
+        @Setter
+        def setnSeries(self, event:SetterEvent): self.thisLogic().setnSeries(self.thisObj(), event.value); self.afterSetter('nSeries')
+        @Setter
+        def setbReleased(self, event:SetterEvent): self.thisLogic().setbReleased(self.thisObj(), event.value); self.afterSetter('bReleased')
+        @Setter
+        def setsUrl(self, event:SetterEvent): self.thisLogic().setsUrl(self.thisObj(), event.value); self.afterSetter('sUrl')
+        @Setter
+        def setsUrlImg(self, event:SetterEvent): self.thisLogic().setsUrlImg(self.thisObj(), event.value); self.afterSetter('sUrlImg')
+        @Setter
+        def setsComment(self, event:SetterEvent): self.thisLogic().setsComment(self.thisObj(), event.value); self.afterSetter('sComment')
         
-        
-    class DviList(DviDefault, EmptyPub.List): pass
+    class DviList(DviDefault, EmptyPub.List):...
 
-    class DviCard(DviDefault): 
-        def onRefresh(self):
-            return self.thisLogic().load(self.idItem)
+    class DviCard(DviDefault, EmptyPub.Card):...
 
     class DviLookUp:
         def onRefresh(self):

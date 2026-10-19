@@ -11,6 +11,7 @@ class OperRegistry:
         self._flat_ops = []
         self._flat_ops_handler = {}
         self._flat_set = []
+        self._flat_set_handler = {}
 
     def oper(self):
         self._flat_ops = []
@@ -37,9 +38,13 @@ class OperRegistry:
 
     def setter(self):
         self._flat_set = []
+        self._flat_set_handler = {}
         for name, method in inspect.getmembers(self.cls, predicate=inspect.ismethod):
             if getattr(method, "_type", False) == TypeDecorator.Setter:
-                self._flat_set.append({"id": method._id})
+                self._flat_set.append({'id': method._id})
+                self._flat_set_handler[method._id] = {
+                    "method": method
+                }
 
     def get_children_oper(self, parent_id=None):
         # Для корневых элементов headOper должен быть None

@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Request, Response, Form
 
 
 from webapp.logic import templates, get_form, getHtmlNotMain, get_main_menu, get_session, remove_from
-from core.sdk import eventSignal, typeEvent
+from core.sdk import eventSignal, typeEvent, SetterEvent
 
 router = APIRouter()
 
@@ -32,6 +32,15 @@ async def openMainMenu(request: Request, form_id: str = Form(...)):
     "Открытие главного меню"
     form = get_main_menu(sNameMainMenu=form_id)
     eventSignal.send(fromEvent=form.object._get_form_event(typeEvent.openApp))
+    return Response(content="", status_code=204)
+
+@router.post('/api/set-attr')
+async def openMainMenu(request: Request):
+    "Открытие главного меню"
+    form_data = await request.form()
+    for key, value in form_data.items():
+        event = SetterEvent(value=value)
+        get_form(get_session().active_form).get_setter()[key]['method'](event)
     return Response(content="", status_code=204)
 
 """

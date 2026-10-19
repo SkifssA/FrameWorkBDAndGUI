@@ -19,6 +19,9 @@ class Form:
     def get_oper_handler(self):
         return self.object.registry._flat_ops_handler
 
+    def get_setter(self):
+        return self.object.registry._flat_set_handler
+
     def _get_parent_name(self):
         return self.object._get_parent_name()
 

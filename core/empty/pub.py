@@ -121,6 +121,8 @@ class EmptyPub:
             eventSignal.send(fromEvent=self._get_form_event(typeEvent.openForm))
 
         def update_meta_form(self):...
+        def afterSetter(self, nameAttr):...
+        def thisObj(self):...
 
     class List(Default):
         def onRefresh(self):
@@ -133,7 +135,16 @@ class EmptyPub:
         def onRefresh(self):
             return self.thisLogic().load(self.getAttr('idItem'))
 
+        def afterSetter(self, nameAttr):
+            self.dataFetcher._obj(self.thisObj())
+            return super().afterSetter(nameAttr)
+
+        def thisObj(self):
+            return self.dataFetcher._obj_res
+
         def update_meta_form(self):
             super().update_meta_form()
 
-            self.metaInfo.caption = self.thisLogic().calcHeadLine(self.dataFetcher._obj_res)
+            self.metaInfo.caption = self.thisLogic().calcHeadLine(self.thisObj())
+
+        

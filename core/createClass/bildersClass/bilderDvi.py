@@ -5,7 +5,7 @@ from .bilderBase import BilderBase
 class BilderDvi(BilderBase):
     temp = """# Системный файл для интерфейса
 from .{name}Logic import {name}Logic, {name}Obj
-from core.sdk import EmptyPub
+from core.sdk import EmptyPub, SetterEvent, Setter
 
 class {name}Dvi(EmptyPub):
     thisLogic = {name}Logic
@@ -17,19 +17,14 @@ class {name}Dvi(EmptyPub):
         def onRefreshExt(self):
             return \"\"\"{sqlListExt}\"\"\"
 
-        def thisRop(self)->{name}Obj:
-            return super().thisRop()
-
         def thisLogic(self)->{name}Logic:
             return super().thisLogic()
 
+        {setter}
         
-        
-    class DviList(DviDefault, EmptyPub.List): pass
+    class DviList(DviDefault, EmptyPub.List):...
 
-    class DviCard(DviDefault): 
-        def onRefresh(self):
-            return self.thisLogic().load(self.idItem)
+    class DviCard(DviDefault, EmptyPub.Card):...
 
     class DviLookUp:
         def onRefresh(self):
@@ -55,14 +50,14 @@ class {name}Dvi(EmptyPub):
             )
             return tempSet.format(nameAttr=nameAttr, setHead=setHead)
 
-        tempSet = "{setHead}self.thisLogic().set{nameAttr}(self.thisRop(), event.value); self.afterSetter('{nameAttr}')"
+        tempSet = "@Setter\n        {setHead}self.thisLogic().set{nameAttr}(self.thisObj(), event.value); self.afterSetter('{nameAttr}')"
         listTepmSet = []
 
         for attr in self.data.attr:
-            getSetterStr(attr.name, tempSet)
+            listTepmSet.append(getSetterStr(attr.name, tempSet))
 
             if attr.editType == "lookUp":
-                getSetterStr(attr.name + "HL", tempSet)
+                listTepmSet.append(getSetterStr(attr.name + "HL", tempSet))
 
         return f"\n{self.tabSpace * 2}".join(listTepmSet)
 
