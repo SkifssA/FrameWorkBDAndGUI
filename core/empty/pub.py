@@ -125,6 +125,17 @@ class EmptyPub:
         def thisObj(self):...
 
     class List(Default):
+        def __init__(self, parentClass):
+            super().__init__(parentClass)
+            self.active_row = None
+
+        def getAttr(self, nameAttr):
+            if (x:=self.dataFetcher.getData()) != []:
+                if ((y:=list(i for i in x if i.get('id') == self.active_row)) != []):
+                    return y[-1].get(nameAttr, self._param.get(nameAttr))
+            else: 
+                return self._param.get(nameAttr)
+
         def onRefresh(self):
             return self.structuredQuery()
 

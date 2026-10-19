@@ -8,17 +8,9 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
     metaFile = "Bc_TimeLine.Ameta.json"
 
     class List(Bc_TimeLineDvi.DviList):
-        @Oper(label="Справочник1", order=10)
+        @Oper(label="Открыть карточку", order=30)
         def mm_res1(self):
-            Bc_TimeLinePub.card().param('idItem', 1).open()
-
-        @Oper(label="Справочник2", order=20)
-        def mm_res2(self):
-            Bc_TimeLinePub.card().param('idItem', 2).open()
-
-        @Oper(label="Справочник3", order=30)
-        def mm_res3(self):
-            pass
+            Bc_TimeLinePub.card().param('idItem', self.getAttr('id')).open()
 
         @Setter
         def setsCaption(self):

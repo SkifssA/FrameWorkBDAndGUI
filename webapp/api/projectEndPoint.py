@@ -36,11 +36,18 @@ async def openMainMenu(request: Request, form_id: str = Form(...)):
 
 @router.post('/api/set-attr')
 async def openMainMenu(request: Request):
-    "Открытие главного меню"
+    "Установка значений в obj"
     form_data = await request.form()
     for key, value in form_data.items():
         event = SetterEvent(value=value)
         get_form(get_session().active_form).get_setter()[key]['method'](event)
+    return Response(content="", status_code=204)
+
+@router.post('/api/select-row')
+async def openMainMenu(request: Request, id_row: int = Form(...)):
+    "Установка выбраной строки"
+    get_form(get_session().active_form).object.active_row = id_row
+    print(id_row)
     return Response(content="", status_code=204)
 
 """

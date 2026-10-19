@@ -7,6 +7,7 @@
 {% block title %}{{ meta.metaForm.caption }}{% endblock %}
 
 {% block mainForm %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/list.css') }}">
 <section id="refresh:{{ active_form }}" class="panel panel--list" sse-swap="refresh:{{ active_form }}">
 
     <header class="action_panel">
@@ -28,8 +29,10 @@
             </thead>
             <tbody id="list-body">
                 {% for row in data %}
-                <tr class="table__row" style="cursor: pointer;" hx-post="/api/select-row" hx-swap="none"
-                    hx-vals='{"idSelect": {{ row.id }} }'>
+                <tr class="table__row {% if row.id == id_row %}active{% endif %}" id="{{ active_form }}#{{ row.id }}"
+                    style="cursor: pointer;" hx-post="/api/select-row" hx-swap="none"
+                    hx-vals='{"id_row": {{ row.id }} }'
+                    hx-on:click="document.querySelectorAll('.table__row.active').forEach(r => r.classList.remove('active')); this.classList.add('active');">
                     {% for col in meta.metaForm.attr %}
                     {% if col.isVisible %}
                     <td class="table__td">{{ row.get(col.name, '') }}</td>
