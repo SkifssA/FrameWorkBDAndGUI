@@ -19,8 +19,6 @@ def selected_app(event: formEvent) -> PutData:
     }
     return PutData(name_template=f"{PATH_PARTIALS}selectProject.html", context=context)
 
-
-# 2. Исправлено название функции: bace -> base
 def get_base_context(event: formEvent) -> dict:
     session = get_session()
     return {
@@ -37,10 +35,12 @@ def open_and_refresh_form(event: formEvent) -> PutData:
     session = get_session()
     
     oper_form_object = get_form(event.form, event.formObject)
-    
+    context = {}
     meta_form = oper_form_object.getInfoMeta()
     if '/' in event.form:
         form_name = f'form/{meta_form['metaForm']['typeForm']}'
+        if meta_form['metaForm']['typeForm'] == 'list':
+            context['id_row'] = oper_form_object.object.active_row
         session.active_form = event.form
     else:
         form_name = 'formOpenFrom'
@@ -49,11 +49,11 @@ def open_and_refresh_form(event: formEvent) -> PutData:
         
     name_template = f"{PATH_PARTIALS}{form_name}.html"
     
-    context = {
+    context = context | get_base_context(event) | {
         "data": oper_form_object.getData(),
         "meta": meta_form,
         "open_forms": get_open_form(),
-    } | get_base_context(event)
+    }
 
     return PutData(name_template=name_template, context=context)
 
