@@ -15,4 +15,5 @@ class Session:
 @dataclass
 class PutData:
     name_template: str
+    caption_form: str
     context: dict[str, Any]

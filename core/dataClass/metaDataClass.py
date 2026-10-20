@@ -32,3 +32,4 @@ class metaShema(Base):
     height: int = None
     filter: list[filterMetaShema] = field(default_factory=list)
     attr: list[attrMetaShema] = field(default_factory=list)
+    tabCh: list[str] = field(default_factory=list)

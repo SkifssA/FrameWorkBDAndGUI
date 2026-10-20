@@ -12,6 +12,9 @@
                     "name": "sName",
                     "order": 20
                 }
+            ],
+            "tabCh": [
+                "Bc_ScriptSchedulerPub.List"
             ]
         }
     ]

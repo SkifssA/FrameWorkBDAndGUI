@@ -2,7 +2,7 @@
 
 // 1. Функция для безопасного получения элемента
 function getActiveFormContainer() {
-    return document.getElementById('openForm') || document.getElementById('openApp');
+    return document.getElementById('main_menu_form_bar') || document.getElementById('openApp');
 }
 
 document.body.addEventListener('htmx:sseMessage', function (event) {

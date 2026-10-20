@@ -5,18 +5,26 @@ from core.sdk import eventSignal, formEvent, typeEvent, ACTIONDISPATCHER
 
 from webapp.logic import get_session, get_form, get_open_form
 from webapp.logic.var import current_request, templates
-from webapp.logic.dictEvent import dataForEvent
+from webapp.logic.dictEvent import dataForEvent, get_form_bar
 from webapp.logic.dataClass import PutData
 
 _main_loop: asyncio.AbstractEventLoop = None
 
-def getHtmlNotMain(event:formEvent):
+def getFormHtlnForSSE(event:formEvent):
     data:PutData = dataForEvent[event.type]['data'](event)
-    return templates.TemplateResponse(
+    return {
+       'dataHtml': w(data),
+       'formCaption': data.caption_form
+    }
+
+def w(putData:PutData):
+    if putData.name_template:
+        return templates.TemplateResponse(
             request=current_request.get(),
-            name=data.name_template,
-            context=data.context,
-        )
+            name=putData.name_template,
+            context=putData.context,
+        ).body.decode('utf-8')
+    return ''
 
 def set_main_loop(loop: asyncio.AbstractEventLoop):
     global _main_loop
@@ -25,11 +33,8 @@ def set_main_loop(loop: asyncio.AbstractEventLoop):
 async def emit_event(event: formEvent):
     """Отправляет событие в очередь текущей сессии"""
     if queue := get_session_queue():
-        data = {
-            'main_menu_form': get_session().main_menu_form._get_parent_name(),
-            'form': event.form,
-            'dataHtml': getHtmlNotMain(event).body.decode('utf-8'),
-            'formCaption': get_form(event.form).getInfoMeta()['metaForm'].get('caption', '')
+        data = getFormHtlnForSSE(event) | {
+            'form_bar': w(get_form_bar())
         }
 
         await queue.put({
@@ -45,16 +50,9 @@ def sync_signal_handler(sender, **kwargs):
         return
 
     try:
-        # 1. Проверяем, запущен ли цикл в ТЕКУЩЕМ потоке
         loop = asyncio.get_running_loop()
-        
-        # Если мы здесь, значит мы уже в async-потоке. 
-        # Просто создаем задачу.
         asyncio.create_task(emit_event(event))
-        
     except RuntimeError:
-        # 2. Если RuntimeError, значит мы в другом (синхронном) потоке.
-        # Используем thread-safe метод для отправки задачи в главный цикл.
         asyncio.run_coroutine_threadsafe(emit_event(event), _main_loop)
 
 def registrSignal():

@@ -47,12 +47,25 @@ class EmptyPub:
             return self._parent_class.thisLogic()
 
         def getAttr(self, nameAttr):
+            res = self._get_form(nameAttr)
+            if res is None:
+                res = self._get_param(nameAttr)
+            if res is None:
+                res = self._get_param(nameAttr)
+
+            return res
+
+        def _get_form(self, nameAttr):
             if (x:=self.dataFetcher.getData()) != []:
                 return x[0].get(nameAttr, self._param.get(nameAttr))
-            else: 
-                return self._param.get(nameAttr)
-            
 
+        def _get_param(self, nameAttr):
+            return self._param.get(nameAttr)
+
+        def _get_parent(self, nameAttr):
+            if self.parent:
+                return self.parent.getAttr(nameAttr)
+            
         def _getData(self):
             return self.dataFetcher.getData()
 
@@ -114,27 +127,29 @@ class EmptyPub:
             eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeApp))
 
     class Default(Base):
+        def __init__(self, parentClass, parentForm=None):
+            super().__init__(parentClass)
+            self.parent = parentForm
+
         @Oper(label='Обновить', order=10)
         def refresh(self):
             self.dataFetcher.refresh()
             self.update_meta_form()
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.openForm))
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
 
         def update_meta_form(self):...
         def afterSetter(self, nameAttr):...
         def thisObj(self):...
 
     class List(Default):
-        def __init__(self, parentClass):
-            super().__init__(parentClass)
+        def __init__(self, parentClass, parentForm=None):
+            super().__init__(parentClass, parentForm)
             self.active_row = None
-
-        def getAttr(self, nameAttr):
+            
+        def _get_form(self, nameAttr):
             if (x:=self.dataFetcher.getData()) != []:
                 if ((y:=list(i for i in x if i.get('id') == self.active_row)) != []):
                     return y[-1].get(nameAttr, self._param.get(nameAttr))
-            else: 
-                return self._param.get(nameAttr)
 
         def onRefresh(self):
             return self.structuredQuery()

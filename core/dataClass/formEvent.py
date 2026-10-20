@@ -5,6 +5,7 @@ import json
 class typeEvent(StrEnum):
     refresh = 'refresh'
     openForm = 'openForm'
+    closeForm = 'closeForm'
     openFormLookUp = 'openFormLookUp'
     openApp = 'openApp'
     closeApp = 'closeApp'

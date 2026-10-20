@@ -1,7 +1,3 @@
-{% if isRenderMainMenu %}
-{% extends "partials/mainmenu.html" %}
-{% endif %}
-
 {% block formsbar %}
 <div id="forms-bar" class="forms-bar" data-push-url="/{{ main_menu }}{% if active_form %}/{{ active_form }}{% endif %}">
     {% for tab in open_forms %}
@@ -16,8 +12,5 @@
     </a>
     {% endfor %}
 </div>
-
-{% block mainForm %}
-{% endblock %}
 
 {% endblock %}

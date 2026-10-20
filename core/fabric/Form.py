@@ -2,10 +2,18 @@ from typing import Any
 
 from core.empty.pub import EmptyPub, eventSignal
 from core.dataClass.formEvent import formEvent, typeEvent
+from core.package.ModuleManagerPkg import ModuleManagerPkg
 
 class Form:
     def __init__(self, cls: EmptyPub.Default, clsParent: EmptyPub):
         self.object: EmptyPub.Default = cls(clsParent)
+        self.children:list[EmptyPub.Default] = []
+
+    def _get_register_children(self):
+        for i in self.object.metaInfo.tabCh:
+            class_, sel  = i.split('.')
+            class_obj = ModuleManagerPkg.getClassByName(class_)
+            sel_obj = class_obj._getFormByName(sel)(class_obj)
 
     def getInfoMeta(self):
         return self.object._getInfoMeta()
@@ -31,6 +39,9 @@ class Form:
     def param(self, nameParam: str, value: Any):
         self.object._param[nameParam] = value
         return self
+
+    def close(self):
+        eventSignal.send(fromEvent=self.object._get_form_event(typeEvent.closeForm))
 
     def open(self):
         event = self.object._get_form_event(typeEvent.openForm)

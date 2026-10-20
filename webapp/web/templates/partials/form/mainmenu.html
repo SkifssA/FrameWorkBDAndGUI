@@ -9,9 +9,13 @@
         {{ bilder_mainmenu(meta_main_menu) }}
 
     </section>
+
+    <div id="main_menu_form_bar">
+        {% include "partials/formbar.html" %}
+    </div>
+
     <div id="openForm" sse-swap="openForm" hx-swap="innerHTML">
-        {% block formsbar %}
-        {% endblock %}
+
     </div>
 
 
