@@ -7,13 +7,17 @@ from core.package.ModuleManagerPkg import ModuleManagerPkg
 class Form:
     def __init__(self, cls: EmptyPub.Default, clsParent: EmptyPub):
         self.object: EmptyPub.Default = cls(clsParent)
-        self.children:list[EmptyPub.Default] = []
+        self.children:list['Form'] = []
+        self._get_register_children()
+        self.active_ch = 1
 
     def _get_register_children(self):
         for i in self.object.metaInfo.tabCh:
-            class_, sel  = i.split('.')
-            class_obj = ModuleManagerPkg.getClassByName(class_)
-            sel_obj = class_obj._getFormByName(sel)(class_obj)
+            class_, sel  = i.split('/')
+            class_obj = ModuleManagerPkg().getClassByName(class_)
+            sel_obj = class_obj._getFormByName(sel)()
+            sel_obj.parent = self.object
+            self.children.append(sel_obj)
 
     def getInfoMeta(self):
         return self.object._getInfoMeta()

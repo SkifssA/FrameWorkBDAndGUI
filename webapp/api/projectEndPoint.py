@@ -43,7 +43,6 @@ async def openMainMenu(request: Request):
 async def openMainMenu(request: Request, id_row: int = Form(...)):
     "Установка выбраной строки"
     get_form(get_session().active_form).object.active_row = id_row
-    print(id_row)
     return Response(content="", status_code=204)
 
 """

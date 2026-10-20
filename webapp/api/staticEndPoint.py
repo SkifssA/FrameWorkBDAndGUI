@@ -10,7 +10,6 @@ router = APIRouter()
 @router.get('/selectProject')
 async def openMainMenu(request: Request):
     modules = ACTIONDISPATCHER.getModulesConfig()
-    print(modules)
     return templates.TemplateResponse(
                     request=request,
                     name=f"partials/selectProject.html",
@@ -31,7 +30,6 @@ async def event_stream(request: Request):
             if await request.is_disconnected():
                 break
             data = await queue.get()
-            print(f"[PUT] pushing to {queue.name}")
             yield data
 
     return EventSourceResponse(generate(), ping=None)

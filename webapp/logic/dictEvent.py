@@ -5,8 +5,6 @@ from webapp.logic.var import current_request, templates
 from webapp.logic.sessionManager import remove_from
 from typing import Any
 
-PATH_PARTIALS = 'partials/'
-
 # 1. Выносим повторяющиеся HTML-шаблоны
 TPL_SIMPLE = '{dataHtml}'
 TPL_TITLE = '<title id="page-title" hx-swap-oob="true">{formCaption}</title>'
@@ -18,8 +16,7 @@ def get_form_bar():
         "active_form": get_session().active_form,
         "main_menu": get_session().main_menu_form._get_parent_name()
     }
-    print('form_bar_context', context)
-    return PutData(name_template=f"{PATH_PARTIALS}formbar.html"
+    return PutData(name_template=f"partials/form_bar_main_menu.html"
                    , context=context
                    , caption_form=get_session().main_menu_form.object.metaInfo.caption)
 
@@ -28,22 +25,25 @@ def selected_app(event: formEvent) -> PutData:
         "meta_app": ACTIONDISPATCHER.getModulesConfig(),
         "isMain": False
     }
-    return PutData(name_template=f"{PATH_PARTIALS}selectProject.html"
+    return PutData(name_template=f"partials/selectProject.html"
                    , context=context
                    , caption_form='Выбор приложений')
 
 def open_and_refresh_form(event: formEvent) -> PutData:
     oper_form_object = get_form(event.form, event.formObject)
     meta_form = oper_form_object.getInfoMeta()
-    form_name = f'{meta_form['metaForm']['typeForm']}'
 
     get_session().active_form = oper_form_object._get_full_name()
 
-    name_template = f"{PATH_PARTIALS}form/{form_name}.html"
+    name_template = f"form/baseForm.html"
+
+    print(oper_form_object.active_ch)
 
     context = {
         "data": oper_form_object.getData(),
         "meta": meta_form,
+        "metaCh": list(i.getInfoMeta() for i in oper_form_object.children),
+        "active_form_ch": oper_form_object.children[oper_form_object.active_ch-1]._get_full_name()
     }
 
     if meta_form['metaForm']['typeForm'] == 'list':
@@ -56,9 +56,7 @@ def open_and_refresh_form(event: formEvent) -> PutData:
 def close_form(event: formEvent) -> PutData:
     name_form = remove_from(event.form)
     if name_form == '':
-        print("ОТКРЫТЫХ ВКЛАДОК НЕТ")
         get_session().open_form = {}
-        get_session().active_form = None
         return PutData(name_template=None
                        , context=None
                        , caption_form=get_session().main_menu_form.object.metaInfo.caption)
@@ -74,7 +72,7 @@ def oper_app(event: formEvent) -> PutData:
         'active_form': None,
         'open_forms': {}
     }
-    return PutData(name_template=f"{PATH_PARTIALS}/form/mainmenu.html"
+    return PutData(name_template=f"/form/mainmenu.html"
                    , context=context
                    , caption_form=get_session().main_menu_form.object.metaInfo.caption)
 

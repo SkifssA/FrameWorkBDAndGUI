@@ -17,7 +17,7 @@ class EmptyPub:
     thisLogic: EmptyLogic
 
     @classmethod
-    def _getFormByName(cls, sForm: str) -> type["EmptyPub.Default"]:
+    def _getFormByName(cls, sForm: str) -> object:
         if x := getattr(cls, sForm.split('?')[0].lower()):
             return x
         return None

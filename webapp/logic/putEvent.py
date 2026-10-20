@@ -63,6 +63,5 @@ def get_session_queue():
     w = get_session().queue
     if not w:
         get_session().queue = w = asyncio.Queue()
-        w.name = f"q-{uuid.uuid4().hex[:6]}"   # ← свой тег
-        print(f"[NEW QUEUE] created {w.name} for session_id={id(w)}")
+        w.name = f"q-{uuid.uuid4().hex[:6]}"
     return w

@@ -19,7 +19,7 @@ if __name__ == "__main__":
         elif args[0] == "launchServer":
             runServer()
     else:
-        sNameTab, sForm = 'Bc_TimeLinePub', 'Card'
+        sNameTab, sForm = 'Bc_TimeLinePub', 'List'
         class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
         if class_:
             form = class_._getFormByName(sForm)()

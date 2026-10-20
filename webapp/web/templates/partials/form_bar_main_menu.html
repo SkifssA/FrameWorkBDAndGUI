@@ -7,7 +7,7 @@
         <span>{{ tab.caption }}</span>
         <!-- Закрытие через HTMX POST -->
         <button class="close-tab" hx-post="/api/close-form"
-            hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}"}' hx-target="#forms-bar" hx-swap="innerHTML"
+            hx-vals='{"form_id": "{{ tab.nameClass }}/{{ tab.nameForm }}"}' hx-swap="none"
             hx-trigger="click consume">×</button>
     </a>
     {% endfor %}

@@ -1,0 +1,13 @@
+<div id="closeForm" sse-swap="closeForm" hx-swap="outerHTML">
+    {% if meta.metaForm.typeForm == 'list' %}
+    {% include "form/list.html" %}
+    {% elif meta.metaForm.typeForm == 'card' %}
+    {% include "form/card.html" %}
+    {% else %}
+    <div>ТАКОГО ТИПА ФОРМЫ КАК {{meta.metaForm.typeForm}} НЕТ</div>
+    {% endif %}
+    {% if meta.metaForm.tabCh != [] %}
+    {% include "partials/form_bar_ch.html" %}
+    <div id="open_form_ch" sse-swap="closeForm"></div>
+    {% endif %}
+</div>

@@ -7,7 +7,6 @@ from webapp.logic.dataClass import Session
 user_sessions: dict[str, Session] = {}
 
 def get_open_form()->list[dict]:
-    print(get_session().open_form)
     return [{'caption': f_object.getInfoMeta()['metaForm']['caption'],
              'nameClass': f_name[:f_name.find('/')], 
              'nameForm': f_name[f_name.find('/')+1:], 
