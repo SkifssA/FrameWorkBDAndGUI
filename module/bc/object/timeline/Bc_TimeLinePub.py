@@ -8,10 +8,6 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
     metaFile = "Bc_TimeLine.Ameta.json"
 
     class List(Bc_TimeLineDvi.DviList):
-        @Oper(label="Открыть карточку", order=30)
-        def mm_res1(self):
-            Bc_TimeLinePub.card().param('idItem', self.getAttr('id')).open()
-
         @Setter
         def setsCaption(self):
             pass
@@ -19,13 +15,21 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
     class Card(Bc_TimeLineDvi.DviCard):
         pass
 
+    class TextCard(Bc_TimeLineDvi.DviCard):
+        def onRefresh(self):
+            return self.thisLogic().load(self.getAttr('super$id'))
+
     class LookUp(Bc_TimeLineDvi.DviLookUp):
         pass
 
     @classmethod
-    def list(cls):
-        return Form(cls.List, cls)
+    def list(cls, **kwargs):
+        return Form(cls.List, cls, **kwargs)
 
     @classmethod
-    def card(cls):
-        return Form(cls.Card, cls)
+    def card(cls, **kwargs):
+        return Form(cls.Card, cls, **kwargs)
+
+    @classmethod
+    def textCard(cls, **kwargs):
+        return Form(cls.TextCard, cls, **kwargs)

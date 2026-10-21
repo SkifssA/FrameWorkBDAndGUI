@@ -17,9 +17,9 @@ class {name}Pub({name}Dvi):
     class LookUp({name}Dvi.DviLookUp): pass
 
     @classmethod
-    def list(cls): return Form(cls.List, cls)
+    def list(cls, **kwargs): return Form(cls.List, cls, **kwargs)
 
     @classmethod
-    def card(cls): return Form(cls.Card, cls)
+    def card(cls, **kwargs): return Form(cls.Card, cls, **kwargs)
 """
     suffixFile = "Pub.py"

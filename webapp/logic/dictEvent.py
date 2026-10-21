@@ -9,6 +9,7 @@ from typing import Any
 TPL_SIMPLE = '{dataHtml}'
 TPL_TITLE = '<title id="page-title" hx-swap-oob="true">{formCaption}</title>'
 TPL_FORM_BAR_MAIN_MENU = '<div id="main_menu_form_bar" hx-swap-oob="true">{form_bar}</div>'
+TPL_FORM_BAR_CH = '<div id="forms-bar-ch-{parent}" hx-swap-oob="true">{form_bar_ch}</div>'
 
 def get_form_bar():
     context = {
@@ -16,7 +17,27 @@ def get_form_bar():
         "active_form": get_session().active_form,
         "main_menu": get_session().main_menu_form._get_parent_name()
     }
+
+    if get_session().active_form:
+        meta_form = get_form(get_session().active_form)
+        if meta_form.getInfoMeta()['metaForm']['typeForm'] == 'card':
+            context['idItem'] = meta_form.getData()[0]['id']
+
     return PutData(name_template=f"partials/form_bar_main_menu.html"
+                   , context=context
+                   , caption_form=get_session().main_menu_form.object.metaInfo.caption)
+
+def get_form_bar_ch(event: formEvent):
+    f = get_form(get_session().active_form)
+    context = {
+        "meta": f.getInfoMeta(),
+        "active_form_ch": event.form
+    }
+
+    if event.form.split('.')[-1] in f.children.keys():
+        f.active_ch = list(f.children.keys()).index(event.form.split('.')[-1]) + 1
+
+    return PutData(name_template=f"partials/form_bar_ch.html"
                    , context=context
                    , caption_form=get_session().main_menu_form.object.metaInfo.caption)
 
@@ -29,22 +50,27 @@ def selected_app(event: formEvent) -> PutData:
                    , context=context
                    , caption_form='Выбор приложений')
 
-def open_and_refresh_form(event: formEvent) -> PutData:
-    oper_form_object = get_form(event.form, event.formObject)
+def open_form(event: formEvent) -> PutData:
+    w = event.form.split('.')
+    oper_form_object = get_form(w[0], event.formObject)
+    oper_form_object = oper_form_object._get_children(event.form)
     meta_form = oper_form_object.getInfoMeta()
 
-    get_session().active_form = oper_form_object._get_full_name()
+    get_session().active_form = w[0]
 
     name_template = f"form/baseForm.html"
-
-    print(oper_form_object.active_ch)
-
+    
     context = {
         "data": oper_form_object.getData(),
         "meta": meta_form,
-        "metaCh": list(i.getInfoMeta() for i in oper_form_object.children),
-        "active_form_ch": oper_form_object.children[oper_form_object.active_ch-1]._get_full_name()
+        "active_form_ch": None,
+        "formCh": ''
     }
+
+    if oper_form_object.childrenMeta != [] :
+        active_form_ch = oper_form_object.childrenMeta[oper_form_object.active_ch-1]['metaForm']['name']
+        context['active_form_ch'] = active_form_ch
+        context['formCh'] = getHtmlForm(oper_form_object._get_children(active_form_ch), oper_form_object)
 
     if meta_form['metaForm']['typeForm'] == 'list':
         context['id_row'] = oper_form_object.object.active_row
@@ -52,6 +78,54 @@ def open_and_refresh_form(event: formEvent) -> PutData:
     return PutData(name_template=name_template
                    , context=context
                    , caption_form=oper_form_object.object.metaInfo.caption)
+
+def refresh_form(event: formEvent)->PutData:
+    w = event.form.split('.')
+    oper_form_object = get_form(w[0], event.formObject)
+    oper_form_object = oper_form_object._get_children(event.form)
+    meta_form = oper_form_object.getInfoMeta()
+    typeForm = meta_form['metaForm']['typeForm'].lower()
+    get_session().active_form = w[0]
+
+    name_template = f"form/{typeForm}.html"
+    
+    context = {
+        "data": oper_form_object.getData(),
+        "meta": meta_form
+    }
+
+    if typeForm == 'list':
+        context['id_row'] = oper_form_object.object.active_row
+
+    return PutData(name_template=name_template
+                   , context=context
+                   , caption_form=oper_form_object.object.metaInfo.caption)
+
+def getHtmlForm(form, mainForm):
+
+    name_template = f"form/baseForm.html"
+
+    context = {
+        "data": form.getData(),
+        "meta": form.getInfoMeta(),
+        "metaCh": list(i.getInfoMeta() for i in form.children),
+        "active_form_ch": None,
+        "formCh": ''
+    }
+
+    if form.getInfoMeta()['metaForm']['typeForm'] == 'list':
+        context['id_row'] = form.object.active_row
+
+    if form.childrenMeta != [] :
+        active_form_ch = form.childrenMeta[form.active_ch-1]['metaForm']['name']
+        context['active_form_ch'] = active_form_ch
+        context['formCh'] = getHtmlForm(mainForm._get_children(active_form_ch), mainForm)
+
+    return templates.TemplateResponse(
+                request=current_request.get(),
+                name=name_template,
+                context=context,
+            ).body.decode('utf-8')
 
 def close_form(event: formEvent) -> PutData:
     name_form = remove_from(event.form)
@@ -62,7 +136,7 @@ def close_form(event: formEvent) -> PutData:
                        , caption_form=get_session().main_menu_form.object.metaInfo.caption)
 
     event.form = name_form
-    return open_and_refresh_form(event)
+    return open_form(event)
 
 def oper_app(event: formEvent) -> PutData:
     session = get_session()
@@ -78,9 +152,10 @@ def oper_app(event: formEvent) -> PutData:
 
 
 dataForEvent: dict[typeEvent, dict[str, Any]] = {
-    typeEvent.openForm:  {'data': open_and_refresh_form, 'templates': TPL_SIMPLE + TPL_TITLE + TPL_FORM_BAR_MAIN_MENU},
-    typeEvent.refresh:   {'data': open_and_refresh_form, 'templates': TPL_SIMPLE},
-    typeEvent.openApp:   {'data': oper_app,              'templates': TPL_SIMPLE + TPL_TITLE + TPL_FORM_BAR_MAIN_MENU},
-    typeEvent.closeApp:  {'data': selected_app,          'templates': TPL_SIMPLE},
-    typeEvent.closeForm: {'data': close_form, 'templates': TPL_SIMPLE + TPL_TITLE + TPL_FORM_BAR_MAIN_MENU}
+    typeEvent.openForm:      {'data': open_form,             'templates': TPL_SIMPLE + TPL_TITLE + TPL_FORM_BAR_MAIN_MENU},
+    typeEvent.open_form_ch:  {'data': open_form,             'templates': TPL_SIMPLE + TPL_FORM_BAR_CH},
+    typeEvent.refresh:       {'data': refresh_form,          'templates': TPL_SIMPLE},
+    typeEvent.openApp:       {'data': oper_app,              'templates': TPL_SIMPLE + TPL_TITLE + TPL_FORM_BAR_MAIN_MENU},
+    typeEvent.closeApp:      {'data': selected_app,          'templates': TPL_SIMPLE},
+    typeEvent.closeForm:     {'data': close_form,            'templates': TPL_SIMPLE + TPL_TITLE + TPL_FORM_BAR_MAIN_MENU}
 }

@@ -5,7 +5,7 @@ from core.sdk import eventSignal, formEvent, typeEvent, ACTIONDISPATCHER
 
 from webapp.logic import get_session, get_form, get_open_form
 from webapp.logic.var import current_request, templates
-from webapp.logic.dictEvent import dataForEvent, get_form_bar
+from webapp.logic.dictEvent import dataForEvent, get_form_bar, get_form_bar_ch
 from webapp.logic.dataClass import PutData
 
 _main_loop: asyncio.AbstractEventLoop = None
@@ -34,8 +34,12 @@ async def emit_event(event: formEvent):
     """Отправляет событие в очередь текущей сессии"""
     if queue := get_session_queue():
         data = getFormHtlnForSSE(event) | {
-            'form_bar': w(get_form_bar())
+            'form_bar': w(get_form_bar()),
+            'parent': event.form[:event.form.rfind('.')]
         }
+
+        if get_session().active_form:
+            data['form_bar_ch'] = w(get_form_bar_ch(event))
 
         await queue.put({
             "event": event.personType,

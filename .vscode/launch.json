@@ -15,16 +15,6 @@
             ]
         },
         {
-            "name": "Генератор таблиц",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/main.py",
-            "console": "integratedTerminal",
-            "args": [
-                "createClass"
-            ]
-        },
-        {
             "name": "Запуск сервера",
             "type": "debugpy",
             "request": "launch",

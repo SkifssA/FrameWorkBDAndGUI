@@ -40,10 +40,23 @@ async def openMainMenu(request: Request):
     return Response(content="", status_code=204)
 
 @router.post('/api/select-row')
-async def openMainMenu(request: Request, id_row: int = Form(...)):
+async def openMainMenu(request: Request, id_row: int = Form(...), form_id: str = Form(...)):
     "Установка выбраной строки"
-    get_form(get_session().active_form).object.active_row = id_row
+    form_name = get_session().active_form
+    if form:=get_session().open_form.get(form_name):
+        form = form._get_children(form_id)
+        form.object.active_row = id_row
     return Response(content="", status_code=204)
+
+@router.post('/api/selected-form-ch')
+async def openMainMenu(request: Request, form_id: str = Form(...)):
+    "Установка выбраной строки"
+    form_name = get_session().active_form
+    if form:=get_session().open_form.get(form_name):
+        form = form._get_children(form_id)
+        form.open_ch()
+    return Response(content="", status_code=204)
+
 
 """
 --------------------------------------------------------
@@ -62,11 +75,12 @@ async def action_oper(request: Request, sNameMainMenu:str, sForm: str, oper: str
         status_code=404, detail=f"В таблице {sNameMainMenu} не найдена опрерация {oper}"
     )
 
-@router.get("/action/{oper}")
-async def action_oper(request: Request, oper: str):
+@router.post("/action/{oper}")
+async def action_oper(request: Request, oper: str, form_id: str = Form(...)):
     "Операции формы"
     form_name = get_session().active_form
     if form:=get_session().open_form.get(form_name):
+        form = form._get_children(form_id)
         if oper in form.getSetterAndOperName():
             form.get_oper_handler()[oper]()
             return Response(content="", status_code=204)

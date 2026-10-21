@@ -14,8 +14,14 @@
                 }
             ],
             "tabCh": [
-                "Bc_ScriptSchedulerPub/List"
+                "Bc_ScriptSchedulerPub/List",
+                "Bc_TimeLinePub/TextCard"
             ]
+        },
+        {
+            "name": "TextCard",
+            "isVisibleToolBar": true,
+            "typeForm": "card"
         }
     ]
 }

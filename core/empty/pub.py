@@ -18,15 +18,17 @@ class EmptyPub:
 
     @classmethod
     def _getFormByName(cls, sForm: str) -> object:
-        if x := getattr(cls, sForm.split('?')[0].lower()):
+        sFormZero = sForm.split('?')[0]
+        sFormZero = sFormZero[0].lower() + sFormZero[1:]
+        if x := getattr(cls, sFormZero):
             return x
         return None
 
     @classmethod
-    def list(cls):
+    def list(cls, **kwargs):
         from core.fabric.Form import Form
 
-        return Form(cls.List, cls)
+        return Form(cls.List, cls, **kwargs)
 
     @classmethod
     def get_name(cls)->str:
@@ -50,8 +52,6 @@ class EmptyPub:
             res = self._get_form(nameAttr)
             if res is None:
                 res = self._get_param(nameAttr)
-            if res is None:
-                res = self._get_param(nameAttr)
 
             return res
 
@@ -71,7 +71,7 @@ class EmptyPub:
 
         def _getInfoMeta(self):
             metaForm = self.metaInfo.getDict(isNotNone=False)
-            metaForm['name'] = f'{self._parent_class.get_name()}/{metaForm['name']}'
+            metaForm['name'] = self.full_name()
             return {
                 "operForm": self.registry.get_children_oper(),
                 "setterForm": self.registry.setter(),
@@ -127,9 +127,31 @@ class EmptyPub:
             eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeApp))
 
     class Default(Base):
-        def __init__(self, parentClass, parentForm=None):
+        def __init__(self, parentClass):
             super().__init__(parentClass)
-            self.parent = parentForm
+            
+            self.parentForm = None
+
+        def getAttr(self, nameAttr:str):
+            prefix = nameAttr.split("$")[0]
+            if prefix.lower() == 'super':
+                return self.parentForm.getAttr(nameAttr[nameAttr.find("$")+1:])
+
+            res = super().getAttr(nameAttr)
+            if res is None:
+                res = self.parentForm.getAttr(nameAttr)
+
+            return res
+
+        def setParentForm(self, parentForm):
+            self.parentForm = parentForm
+            self.metaInfo.name = self.full_name()
+
+        def full_name(self):
+            return f'{self.parentForm.full_name() + '.' if self.parentForm else ''}{self.name()}'
+
+        def name(self):
+            return f'{self._get_parent_name()}/{self.__class__.__name__}'
 
         @Oper(label='Обновить', order=10)
         def refresh(self):
@@ -142,14 +164,18 @@ class EmptyPub:
         def thisObj(self):...
 
     class List(Default):
-        def __init__(self, parentClass, parentForm=None):
-            super().__init__(parentClass, parentForm)
-            self.active_row = None
+        def __init__(self, parentClass):
+            super().__init__(parentClass)
+            self.active_row = 1
             
         def _get_form(self, nameAttr):
             if (x:=self.dataFetcher.getData()) != []:
                 if ((y:=list(i for i in x if i.get('id') == self.active_row)) != []):
                     return y[-1].get(nameAttr, self._param.get(nameAttr))
+
+        @Oper(label="Открыть карточку", order=30)
+        def openCard(self):
+            self._parent_class.card().param('idItem', self.getAttr('id')).open()
 
         def onRefresh(self):
             return self.structuredQuery()

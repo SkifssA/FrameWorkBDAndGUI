@@ -1,7 +1,8 @@
 {% macro render_action_buttons(meta) %}
 <div class="panel__actions">
     {% for oper in meta.operForm %}
-    <button class="btn" hx-get="/action/{{ oper.id }}" hx-swap="none">
+    <button class="btn" hx-post="/action/{{ oper.id }}" hx-swap="none"
+        hx-vals='{"form_id": "{{ meta.metaForm.name }}"}'>
         {{ oper.label }}
     </button>
     {% endfor %}

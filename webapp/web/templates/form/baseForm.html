@@ -7,7 +7,9 @@
     <div>ТАКОГО ТИПА ФОРМЫ КАК {{meta.metaForm.typeForm}} НЕТ</div>
     {% endif %}
     {% if meta.metaForm.tabCh != [] %}
-    {% include "partials/form_bar_ch.html" %}
-    <div id="open_form_ch" sse-swap="closeForm"></div>
+    <div id="forms-bar-ch-{{ meta.metaForm.name }}">
+        {% include "partials/form_bar_ch.html" %}
+    </div>
+    <div id="open_form_ch" sse-swap="open_form_ch" hx-swap="innerHTML">{{ formCh | safe }}</div>
     {% endif %}
 </div>
