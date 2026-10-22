@@ -29,13 +29,13 @@ SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode")
 
 
 @dataclass
-class collectionsShema(Base):
+class collectionsSchema(Base):
     name: str
     attr: str
 
 
 @dataclass
-class attrShema(Base):
+class attrSchema(Base):
     name: str
     caption: str
     type: str
@@ -53,7 +53,7 @@ class attrShema(Base):
 
 
 @dataclass
-class dbDataShema(Base):
+class dbDataSchema(Base):
     """Скрипт установки/накатки данных таблицы (*.odb.json -> dbData)."""
 
     name: str
@@ -62,12 +62,12 @@ class dbDataShema(Base):
 
 
 @dataclass
-class tabShema(Base):
+class tabSchema(Base):
     name: str
     caption: str
-    collections: list[collectionsShema] = field(default_factory=list)
-    attr: list[attrShema] = field(default_factory=list)
-    dbData: list[dbDataShema] = field(default_factory=list)
+    collections: list[collectionsSchema] = field(default_factory=list)
+    attr: list[attrSchema] = field(default_factory=list)
+    dbData: list[dbDataSchema] = field(default_factory=list)
     # служебные поля миграции (не из json)
     isNew: bool = False
     minListAttr: list[str] = field(default_factory=list)

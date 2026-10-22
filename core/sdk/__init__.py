@@ -38,6 +38,9 @@ from core.package.ModuleManagerPkg import ModuleManagerPkg
 # --- Переменые контекста  ---------------------------------------------------
 from core.context import current_session_id
 
+from core.logging_config import setup_logging
+setup_logging()
+
 METADATA = MetadataManager()
 ACTIONDISPATCHER = ModuleManagerPkg()
 

@@ -1,7 +1,7 @@
-from .bilderBase import BilderBase
+from .builderBase import builderBase
 
 
-class BilderLogic(BilderBase):
+class builderLogic(builderBase):
     temp = """# Пользовательский файл для логики
 from .{name}Dpi import {name}Dpi, {name}Obj
 

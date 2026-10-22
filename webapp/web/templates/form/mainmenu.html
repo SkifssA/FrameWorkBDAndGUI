@@ -1,4 +1,4 @@
-{% from "macros/mainmenu.html" import bilder_mainmenu %}
+{% from "macros/mainmenu.html" import builder_mainmenu %}
 
 {% block content %}
 <div id="closeApp" sse-swap="closeApp" hx-swap="outerHTML">
@@ -6,7 +6,7 @@
     <section class="mainMenu">
 
         <!-- ВЕРХНЕЕ МЕНЮ -->
-        {{ bilder_mainmenu(meta_main_menu) }}
+        {{ builder_mainmenu(meta_main_menu) }}
 
     </section>
 

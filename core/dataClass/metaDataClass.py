@@ -4,7 +4,7 @@ from core.dataClass.baseDataClass import Base
 
 
 @dataclass
-class attrMetaShema(Base):
+class attrMetaSchema(Base):
     name: str
     caption: str = None
     type: str = None
@@ -17,19 +17,19 @@ class attrMetaShema(Base):
 
 
 @dataclass
-class filterMetaShema(Base):
+class filterMetaSchema(Base):
     sql: str
-    attr: list[attrMetaShema] = field(default_factory=list)
+    attr: list[attrMetaSchema] = field(default_factory=list)
 
 
 @dataclass
-class metaShema(Base):
+class metaSchema(Base):
     name: str
     caption: str = None
     isVisibleToolBar: bool = True
     typeForm: str = None
     width: int = None
     height: int = None
-    filter: list[filterMetaShema] = field(default_factory=list)
-    attr: list[attrMetaShema] = field(default_factory=list)
+    filter: list[filterMetaSchema] = field(default_factory=list)
+    attr: list[attrMetaSchema] = field(default_factory=list)
     tabCh: list[str] = field(default_factory=list)

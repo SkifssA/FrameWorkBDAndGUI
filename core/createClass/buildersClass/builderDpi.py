@@ -1,7 +1,7 @@
-from .bilderBase import BilderBase
+from .builderBase import builderBase
 
 
-class BilderDpi(BilderBase):
+class builderDpi(builderBase):
     temp = """# Системный файл для логики
 from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass

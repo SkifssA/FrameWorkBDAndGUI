@@ -1,8 +1,8 @@
 from core.package.FileManager import FileManagerPkg
-from .bilderBase import BilderBase
+from .builderBase import builderBase
 
 
-class BildersAmeta(BilderBase):
+class buildersAmeta(builderBase):
     suffixFile = ".Ameta.json"
 
     #

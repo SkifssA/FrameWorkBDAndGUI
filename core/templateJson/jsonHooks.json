@@ -8,14 +8,14 @@
                 "type": "string",
                 "description": "Путь до хука типа: {Обьект}.{Метод}"
             },
-            "isClassMetod": {
+            "isClassMethod": {
                 "type": "boolean",
                 "description": "Являеться ли метод классовым"
             }
         },
         "required": [
             "name",
-            "isClassMetod"
+            "isClassMethod"
         ],
         "additionalProperties": false
     }

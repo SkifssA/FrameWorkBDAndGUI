@@ -1,16 +1,16 @@
 from typing import Any
 
 from core.package.FileManager import FileManagerPkg
-from core.dataClass.tabDataClass import tabShema
+from core.dataClass.tabDataClass import tabSchema
 
 
-class BilderBase:
+class builderBase:
     temp: str | None = None
     suffixFile: str | None = None
     tabSpace = " " * 4
 
-    def __init__(self, data: tabShema):
-        self.data: tabShema = data
+    def __init__(self, data: tabSchema):
+        self.data: tabSchema = data
         self.dictData: dict[str, Any] = {}
 
     def _getPathAndFile(self, path):
@@ -26,6 +26,5 @@ class BilderBase:
 
     def _createFile(self, path):
         allData = self.data.getDict() | self.dictData
-        print(self.dictData.get('setter'))
         f = self.temp.format(**allData)
         FileManagerPkg.CreateFile(path, f)

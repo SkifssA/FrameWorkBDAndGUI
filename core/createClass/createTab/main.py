@@ -1,12 +1,12 @@
 from core.package.FileManager import FileManagerPkg
-from core.dataClass.tabDataClass import dbDataShema
+from core.dataClass.tabDataClass import dbDataSchema
 from core.fabric.MetaInfo import MetaInfo
 from core.createClass.createTab.tab_manager import TabsManager
 
 
 def createTab(sPath: str):
     """Создание таблиц для классов модулей (DDL из *.odb.json)."""
-    scripts: list[dbDataShema] = []
+    scripts: list[dbDataSchema] = []
 
     lFiles = FileManagerPkg.getFilesWithExtension(sPath, ".odb.json")
     for File in lFiles:

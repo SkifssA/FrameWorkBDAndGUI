@@ -1,4 +1,4 @@
-from .bildersClass.main import createFile
+from .buildersClass.main import createFile
 from .createTab.main import createTab
 from .createModule.main import createModule
 

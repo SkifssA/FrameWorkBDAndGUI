@@ -1,18 +1,18 @@
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 from core.fabric.MetaInfo import MetaInfo
-from core.dataClass.metaDataClass import metaShema
+from core.dataClass.metaDataClass import metaSchema
 
 
 class MetadataManager:
     _memoMetaInfo: dict[str, MetaInfo] = {}
 
-    def get(self, nameMetaFile: str, clsName: str, visited: list = []) -> metaShema:
+    def get(self, nameMetaFile: str, clsName: str, visited: list = []) -> metaSchema:
         path = self.get_impl_path(nameMetaFile)
         if not self._memoMetaInfo.get(nameMetaFile):
             self._memoMetaInfo[nameMetaFile] = MetaInfo().readMeta(path)
         metaInfo = self._memoMetaInfo[nameMetaFile]
         mataRepre: dict = metaInfo.getMetaUI()
-        ui: metaShema = mataRepre.get(clsName, metaShema(name=clsName))
+        ui: metaSchema = mataRepre.get(clsName, metaSchema(name=clsName))
 
         depMeta = None
         if x := metaInfo.getDep():

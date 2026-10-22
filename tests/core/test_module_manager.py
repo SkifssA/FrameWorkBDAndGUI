@@ -118,8 +118,8 @@ class TestRunHook:
 
         monkeypatch.setattr(mgr, "_action", fake_action)
         mgr.cacheHooks = {
-            "good": {"on_startup": {"name": "GoodPub.on_start", "isClassMetod": False}},
-            "bad": {"on_startup": {"name": "BadPub.on_start", "isClassMetod": False}},
+            "good": {"on_startup": {"name": "GoodPub.on_start", "isClassMethod": False}},
+            "bad": {"on_startup": {"name": "BadPub.on_start", "isClassMethod": False}},
             "empty": {},
         }
 

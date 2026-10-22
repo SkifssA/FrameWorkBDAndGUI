@@ -50,7 +50,7 @@ UI нигде не дергает `Pkg` или `Logic` напрямую. Всё 
   `DviDefault / DviList / DviCard / DviLookUp`;
 - **Pub** — пользовательский слой: формы, операции (`@Oper(label=..., order=...)`),
   переопределения SQL;
-- метаданные описываются схемами `attrMetaShema / filterMetaShema / metaShema`
+- метаданные описываются схемами `attrMetaSchema / filterMetaSchema / metaSchema`
   (`core/dataClass/metaDataClass.py`) и json-файлами `.Dmeta` / `.Ameta`.
 
 Из метаданных сервер генерирует таблицы, формы и карточки — **schema-driven UI**:

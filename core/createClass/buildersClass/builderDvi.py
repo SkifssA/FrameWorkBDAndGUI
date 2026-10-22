@@ -1,8 +1,8 @@
-from .bilderBase import BilderBase
+from .builderBase import builderBase
 
 
 # {setter}
-class BilderDvi(BilderBase):
+class builderDvi(builderBase):
     temp = """# Системный файл для интерфейса
 from .{name}Logic import {name}Logic, {name}Obj
 from core.sdk import EmptyPub, SetterEvent, Setter

@@ -2,21 +2,21 @@ from dataclasses import dataclass, field, asdict
 from dacite import from_dict, Config
 
 from core.package.FileManager import FileManagerPkg
-from .bilderBase import BilderBase
-from core.dataClass.tabDataClass import tabShema, BASE_ATTR
-from core.dataClass.metaDataClass import metaShema, attrMetaShema
+from .builderBase import builderBase
+from core.dataClass.tabDataClass import tabSchema, BASE_ATTR
+from core.dataClass.metaDataClass import metaSchema, attrMetaSchema
 
 
-class BildersDmeta(BilderBase):
+class buildersDmeta(builderBase):
     suffixFile = ".Dmeta.json"
 
     def createFile(self, path):
         pathWhitFile = self._getPathAndFile(path)
         metaVisible = self.__getShowAttr()
-        attrMeta = list(from_dict(data_class=attrMetaShema, data=i) for i in BASE_ATTR)
+        attrMeta = list(from_dict(data_class=attrMetaSchema, data=i) for i in BASE_ATTR)
         for attr in self.data.attr:
             attrMeta.append(
-                attrMetaShema(
+                attrMetaSchema(
                     name=attr.name,
                     caption=attr.caption,
                     type=attr.type,
@@ -27,7 +27,7 @@ class BildersDmeta(BilderBase):
             )
             if attr.name.startswith("id"):
                 attrMeta.append(
-                    attrMetaShema(
+                    attrMetaSchema(
                         name=attr.name + "HL",
                         caption=attr.caption,
                         type=attr.type,
@@ -40,16 +40,16 @@ class BildersDmeta(BilderBase):
                     )
                 )
 
-        formDefault = metaShema(
+        formDefault = metaSchema(
             name="Default",
             caption=self.data.caption,
             isVisibleToolBar=True,
             attr=attrMeta,
         )
 
-        formList = metaShema(name="List", typeForm="list")
+        formList = metaSchema(name="List", typeForm="list")
 
-        formCard = metaShema(name="Card", typeForm="card")
+        formCard = metaSchema(name="Card", typeForm="card")
 
         FileManagerPkg.CreateFile(
             pathWhitFile,

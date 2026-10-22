@@ -5,7 +5,7 @@ import json
 import pytest
 
 from core.fabric.MetaInfo import MetaInfo
-from core.dataClass.tabDataClass import tabShema, attrShema
+from core.dataClass.tabDataClass import tabSchema, attrSchema
 
 
 ODB_JSON = {
@@ -55,7 +55,7 @@ def write_json(tmp_path):
 class TestGetMetaTab:
     def test_parses_all_sections(self, write_json):
         data = MetaInfo().getMetaTab(write_json(ODB_JSON))
-        assert isinstance(data, tabShema)
+        assert isinstance(data, tabSchema)
         assert data.name == "Anime"
         assert [a.name for a in data.attr] == ["id", "name", "year"]
         assert data.attr[1].isHeadLine is True

@@ -1,5 +1,5 @@
 from core.DB.Turso import ASQL
-from core.dataClass.tabDataClass import tabShema
+from core.dataClass.tabDataClass import tabSchema
 
 SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode")
 
@@ -7,10 +7,10 @@ SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode")
 class TabManager:
     """Менеджер накатки схем таблиц (DDL из *.odb.json).
 
-    Вход/выход — dataclass tabShema из core.fabric.dataClass.tabDataClass.
+    Вход/выход — dataclass tabSchema из core.fabric.dataClass.tabDataClass.
     """
 
-    def execute_pending(self, data: tabShema):
+    def execute_pending(self, data: tabSchema):
         if not self._exist_tab(data):
             data.execute_pending()
         elif x := (self._exist_collumn(data)):
@@ -24,10 +24,10 @@ class TabManager:
                 data.minListAttr = min
                 data.execute_pending()
 
-    def _exist_tab(self, data: tabShema):
+    def _exist_tab(self, data: tabSchema):
         return ASQL("SELECT * FROM sqlite_sequence WHERE name = ?;", (data.name,))
 
-    def _exist_collumn(self, data: tabShema):
+    def _exist_collumn(self, data: tabSchema):
         return ASQL("SELECT * FROM pragma_table_info(?);", (data.name,))
 
 

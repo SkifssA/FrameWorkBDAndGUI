@@ -2,7 +2,7 @@
 
 Действует для всех модулей в каталоге `module/<mod>/`. Ядро (`core/`) этим правилам
 не подчиняется — оно, наоборот, опирается на них при генерации кода
-(`core/createClass/bildersClass/*`) и при динамическом диспетчинге
+(`core/createClass/buildersClass/*`) и при динамическом диспетчинге
 (`ModuleManagerPkg.action()` выводит имя пакета модуля из префикса класса).
 
 ---
@@ -67,7 +67,7 @@ module/<mod>/
 ├── README.md                # описание модуля, обязателен
 ├── config/
 │   ├── app.json             # карточка модуля на экране выбора
-│   └── hooks.json           # точки входа {on_startup: {name, isClassMetod}, ...}
+│   └── hooks.json           # точки входа {on_startup: {name, isClassMethod}, ...}
 ├── schemas/<object>/        # метаданные объекта, три файла-компаньона:
 │   ├── <P>_<Obj>.odb.json   #   структура БД (таблицы/атрибуты)
 │   ├── <P>_<Obj>.Dmeta.json #   метаданные системного UI (caption, edit, order)

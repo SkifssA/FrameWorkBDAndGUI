@@ -1,6 +1,6 @@
 {
     "on_startup": {
         "name": "Bc_ScriptSchedulerPkg.run",
-        "isClassMetod": true
+        "isClassMethod": true
     }
 }

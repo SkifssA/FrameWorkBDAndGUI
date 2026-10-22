@@ -1,12 +1,13 @@
 from pathlib import Path
 import re
+import logging
 
-from .bilderLogic import BilderLogic
-from .bilderPub import BilderPub
-from .bilderDvi import BilderDvi
-from .bilderDpi import BilderDpi
-from .bilderAmeta import BildersAmeta
-from .bildersDmeta import BildersDmeta
+from .builderLogic import builderLogic
+from .builderPub import builderPub
+from .builderDvi import builderDvi
+from .builderDpi import builderDpi
+from .builderAmeta import buildersAmeta
+from .buildersDmeta import buildersDmeta
 
 from core.package.FileManager import FileManagerPkg
 from core.package.ModuleManagerPkg import ModuleManagerPkg
@@ -14,6 +15,7 @@ from core.fabric.MetaInfo import MetaInfo
 
 pathModile = lambda app, end="": f"module/{app}" + end
 
+logger = logging.getLogger(__name__)
 
 def createFile(sPath: str):
     """Создание файлов для класса"""
@@ -25,30 +27,26 @@ def createFile(sPath: str):
         ]
 
         apps.append(app)
-
+        logger.info(f"Обрабатывается класс {dirName}")
         module = ModuleManagerPkg()._getModule(app)
         metaFile = getattr(module, "META_FILE")
-
+        logger.info("Запись .py файлов")
         data = MetaInfo().getMetaTab(File.__str__())
         pathPyFile = pathModile(app, f"/object/{dirName}")
-        print(f"Запись в Dpi в классе {dirName}")
-        BilderDpi(data).createFileD(pathPyFile)
-        print(f"Запись в Dvi в классе {dirName}")
-        BilderDvi(data).createFileD(pathPyFile)
-        print(f"Запись в Logic в классе {dirName}")
-        BilderLogic(data).createFileA(pathPyFile)
-        print(f"Запись в Pub в классе {dirName}")
-        BilderPub(data).createFileA(pathPyFile)
+        builderDpi(data).createFileD(pathPyFile)
+        builderDvi(data).createFileD(pathPyFile)
+        builderLogic(data).createFileA(pathPyFile)
+        builderPub(data).createFileA(pathPyFile)
 
+        logger.info("Запись .json файлов")
         pathMetaFile = pathModile(app, f"/schemas/{dirName}")
-        BildersDmeta(data).createFile(pathMetaFile)
-        BildersAmeta(data).createFile(pathMetaFile)
+        buildersDmeta(data).createFile(pathMetaFile)
+        buildersAmeta(data).createFile(pathMetaFile)
 
     for app in set(apps):
         lFiles = FileManagerPkg.getFilesWithExtension(pathModile(app), ".Ameta.json") + \
             FileManagerPkg.getFilesWithExtension(pathModile(app), ".Dmeta.json")
         metaFile = {i.as_uri()[i.as_uri().rfind('/')+1:]: i.as_uri()[i.as_uri().rfind('module'):] for i in lFiles}
-        print(metaFile)
         FileManagerPkg.CreateFile(pathModile(app, "/cache/meta.json"), metaFile)
         _getInitModule(app)
 

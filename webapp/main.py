@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import asyncio
+import logging
 
 from core.sdk import current_session_id
 
@@ -9,17 +10,19 @@ from webapp.logic import registrSignal, set_main_loop, current_request
 from webapp.api.projectEndPoint import router as roputerProject
 from webapp.api.staticEndPoint import router as staticProject
 
+logger = logging.getLogger(__name__)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Код при старте (вместо @app.on_event("startup"))
     loop = asyncio.get_running_loop()
     set_main_loop(loop)
-    print("✅ Main loop сохранен для синхронных сигналов")
+    logger.debug("Main loop сохранен для синхронных сигналов")
     
     yield  # Здесь работает приложение
     
     # Код при завершении (вместо @app.on_event("shutdown"))
-    print("🛑 Приложение завершается")
+    logger.debug("Приложение завершается")
 
 app = FastAPI(lifespan=lifespan)
 

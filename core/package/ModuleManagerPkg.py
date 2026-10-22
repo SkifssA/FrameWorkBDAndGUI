@@ -17,27 +17,27 @@ class ModuleManagerPkg:
         self.cacheHooks = {}
 
     def _parseAction(self, sAction: str) -> tuple[str, str]:
-        sNameClass, x, sNameMetod = sAction.partition(".")
+        sNameClass, x, sNameMethod = sAction.partition(".")
 
-        if sNameMetod == "" or sNameClass == "" or sNameMetod.find(".") != -1:
+        if sNameMethod == "" or sNameClass == "" or sNameMethod.find(".") != -1:
             raise AttributeError(f"Не верные данные для 'sAction'")
 
-        if sNameMetod.startswith("_"):
+        if sNameMethod.startswith("_"):
             raise AttributeError(f"Можно вызывать методы без _")
 
-        return sNameClass, sNameMetod
+        return sNameClass, sNameMethod
 
     def _action(self, sAction: str, kattr: dict = {}, classMethod: bool = False):
-        sNameClass, sNameMetod = self._parseAction(sAction)
+        sNameClass, sNameMethod = self._parseAction(sAction)
         sNameModule = f"module.{getModule(sNameClass)}"
         try:
             cls = self._getClass(sNameClass)
-            if not hasattr(cls, sNameMetod):
+            if not hasattr(cls, sNameMethod):
                 raise AttributeError(
-                    f"Метод {sNameMetod} не найден в классе {sNameClass}"
+                    f"Метод {sNameMethod} не найден в классе {sNameClass}"
                 )
 
-            attr = self._getMethod(cls, sNameMetod, classMethod)
+            attr = self._getMethod(cls, sNameMethod, classMethod)
             return self._runMethod(attr, kattr)
         except ImportError as e:
             raise ValueError(f"Не удалось импортировать модуль {sNameModule}: {e}")
@@ -116,7 +116,7 @@ class ModuleManagerPkg:
                 self._action(
                     sAction=sAction["name"],
                     kattr=arg,
-                    classMethod=sAction["isClassMetod"],
+                    classMethod=sAction["isClassMethod"],
                 )
             except Exception as e:
                 print(
@@ -124,11 +124,11 @@ class ModuleManagerPkg:
                     f"завершился с ошибкой: {e}"
                 )
 
-    def _getMethod(self, cls, sNameMetod: str, classMethod: bool = False):
+    def _getMethod(self, cls, sNameMethod: str, classMethod: bool = False):
         """Получение метода класса"""
         if not classMethod:
-            return getattr(cls(), sNameMetod)
-        return getattr(cls, sNameMetod)
+            return getattr(cls(), sNameMethod)
+        return getattr(cls, sNameMethod)
 
     def _runMethod(self, attr, kattr: dict = {}):
         """Выполнение метода класса"""

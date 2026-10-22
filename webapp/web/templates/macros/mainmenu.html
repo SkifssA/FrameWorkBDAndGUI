@@ -1,11 +1,11 @@
-{% macro bilder_sub_mainmenu(item, name_main_menu) %}
+{% macro builder_sub_mainmenu(item, name_main_menu) %}
 {% if item.child %}
 <div class="dd-item has-submenu">
     <span>{{ item.label }}</span>
     <span class="arrow">▶</span>
     <div class="submenu">
         {% for child in item.child %}
-        {{ bilder_sub_mainmenu(child, name_main_menu) }}
+        {{ builder_sub_mainmenu(child, name_main_menu) }}
         {% endfor %}
     </div>
 </div>
@@ -17,7 +17,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro bilder_mainmenu(items) %}
+{% macro builder_mainmenu(items) %}
 <nav class="menubar">
     {% for item in items.operForm %}
     <!-- УБРАЛИ id="editMenu". Если ID критически нужен, делай его уникальным: id="menu-{{ item.id }}" -->
@@ -25,7 +25,7 @@
         <span class="menu-label">{{ item.label }}</span>
         <div class="dropdown">
             {% for child in item.child %}
-            {{ bilder_sub_mainmenu(child, items.metaForm.name) }}
+            {{ builder_sub_mainmenu(child, items.metaForm.name) }}
             {% endfor %}
         </div>
     </div>

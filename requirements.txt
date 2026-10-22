@@ -7,6 +7,7 @@ dacite
 fastapi
 python-multipart
 sse-starlette
+colorlog
 uvicorn
 pydantic
 blinker

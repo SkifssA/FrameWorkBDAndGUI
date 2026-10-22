@@ -1,7 +1,7 @@
-from .bilderBase import BilderBase
+from .builderBase import builderBase
 
 
-class BilderPub(BilderBase):
+class builderPub(builderBase):
     temp = """# Пользовательский файл для интерфейса
 from .{name}Dvi import {name}Dvi
 from core.sdk import Form
