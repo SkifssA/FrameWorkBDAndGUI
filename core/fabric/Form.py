@@ -7,6 +7,7 @@ from core.package.ModuleManagerPkg import ModuleManagerPkg
 class Form:
     def __init__(self, cls: EmptyPub.Default, clsParent: EmptyPub, **kwargs):
         self.object: EmptyPub.Default = cls(clsParent)
+        self.object.reg_fun_validate_dep(self.validateDep)
         if 'parentFrom' in kwargs:
             self.object.setParentForm(kwargs['parentFrom'])
             
@@ -14,6 +15,13 @@ class Form:
         self._get_register_children()
         self.childrenMeta:list = list(i.getInfoMeta() for i in self.children.values())
         self.active_ch = 1
+
+    def validateDep(self):
+        for key, val in self.children.items():
+            for item in val.object._attr_parent_refresh:
+                if (x:=val.object.getAttr(item['attr'])) != item['old_value']:
+                    item['old_value'] = x
+                    val.object.refresh()
 
     def _get_register_children(self):
         self.object.dataFetcher.refresh()

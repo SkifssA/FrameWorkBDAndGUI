@@ -16,6 +16,7 @@ class DataFetcher:
         self._attr = []
         self._dataExt = []
         self._attrExt = []
+        self._old_data = []
 
     def getAttr(self):
         return self._attr + self._attrExt

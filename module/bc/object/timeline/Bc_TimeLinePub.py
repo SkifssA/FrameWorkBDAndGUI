@@ -16,6 +16,10 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
         pass
 
     class TextCard(Bc_TimeLineDvi.DviCard):
+        def after_init(self):
+            super().after_init()
+            self.addDepAttr('super$id')
+
         def onRefresh(self):
             return self.thisLogic().load(self.getAttr('super$id'))
 

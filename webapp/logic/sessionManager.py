@@ -18,7 +18,7 @@ def get_form(form_name:str, default=None):
     isMainMenu = len(x:=form_name.split('/')) > 1
     if isMainMenu:
         if not any(f == form_name for f in session.open_form.keys()):
-            if (default):
+            if default:
                 default.object.refresh()
                 session.open_form[form_name] = default
             else:

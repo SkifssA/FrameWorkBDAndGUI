@@ -44,6 +44,10 @@ class EmptyPub:
             )
             self.registry = self._initRegistry()
             self._param = {}
+            self._fun_validate_dep = None
+
+        def reg_fun_validate_dep(self, fun):
+            self._fun_validate_dep = fun
 
         def thisLogic(self)->EmptyLogic:
             return self._parent_class.thisLogic()
@@ -57,7 +61,7 @@ class EmptyPub:
 
         def _get_form(self, nameAttr):
             if (x:=self.dataFetcher.getData()) != []:
-                return x[0].get(nameAttr, self._param.get(nameAttr))
+                return x[0].get(nameAttr)
 
         def _get_param(self, nameAttr):
             return self._param.get(nameAttr)
@@ -100,6 +104,8 @@ class EmptyPub:
             registry.setter()
             return registry
 
+        def after_init(self):...
+
         @abstractmethod
         def onRefresh(self): ...
         @abstractmethod
@@ -129,8 +135,13 @@ class EmptyPub:
     class Default(Base):
         def __init__(self, parentClass):
             super().__init__(parentClass)
-            
             self.parentForm = None
+
+            self._attr_parent_refresh = []
+            
+            self.after_init()
+
+        
 
         def getAttr(self, nameAttr:str):
             prefix = nameAttr.split("$")[0]
@@ -142,6 +153,9 @@ class EmptyPub:
                 res = self.parentForm.getAttr(nameAttr)
 
             return res
+
+        def addDepAttr(self, nameAttr:str):
+            self._attr_parent_refresh.append({'attr':nameAttr, 'old_value': None})
 
         def setParentForm(self, parentForm):
             self.parentForm = parentForm
@@ -155,9 +169,12 @@ class EmptyPub:
 
         @Oper(label='Обновить', order=10)
         def refresh(self):
+            self._refresh()
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
+
+        def _refresh(self):
             self.dataFetcher.refresh()
             self.update_meta_form()
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
 
         def update_meta_form(self):...
         def afterSetter(self, nameAttr):...
@@ -166,12 +183,22 @@ class EmptyPub:
     class List(Default):
         def __init__(self, parentClass):
             super().__init__(parentClass)
-            self.active_row = 1
+            self._active_row = 1
+
+        @property
+        def active_row(self):
+            return self._active_row
+
+        @active_row.setter
+        def active_row(self, value):
+            self._active_row = value
+            if self._fun_validate_dep:
+                self._fun_validate_dep()
             
         def _get_form(self, nameAttr):
             if (x:=self.dataFetcher.getData()) != []:
                 if ((y:=list(i for i in x if i.get('id') == self.active_row)) != []):
-                    return y[-1].get(nameAttr, self._param.get(nameAttr))
+                    return y[-1].get(nameAttr)
 
         @Oper(label="Открыть карточку", order=30)
         def openCard(self):
