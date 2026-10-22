@@ -27,9 +27,10 @@ class Form:
         w = form.split('.')
         if len(w) == 1:
             return self
+        
         ch = self.children[w[1]]
         if len(w) > 2:
-            return ch._get_full_name('.'.join(w[1:]))
+            return ch._get_children('.'.join(w[1:]))
         return ch
 
 

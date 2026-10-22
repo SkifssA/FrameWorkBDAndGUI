@@ -1,3 +1,16 @@
 {
-    "dep": "Bc_ScriptScheduler.Dmeta.json"
+    "dep": "Bc_ScriptScheduler.Dmeta.json",
+    "repres": [
+        {
+            "name": "List",
+            "tabCh": [
+                "Bc_ScriptSchedulerPub/TextCard"
+            ]
+        },
+        {
+            "name": "TextCard",
+            "isVisibleToolBar": true,
+            "typeForm": "card"
+        }
+    ]
 }

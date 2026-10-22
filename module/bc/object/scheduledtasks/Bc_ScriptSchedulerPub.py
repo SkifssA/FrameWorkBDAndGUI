@@ -12,6 +12,10 @@ class Bc_ScriptSchedulerPub(Bc_ScriptSchedulerDvi):
     class Card(Bc_ScriptSchedulerDvi.DviCard):
         pass
 
+    class TextCard(Bc_ScriptSchedulerDvi.DviCard):
+        def onRefresh(self):
+            return self.thisLogic().load(self.getAttr('super$id'))
+
     class LookUp(Bc_ScriptSchedulerDvi.DviLookUp):
         pass
 
@@ -22,3 +26,7 @@ class Bc_ScriptSchedulerPub(Bc_ScriptSchedulerDvi):
     @classmethod
     def card(cls, **kwargs):
         return Form(cls.Card, cls, **kwargs)
+
+    @classmethod
+    def textCard(cls, **kwargs):
+        return Form(cls.TextCard, cls, **kwargs)

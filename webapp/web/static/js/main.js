@@ -17,5 +17,10 @@ document.body.addEventListener('htmx:sseMessage', function (event) {
     }, 100);
 });
 
-// Вызываем функцию, когда она нужна
-// doSomethingWithForm(); 
+// Защита от «залипания» курсора загрузки: если SSE-соединение оборвалось,
+// а класс .htmx-request остался на узле — снимаем его принудительно.
+document.body.addEventListener('htmx:sseError', function () {
+    document.querySelectorAll('.htmx-request').forEach(function (el) {
+        el.classList.remove('htmx-request');
+    });
+});

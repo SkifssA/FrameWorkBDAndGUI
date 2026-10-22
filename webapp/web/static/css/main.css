@@ -9,3 +9,22 @@
     opacity: 1;
     transition: opacity 0.3s ease-in;
 }
+
+/* ===== Индикатор загрузки: только курсор мыши =====
+   Спиннера и блокирующего оверлея больше нет — признаком загрузки служит
+   исключительно курсор. htmx сам навешивает .htmx-request:
+   - на <body> во время обычных hx-get/hx-post;
+   - на узел с sse-swap во время обработки SSE-события (морфинг формы).
+   Интерфейс остаётся полностью кликабельным. */
+
+/* Активный hx-запрос к body -> курсор «ожидание» на всей странице */
+body.htmx-request {
+    cursor: wait;
+}
+
+/* Загрузка SSE-контента (form/list.html, form/card.html) -> курсор «прогресс» */
+body:has(.sse-form-loading.htmx-request),
+section.sse-form-loading.htmx-request,
+article.sse-form-loading.htmx-request {
+    cursor: progress;
+}
