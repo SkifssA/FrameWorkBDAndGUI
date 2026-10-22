@@ -2,7 +2,8 @@
 
 {% block mainForm %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/list.css') }}">
-<section id="refresh:{{ meta.metaForm.name }}" class="panel panel--list" sse-swap="refresh:{{ meta.metaForm.name }}">
+<section id="refresh:{{ meta.metaForm.name }}" class="panel panel--list" sse-swap="refresh:{{ meta.metaForm.name }}"
+    hx-swap="morph">
 
     <header class="action_panel">
         {{ render_action_buttons(meta) }}

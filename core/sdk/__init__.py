@@ -29,7 +29,6 @@ from core.dataClass.setterEvent import SetterEvent
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal
 from core.package.FileManager import FileManager, FileManagerPkg
-from core.package.ThreadWorkerPkg import ThreadWorkerPkg
 
 # --- Готовые экземпляры (синглтоны ядра) ------------------------------------
 from core.package.MetadataManager import MetadataManager
@@ -37,9 +36,6 @@ from core.package.ModuleManagerPkg import ModuleManagerPkg
 
 # --- Переменые контекста  ---------------------------------------------------
 from core.context import current_session_id
-
-from core.logging_config import setup_logging
-setup_logging()
 
 METADATA = MetadataManager()
 ACTIONDISPATCHER = ModuleManagerPkg()

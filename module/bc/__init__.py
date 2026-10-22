@@ -1,5 +1,4 @@
 from .object.Bc_MainMenuPub import Bc_MainMenuPub
-from .object.Bc_ScriptSchedulerPkg import Bc_ScriptSchedulerPkg
 from .object.scheduledtasks.Bc_ScriptSchedulerLogic import Bc_ScriptSchedulerLogic
 from .object.scheduledtasks.Bc_ScriptSchedulerPub import Bc_ScriptSchedulerPub
 from .object.timeline.Bc_TimeLineLogic import Bc_TimeLineLogic

@@ -6,10 +6,6 @@
 
 /* Плавное появление нового контента */
 .htmx-settling {
-    opacity: 0;
-}
-
-.htmx-settling.htmx-swapped {
     opacity: 1;
     transition: opacity 0.3s ease-in;
 }

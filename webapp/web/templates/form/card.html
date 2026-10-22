@@ -1,7 +1,8 @@
 {% from "macros/toolbar.html" import render_action_buttons %}
 
 {% block mainForm %}
-<section id="refresh:{{ meta.metaForm.name }}" class="panel panel--card" sse-swap="refresh:{{ meta.metaForm.name }}">
+<section id="refresh:{{ meta.metaForm.name }}" class="panel panel--card" sse-swap="refresh:{{ meta.metaForm.name }}"
+    hx-swap="morph">
 
     <header class="action_panel">
         {{ render_action_buttons(meta) }}
