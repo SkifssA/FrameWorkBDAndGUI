@@ -76,16 +76,16 @@ class Form:
         for key, value in self.children.items():
             value.refreshDown()
 
-    def IUOPen(self):
-        self.refreshDown()
-        self.open()
-
     def open(self):
+        self.refreshDown()
+        self._open_iu()
+
+    def _open_iu(self):
         event = self.object._get_form_event(typeEvent.openForm)
         event.formObject = self
         eventSignal.send(fromEvent=event)
 
-    def open_ch(self):
+    def _open_ch(self):
         event = self.object._get_form_event(typeEvent.open_form_ch)
         event.formObject = self
         eventSignal.send(fromEvent=event)

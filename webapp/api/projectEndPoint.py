@@ -20,7 +20,7 @@ async def action_oper(request: Request, form_id: str = Form(...)):
 @router.post("/api/selected-form")
 async def action_oper(request: Request, form_id: str = Form(...)):
     "Переключение вкладки"
-    get_form(form_id).open()
+    get_form(form_id)._open_iu()
     return Response(content="", status_code=204)
 
 @router.post('/api/selected-app')
@@ -54,7 +54,7 @@ async def openMainMenu(request: Request, form_id: str = Form(...)):
     form_name = get_session().active_form
     if form:=get_session().open_form.get(form_name):
         form = form._get_children(form_id)
-        form.open_ch()
+        form._open_ch()
     return Response(content="", status_code=204)
 
 
