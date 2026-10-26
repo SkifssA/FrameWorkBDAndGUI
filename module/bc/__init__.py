@@ -9,7 +9,6 @@ META_FILE = FileManagerPkg.ReadFile('module/bc/cache/meta.json')
 
 __all__ = [
     'Bc_MainMenuPub'
-    ,'Bc_ScriptSchedulerPkg'
     ,'Bc_ScriptSchedulerLogic'
     ,'Bc_ScriptSchedulerPub'
     ,'Bc_TimeLineLogic'

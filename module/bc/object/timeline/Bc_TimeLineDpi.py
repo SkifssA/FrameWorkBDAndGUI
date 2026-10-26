@@ -1,12 +1,13 @@
 # Системный файл для логики
 from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class Bc_TimeLineObj(EmptyObj):
     id:int
-    sCode:str = None
-    sName:str = None
+    sCode:Optional[str] = None
+    sName:Optional[str] = None
 
 class Bc_TimeLineDpi(EmptyLogic[Bc_TimeLineObj]):
     _classObj = Bc_TimeLineObj

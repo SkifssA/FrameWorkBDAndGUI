@@ -24,7 +24,6 @@ class Form:
                     val.object.refresh()
 
     def _get_register_children(self):
-        self.object.dataFetcher.refresh()
         for i in self.object.metaInfo.tabCh:
             class_, sel  = i.split('/')
             class_obj = ModuleManagerPkg().getClassByName(class_)
@@ -71,6 +70,15 @@ class Form:
 
     def close(self):
         eventSignal.send(fromEvent=self.object._get_form_event(typeEvent.closeForm))
+
+    def refreshDown(self):
+        self.object.dataFetcher.refresh()
+        for key, value in self.children.items():
+            value.refreshDown()
+
+    def IUOPen(self):
+        self.refreshDown()
+        self.open()
 
     def open(self):
         event = self.object._get_form_event(typeEvent.openForm)

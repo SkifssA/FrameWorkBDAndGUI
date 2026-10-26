@@ -1,16 +1,17 @@
 # Системный файл для логики
 from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class Awh_AnimeObj(EmptyObj):
     id:int
-    sCaption:str = None
-    nSeries:int = None
-    bReleased:int = None
-    sUrl:str = None
-    sUrlImg:str = None
-    sComment:str = None
+    sCaption:Optional[str] = None
+    nSeries:Optional[int] = None
+    bReleased:Optional[int] = None
+    sUrl:Optional[str] = None
+    sUrlImg:Optional[str] = None
+    sComment:Optional[str] = None
 
 class Awh_AnimeDpi(EmptyLogic[Awh_AnimeObj]):
     _classObj = Awh_AnimeObj

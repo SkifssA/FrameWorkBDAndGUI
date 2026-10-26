@@ -16,11 +16,11 @@ class Bc_MainMenuPub(EmptyPub):
 
         @Oper(label="Планировщик сценариев", order=10, headOper="mm_res")
         def mm_Bc_ScriptScheduler(self):
-            Bc_ScriptSchedulerPub.list().open()
+            Bc_ScriptSchedulerPub.list().IUOPen()
 
         @Oper(label="Единица измерения времени", order=20, headOper="mm_res")
         def mm_Bc_TimeLine(self):
-            Bc_TimeLinePub.list().open()
+            Bc_TimeLinePub.list().IUOPen()
 
         def onRefreshExt(self): return ""
 

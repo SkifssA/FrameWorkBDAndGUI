@@ -1,16 +1,17 @@
 # Системный файл для логики
 from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class Bc_ScriptSchedulerObj(EmptyObj):
     id:int
-    sNameScript:str = None
-    sNameModule:str = None
-    bRepeat:int = None
-    nTime:int = None
-    idTimeLine:int = None
-    bUsed:int = None
+    sNameScript:Optional[str] = None
+    sNameModule:Optional[str] = None
+    bRepeat:Optional[int] = None
+    nTime:Optional[int] = None
+    idTimeLine:Optional[int] = None
+    bUsed:Optional[int] = None
 
 class Bc_ScriptSchedulerDpi(EmptyLogic[Bc_ScriptSchedulerObj]):
     _classObj = Bc_ScriptSchedulerObj

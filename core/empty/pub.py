@@ -54,17 +54,33 @@ class EmptyPub:
 
         def getAttr(self, nameAttr):
             res = self._get_form(nameAttr)
-            if res is None:
+            if res['isNotValue']:
                 res = self._get_param(nameAttr)
 
             return res
 
         def _get_form(self, nameAttr):
+            res = {
+                'value' : None,
+                'isNotValue': True
+            }
             if (x:=self.dataFetcher.getData()) != []:
-                return x[0].get(nameAttr)
+                if nameAttr in x[0]:
+                    res['value']  = x[0][nameAttr]
+                    res["isNotValue"] = False
+
+            return res
 
         def _get_param(self, nameAttr):
-            return self._param.get(nameAttr)
+            res = {
+                'value' : None,
+                'isNotValue': True
+            }
+            if nameAttr in self._param:
+                res['value']  = self._param[nameAttr]
+                res["isNotValue"] = False
+
+            return res
 
         def _get_parent(self, nameAttr):
             if self.parent:
@@ -141,18 +157,16 @@ class EmptyPub:
             
             self.after_init()
 
-        
-
         def getAttr(self, nameAttr:str):
             prefix = nameAttr.split("$")[0]
             if prefix.lower() == 'super':
                 return self.parentForm.getAttr(nameAttr[nameAttr.find("$")+1:])
 
             res = super().getAttr(nameAttr)
-            if res is None:
+            if res['isNotValue']:
                 res = self.parentForm.getAttr(nameAttr)
 
-            return res
+            return res['value'] if isinstance(res, dict) else res
 
         def addDepAttr(self, nameAttr:str):
             self._attr_parent_refresh.append({'attr':nameAttr, 'old_value': None})
@@ -196,13 +210,30 @@ class EmptyPub:
                 self._fun_validate_dep()
             
         def _get_form(self, nameAttr):
+            res = {
+                'value' : None,
+                'isNotValue': True
+            }
             if (x:=self.dataFetcher.getData()) != []:
                 if ((y:=list(i for i in x if i.get('id') == self.active_row)) != []):
-                    return y[-1].get(nameAttr)
+                    if nameAttr in y[-1]:
+                        res['value']  = y[-1].get(nameAttr)
+                        res["isNotValue"] = False
 
+            return res
+        
+        @Oper(label="Создать запись", order=25)
+        def insert(self):
+            self._parent_class.card().param('idItem', self.thisLogic().insert().id).open()
+        
         @Oper(label="Открыть карточку", order=30)
         def openCard(self):
             self._parent_class.card().param('idItem', self.getAttr('id')).open()
+
+        @Oper(label="Удалить", order=40)
+        def openCard(self):
+            self.thisLogic().delete(self.thisLogic().load(self.getAttr('id')))
+            self.refresh()
 
         def onRefresh(self):
             return self.structuredQuery()
@@ -220,6 +251,10 @@ class EmptyPub:
 
         def thisObj(self):
             return self.dataFetcher._obj_res
+
+        @Oper(label="Сохранить", order=40)
+        def saveForm(self):
+            self.thisLogic().update(self.thisObj())
 
         def update_meta_form(self):
             super().update_meta_form()

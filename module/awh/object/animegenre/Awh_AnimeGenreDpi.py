@@ -1,12 +1,13 @@
 # Системный файл для логики
 from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class Awh_AnimeGenreObj(EmptyObj):
     id:int
-    idAnime:int = None
-    idGenre:int = None
+    idAnime:Optional[int] = None
+    idGenre:Optional[int] = None
 
 class Awh_AnimeGenreDpi(EmptyLogic[Awh_AnimeGenreObj]):
     _classObj = Awh_AnimeGenreObj

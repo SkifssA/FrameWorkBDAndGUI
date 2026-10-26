@@ -5,6 +5,7 @@ class builderDpi(builderBase):
     temp = """# Системный файл для логики
 from core.sdk import EmptyLogic, EmptyObj
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class {name}Obj(EmptyObj):
@@ -46,7 +47,7 @@ class {name}Dpi(EmptyLogic[{name}Obj]):
                 typeAttr = "int"
             else:
                 typeAttr = "str"
-            rop.append(f"{i.name}:{typeAttr}")
+            rop.append(f"{i.name}:Optional[{typeAttr}]")
         return f" = None\n{' ' * 4}".join(rop)
 
     def __getHeadLine(self):
