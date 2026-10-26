@@ -1,12 +1,13 @@
 from dacite import from_dict, Config
 
 
-from core.dataClass.metaDataClass import metaSchema, attrMetaSchema, filterMetaSchema
+from core.dataClass.metaDataClass import metaSchema, attrMetaSchema, filterMetaSchema, tabCh
 from core.dataClass.tabDataClass import (
     tabSchema,
     attrSchema,
     collectionsSchema,
     dbDataSchema,
+    
 )
 from core.package.FileManager import FileManagerPkg
 
@@ -46,11 +47,17 @@ class MetaInfo:
                 from_dict(data_class=attrMetaSchema, data=i) for i in x.get("attr", [])
             )
             data["attr"] = attrGen(data)
+
             f = []
             for filter in data.get("filter", []):
                 filter["attr"] = attrGen(filter)
                 f.append(from_dict(data_class=filterMetaSchema, data=filter))
             data["filter"] = f
+
+            t = []
+            for tabsCh in data.get("tabsCh", []):
+                t.append(from_dict(data_class=tabCh, data=tabsCh))
+            data["tabsCh"] = t
 
             self._dictMetaUi[data["name"]] = from_dict(data_class=metaSchema, data=data)
 

@@ -21,6 +21,11 @@ class filterMetaSchema(Base):
     sql: str
     attr: list[attrMetaSchema] = field(default_factory=list)
 
+@dataclass
+class tabCh(Base):
+    nameClass: str
+    repres: str
+    location:str = 'bottom'
 
 @dataclass
 class metaSchema(Base):
@@ -29,7 +34,11 @@ class metaSchema(Base):
     isVisibleToolBar: bool = True
     typeForm: str = None
     width: int = None
+    width_min: int = None
+    width_max: int = None
     height: int = None
+    height_min: int = None
+    height_max: int = None
     filter: list[filterMetaSchema] = field(default_factory=list)
     attr: list[attrMetaSchema] = field(default_factory=list)
-    tabCh: list[str] = field(default_factory=list)
+    tabsCh: list[tabCh] = field(default_factory=list)

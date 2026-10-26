@@ -3,8 +3,11 @@
     "repres": [
         {
             "name": "List",
-            "tabCh": [
-                "Bc_ScriptSchedulerPub/TextCard"
+            "tabsCh": [
+                {
+                    "nameClass": "Bc_ScriptSchedulerPub",
+                    "repres": "TextCard"
+                }
             ]
         },
         {

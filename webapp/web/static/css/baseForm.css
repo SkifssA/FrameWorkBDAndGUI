@@ -1,0 +1,122 @@
+/* ===== СБРОС ===== */
+#closeForm.form,
+#closeForm.form * {
+    box-sizing: border-box;
+}
+
+/* ===== ГЛАВНЫЙ КОНТЕЙНЕР ===== */
+#closeForm.form {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ===== РУЧКИ РЕСАЙЗА ===== */
+.resize-handle {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    transition: background 0.15s;
+}
+
+/* Горизонтальная ручка (между left/main/right) */
+.resize-handle[data-target="left"],
+.resize-handle[data-target="right"] {
+    flex: 0 0 8px !important;
+    min-width: 8px !important;
+    max-width: 8px !important;
+    background: #e94560;
+    cursor: col-resize;
+}
+
+/* Вертикальная ручка (между main/bottom) */
+.resize-handle[data-target="bottom"] {
+    flex: 0 0 8px !important;
+    min-height: 8px !important;
+    max-height: 8px !important;
+    width: 100%;
+    background: #e94560;
+    cursor: row-resize;
+}
+
+.resize-handle:hover,
+.resize-handle.is-dragging {
+    background: #ff6b6b;
+}
+
+/* ===== БОКОВЫЕ ПАНЕЛИ (left/right) ===== */
+#closeForm.form .left,
+#closeForm.form .right {
+    flex: 0 0 300px;
+    min-width: 200px;
+    max-width: 50vw;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== ГЛАВНАЯ ПАНЕЛЬ ===== */
+#closeForm.form .main {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* 🔥 Вертикальная раскладка для bottom */
+}
+
+/* ===== НИЖНЯЯ ПАНЕЛЬ ===== */
+#closeForm.form .bottom {
+    flex: 0 0 200px;
+    /* Стартовая высота */
+    min-height: 100px;
+    max-height: 50vh;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #333;
+}
+
+/* Прямые дети .main не сжимаются по вертикали */
+#closeForm.form .main>*:not(.bottom):not(.resize-handle) {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+}
+
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+@media (max-width: 900px) {
+    #closeForm.form {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    #closeForm.form .left,
+    #closeForm.form .right {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+        max-height: 200px;
+    }
+
+    #closeForm.form .main {
+        flex: 1 1 auto;
+        min-height: 300px;
+    }
+
+    #closeForm.form .bottom {
+        flex: 0 0 auto;
+        max-height: 300px;
+    }
+
+    .resize-handle {
+        display: none;
+    }
+}

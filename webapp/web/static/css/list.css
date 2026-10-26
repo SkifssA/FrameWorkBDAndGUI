@@ -1,3 +1,41 @@
+/* ===== ОБЁРТКА ===== */
+.table-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    /* 🔥 КРИТИЧНО! Без этого flex-элемент не умеет сжиматься и скроллиться */
+    overflow: auto;
+    /* Скролл по обеим осям */
+    position: relative;
+}
+
+/* ===== ТАБЛИЦА ===== */
+.table-wrap table {
+    width: 100%;
+    min-width: max-content !important;
+    /* 🔥 ЗАСТАВЛЯЕТ таблицу быть не уже, чем её содержимое */
+    table-layout: auto;
+    /* Разрешаем таблице самой считать ширину колонок */
+}
+
+/* Ячейки */
+.table-wrap td,
+.table-wrap th {
+    white-space: nowrap;
+    /* Запрещаем перенос текста, чтобы таблица росла вширь */
+}
+
+/* Заголовок липкий */
+.table-wrap thead th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+    font-weight: 600;
+}
+
+/* ===== ТВОЙ СУЩЕСТВУЮЩИЙ CSS (без изменений) ===== */
+
 /* Базовые стили для таблицы, чтобы цвета не ломали границы */
 table {
     border-collapse: collapse;
@@ -13,19 +51,35 @@ th {
 /* Сама покраска при наведении */
 tbody tr:hover {
     background-color: #f5f5f5;
-    /* Светло-серый */
     cursor: pointer;
-    /* Курсор-указатель, чтобы было понятно, что строка кликабельна */
 }
 
 /* Красим саму строку */
 tr.active {
     background-color: #e2eafc;
-    /* Нежный синий */
 }
 
 /* ГЛАВНОЕ: заставляем ячейки унаследовать фон строки */
 tr.active td {
     background-color: inherit;
-    /* Или укажи цвет явно: background-color: #e2eafc; */
+}
+
+/* ===== НОВОЕ: Улучшения для скролл-контейнера ===== */
+.table-wrap table {
+    table-layout: fixed;
+}
+
+.table-wrap td,
+.table-wrap th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.table-wrap thead th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+    font-weight: 600;
 }

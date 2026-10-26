@@ -12,8 +12,8 @@ class Form:
             self.object.setParentForm(kwargs['parentFrom'])
             
         self.children:dict[str, 'Form'] = {}
+        self.childrenMeta:dict[str, list] = {}
         self._get_register_children()
-        self.childrenMeta:list = list(i.getInfoMeta() for i in self.children.values())
         self.active_ch = 1
 
     def validateDep(self):
@@ -24,11 +24,17 @@ class Form:
                     val.object.refresh()
 
     def _get_register_children(self):
-        for i in self.object.metaInfo.tabCh:
-            class_, sel  = i.split('/')
+        self.childrenMeta = {
+            'left': [],
+            'right': [],
+            'bottom': []
+        }
+        for i in self.object.metaInfo.tabsCh:
+            class_, sel  = i.nameClass, i.repres
             class_obj = ModuleManagerPkg().getClassByName(class_)
             sel_obj:'Form' = class_obj._getFormByName(sel)(parentFrom=self.object)
             self.children[sel_obj.object.name()] = sel_obj
+            self.childrenMeta[i.location].append(sel_obj.getInfoMeta())
 
     def _get_children(self, form:str)->'Form':
         w = form.split('.')
@@ -43,7 +49,7 @@ class Form:
 
     def getInfoMeta(self):
         m = self.object._getInfoMeta()
-        m['metaForm']['tabCh'] = self.childrenMeta
+        m['metaForm']['tabsCh'] = self.childrenMeta
         return m
 
     def getSetterAndOperName(self):

@@ -1,6 +1,5 @@
 {% from "macros/toolbar.html" import render_action_buttons %}
 
-{% block mainForm %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/list.css') }}">
 <section id="refresh:{{ meta.metaForm.name }}" class="panel panel--list" sse-swap="refresh:{{ meta.metaForm.name }}"
     hx-swap="morph">
@@ -40,4 +39,3 @@
     </div>
 
 </section>
-{% endblock %}

@@ -64,13 +64,23 @@ def open_form(event: formEvent) -> PutData:
         "data": oper_form_object.getData(),
         "meta": meta_form,
         "active_form_ch": None,
-        "formCh": ''
+        "formChBottom": '',
+        "formChLeft": '',
+        "formChRight": ''
     }
 
-    if oper_form_object.childrenMeta != [] :
-        active_form_ch = oper_form_object.childrenMeta[oper_form_object.active_ch-1]['metaForm']['name']
+    if oper_form_object.childrenMeta['bottom'] != [] :
+        active_form_ch = oper_form_object.childrenMeta['bottom'][oper_form_object.active_ch-1]['metaForm']['name']
         context['active_form_ch'] = active_form_ch
-        context['formCh'] = getHtmlForm(oper_form_object._get_children('.'.join(active_form_ch.split('.')[-2:])), oper_form_object)
+        context['formChBottom'] = getHtmlForm(oper_form_object._get_children('.'.join(active_form_ch.split('.')[-2:])), oper_form_object)
+
+    if oper_form_object.childrenMeta['right'] != [] :
+        for i in oper_form_object.childrenMeta['right']:
+            context['formChRight'] += getHtmlForm(oper_form_object._get_children('.'.join(i['metaForm']['name'].split('.')[-2:])), oper_form_object) + '\n'
+    
+    if oper_form_object.childrenMeta['left'] != [] :
+        for i in oper_form_object.childrenMeta['left']:
+            context['formChLeft'] += getHtmlForm(oper_form_object._get_children('.'.join(i['metaForm']['name'].split('.')[-2:])), oper_form_object) + '\n'
 
     if meta_form['metaForm']['typeForm'] == 'list':
         context['id_row'] = oper_form_object.object.active_row
@@ -110,16 +120,26 @@ def getHtmlForm(form, mainForm):
         "meta": form.getInfoMeta(),
         "metaCh": list(i.getInfoMeta() for i in form.children.values()),
         "active_form_ch": None,
-        "formCh": ''
+        "formChBottom": '',
+        "formChLeft": '',
+        "formChRight": ''
     }
 
     if form.getInfoMeta()['metaForm']['typeForm'] == 'list':
         context['id_row'] = form.object.active_row
 
-    if form.childrenMeta != [] :
-        active_form_ch = form.childrenMeta[form.active_ch-1]['metaForm']['name']
+    if form.childrenMeta['bottom'] != [] :
+        active_form_ch = form.childrenMeta['bottom'][form.active_ch-1]['metaForm']['name']
         context['active_form_ch'] = active_form_ch
-        context['formCh'] = getHtmlForm(mainForm._get_children(active_form_ch), mainForm)
+        context['formChBottom'] = getHtmlForm(mainForm._get_children(active_form_ch), mainForm)
+
+    if form.childrenMeta['right'] != [] :
+        for i in form.childrenMeta['right']:
+            context['formChRight'] += getHtmlForm(mainForm._get_children(i['metaForm']['name']), mainForm) + '\n'
+
+    if form.childrenMeta['left'] != [] :
+        for i in form.childrenMeta['left']:
+            context['formChLeft'] += getHtmlForm(mainForm._get_children(i['metaForm']['name']), mainForm) + '\n'
 
     return templates.TemplateResponse(
                 request=current_request.get(),

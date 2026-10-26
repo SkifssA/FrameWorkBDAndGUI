@@ -13,15 +13,23 @@
                     "order": 20
                 }
             ],
-            "tabCh": [
-                "Bc_ScriptSchedulerPub/List",
-                "Bc_TimeLinePub/TextCard"
+            "tabsCh": [
+                {
+                    "nameClass": "Bc_ScriptSchedulerPub",
+                    "repres": "List",
+                    "location": "right"
+                },
+                {
+                    "nameClass": "Bc_TimeLinePub",
+                    "repres": "TextCard"
+                }
             ]
         },
         {
             "name": "TextCard",
             "isVisibleToolBar": true,
-            "typeForm": "card"
+            "typeForm": "card",
+            "width_max": 700
         }
     ]
 }

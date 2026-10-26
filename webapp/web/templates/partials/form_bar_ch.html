@@ -1,6 +1,6 @@
 {% block formsbar %}
 <div id="forms-bar-ch" class="forms-bar">
-    {% for tab in meta.metaForm.tabCh %}
+    {% for tab in meta.metaForm.tabsCh.bottom %}
     <a class="form-tab {% if tab.metaForm.name == active_form_ch %}active{% endif %}" {% if tab.metaForm.name
         !=active_form_ch %} hx-post="/api/selected-form-ch" hx-swap="none"
         hx-vals='{"form_id": "{{ tab.metaForm.name }}"}' hx-push-url="true" {% endif %}>
