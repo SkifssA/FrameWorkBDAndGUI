@@ -1,16 +1,11 @@
-from abc import ABC, abstractmethod
-from blinker import signal
+from abc import abstractmethod
 
-from core.package.DataFetcher import DataFetcher
-from core.fabric.OperRegistry import OperRegistry
-from core.package.MetadataManager import MetadataManager
 from core.empty.logic import EmptyLogic
-from core.dataClass.formEvent import formEvent, typeEvent
+from core.dataClass.formEvent import typeEvent
 from core.decorator.oper import Oper
-from core.context import current_session_id
-
-
-eventSignal = signal('form-all-events')
+from core.emptySubClass.base import Base as emptyBase
+from core.emptySubClass.default import Default as emptyDefault
+from core.context import eventSignal
 
 class EmptyPub:
     metaFile: str
@@ -34,105 +29,7 @@ class EmptyPub:
     def get_name(cls)->str:
         return cls.__name__
 
-    class Base(ABC):
-        def __init__(self, parentClass: "EmptyPub"):
-            self._parent_class = parentClass
-            self.dataFetcher = DataFetcher(self)
-
-            self.metaInfo = MetadataManager().get(
-                parentClass.metaFile, self.__class__.__name__
-            )
-            self.registry = self._initRegistry()
-            self._param = {}
-            self._fun_validate_dep = None
-
-        def reg_fun_validate_dep(self, fun):
-            self._fun_validate_dep = fun
-
-        def thisLogic(self)->EmptyLogic:
-            return self._parent_class.thisLogic()
-
-        def getAttr(self, nameAttr):
-            res = self._get_form(nameAttr)
-            if res['isNotValue']:
-                res = self._get_param(nameAttr)
-
-            return res
-
-        def _get_form(self, nameAttr):
-            res = {
-                'value' : None,
-                'isNotValue': True
-            }
-            if (x:=self.dataFetcher.getData()) != []:
-                if nameAttr in x[0]:
-                    res['value']  = x[0][nameAttr]
-                    res["isNotValue"] = False
-
-            return res
-
-        def _get_param(self, nameAttr):
-            res = {
-                'value' : None,
-                'isNotValue': True
-            }
-            if nameAttr in self._param:
-                res['value']  = self._param[nameAttr]
-                res["isNotValue"] = False
-
-            return res
-
-        def _get_parent(self, nameAttr):
-            if self.parent:
-                return self.parent.getAttr(nameAttr)
-            
-        def _getData(self):
-            return self.dataFetcher.getData()
-
-        def _getInfoMeta(self):
-            metaForm = self.metaInfo.getDict(isNotNone=False)
-            metaForm['name'] = self.full_name()
-            return {
-                "operForm": self.registry.get_children_oper(),
-                "setterForm": self.registry.setter(),
-                "metaForm": metaForm,
-            }
-
-        def _getSetterAndOperName(self):
-            return [
-                i["id"] for i in self.registry.get_setter() + self.registry.get_oper()
-            ]
-
-        def _get_parent_name(self):
-            return self._parent_class.get_name()
-
-        def full_name(self):
-            return f'{self._get_parent_name()}/{self.__class__.__name__}{f'?id={x}' if (x:=self.getAttr('idItem')) else ''}'
-
-        def _get_form_event(self, typeEvent: str):
-            return formEvent(form=self.full_name()
-                             , type=typeEvent
-                             , session_id=current_session_id.get())
-
-        def _initRegistry(self) -> OperRegistry:
-            registry = OperRegistry(self)
-            registry.oper()
-            registry.setter()
-            return registry
-
-        def after_init(self):...
-
-        @abstractmethod
-        def onRefresh(self): ...
-        @abstractmethod
-        def onRefreshExt(self): ...
-
-        # @abstractmethod
-        # def getAttr(self):...
-        # @abstractmethod
-        # def save(self):...
-        # @abstractmethod
-        # def delete(self):...
+    class Base(emptyBase):...
 
     class MainMenu(Base):
         def onRefreshExt(self): ""
@@ -148,51 +45,16 @@ class EmptyPub:
         def closeProject(self):
             eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeApp))
 
-    class Default(Base):
+    class Default(emptyDefault, Base):
         def __init__(self, parentClass):
             super().__init__(parentClass)
-            self.parentForm = None
 
+            self.parentForm = None
             self._attr_parent_refresh = []
             
             self.after_init()
 
-        def getAttr(self, nameAttr:str):
-            prefix = nameAttr.split("$")[0]
-            if prefix.lower() == 'super':
-                return self.parentForm.getAttr(nameAttr[nameAttr.find("$")+1:])
-
-            res = super().getAttr(nameAttr)
-            if res['isNotValue']:
-                res = self.parentForm.getAttr(nameAttr)
-
-            return res['value'] if isinstance(res, dict) else res
-
-        def addDepAttr(self, nameAttr:str):
-            self._attr_parent_refresh.append({'attr':nameAttr, 'old_value': None})
-
-        def setParentForm(self, parentForm):
-            self.parentForm = parentForm
-            self.metaInfo.name = self.full_name()
-
-        def full_name(self):
-            return f'{self.parentForm.full_name() + '.' if self.parentForm else ''}{self.name()}'
-
-        def name(self):
-            return f'{self._get_parent_name()}/{self.__class__.__name__}'
-
-        @Oper(label='Обновить', order=10)
-        def refresh(self):
-            self._refresh()
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.refresh))
-
-        def _refresh(self):
-            self.dataFetcher.refresh()
-            self.update_meta_form()
-
-        def update_meta_form(self):...
-        def afterSetter(self, nameAttr):...
-        def thisObj(self):...
+        def after_init(self):...
 
     class List(Default):
         def __init__(self, parentClass):
@@ -206,8 +68,6 @@ class EmptyPub:
         @active_row.setter
         def active_row(self, value):
             self._active_row = value
-            if self._fun_validate_dep:
-                self._fun_validate_dep()
             
         def _get_form(self, nameAttr):
             res = {

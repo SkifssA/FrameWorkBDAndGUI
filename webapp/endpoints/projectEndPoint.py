@@ -45,7 +45,7 @@ async def openMainMenu(request: Request, id_row: int = Form(...), form_id: str =
     form_name = get_session().active_form
     if form:=get_session().open_form.get(form_name):
         form = form._get_children(form_id)
-        form.object.active_row = id_row
+        form.active_row = id_row
     return Response(content="", status_code=204)
 
 @router.post('/api/selected-form-ch')

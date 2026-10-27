@@ -1,13 +1,13 @@
 from typing import Any
 
-from core.empty.pub import EmptyPub, eventSignal
-from core.dataClass.formEvent import formEvent, typeEvent
+from core.context import eventSignal
+from core.empty.pub import EmptyPub
+from core.dataClass.formEvent import typeEvent
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 
 class Form:
     def __init__(self, cls: EmptyPub.Default, clsParent: EmptyPub, **kwargs):
         self.object: EmptyPub.Default = cls(clsParent)
-        self.object.reg_fun_validate_dep(self.validateDep)
         if 'parentFrom' in kwargs:
             self.object.setParentForm(kwargs['parentFrom'])
             
@@ -15,6 +15,15 @@ class Form:
         self.childrenMeta:dict[str, list] = {}
         self._get_register_children()
         self.active_ch = 1
+
+    @property
+    def active_row(self):
+        return self.object._active_row
+
+    @active_row.setter
+    def active_row(self, value):
+        self.object._active_row = value
+        self.validateDep()
 
     def validateDep(self):
         for key, val in self.children.items():

@@ -83,7 +83,7 @@ def open_form(event: formEvent) -> PutData:
             context['formChLeft'] += getHtmlForm(oper_form_object._get_children('.'.join(i['metaForm']['name'].split('.')[-2:])), oper_form_object) + '\n'
 
     if meta_form['metaForm']['typeForm'] == 'list':
-        context['id_row'] = oper_form_object.object.active_row
+        context['id_row'] = oper_form_object.active_row
 
     return PutData(name_template=name_template
                    , context=context
@@ -105,7 +105,7 @@ def refresh_form(event: formEvent)->PutData:
     }
 
     if typeForm == 'list':
-        context['id_row'] = oper_form_object.object.active_row
+        context['id_row'] = oper_form_object.active_row
 
     return PutData(name_template=name_template
                    , context=context
@@ -126,7 +126,7 @@ def getHtmlForm(form, mainForm):
     }
 
     if form.getInfoMeta()['metaForm']['typeForm'] == 'list':
-        context['id_row'] = form.object.active_row
+        context['id_row'] = form.active_row
 
     if form.childrenMeta['bottom'] != [] :
         active_form_ch = form.childrenMeta['bottom'][form.active_ch-1]['metaForm']['name']
