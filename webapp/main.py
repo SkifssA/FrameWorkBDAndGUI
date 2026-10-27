@@ -35,19 +35,34 @@ registrSignal()
 
 @app.middleware("http")
 async def session_context_middleware(request: Request, call_next):
-    # 1. Достаем куку ПРЯМО из request. Никаких зависимостей Cookie() не нужно!
-    session_id = request.cookies.get("session_id", "default")
-    
+    # 1. Достаем куку; если её нет — генерируем уникальный id,
+    #    иначе все пользователи делили бы одну "default" сессию
+    session_id = request.cookies.get("session_id")
+    new_session = session_id is None
+    if new_session:
+        import uuid as _uuid
+        session_id = _uuid.uuid4().hex
+
     # 2. Устанавливаем контекст
     token_session_id = current_session_id.set(session_id)
     token_request = current_request.set(request)
-    
+
     try:
         response = await call_next(request)
     finally:
         current_session_id.reset(token_session_id)
         current_request.reset(token_request)
-        
+
+    # 3. При первой встрече выдаём браузеру постоянный идентификатор сессии
+    if new_session:
+        response.set_cookie(
+            key="session_id",
+            value=session_id,
+            httponly=True,
+            samesite="lax",
+            max_age=60 * 60 * 24 * 30,
+        )
+
     return response
 
 
