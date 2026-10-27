@@ -3,12 +3,15 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import asyncio
 import logging
+import os
+from starlette.middleware.sessions import SessionMiddleware
+import uuid
 
 from core.sdk import current_session_id
 
 from webapp.logic import registrSignal, set_main_loop, current_request
-from webapp.api.projectEndPoint import router as roputerProject
-from webapp.api.staticEndPoint import router as staticProject
+from webapp.endpoints.projectEndPoint import router as roputerProject
+from webapp.endpoints.staticEndPoint import router as staticProject
 
 logger = logging.getLogger(__name__)
 
@@ -26,17 +29,29 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+# 1. НАСТРОЙКА БЕЗОПАСНОСТИ
+# ⚠️ В реальности бери из .env файла! Например: SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SESSION_SECRET", "super-secret-key-change-in-production-123!")
+
 app.mount("/static", StaticFiles(directory="webapp/web/static"), name="static")
 app.include_router(staticProject)
 app.include_router(roputerProject)
 registrSignal()
 
 
-
 @app.middleware("http")
 async def session_context_middleware(request: Request, call_next):
     # 1. Достаем куку ПРЯМО из request. Никаких зависимостей Cookie() не нужно!
-    session_id = request.cookies.get("session_id", "default")
+    # 1. Пытаемся получить ID сессии из данных cookie
+    session_id = request.session.get("session_id")
+    
+    # 2. Если его нет (пользователь зашел впервые или cookie истекла)
+    if not session_id:
+        # Генерируем уникальный ID для этого сеанса
+        session_id = str(uuid.uuid4())
+        # Сохраняем его в сессию. 
+        # SessionMiddleware автоматически запишет это в cookie клиенту!
+        request.session["session_id"] = session_id
     
     # 2. Устанавливаем контекст
     token_session_id = current_session_id.set(session_id)
@@ -50,7 +65,15 @@ async def session_context_middleware(request: Request, call_next):
         
     return response
 
-
+# Подключаем middleware сессий
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SECRET_KEY,
+    session_cookie="my_web_app_session", # Имя cookie
+    max_age=60 * 60 * 24 * 7,            # Время жизни: 7 дней
+    same_site="lax",                     # Защита от CSRF
+    https_only=os.getenv("ENV") == "prod" # В продакшене только HTTPS
+)
 
 
 

@@ -5,6 +5,7 @@ beautifulsoup4
 Pillow
 dacite
 fastapi
+itsdangerous
 python-multipart
 sse-starlette
 colorlog
