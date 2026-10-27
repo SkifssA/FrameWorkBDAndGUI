@@ -2,7 +2,13 @@
 
 <link rel="stylesheet" href="{{ url_for('static', path='/css/list.css') }}">
 <section id="refresh:{{ meta.metaForm.name }}" class="panel panel--list" sse-swap="refresh:{{ meta.metaForm.name }}"
-    hx-swap="morph">
+    hx-swap="morph" {% if meta.metaForm.height_max or meta.metaForm.height_min or meta.metaForm.width_max or
+    meta.metaForm.width_min %}style="
+    {% if meta.metaForm.height_max %}max-height: {{ meta.metaForm.height_max }}px{% endif%}
+    {% if meta.metaForm.height_min %}min-height: {{ meta.metaForm.height_min }}px{% endif%}
+    {% if meta.metaForm.width_max %}  max-width: {{ meta.metaForm.width_max }}px{% endif%}
+    {% if meta.metaForm.width_min %}  min-width: {{ meta.metaForm.width_min }}px{% endif%}
+    " {% endif %}>
 
     <header class="action_panel">
         {{ render_action_buttons(meta) }}

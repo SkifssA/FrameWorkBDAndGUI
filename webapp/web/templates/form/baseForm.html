@@ -2,7 +2,7 @@
 <div id="closeForm" sse-swap="closeForm" hx-swap="outerHTML" class="form">
     {% if meta.metaForm.tabsCh.left != [] %}
     <div class="left" data-panel="left">{{ formChLeft | safe }}</div>
-    <div class="resize-handle" data-target="left" style="min-width: 8px !important;"></div>
+    <div class="resize-handle" data-target="left"></div>
     {% endif %}
     <div class="main">
         {% if meta.metaForm.typeForm == 'list' %}
@@ -23,7 +23,7 @@
         {% endif %}
     </div>
     {% if meta.metaForm.tabsCh.right != [] %}
-    <div class="resize-handle" data-target="right" style="min-width: 8px !important;"></div>
+    <div class="resize-handle" data-target="right"></div>
     <div class="right" data-panel="right">{{ formChRight | safe }}</div>
     {% endif %}
 </div>

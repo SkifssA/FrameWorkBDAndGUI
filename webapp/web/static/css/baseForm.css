@@ -52,8 +52,6 @@
 #closeForm.form .left,
 #closeForm.form .right {
     flex: 0 0 300px;
-    min-width: 200px;
-    max-width: 50vw;
     overflow: hidden;
     flex-shrink: 0;
     display: flex;
@@ -73,9 +71,6 @@
 /* ===== НИЖНЯЯ ПАНЕЛЬ ===== */
 #closeForm.form .bottom {
     flex: 0 0 200px;
-    /* Стартовая высота */
-    min-height: 100px;
-    max-height: 50vh;
     overflow: hidden;
     flex-shrink: 0;
     display: flex;

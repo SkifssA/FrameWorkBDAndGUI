@@ -25,6 +25,5 @@ if __name__ == "__main__":
         if class_:
             form = class_._getFormByName(sForm)()
             if form:
-                form.param('idItem', 1)
                 print(form.getData())
                 print(form.getInfoMeta())

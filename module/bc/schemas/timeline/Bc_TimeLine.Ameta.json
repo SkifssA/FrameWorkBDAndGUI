@@ -29,7 +29,7 @@
             "name": "TextCard",
             "isVisibleToolBar": true,
             "typeForm": "card",
-            "width_max": 700
+            "height_max": 700
         }
     ]
 }

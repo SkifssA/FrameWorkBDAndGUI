@@ -3,6 +3,7 @@
     "repres": [
         {
             "name": "List",
+            "width_max": 1000,
             "tabsCh": [
                 {
                     "nameClass": "Bc_ScriptSchedulerPub",

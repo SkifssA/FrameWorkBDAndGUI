@@ -1,21 +1,39 @@
-// static/js/resizer.js
-
 /**
- * Читает минимальный или максимальный лимит размера панели.
- * Сначала проверяет инлайн-стили (style="..."). 
- * Если их нет, возвращает дефолтное значение.
+ * Рекурсивно ищет первый элемент (начиная с panel), 
+ * у которого в инлайн-стилях задан нужный лимит.
  */
-function getLimit(panel, isVertical, type, container) {
-    const inlineProp = `${type}${isVertical ? 'Height' : 'Width'}`;
+function findElementWithLimit(element, cssProp) {
+    // Проверяем сам элемент
+    if (element.style && element.style.getPropertyValue(cssProp)) {
+        return element;
+    }
 
-    // Проверяем, задан ли лимит прямо в атрибуте style="..."
-    if (panel.style[inlineProp]) {
-        const computedVal = window.getComputedStyle(panel)[inlineProp];
+    // Рекурсивно ищем в детях
+    if (element.children) {
+        for (let child of element.children) {
+            const found = findElementWithLimit(child, cssProp);
+            if (found) return found;
+        }
+    }
+
+    return null;
+}
+
+function getLimit(panel, isVertical, type, container) {
+    const inlineProp = `${type}${isVertical ? 'Height' : 'Width'}`; // maxHeight
+    const cssProp = inlineProp.replace(/([A-Z])/g, '-$1').toLowerCase(); // max-height
+
+    // Ищем элемент с нужным стилем (рекурсивно по всем потомкам)
+    const targetElement = findElementWithLimit(panel, cssProp);
+
+    if (targetElement) {
+        // getComputedStyle переведёт значения в пиксели
+        const computedVal = window.getComputedStyle(targetElement)[inlineProp];
         const parsed = parseFloat(computedVal);
         if (!isNaN(parsed)) return parsed;
     }
 
-    // Если в инлайн-стилях ничего нет, возвращаем дефолтную логику
+    // Дефолтная логика, если стилей нет вообще нигде
     if (type === 'min') {
         return isVertical ? 100 : 160;
     } else {
@@ -65,6 +83,8 @@ function initResizer(container) {
             // 🔥 Передаём container в getLimit
             const min = getLimit(panel, isVertical, 'min', container);
             const max = getLimit(panel, isVertical, 'max', container);
+
+            console.log(min, max, panel)
 
             const clamped = Math.max(min, Math.min(max, newSize));
             panel.style.flexBasis = clamped + 'px';
