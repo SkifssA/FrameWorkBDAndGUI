@@ -56,7 +56,7 @@ def createFile(sPath: str):
     for app in set(apps):
         lFiles = FileManagerPkg.getFilesWithExtension(pathModile(app), ".Ameta.json") + \
             FileManagerPkg.getFilesWithExtension(pathModile(app), ".Dmeta.json")
-        metaFile = {i.as_uri()[i.as_uri().rfind('/')+1:]: i.as_uri()[i.as_uri().rfind('module'):] for i in lFiles}
+        metaFile = {i.as_uri()[i.as_uri().rfind('/')+1:]: i.as_uri()[x if (x:=i.as_uri().rfind('core')) else i.as_uri().rfind('module'):] for i in lFiles}
         FileManagerPkg.CreateFile(pathModile(app, "/cache/meta.json"), metaFile)
         _getInitModule(app)
 

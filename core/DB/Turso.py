@@ -21,6 +21,9 @@ class DbManager:
     url = None
     auth_token = None
 
+    def __init__(self):
+        self.db = None
+
     def setConf(self):
         if not self._initialized:
             conf = FileManagerPkg.ReadFile(self._pathConfig)
@@ -32,30 +35,29 @@ class DbManager:
     def ATSQL(self, SQLstr: str, parameters=None):
         self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
-        with create_client_sync(url=self.url, auth_token=self.auth_token) as db:
-            print(" ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
-            c = db.execute(SQLstr, parameters or [])
-            if c.rows:
-                d = c.rows[0][0]
-            else:
-                d = None
-            return d
+        print(" ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
+        c = self.db.execute(SQLstr, parameters or [])
+        if c.rows:
+            d = c.rows[0][0]
+        else:
+            d = None
+        return d
 
     def ASQL(self, SQLstr: str, parameters=None) -> dict[str, list]:
         self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
-        with create_client_sync(url=self.url, auth_token=self.auth_token) as db:
-            print(" ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
-            result = db.execute(SQLstr, parameters or [])
-            return {
-                "columns": list(result.columns),
-                "data": [dict(zip(result.columns, row)) for row in result.rows],
-            }
+        print(" ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
+        result = self.db.execute(SQLstr, parameters or [])
+        return {
+            "columns": list(result.columns),
+            "data": [dict(zip(result.columns, row)) for row in result.rows],
+        }
 
     def _ensure_initialized(self):
         """Гарантирует что конфигурация загружена"""
         if not self._initialized:
             self.setConf()
+            self.db = create_client_sync(url=self.url, auth_token=self.auth_token)
 
     def rebaseParameters(self, parameters):
         parameters = list(parameters or [])
