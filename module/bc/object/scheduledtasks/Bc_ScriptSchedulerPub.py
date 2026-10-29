@@ -1,6 +1,5 @@
 # Пользовательский файл для интерфейса
 from .Bc_ScriptSchedulerDvi import Bc_ScriptSchedulerDvi
-from core.sdk import Form
 
 
 class Bc_ScriptSchedulerPub(Bc_ScriptSchedulerDvi):
@@ -21,12 +20,12 @@ class Bc_ScriptSchedulerPub(Bc_ScriptSchedulerDvi):
 
     @classmethod
     def list(cls, **kwargs):
-        return Form(cls.List, cls, **kwargs)
+        return cls.List(cls, **kwargs)
 
     @classmethod
     def card(cls, **kwargs):
-        return Form(cls.Card, cls, **kwargs)
+        return cls.Card(cls, **kwargs)
 
     @classmethod
     def textCard(cls, **kwargs):
-        return Form(cls.TextCard, cls, **kwargs)
+        return cls.TextCard(cls, **kwargs)

@@ -25,7 +25,7 @@ def get_form_bar():
 
     return PutData(name_template=f"partials/form_bar_main_menu.html"
                    , context=context
-                   , caption_form=get_session().main_menu_form.object.metaInfo.caption)
+                   , caption_form=get_session().main_menu_form.metaInfo.caption)
 
 def get_form_bar_ch(event: formEvent):
     f = get_form(get_session().active_form)
@@ -35,11 +35,11 @@ def get_form_bar_ch(event: formEvent):
     }
 
     if (x:=event.form.split('.')[-1]) in f.children.keys():
-        f.active_ch = list(f.children.keys()).index(event.form.split('.')[-1]) + 1
+        f.active_ch = list(f.children.keys()).index(x)
 
     return PutData(name_template=f"partials/form_bar_ch.html"
                    , context=context
-                   , caption_form=get_session().main_menu_form.object.metaInfo.caption)
+                   , caption_form=get_session().main_menu_form.metaInfo.caption)
 
 def selected_app(event: formEvent) -> PutData:
     context = {
@@ -70,7 +70,7 @@ def open_form(event: formEvent) -> PutData:
     }
 
     if oper_form_object.childrenMeta['bottom'] != [] :
-        active_form_ch = oper_form_object.childrenMeta['bottom'][oper_form_object.active_ch-1]['metaForm']['name']
+        active_form_ch = oper_form_object.childrenMeta['bottom'][oper_form_object.active_ch]['metaForm']['name']
         context['active_form_ch'] = active_form_ch
         context['formChBottom'] = getHtmlForm(oper_form_object._get_children(active_form_ch), oper_form_object)
 
@@ -87,7 +87,7 @@ def open_form(event: formEvent) -> PutData:
 
     return PutData(name_template=name_template
                    , context=context
-                   , caption_form=oper_form_object.object.metaInfo.caption)
+                   , caption_form=oper_form_object.metaInfo.caption)
 
 def refresh_form(event: formEvent)->PutData:
     w = event.form.split('.')
@@ -109,7 +109,7 @@ def refresh_form(event: formEvent)->PutData:
 
     return PutData(name_template=name_template
                    , context=context
-                   , caption_form=oper_form_object.object.metaInfo.caption)
+                   , caption_form=oper_form_object.metaInfo.caption)
 
 def getHtmlForm(form, mainForm):
 
@@ -129,7 +129,7 @@ def getHtmlForm(form, mainForm):
         context['id_row'] = form.active_row
 
     if form.childrenMeta['bottom'] != [] :
-        active_form_ch = form.childrenMeta['bottom'][form.active_ch-1]['metaForm']['name']
+        active_form_ch = form.childrenMeta['bottom'][form.active_ch]['metaForm']['name']
         context['active_form_ch'] = active_form_ch
         context['formChBottom'] = getHtmlForm(mainForm._get_children(active_form_ch), mainForm)
 
@@ -153,7 +153,7 @@ def close_form(event: formEvent) -> PutData:
         get_session().open_form = {}
         return PutData(name_template=None
                        , context=None
-                       , caption_form=get_session().main_menu_form.object.metaInfo.caption)
+                       , caption_form=get_session().main_menu_form.metaInfo.caption)
 
     event.form = name_form
     return open_form(event)
@@ -168,7 +168,7 @@ def oper_app(event: formEvent) -> PutData:
     }
     return PutData(name_template=f"/form/mainmenu.html"
                    , context=context
-                   , caption_form=get_session().main_menu_form.object.metaInfo.caption)
+                   , caption_form=get_session().main_menu_form.metaInfo.caption)
 
 
 dataForEvent: dict[typeEvent, dict[str, Any]] = {

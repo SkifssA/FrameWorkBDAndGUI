@@ -19,10 +19,6 @@ class Default(Base):
     def addDepAttr(self, nameAttr:str):
         self._attr_parent_refresh.append({'attr':nameAttr, 'old_value': None})
 
-    def setParentForm(self, parentForm):
-        self.parentForm = parentForm
-        self.metaInfo.name = self.full_name()
-
     def full_name(self):
         return f'{self.parentForm.full_name() + CHR_SEPARATOR_PARENT if self.parentForm else ''}{self.name()}'
 

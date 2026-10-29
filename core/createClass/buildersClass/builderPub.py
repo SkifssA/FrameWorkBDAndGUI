@@ -4,7 +4,6 @@ from .builderBase import builderBase
 class builderPub(builderBase):
     temp = """# Пользовательский файл для интерфейса
 from .{name}Dvi import {name}Dvi
-from core.sdk import Form
 
 class {name}Pub({name}Dvi):
 
@@ -17,9 +16,9 @@ class {name}Pub({name}Dvi):
     class LookUp({name}Dvi.DviLookUp): pass
 
     @classmethod
-    def list(cls, **kwargs): return Form(cls.List, cls, **kwargs)
+    def list(cls, **kwargs): return cls.List(cls, **kwargs)
 
     @classmethod
-    def card(cls, **kwargs): return Form(cls.Card, cls, **kwargs)
+    def card(cls, **kwargs): return cls.Card(cls, **kwargs)
 """
     suffixFile = "Pub.py"

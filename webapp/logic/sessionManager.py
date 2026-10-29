@@ -19,7 +19,7 @@ def get_form(form_name:str, default=None):
     if isMainMenu:
         if not any(f == form_name for f in session.open_form.keys()):
             if default:
-                default.object.refresh()
+                default.refresh()
                 session.open_form[form_name] = default
             else:
                 session.open_form[form_name] = validateOpenClass(sNameTab=x.clsName, sForm=x.subClsName, session_id=session)

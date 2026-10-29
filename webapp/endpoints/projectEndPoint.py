@@ -27,7 +27,7 @@ async def action_oper(request: Request, form_id: str = Form(...)):
 async def openMainMenu(request: Request, form_id: str = Form(...)):
     "Открытие главного меню"
     form = get_main_menu(sNameMainMenu=form_id)
-    eventSignal.send(fromEvent=form.object._get_form_event(typeEvent.openApp))
+    eventSignal.send(fromEvent=form._get_form_event(typeEvent.openApp))
     return Response(content="", status_code=204)
 
 @router.post('/api/set-attr')

@@ -1,4 +1,4 @@
-from core.sdk import Oper, EmptyPub, Form
+from core.sdk import Oper, EmptyPub
 
 from module.bc.object.scheduledtasks.Bc_ScriptSchedulerPub import Bc_ScriptSchedulerPub
 from module.bc.object.timeline.Bc_TimeLinePub import Bc_TimeLinePub
@@ -26,4 +26,4 @@ class Bc_MainMenuPub(EmptyPub):
 
     @classmethod
     def default(cls):
-        return Form(cls.Default, cls)
+        return cls.Default(cls)

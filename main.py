@@ -23,8 +23,8 @@ if __name__ == "__main__":
         sNameTab, sForm = 'Bc_TimeLinePub', 'List'
         class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
         if class_:
-            form = class_._getFormByName(sForm)()
+            form = class_._getFormByName(sForm)
             if form:
-                form.object.refresh()
+                form.refresh()
                 print(form.getData())
                 print(form.getInfoMeta())

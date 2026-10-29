@@ -1,7 +1,7 @@
 # Пользовательский файл для интерфейса
 from .Bc_TimeLineDvi import Bc_TimeLineDvi
 from module.bc.object.scheduledtasks.Bc_ScriptSchedulerPub import Bc_ScriptSchedulerPub
-from core.sdk import Form, Oper, Setter
+from core.sdk import Oper, Setter
 
 
 class Bc_TimeLinePub(Bc_TimeLineDvi):
@@ -28,12 +28,12 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
 
     @classmethod
     def list(cls, **kwargs):
-        return Form(cls.List, cls, **kwargs)
+        return cls.List(cls, **kwargs)
 
     @classmethod
     def card(cls, **kwargs):
-        return Form(cls.Card, cls, **kwargs)
+        return cls.Card(cls, **kwargs)
 
     @classmethod
     def textCard(cls, **kwargs):
-        return Form(cls.TextCard, cls, **kwargs)
+        return cls.TextCard(cls, **kwargs)

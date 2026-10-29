@@ -12,7 +12,7 @@ class EmptyPub:
     thisLogic: EmptyLogic
 
     @classmethod
-    def _getFormByName(cls, sForm: str) -> object:
+    def _getFormByName(cls, sForm: str) -> 'EmptyPub.Base':
         sFormZero = sForm.split('?')[0]
         sFormZero = sFormZero[0].lower() + sFormZero[1:]
         if x := getattr(cls, sFormZero):
@@ -21,9 +21,7 @@ class EmptyPub:
 
     @classmethod
     def list(cls, **kwargs):
-        from core.fabric.Form import Form
-
-        return Form(cls.List, cls, **kwargs)
+        return cls.List(cls, **kwargs)
 
     @classmethod
     def get_name(cls)->str:
@@ -42,18 +40,9 @@ class EmptyPub:
         def closeProject(self):
             eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeApp))
 
-    class Default(emptyDefault, Base):
-        def __init__(self, parentClass):
-            super().__init__(parentClass)
+    class Default(emptyDefault):...
 
-            self.parentForm = None
-            self._attr_parent_refresh = []
-            
-            self.after_init()
-
-        def after_init(self):...
-
-    class List(Default):   
+    class List(emptyDefault):   
         def onRefresh(self):
             return self.structuredQuery()
 
@@ -68,12 +57,14 @@ class EmptyPub:
         @Oper(label="Удалить", order=40)
         def openCard(self):
             self.thisLogic().delete(self.thisLogic().load(self.getAttr('id')))
+            if self.active_row >= len(self.getData())-1:
+                self.active_row -= 1
             self.refresh()
 
         @abstractmethod
         def structuredQuery(self) -> str: ...
 
-    class Card(Default):
+    class Card(emptyDefault):
         def onRefresh(self):
             return self.thisLogic().load(self.getAttr('idItem'))
 
