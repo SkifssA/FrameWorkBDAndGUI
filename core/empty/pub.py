@@ -35,9 +35,6 @@ class EmptyPub:
         def onRefreshExt(self): ""
         def onRefresh(self): ""
 
-        def full_name(self):
-            return self._get_parent_name()
-
         @Oper(label='Приложение', order=-10)
         def project(self):...
 
@@ -56,32 +53,10 @@ class EmptyPub:
 
         def after_init(self):...
 
-    class List(Default):
-        def __init__(self, parentClass):
-            super().__init__(parentClass)
-            self._active_row = 1
+    class List(Default):   
+        def onRefresh(self):
+            return self.structuredQuery()
 
-        @property
-        def active_row(self):
-            return self._active_row
-
-        @active_row.setter
-        def active_row(self, value):
-            self._active_row = value
-            
-        def _get_form(self, nameAttr):
-            res = {
-                'value' : None,
-                'isNotValue': True
-            }
-            if (x:=self.dataFetcher.getData()) != []:
-                if ((y:=list(i for i in x if i.get('id') == self.active_row)) != []):
-                    if nameAttr in y[-1]:
-                        res['value']  = y[-1].get(nameAttr)
-                        res["isNotValue"] = False
-
-            return res
-        
         @Oper(label="Создать запись", order=25)
         def insert(self):
             self._parent_class.card().param('idItem', self.thisLogic().insert().id).open()
@@ -95,22 +70,12 @@ class EmptyPub:
             self.thisLogic().delete(self.thisLogic().load(self.getAttr('id')))
             self.refresh()
 
-        def onRefresh(self):
-            return self.structuredQuery()
-
         @abstractmethod
         def structuredQuery(self) -> str: ...
 
     class Card(Default):
         def onRefresh(self):
             return self.thisLogic().load(self.getAttr('idItem'))
-
-        def afterSetter(self, nameAttr):
-            self.dataFetcher._obj(self.thisObj())
-            return super().afterSetter(nameAttr)
-
-        def thisObj(self):
-            return self.dataFetcher._obj_res
 
         @Oper(label="Сохранить", order=40)
         def saveForm(self):

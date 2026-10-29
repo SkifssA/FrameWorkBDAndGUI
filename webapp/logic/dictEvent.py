@@ -34,7 +34,7 @@ def get_form_bar_ch(event: formEvent):
         "active_form_ch": event.form
     }
 
-    if event.form.split('.')[-1] in f.children.keys():
+    if (x:=event.form.split('.')[-1]) in f.children.keys():
         f.active_ch = list(f.children.keys()).index(event.form.split('.')[-1]) + 1
 
     return PutData(name_template=f"partials/form_bar_ch.html"
@@ -72,15 +72,15 @@ def open_form(event: formEvent) -> PutData:
     if oper_form_object.childrenMeta['bottom'] != [] :
         active_form_ch = oper_form_object.childrenMeta['bottom'][oper_form_object.active_ch-1]['metaForm']['name']
         context['active_form_ch'] = active_form_ch
-        context['formChBottom'] = getHtmlForm(oper_form_object._get_children('.'.join(active_form_ch.split('.')[-2:])), oper_form_object)
+        context['formChBottom'] = getHtmlForm(oper_form_object._get_children(active_form_ch), oper_form_object)
 
     if oper_form_object.childrenMeta['right'] != [] :
         for i in oper_form_object.childrenMeta['right']:
-            context['formChRight'] += getHtmlForm(oper_form_object._get_children('.'.join(i['metaForm']['name'].split('.')[-2:])), oper_form_object) + '\n'
+            context['formChRight'] += getHtmlForm(oper_form_object._get_children(i['metaForm']['name']), oper_form_object) + '\n'
     
     if oper_form_object.childrenMeta['left'] != [] :
         for i in oper_form_object.childrenMeta['left']:
-            context['formChLeft'] += getHtmlForm(oper_form_object._get_children('.'.join(i['metaForm']['name'].split('.')[-2:])), oper_form_object) + '\n'
+            context['formChLeft'] += getHtmlForm(oper_form_object._get_children(i['metaForm']['name']), oper_form_object) + '\n'
 
     if meta_form['metaForm']['typeForm'] == 'list':
         context['id_row'] = oper_form_object.active_row

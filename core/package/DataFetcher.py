@@ -12,22 +12,22 @@ class DataFetcher:
 
         self.class_: EmptyPub = class_
         self._obj_res = None
-        self._data = []
+        self._data:list[EmptyObj] = []
         self._attr = []
         self._dataExt = []
         self._attrExt = []
         self._old_data = []
 
-    def getAttr(self):
+    def getColumns(self):
         return self._attr + self._attrExt
 
-    def getAttrExt(self):
+    def getColumnsExt(self):
         return self._attrExt
 
     def getData(self):
         if len(self._dataExt) > 0:
-            return list(d | dE for d, dE in zip(self._data, self._dataExt))
-        return self._data
+            return list(d.getDict(isNotNone=False) | dE for d, dE in zip(self._data, self._dataExt))
+        return list(d.getDict(isNotNone=False) for d in self._data)
 
     def getDateExt(self):
         return self._dataExt
@@ -44,15 +44,21 @@ class DataFetcher:
 
     def refreshItem(self):
         refreshExtRes = self.class_.onRefreshExt()
-        self._dataExt, self._attrExt = self._str(refreshExtRes)
+        self._dataExt, self._attrExt = self._str(refreshExtRes, isExt=True)
 
-    def _str(self, res):
+    def _str(self, res, isExt:bool=False):
         data = []
         attr = []
         if res != "" and res != None:
             sqlAndParam = self._getSqlAndParam(res)
             resSQL = ASQL(*sqlAndParam)
-            data = resSQL["data"]
+            if not isExt:
+                self._attrExt = list(i for i in resSQL['columns'] if i not in resSQL['data'][0].keys())
+                for i in resSQL["data"]:
+                    data.append(self.class_.thisLogic()._createObj(i))
+                    self._dataExt.append({i:resSQL['data'][0][i] for i in self._attrExt})
+            else:
+                data = resSQL["data"]
             attr = resSQL["columns"]
         return data, attr
 
@@ -69,7 +75,6 @@ class DataFetcher:
         pass
 
     def _obj(self, res: EmptyObj):
-        self._obj_res = res
-        self._data = [res.getDict(isNotNone=False)]
-        self._attr = list(self._data[0].keys())
+        self._data = [res]
+        self._attr = list(self._data[0].getDict(isNotNone=False).keys())
         self.refreshItem()

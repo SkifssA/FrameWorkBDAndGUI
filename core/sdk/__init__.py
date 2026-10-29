@@ -25,6 +25,7 @@ from core.fabric.Form import Form
 
 from core.dataClass.formEvent import formEvent, typeEvent
 from core.dataClass.setterEvent import SetterEvent
+from core.dataClass.formRef import FormRef
 
 # --- Инструменты ядра --------------------------------------------------------
 from core.package.LazyVal import LazyVal
@@ -67,5 +68,6 @@ __all__ = [
     #Разное
     "formEvent",
     "typeEvent",
-    "SetterEvent"
+    "SetterEvent",
+    "FormRef"
 ]

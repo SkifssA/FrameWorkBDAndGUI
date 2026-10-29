@@ -1,6 +1,6 @@
 from webapp.logic.validate import validateOpenClass
 
-from core.sdk import current_session_id
+from core.sdk import current_session_id, FormRef
 
 from webapp.logic.dataClass import Session
 
@@ -15,15 +15,14 @@ def get_open_form()->list[dict]:
 
 def get_form(form_name:str, default=None):
     session = get_session()    
-    isMainMenu = len(x:=form_name.split('/')) > 1
+    isMainMenu = (x:=FormRef.createByStr(form_name)).subClsName
     if isMainMenu:
         if not any(f == form_name for f in session.open_form.keys()):
             if default:
                 default.object.refresh()
                 session.open_form[form_name] = default
             else:
-                sNameTab, sForm = x
-                session.open_form[form_name] = validateOpenClass(sNameTab=sNameTab, sForm=sForm, session_id=session)
+                session.open_form[form_name] = validateOpenClass(sNameTab=x.clsName, sForm=x.subClsName, session_id=session)
 
         return session.open_form[form_name]
 

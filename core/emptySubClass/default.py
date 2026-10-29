@@ -1,18 +1,20 @@
 from core.dataClass.formEvent import typeEvent
 from core.decorator.oper import Oper
 from core.context import eventSignal
+from core.emptySubClass.base import Base
+from core.dataClass.formRef import FormRef, CHR_SEPARATOR_PARENT
 
-class Default:
+class Default(Base):
     def getAttr(self, nameAttr:str):
-                prefix = nameAttr.split("$")[0]
-                if prefix.lower() == 'super':
-                    return self.parentForm.getAttr(nameAttr[nameAttr.find("$")+1:])
-    
-                res = super().getAttr(nameAttr)
-                if res['isNotValue']:
-                    res = self.parentForm.getAttr(nameAttr)
-    
-                return res['value'] if isinstance(res, dict) else res
+        prefix = nameAttr.split("$")[0]
+        if prefix.lower() == 'super':
+            return self.parentForm.getAttr(nameAttr[nameAttr.find("$")+1:])
+
+        res = super().getSelfAttr(nameAttr)
+        if res['isNotValue']:
+            res = self.parentForm.getAttr(nameAttr)
+
+        return res['value'] if isinstance(res, dict) else res
     
     def addDepAttr(self, nameAttr:str):
         self._attr_parent_refresh.append({'attr':nameAttr, 'old_value': None})
@@ -22,10 +24,10 @@ class Default:
         self.metaInfo.name = self.full_name()
 
     def full_name(self):
-        return f'{self.parentForm.full_name() + '.' if self.parentForm else ''}{self.name()}'
+        return f'{self.parentForm.full_name() + CHR_SEPARATOR_PARENT if self.parentForm else ''}{self.name()}'
 
     def name(self):
-        return f'{self._get_parent_name()}/{self.__class__.__name__}'
+        return FormRef.create(self._get_parent_name(), self.__class__.__name__).getStr()
 
     @Oper(label='Обновить', order=10)
     def refresh(self):
@@ -38,4 +40,3 @@ class Default:
 
     def update_meta_form(self):...
     def afterSetter(self, nameAttr):...
-    def thisObj(self):...

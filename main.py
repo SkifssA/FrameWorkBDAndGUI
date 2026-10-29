@@ -25,5 +25,6 @@ if __name__ == "__main__":
         if class_:
             form = class_._getFormByName(sForm)()
             if form:
+                form.object.refresh()
                 print(form.getData())
                 print(form.getInfoMeta())

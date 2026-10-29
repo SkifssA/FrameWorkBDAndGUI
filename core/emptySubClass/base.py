@@ -17,16 +17,24 @@ class Base(ABC):
         )
         self.registry = self._initRegistry()
         self._param = {}
+        self._active_row = 0
 
     def thisLogic(self)->EmptyLogic:
         return self._parent_class.thisLogic()
 
-    def getAttr(self, nameAttr):
+    def thisObj(self):
+        return self.dataFetcher._data[self._active_row]
+
+    def getSelfAttr(self, nameAttr):
         res = self._get_form(nameAttr)
         if res['isNotValue']:
             res = self._get_param(nameAttr)
 
         return res
+
+    def afterSetter(self, nameAttr):
+        self.dataFetcher._obj(self.thisObj())
+        return super().afterSetter(nameAttr)
 
     def _get_form(self, nameAttr):
         res = {
@@ -34,8 +42,8 @@ class Base(ABC):
             'isNotValue': True
         }
         if (x:=self.dataFetcher.getData()) != []:
-            if nameAttr in x[0]:
-                res['value']  = x[0][nameAttr]
+            if nameAttr in x[self._active_row]:
+                res['value']  = x[self._active_row][nameAttr]
                 res["isNotValue"] = False
 
         return res
@@ -76,7 +84,7 @@ class Base(ABC):
         return self._parent_class.get_name()
 
     def full_name(self):
-        return f'{self._get_parent_name()}/{self.__class__.__name__}{f'?id={x}' if (x:=self.getAttr('idItem')) else ''}'
+        return self._get_parent_name()
 
     def _get_form_event(self, typeEvent: str):
         return formEvent(form=self.full_name()
@@ -93,10 +101,3 @@ class Base(ABC):
     def onRefresh(self): ...
     @abstractmethod
     def onRefreshExt(self): ...
-
-    # @abstractmethod
-    # def getAttr(self):...
-    # @abstractmethod
-    # def save(self):...
-    # @abstractmethod
-    # def delete(self):...
