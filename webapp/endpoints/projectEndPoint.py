@@ -12,26 +12,26 @@ EndPoints для клиентских действий
 --------------------------------------------------------
 """
 @router.post("/api/close-form")
-async def action_oper(request: Request, form_id: str = Form(...)):
+async def close_form(request: Request, form_id: str = Form(...)):
     "Закрытие формы"
     get_form(form_id).close()
     return Response(content="", status_code=204)
 
 @router.post("/api/selected-form")
-async def action_oper(request: Request, form_id: str = Form(...)):
+async def selected_form(request: Request, form_id: str = Form(...)):
     "Переключение вкладки"
     get_form(form_id)._open_iu()
     return Response(content="", status_code=204)
 
 @router.post('/api/selected-app')
-async def openMainMenu(request: Request, form_id: str = Form(...)):
+async def selected_app(request: Request, form_id: str = Form(...)):
     "Открытие главного меню"
     form = get_main_menu(sNameMainMenu=form_id)
     eventSignal.send(fromEvent=form._get_form_event(typeEvent.openApp))
     return Response(content="", status_code=204)
 
 @router.post('/api/set-attr')
-async def openMainMenu(request: Request):
+async def set_attr(request: Request):
     "Установка значений в obj"
     form_data = await request.form()
     for key, value in form_data.items():
@@ -40,7 +40,7 @@ async def openMainMenu(request: Request):
     return Response(content="", status_code=204)
 
 @router.post('/api/select-row')
-async def openMainMenu(request: Request, id_row: int = Form(...), form_id: str = Form(...)):
+async def select_row(request: Request, id_row: int = Form(...), form_id: str = Form(...)):
     "Установка выбраной строки"
     form_name = get_session().active_form
     if form:=get_session().open_form.get(form_name):
@@ -49,7 +49,7 @@ async def openMainMenu(request: Request, id_row: int = Form(...), form_id: str =
     return Response(content="", status_code=204)
 
 @router.post('/api/selected-form-ch')
-async def openMainMenu(request: Request, form_id: str = Form(...)):
+async def selected_form_ch(request: Request, form_id: str = Form(...)):
     "Установка выбраной строки"
     form_name = get_session().active_form
     if form:=get_session().open_form.get(form_name):

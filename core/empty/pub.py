@@ -55,7 +55,7 @@ class EmptyPub:
             self._parent_class.card().param('idItem', self.getAttr('id')).open()
 
         @Oper(label="Удалить", order=40)
-        def openCard(self):
+        def delete(self):
             self.thisLogic().delete(self.thisLogic().load(self.getAttr('id')))
             if self.active_row >= len(self.getData())-1:
                 self.active_row -= 1

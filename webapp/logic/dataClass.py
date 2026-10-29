@@ -2,14 +2,14 @@ import asyncio
 from typing import Any
 
 from dataclasses import dataclass, asdict, is_dataclass, fields
-from core.sdk import Base
+from core.sdk import BaseSubClass
 
 @dataclass
 class Session:
     id:str
     queue: asyncio.Queue = None
-    main_menu_form: Base = None
-    open_form: dict[str, Base] = None
+    main_menu_form: BaseSubClass = None
+    open_form: dict[str, BaseSubClass] = None
     active_form: str = None
 
 @dataclass

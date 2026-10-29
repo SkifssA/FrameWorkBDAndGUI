@@ -1,7 +1,9 @@
 # Пользовательский файл для интерфейса
+from dataclasses import dataclass
+
 from .Bc_TimeLineDvi import Bc_TimeLineDvi
 from module.bc.object.scheduledtasks.Bc_ScriptSchedulerPub import Bc_ScriptSchedulerPub
-from core.sdk import Oper, Setter
+from core.sdk import Oper, Setter, BaseDataClass
 
 
 class Bc_TimeLinePub(Bc_TimeLineDvi):
@@ -23,6 +25,16 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
         def onRefresh(self):
             return self.thisLogic().load(self.getAttr('super$id'))
 
+    class ImgCard(Bc_TimeLineDvi.DviCard):
+        @dataclass
+        class Img(BaseDataClass):
+            urlImg: str
+
+        def onRefresh(self):
+            return self.Img(urlImg='https://img.cdngos.com/anime/6a/6ab39ccfc3d3a105557463')
+
+        def onRefreshExt(self): return ''
+
     class LookUp(Bc_TimeLineDvi.DviLookUp):
         pass
 
@@ -37,3 +49,7 @@ class Bc_TimeLinePub(Bc_TimeLineDvi):
     @classmethod
     def textCard(cls, **kwargs):
         return cls.TextCard(cls, **kwargs)
+
+    @classmethod
+    def imgCard(cls, **kwargs):
+        return cls.ImgCard(cls, **kwargs)

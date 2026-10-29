@@ -20,10 +20,10 @@ if __name__ == "__main__":
             runServer()
     else:
         from core.sdk import ACTIONDISPATCHER
-        sNameTab, sForm = 'Bc_TimeLinePub', 'List'
+        sNameTab, sForm = 'Bc_TimeLinePub', 'ImgCard'
         class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
         if class_:
-            form = class_._getFormByName(sForm)
+            form = class_._getFormByName(sForm)()
             if form:
                 form.refresh()
                 print(form.getData())

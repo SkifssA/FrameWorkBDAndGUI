@@ -16,12 +16,16 @@
             "tabsCh": [
                 {
                     "nameClass": "Bc_ScriptSchedulerPub",
-                    "repres": "List",
-                    "location": "right"
+                    "repres": "List"
                 },
                 {
                     "nameClass": "Bc_TimeLinePub",
                     "repres": "TextCard"
+                },
+                {
+                    "nameClass": "Bc_TimeLinePub",
+                    "repres": "ImgCard",
+                    "location": "right"
                 }
             ]
         },
@@ -29,6 +33,12 @@
             "name": "TextCard",
             "isVisibleToolBar": true,
             "typeForm": "card",
+            "height_max": 700
+        },
+        {
+            "name": "ImgCard",
+            "isVisibleToolBar": true,
+            "typeForm": "image",
             "height_max": 700
         }
     ]

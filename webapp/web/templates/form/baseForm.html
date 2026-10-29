@@ -9,6 +9,8 @@
         {% include "form/list.html" %}
         {% elif meta.metaForm.typeForm == 'card' %}
         {% include "form/card.html" %}
+        {% elif meta.metaForm.typeForm == 'image' %}
+        {% include "form/image.html" %}
         {% else %}
         <div>ТАКОГО ТИПА ФОРМЫ КАК {{meta.metaForm.typeForm}} НЕТ</div>
         {% endif %}

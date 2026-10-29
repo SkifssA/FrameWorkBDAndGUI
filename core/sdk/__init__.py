@@ -9,6 +9,9 @@
 импорта — они подключаются лениво, внутри соответствующих классов.
 """
 
+import core.validateStart
+
+
 from pathlib import Path
 
 # --- Пути проекта -----------------------------------------------------------
@@ -19,10 +22,11 @@ from core.empty.logic import EmptyLogic
 from core.empty.obj import EmptyObj
 from core.empty.pub import EmptyPub, eventSignal
 
-from core.emptySubClass.base import Base
+from core.emptySubClass.base import Base as BaseSubClass
 
 from core.decorator import Oper, Setter
 
+from core.dataClass.baseDataClass import Base as BaseDataClass
 from core.dataClass.formEvent import formEvent, typeEvent
 from core.dataClass.setterEvent import SetterEvent
 from core.dataClass.formRef import FormRef

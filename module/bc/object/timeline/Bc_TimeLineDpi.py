@@ -16,7 +16,11 @@ class Bc_TimeLineDpi(EmptyLogic[Bc_TimeLineObj]):
         return "Bc_TimeLine"
 
     def calcHeadLine(self, rop:Bc_TimeLineObj)->str:
-        return f'{rop.sName}'
+        try:
+            return f'{rop.sName}'
+        except AttributeError:
+            return ''
+        
 
     def calcMnemoCode(self, rop:Bc_TimeLineObj)->str:
         return f'{rop.sCode}'
