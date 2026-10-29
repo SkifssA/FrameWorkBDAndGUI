@@ -32,8 +32,8 @@
 
 ```
 core/                 # ядро: генератор классов, ActionDispatcher, БД, мета-классы
-server/main.py        # FastAPI: API + рендеринг UI
-module/<mod>/         # модули-приложения (bc, awh, ...)
+webapp/main.py        # FastAPI: API + рендеринг UI
+module/<mod>/         # модули-приложения (сейчас в репозитории: bc)
 ```
 
 ### Модель взаимодействия
@@ -76,17 +76,45 @@ module/<mod>/
 
 ## Запуск
 
+Требования: **Python ≥ 3.12**.
+
 ```bash
 pip install -r requirements.txt
 
-python main.py launchServer
+# 1. Настройка БД (config.json не хранится в git — секреты)
+cp core/config/config.example.json core/config/config.json
+# и укажите в нём database.url и database.auth_token (libsql/Turso)
 
-# вспомогательные генераторы
-python main.py createTab        # создать объект (таб)
-python main.py createModule     # создать модуль
+# 2. Запуск сервера (http://127.0.0.1:8000)
+python main.py launchServer
 ```
 
-Десктопный режим — запуск того же веб-интерфейса в нативном окне-обёртке (В планах)
+Для сессий можно задать свой секрет: `export SESSION_SECRET=...`
+(иначе используется dev-значение из `webapp/main.py` — только для локального запуска).
+
+### Вспомогательные генераторы (код-генерация)
+
+```bash
+python main.py createSours <путь>    # сгенерировать исходники объекта (таба)
+python main.py createClass <путь>    # создать класс-объект (таб)
+python main.py createModule          # создать модуль (sys / «система»)
+```
+
+Без аргументов `main.py` запускает `createTab` по умолчанию — это convenience-режим
+разработки, путь в нём захардкожен под машину автора и может быть неактуален.
+
+### Тесты и проверки
+
+```bash
+pytest                      # тесты (см. tests/README.md)
+ruff check .                # линтер
+black .                     # форматирование
+mypy .                      # типы
+# или интерактивное меню: dev.bat (Windows)
+```
+
+Десктопный режим — запуск того же веб-интерфейса в нативном окне-обёртке (`LAUNCH APP.cmd`,
+ожидает локальный Python в `./python/`) — **в планах**, контракт CLI `launchApp` ещё не реализован в `main.py`.
 
 ---
 
@@ -95,9 +123,12 @@ python main.py createModule     # создать модуль
 1. Браузер загружает **App Shell** — один раз, дальше навигация без перезагрузки страницы.
 2. HTMX тянет из сервера **фрагменты** (список, карточка, форма), отрендеренные Jinja2
    из метаданных объекта.
-3. Кнопки/действия в UI = вызовы `@Oper`-методов через GET-эндпоинт вида
-   `/api/action/{tab}/{method}` — прямого доступа к логике нет.
-4. SSE-поток доставляет события (обновление данных, прогресс длительных задач) «как WebSocket».
+3. Кнопки/действия в UI = вызовы `@Oper`-методов через эндпоинты вида
+   `POST /action/{oper}` (операции формы) и `GET /{menu}/{form}/action/{oper}`
+   (операции главного меню) — с whitelist-проверкой `getSetterAndOperName()`,
+   прямого доступа к логике нет.
+4. SSE-поток (`GET /events`, `sse-starlette`) доставляет события (обновление данных,
+   прогресс длительных задач) «как WebSocket».
 5. Межмодульные вызовы — только через `ActionDispatcher.action("Cls.method")` и хуки.
 
 ---

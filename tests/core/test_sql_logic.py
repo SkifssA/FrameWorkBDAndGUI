@@ -52,8 +52,15 @@ class TestSqlBuilding:
         assert call["parameters"] == [7]
 
     def test_insert(self, logic, monkeypatch_sql):
-        logic._insert()
-        assert monkeypatch_sql[0]["sql"] == "INSERT INTO Anime (id) VALUES (NULL)"
+        # Сигнатура _insert(keys, value) — как её вызывает EmptyLogic.commit()
+        logic._insert(["id", "sHeadLine"], {"id": 1, "sHeadLine": "One"})
+        call = monkeypatch_sql[0]
+        assert call["sql"] == "INSERT INTO Anime (id, sHeadLine) VALUES (?,?)"
+        assert call["parameters"] == (1, "One")
+
+    def test_insert_validation(self, logic, monkeypatch_sql):
+        with pytest.raises(ValueError, match="SQLValidate"):
+            logic._insert(["id; DROP TABLE x"], {"id; DROP TABLE x": 1})
 
     def test_getAll(self, logic, monkeypatch_sql):
         logic._getAll()

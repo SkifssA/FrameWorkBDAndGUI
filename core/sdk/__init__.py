@@ -9,7 +9,7 @@
 импорта — они подключаются лениво, внутри соответствующих классов.
 """
 
-import core.validateStart
+from core.validateStart import validateConfig
 
 
 from pathlib import Path
@@ -39,11 +39,17 @@ from core.package.FileManager import FileManager, FileManagerPkg
 from core.package.MetadataManager import MetadataManager
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 
-# --- Переменые контекста  ---------------------------------------------------
-from core.context import current_session_id
-
+# --- Системный модуль sc: реестр классов -------------------------------------
+# Sc_ClsLogic — источник истины о том, какому модулю принадлежит класс/таблица
+# (getPrefixModule). Импорт ставим после METADATA/ACTIONDISPATCHER: сам модуль
+# sc при инициализации использует FileManagerPkg из этого пакета.
 METADATA = MetadataManager()
 ACTIONDISPATCHER = ModuleManagerPkg()
+
+from core.module.sc.object.cls.Sc_ClsLogic import Sc_ClsLogic
+
+# --- Переменые контекста  ---------------------------------------------------
+from core.context import current_session_id
 
 __all__ = [
     # пути
@@ -65,6 +71,8 @@ __all__ = [
     # Готовые экземпляры
     "METADATA",
     "ACTIONDISPATCHER",
+    # Системный модуль sc (реестр классов)
+    "Sc_ClsLogic",
     # Сигналы
     "eventSignal",
     # Переменые контекста
@@ -73,5 +81,6 @@ __all__ = [
     "formEvent",
     "typeEvent",
     "SetterEvent",
-    "FormRef"
+    "FormRef",
+    "validateConfig"
 ]

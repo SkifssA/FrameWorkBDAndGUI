@@ -64,7 +64,7 @@ EndPoints для действий ядра
 --------------------------------------------------------
 """
 @router.get("/{sNameMainMenu}/{sForm}/action/{oper}")
-async def action_oper(request: Request, sNameMainMenu:str, sForm: str, oper: str):
+async def mm_action_oper(request: Request, sNameMainMenu:str, sForm: str, oper: str):
     "Операции главного меню"
     form = get_session().main_menu_form
     if form:

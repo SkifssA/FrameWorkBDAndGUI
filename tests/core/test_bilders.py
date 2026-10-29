@@ -1,13 +1,13 @@
 """Генераторы кода (builders): golden-тесты текста, защита ручного кода, опциональные поля."""
 
-from dataclasses import dataclass, field
+import ast
 
 import pytest
 
 from core.createClass.buildersClass.builderBase import builderBase
 from core.createClass.buildersClass.builderDpi import builderDpi
 from core.createClass.buildersClass.builderLogic import builderLogic
-from core.dataClass.tabDataClass import tabSchema, attrSchema, collectionsSchema
+from core.dataClass.tabDataClass import attrSchema, collectionsSchema, tabSchema
 
 
 @pytest.fixture()
@@ -44,14 +44,18 @@ class TestGeneratedText:
         builderDpi(tab).createFileD("out")
         code = captured_files["out/Awh_AnimeDpi.py"]
         assert "class Awh_AnimeObj(EmptyObj):" in code
-        # Известное отклонение от шаблона в core.sdk: генератор всегда пишет
-        # `EmptyLogic` без параметра [Obj], хотя модули в project сгенерированы
-        # со старым шаблоном `EmptyLogic[Obj]`. Зафиксируем фактическое поведение.
-        assert "class Awh_AnimeDpi(EmptyLogic):" in code
+        assert "class Awh_AnimeDpi(EmptyLogic[Awh_AnimeObj]):" in code
         assert 'return "Awh_Anime"' in code      # _getNameClass
         assert "{rop.sCaption}" in code          # headline из isHeadLine
         assert "{rop.sUrl}" in code              # mnemocode из isMnemoCode
         assert "def setsCaption(self, obj:Awh_AnimeObj, value)" in code
+        # id объявлен один раз (обязательное поле), дублей нет
+        assert code.count("id:int") == 1
+
+    def test_generated_dpi_is_valid_python(self, tab, captured_files):
+        """Сгенерированный код обязан быть синтаксически корректным."""
+        builderDpi(tab).createFileD("out")
+        ast.parse(captured_files["out/Awh_AnimeDpi.py"])
 
     def test_logic_template_minimal(self, tab, captured_files):
         builderLogic(tab).createFileD("out")
@@ -68,7 +72,14 @@ class TestGeneratedText:
         builderDpi(tab).createFileD("out")
         assert "return f'{rop.id}'" in captured_files["out/Awh_GenreDpi.py"]
 
-    def test_delete_details_for_collections(self, captured_files):
+    def test_delete_details_for_collections(self, captured_files, monkeypatch):
+        """Модуль для collection берётся из реестра классов sc (Sc_ClsLogic),
+        а не из соглашения имён."""
+        from core.module.sc.object.cls.Sc_ClsLogic import Sc_ClsLogic
+
+        monkeypatch.setattr(
+            Sc_ClsLogic, "getPrefixModule", lambda self, code: "awh", raising=True
+        )
         tab = tabSchema(
             name="Awh_Anime",
             caption="Аниме",
@@ -123,19 +134,17 @@ class TestCreateFileBehaviour:
 
 class TestTemplateRobustness:
     def test_empty_attr_list_still_renders(self, captured_files):
-        """Генератор не падает на пустом списке атрибутов.
+        """Генератор не падает на пустом списке атрибутов и выдаёт валидный код.
 
-        Известный дефект шаблона: при attr=[] строка `id:int` всё равно
-        печатается из-за литерала в шаблоне, а `{attrObj}` даёт `" = None"` —
-        итоговый код синтаксически некорректен. Тест фиксирует фактическое
-        поведение и защищает от регрессий (например, KeyError при format).
+        Регрессия на старый дефект шаблона: при attr=[] печаталось `\" = None\"`.
         """
         empty = tabSchema(name="T", caption="T", attr=[])
         builderDpi(empty).createFileD("out")
         code = captured_files["out/TDpi.py"]
-        assert "class TDpi(EmptyLogic):" in code
+        assert "class TDpi(EmptyLogic[TObj]):" in code
         assert "return f'{rop.id}'" in code  # fallback headline/mnemocode на id
-        assert "\n     = None\n" in code  # зафиксированный дефект пустого attrObj
+        assert "= None" not in code          # мусорных строк от пустого attrObj нет
+        ast.parse(code)                      # синтаксис корректен
 
     def test_no_collections_gives_empty_delete_block(self, captured_files):
         tab = tabSchema(

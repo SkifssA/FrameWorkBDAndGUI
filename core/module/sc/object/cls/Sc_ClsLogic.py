@@ -22,3 +22,22 @@ class Sc_ClsLogic(Sc_ClsDpi):
             self.commit(obj)
             return id_
         return 1
+
+    def getPrefixModule(self, sCode:str)->str:
+        """Префикс модуля класса по его коду (имени таблицы).
+
+        Ищем класс в реестрах META_FILE всех модулей (ядро core/module/* и
+        пользовательские module/*); если класс не найден — фолбэк на соглашение
+        имён 'Префикс_Имя' (core.package.ModuleManagerPkg.getModule).
+        """
+        from core.package.ModuleManagerPkg import ModuleManagerPkg, getModule
+
+        mgr = ModuleManagerPkg()
+        for name in mgr.getNameModule():
+            try:
+                metaCache = mgr._getModule(name).META_FILE
+            except Exception:
+                continue
+            if any(f.startswith(f"{sCode}.") for f in metaCache):
+                return name
+        return getModule(sCode)

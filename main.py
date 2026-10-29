@@ -17,6 +17,8 @@ if __name__ == "__main__":
             createModule("sys", "система")
         elif args[0] == "launchServer":
             from webapp.main import runServer
+            from core.sdk import validateConfig
+            validateConfig()
             runServer()
     else:
         from core.createClass import createTab
