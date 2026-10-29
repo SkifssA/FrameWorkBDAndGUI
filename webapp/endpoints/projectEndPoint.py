@@ -20,7 +20,7 @@ async def close_form(request: Request, form_id: str = Form(...)):
 @router.post("/api/selected-form")
 async def selected_form(request: Request, form_id: str = Form(...)):
     "Переключение вкладки"
-    get_form(form_id)._open_iu()
+    get_form(form_id)._open_ui()
     return Response(content="", status_code=204)
 
 @router.post('/api/selected-app')
@@ -72,7 +72,7 @@ async def mm_action_oper(request: Request, sNameMainMenu:str, sForm: str, oper: 
             form.get_oper_handler()[oper]()
             return Response(content="", status_code=204)
     raise HTTPException(
-        status_code=404, detail=f"В таблице {sNameMainMenu} не найдена опрерация {oper}"
+        status_code=404, detail=f"В таблице {sNameMainMenu} не найдена операция {oper}"
     )
 
 @router.post("/action/{oper}")
@@ -85,7 +85,7 @@ async def action_oper(request: Request, oper: str, form_id: str = Form(...)):
             form.get_oper_handler()[oper]()
             return Response(content="", status_code=204)
     raise HTTPException(
-        status_code=404, detail=f"В таблице {form_name} не найдена опрерация {oper}"
+        status_code=404, detail=f"В таблице {form_name} не найдена операция {oper}"
     )
 
 """

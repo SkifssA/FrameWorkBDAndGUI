@@ -9,7 +9,7 @@ if __name__ == "__main__":
         if args[0] == "createClass":
             from core.createClass import createTab
             createTab(args[2])
-        elif args[0] == "createSours":
+        elif args[0] == "createSources":
             from core.createClass import createFile
             createFile(args[2])
         elif args[0] == "createModule":
@@ -20,16 +20,5 @@ if __name__ == "__main__":
             from core.sdk import validateConfig
             validateConfig()
             runServer()
-    else:
-        from core.createClass import createTab
-        createTab('D:\\tresh\\pet\\FrameWorkBDAndGUI\\core\\module')        
-
-        # from core.sdk import ACTIONDISPATCHER
-        # sNameTab, sForm = 'Bc_TimeLinePub', 'ImgCard'
-        # class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
-        # if class_:
-        #     form = class_._getFormByName(sForm)()
-        #     if form:
-        #         form.refresh()
-        #         print(form.getData())
-        #         print(form.getInfoMeta())
+    else:    
+        print("Команда не найдена")

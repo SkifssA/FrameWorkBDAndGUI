@@ -172,9 +172,9 @@ class Base(ABC):
 
     def open(self):
         self.refreshDown()
-        self._open_iu()
+        self._open_ui()
 
-    def _open_iu(self):
+    def _open_ui(self):
         event = self._get_form_event(typeEvent.openForm)
         event.formObject = self
         eventSignal.send(fromEvent=event)

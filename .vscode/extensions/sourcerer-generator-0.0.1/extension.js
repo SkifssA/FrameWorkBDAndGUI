@@ -6,7 +6,7 @@ function activate(context) {
         if (validateUri(uri)) return
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        workPythonCode(`createSours --file "${uri.fsPath}"`, workspaceFolder)
+        workPythonCode(`createSources --file "${uri.fsPath}"`, workspaceFolder)
 
         vscode.window.showInformationMessage(`Генерация запущена для: ${path.basename(targetFile)}`);
     });

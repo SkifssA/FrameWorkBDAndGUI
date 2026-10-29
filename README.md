@@ -95,7 +95,7 @@ python main.py launchServer
 ### Вспомогательные генераторы (код-генерация)
 
 ```bash
-python main.py createSours <путь>    # сгенерировать исходники объекта (таба)
+python main.py createSources <путь>    # сгенерировать исходники объекта (таба)
 python main.py createClass <путь>    # создать класс-объект (таб)
 python main.py createModule          # создать модуль (sys / «система»)
 ```
