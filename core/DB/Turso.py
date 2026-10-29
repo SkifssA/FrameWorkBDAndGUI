@@ -33,8 +33,6 @@ class DbManager:
         self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
         with create_client_sync(url=self.url, auth_token=self.auth_token) as db:
-            if _firstKeyword(SQLstr) == "insert" and "returning" not in SQLstr.lower():
-                SQLstr += " RETURNING id"
             print(" ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
             c = db.execute(SQLstr, parameters or [])
             if c.rows:

@@ -81,7 +81,7 @@ class {name}Dpi(EmptyLogic[{name}Obj]):
 
     def __getSetter(self):
         tempSet = (
-            "def set{nameAttr}(self, obj:{nameClass}Obj, value): obj.{nameAttr} = value"
+            "def set{nameAttr}(self, obj:{nameClass}Obj, value): obj.{nameAttr} = value; self.after_setter(obj)"
         )
         listTepmSet = tuple(
             tempSet.format(nameAttr=i.name, nameClass=self.data.name)

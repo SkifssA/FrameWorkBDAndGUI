@@ -49,7 +49,10 @@ class ModuleManagerPkg:
             print(f"[ModuleManagerPkg] Вызов '{sAction}' завершился с ошибкой: {e}")
 
     def _getModule(self, sNameModule):
-        return importlib.import_module(f"module.{sNameModule}")
+        try:
+            return importlib.import_module(f"module.{sNameModule}")
+        except:
+            return importlib.import_module(f"core.module.{sNameModule}")
 
     def _getClass(self, sNameClass):
         sNameModule = getModule(sNameClass)
@@ -73,9 +76,10 @@ class ModuleManagerPkg:
     def getNameModule(self) -> list[str]:
         try:
             projects = FileManagerPkg.ReadFile(self._PATH_PROJECT)
+            core_module = FileManagerPkg.GetFoldersList("core/module") or []
+            return core_module + (projects or {}).get("modules", [])
         except Exception:
             return []
-        return (projects or {}).get("modules", [])
 
     def getModulesHooks(self) -> dict:
         return self._getModulesInfo(self._PATH_HOOKS)
@@ -87,6 +91,8 @@ class ModuleManagerPkg:
         result = {}
         for name in self.getNameModule():
             conf = self._getModuleInfo(name, sPath)
+            if conf == {}:
+                conf = self._getModuleInfo(name, f'core/{sPath}')
             if isinstance(conf, dict):
                 result[name] = conf
         return result

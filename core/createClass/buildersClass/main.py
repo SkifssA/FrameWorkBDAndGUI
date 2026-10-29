@@ -13,12 +13,18 @@ from core.package.FileManager import FileManagerPkg
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 from core.fabric.MetaInfo import MetaInfo
 
-pathModile = lambda app, end="": f"module/{app}" + end
+in_core = False
+
+pathModile = lambda app, end="": f"{'core/' if in_core else ''}module/{app}" + end
 
 logger = logging.getLogger(__name__)
 
 def createFile(sPath: str):
     """Создание файлов для класса"""
+    global in_core
+    if 'core' in sPath:
+        in_core = True
+
     lFiles = FileManagerPkg.getFilesWithExtension(sPath, ".odb.json")
     apps = [] 
     for File in lFiles:
@@ -27,10 +33,14 @@ def createFile(sPath: str):
         ]
 
         apps.append(app)
-        logger.info(f"Обрабатывается класс {dirName}")
+        print(f"Обрабатывается класс {dirName}")
         module = ModuleManagerPkg()._getModule(app)
-        metaFile = getattr(module, "META_FILE")
-        logger.info("Запись .py файлов")
+        try:
+            metaFile = getattr(module, "META_FILE")
+        except AttributeError:
+            metaFile = {}
+
+        print("Запись .py файлов")
         data = MetaInfo().getMetaTab(File.__str__())
         pathPyFile = pathModile(app, f"/object/{dirName}")
         builderDpi(data).createFileD(pathPyFile)
@@ -38,7 +48,7 @@ def createFile(sPath: str):
         builderLogic(data).createFileA(pathPyFile)
         builderPub(data).createFileA(pathPyFile)
 
-        logger.info("Запись .json файлов")
+        print("Запись .json файлов")
         pathMetaFile = pathModile(app, f"/schemas/{dirName}")
         buildersDmeta(data).createFile(pathMetaFile)
         buildersAmeta(data).createFile(pathMetaFile)

@@ -19,12 +19,15 @@ if __name__ == "__main__":
             from webapp.main import runServer
             runServer()
     else:
-        from core.sdk import ACTIONDISPATCHER
-        sNameTab, sForm = 'Bc_TimeLinePub', 'ImgCard'
-        class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
-        if class_:
-            form = class_._getFormByName(sForm)()
-            if form:
-                form.refresh()
-                print(form.getData())
-                print(form.getInfoMeta())
+        from core.createClass import createTab
+        createTab('D:\\tresh\\pet\\FrameWorkBDAndGUI\\core\\module')        
+
+        # from core.sdk import ACTIONDISPATCHER
+        # sNameTab, sForm = 'Bc_TimeLinePub', 'ImgCard'
+        # class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
+        # if class_:
+        #     form = class_._getFormByName(sForm)()
+        #     if form:
+        #         form.refresh()
+        #         print(form.getData())
+        #         print(form.getInfoMeta())

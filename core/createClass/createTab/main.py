@@ -19,6 +19,8 @@ def createTab(sPath: str):
         schema = MetaInfo().getMetaTab(File.__str__())
         scripts += schema.dbData
 
+    # Вот сюда надо регистрацию классов по sqlite_sequence
+
     print("-" * 10 + "Найденные скрипты данных (выполнение не реализовано)" + "-" * 10)
     for s in scripts:
         print(s)

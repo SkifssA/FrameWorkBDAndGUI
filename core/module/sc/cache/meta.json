@@ -1,0 +1,7 @@
+{
+    "Sc_MainMenu.Ameta.json": "module/sc/schemas/Sc_MainMenu.Ameta.json",
+    "Sc_Cls.Ameta.json": "module/sc/schemas/cls/Sc_Cls.Ameta.json",
+    "Sc_Scripts.Ameta.json": "module/sc/schemas/scripts/Sc_Scripts.Ameta.json",
+    "Sc_Cls.Dmeta.json": "module/sc/schemas/cls/Sc_Cls.Dmeta.json",
+    "Sc_Scripts.Dmeta.json": "module/sc/schemas/scripts/Sc_Scripts.Dmeta.json"
+}

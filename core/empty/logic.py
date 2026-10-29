@@ -8,11 +8,11 @@
 
 from abc import abstractmethod
 from dacite import from_dict, Config
-from dataclasses import asdict, is_dataclass
+from dataclasses import asdict
 from typing import TypeVar, Generic, Type
 
 from core.DB.SQLLogic import SQLLogic
-from core.empty.obj import EmptyObj
+from core.empty.obj import EmptyObj, typeCommit
 
 T = TypeVar('T')
 
@@ -24,11 +24,24 @@ class EmptyLogic(SQLLogic, Generic[T]):
     @abstractmethod
     def calcMnemoCode(self, obj: T) -> str: ...
 
-    def insert(self):
+    def __init__(self):
+        super().__init__()
+        self.actionCommit = {
+            typeCommit.insert: self._insert,
+            typeCommit.update: self._updateObj
+        }
+
+    def insert(self)->T:
         """Создание новой записи"""
-        obj = self._classObj()
-        obj.id = self._insert()
+        from core.module.sc import Sc_ClsLogic
+        obj:EmptyObj = self._classObj()
+        obj.id = Sc_ClsLogic().getID(self._getNameClass())
+        obj.typeCommit = typeCommit.insert
         return obj
+
+    def after_setter(self, obj:EmptyObj):
+        if obj.typeCommit != typeCommit.insert:
+            obj.typeCommit = typeCommit.update
 
     def delete(self, obj: T):
         """Удаление записи по obj"""
@@ -61,12 +74,12 @@ class EmptyLogic(SQLLogic, Generic[T]):
             return self._createObj(x[0])
         return None
 
-    def update(self, obj: T):
+    def commit(self, obj: T):
         value = asdict(obj)
         value["sHeadLine"] = self.calcHeadLine(obj)
         value["sMnemoCode"] = self.calcMnemoCode(obj)
-        keys = [k for k in value.keys() if k != "id"]
-        self._updateObj(keys, value)
+        keys = [k for k in value.keys() if k not in ["typeCommit"] + (['id'] if obj.typeCommit == typeCommit.update else [])]
+        self.actionCommit[obj.typeCommit](keys, value)
 
     def _createObj(self, data) -> T:
         """Получение обьекта с заполнеными полями"""

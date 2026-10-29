@@ -1,0 +1,24 @@
+{
+    "name": "Sc_Cls",
+    "caption": "Классы",
+    "attr": [
+        {
+            "name": "sCode",
+            "type": "TEXT",
+            "caption": "Код",
+            "isMnemoCode": true
+        },
+        {
+            "name": "sName",
+            "type": "TEXT",
+            "caption": "Название",
+            "isHeadLine": true
+        },
+        {
+            "name": "nID",
+            "type": "INT",
+            "caption": "Последний id в классе для создания",
+            "isVisible": false
+        }
+    ]
+}

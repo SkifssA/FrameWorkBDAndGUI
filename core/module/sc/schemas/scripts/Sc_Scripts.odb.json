@@ -1,0 +1,25 @@
+{
+    "name": "Sc_Scripts",
+    "caption": "Скрипты",
+    "attr": [
+        {
+            "name": "sCode",
+            "type": "TEXT",
+            "caption": "Код",
+            "isMnemoCode": true
+        },
+        {
+            "name": "idCls",
+            "type": "INT",
+            "caption": "Класс",
+            "editType": "lookUp",
+            "refTab": "Sc_Cls",
+            "order": 30
+        },
+        {
+            "name": "nVer",
+            "type": "INT",
+            "caption": "Версия"
+        }
+    ]
+}

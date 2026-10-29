@@ -27,9 +27,6 @@ class SQLLogic(ABC):
     def _deleteById(self, id) -> None:
         ATSQL(f"DELETE FROM {self._getNameClassValidate()} WHERE id = ?", [id])
 
-    def _insert(self) -> int:
-        return ATSQL(f"INSERT INTO {self._getNameClassValidate()} (id) VALUES (NULL)")
-
     def _findDataBase(self, attr: str, value):
         self._validate(attr)
         if value is not None:
@@ -51,6 +48,12 @@ class SQLLogic(ABC):
     def _getById(self, id):
         return ASQL(f"SELECT * FROM {self._getNameClassValidate()} WHERE id = ?", [id])
 
+    def _insert(self, keys, value) -> int:
+        self._validate(keys)
+        return ATSQL(
+            f"INSERT INTO {self._getNameClassValidate()} ({', '.join(keys)}) VALUES ({('?,'*len(keys))[:-1]})", tuple(value[i] for i in keys)
+        )
+    
     def _updateObj(self, keys: list[str], value):
         self._validate(keys)
         ATSQL(

@@ -1,5 +1,6 @@
 from core.DB.Turso import ASQL
 from core.dataClass.tabDataClass import tabSchema
+from core.module.sc.object.cls.Sc_ClsLogic import Sc_ClsLogic
 
 SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode")
 
@@ -24,8 +25,10 @@ class TabManager:
                 data.minListAttr = min
                 data.execute_pending()
 
+        Sc_ClsLogic().register(data.name, data.caption)
+
     def _exist_tab(self, data: tabSchema):
-        return ASQL("SELECT * FROM sqlite_sequence WHERE name = ?;", (data.name,))
+        return ASQL("SELECT * FROM sqlite_sequence WHERE name = ?;", (data.name,))['data'] != []
 
     def _exist_collumn(self, data: tabSchema):
         return ASQL("SELECT * FROM pragma_table_info(?);", (data.name,))

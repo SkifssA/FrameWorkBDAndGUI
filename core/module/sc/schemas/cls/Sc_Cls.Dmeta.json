@@ -1,0 +1,53 @@
+{
+    "repres": [
+        {
+            "name": "Default",
+            "caption": "Классы",
+            "isVisibleToolBar": true,
+            "attr": [
+                {
+                    "name": "id",
+                    "caption": "id",
+                    "type": "INT",
+                    "isVisible": false,
+                    "order": -2,
+                    "editType": "edit"
+                },
+                {
+                    "name": "sCode",
+                    "caption": "Код",
+                    "type": "TEXT",
+                    "isVisible": true,
+                    "order": 0,
+                    "editType": "edit"
+                },
+                {
+                    "name": "sName",
+                    "caption": "Название",
+                    "type": "TEXT",
+                    "isVisible": true,
+                    "order": 0,
+                    "editType": "edit"
+                },
+                {
+                    "name": "nID",
+                    "caption": "Последний id в классе для создания",
+                    "type": "INT",
+                    "isVisible": false,
+                    "order": 0,
+                    "editType": "edit"
+                }
+            ]
+        },
+        {
+            "name": "List",
+            "isVisibleToolBar": true,
+            "typeForm": "list"
+        },
+        {
+            "name": "Card",
+            "isVisibleToolBar": true,
+            "typeForm": "card"
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+{
+    "repres": [
+        {
+            "name": "Default",
+            "caption": "Скрипты",
+            "isVisibleToolBar": true,
+            "attr": [
+                {
+                    "name": "id",
+                    "caption": "id",
+                    "type": "INT",
+                    "isVisible": false,
+                    "order": -2,
+                    "editType": "edit"
+                },
+                {
+                    "name": "sCode",
+                    "caption": "Код",
+                    "type": "TEXT",
+                    "isVisible": true,
+                    "order": 0,
+                    "editType": "edit"
+                },
+                {
+                    "name": "idCls",
+                    "caption": "Класс",
+                    "type": "INT",
+                    "isVisible": false,
+                    "order": 30,
+                    "editType": "lookUp"
+                },
+                {
+                    "name": "idClsHL",
+                    "caption": "Класс",
+                    "type": "INT",
+                    "isVisible": true,
+                    "order": 30.1,
+                    "editType": "lookUp",
+                    "refTab": "Sc_Cls",
+                    "display": "LookUp",
+                    "attrId": "idCls"
+                },
+                {
+                    "name": "nVer",
+                    "caption": "Версия",
+                    "type": "INT",
+                    "isVisible": true,
+                    "order": 0,
+                    "editType": "edit"
+                }
+            ]
+        },
+        {
+            "name": "List",
+            "isVisibleToolBar": true,
+            "typeForm": "list"
+        },
+        {
+            "name": "Card",
+            "isVisibleToolBar": true,
+            "typeForm": "card"
+        }
+    ]
+}
