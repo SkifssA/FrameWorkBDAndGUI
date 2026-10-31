@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Request
 from sse_starlette import EventSourceResponse, ServerSentEvent
 
-from core.sdk import ACTIONDISPATCHER
+from core.sdk import ACTIONDISPATCHER, SESSION_STAGE
 
-from webapp.logic import templates, get_session_queue
+from webapp.logic import templates
 
 router = APIRouter()
 
@@ -22,7 +22,7 @@ async def openMainMenu(request: Request):
 @router.get("/events")
 async def event_stream(request: Request):
     # Регистрируем сессию
-    queues = get_session_queue()
+    queues = SESSION_STAGE.get_queue()
     
     async def generate():
         queue = queues

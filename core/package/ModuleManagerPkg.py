@@ -139,3 +139,5 @@ class ModuleManagerPkg:
     def _runMethod(self, attr, kattr: dict = {}):
         """Выполнение метода класса"""
         return attr(**kattr)
+
+ACTIONDISPATCHER = ModuleManagerPkg()

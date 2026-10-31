@@ -1,9 +1,7 @@
 import asyncio
-from threading import current_thread
 
-from core.sdk import eventSignal, formEvent, typeEvent, ACTIONDISPATCHER
+from core.sdk import eventSignal, formEvent, SESSION_STAGE
 
-from webapp.logic import get_session, get_form, get_open_form
 from webapp.logic.var import current_request, templates
 from webapp.logic.dictEvent import dataForEvent, get_form_bar, get_form_bar_ch
 from webapp.logic.dataClass import PutData
@@ -32,13 +30,13 @@ def set_main_loop(loop: asyncio.AbstractEventLoop):
 
 async def emit_event(event: formEvent):
     """Отправляет событие в очередь текущей сессии"""
-    if queue := get_session_queue():
+    if queue := SESSION_STAGE.get_queue():
         data = getFormHtlnForSSE(event) | {
             'form_bar': w(get_form_bar()),
             'parent': event.form[:event.form.rfind('.')]
         }
 
-        if get_session().active_form:
+        if SESSION_STAGE.get_active_form_name():
             data['form_bar_ch'] = w(get_form_bar_ch(event))
 
         await queue.put({
@@ -61,11 +59,3 @@ def sync_signal_handler(sender, **kwargs):
 
 def registrSignal():
     eventSignal.connect(sync_signal_handler)
-
-def get_session_queue():
-    import uuid
-    w = get_session().queue
-    if not w:
-        get_session().queue = w = asyncio.Queue()
-        w.name = f"q-{uuid.uuid4().hex[:6]}"
-    return w
