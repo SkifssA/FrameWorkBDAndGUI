@@ -1,6 +1,7 @@
 import asyncio
 from dataclasses import dataclass, field
 from typing import Optional
+import time
 
 from core.emptySubClass.base import Base as BaseSubClass
 
@@ -11,6 +12,7 @@ class Session:
     open_form: dict[str, BaseSubClass] = field(default_factory=dict)
     main_menu_form: Optional[BaseSubClass] = None
     _queue: Optional[asyncio.Queue] = None
+    _last_access: float = time.time()
     
     
     @property

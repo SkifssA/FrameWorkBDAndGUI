@@ -47,8 +47,11 @@ from core.package.SessionStageManager import SESSION_STAGE
 
 from core.module.sc.object.cls.Sc_ClsLogic import Sc_ClsLogic
 
-# --- Переменые контекста  ---------------------------------------------------
+# --- Переменые контекста ----------------------------------------------------
 from core.context import current_session_id
+
+# --- Логер ------------------------------------------------------------------
+from core.package.loggingConfig import get_logger, setup_logging
 
 __all__ = [
     # пути
@@ -76,7 +79,10 @@ __all__ = [
     # Сигналы
     "eventSignal",
     # Переменые контекста
-    'current_session_id'
+    'current_session_id',
+    #Логер
+    "setup_logging",
+    "get_logger",
     #Разное
     "formEvent",
     "typeEvent",

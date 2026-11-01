@@ -2,6 +2,10 @@ import re
 from libsql_client import create_client_sync  # Синхронный клиент
 
 from core.package.FileManager import FileManagerPkg
+from core.context import PATH_CONFIG
+from core.package.loggingConfig import get_logger
+
+log = get_logger('core.db')
 
 _RE_FIRST_KEYWORD = re.compile(
     r"^\s*(?:--[^\n]*\n|\s|/\*.*?\*/)*([A-Za-z]+)",
@@ -16,7 +20,6 @@ def _firstKeyword(SQLstr: str) -> str:
 
 
 class DbManager:
-    _pathConfig = "core/config/config.json"
     _initialized = False
     url = None
     auth_token = None
@@ -26,7 +29,7 @@ class DbManager:
 
     def setConf(self):
         if not self._initialized:
-            conf = FileManagerPkg.ReadFile(self._pathConfig)
+            conf = FileManagerPkg.ReadFile(PATH_CONFIG)
             conf = conf["database"]
             self.url = conf["url"]
             self.auth_token = conf["auth_token"]
@@ -35,7 +38,7 @@ class DbManager:
     def ATSQL(self, SQLstr: str, parameters=None):
         self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
-        print(" ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
+        log.debug("%s %s", " ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
         c = self.db.execute(SQLstr, parameters or [])
         if c.rows:
             d = c.rows[0][0]
@@ -46,7 +49,8 @@ class DbManager:
     def ASQL(self, SQLstr: str, parameters=None) -> dict[str, list]:
         self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
-        print(" ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
+        
+        log.debug("%s %s", " ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
         result = self.db.execute(SQLstr, parameters or [])
         return {
             "columns": list(result.columns),

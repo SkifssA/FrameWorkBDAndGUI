@@ -12,6 +12,9 @@ from .buildersDmeta import buildersDmeta
 from core.package.FileManager import FileManagerPkg
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 from core.fabric.MetaInfo import MetaInfo
+from core.package.loggingConfig import get_logger
+
+log = get_logger("core.buildersClass")
 
 in_core = False
 
@@ -33,14 +36,14 @@ def createFile(sPath: str):
         ]
 
         apps.append(app)
-        print(f"Обрабатывается класс {dirName}")
+        log.info("Обрабатывается класс %s", dirName)
         module = ModuleManagerPkg()._getModule(app)
         try:
             metaFile = getattr(module, "META_FILE")
         except AttributeError:
             metaFile = {}
 
-        print("Запись .py файлов")
+        log.info("Запись .py файлов")
         data = MetaInfo().getMetaTab(File.__str__())
         pathPyFile = pathModile(app, f"/object/{dirName}")
         builderDpi(data).createFileD(pathPyFile)
@@ -48,7 +51,7 @@ def createFile(sPath: str):
         builderLogic(data).createFileA(pathPyFile)
         builderPub(data).createFileA(pathPyFile)
 
-        print("Запись .json файлов")
+        log.info("Запись .json файлов")
         pathMetaFile = pathModile(app, f"/schemas/{dirName}")
         buildersDmeta(data).createFile(pathMetaFile)
         buildersAmeta(data).createFile(pathMetaFile)

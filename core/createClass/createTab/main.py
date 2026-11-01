@@ -2,7 +2,9 @@ from core.package.FileManager import FileManagerPkg
 from core.dataClass.tabDataClass import dbDataSchema
 from core.fabric.MetaInfo import MetaInfo
 from core.createClass.createTab.tab_manager import TabsManager
+from core.package.loggingConfig import get_logger
 
+log = get_logger("core.createTab")
 
 def createTab(sPath: str):
     """Создание таблиц для классов модулей (DDL из *.odb.json)."""
@@ -21,6 +23,6 @@ def createTab(sPath: str):
 
     # Вот сюда надо регистрацию классов по sqlite_sequence
 
-    print("-" * 10 + "Найденные скрипты данных (выполнение не реализовано)" + "-" * 10)
+    log.info("Найденные скрипты данных (выполнение не реализовано)")
     for s in scripts:
-        print(s)
+        log.debug('%s', s)

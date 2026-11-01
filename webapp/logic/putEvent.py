@@ -1,10 +1,12 @@
 import asyncio
 
-from core.sdk import eventSignal, formEvent, SESSION_STAGE
+from core.sdk import eventSignal, formEvent, SESSION_STAGE, get_logger
 
 from webapp.logic.var import current_request, templates
 from webapp.logic.dictEvent import dataForEvent, get_form_bar, get_form_bar_ch
 from webapp.logic.dataClass import PutData
+
+log = get_logger("webapp.putEven")
 
 _main_loop: asyncio.AbstractEventLoop = None
 
@@ -48,7 +50,7 @@ def sync_signal_handler(sender, **kwargs):
     """Синхронный мост: безопасно отправляет задачу в асинхронный цикл"""
     event = kwargs.get('fromEvent')
     if not event or not _main_loop:
-        print("⚠️ Событие потеряно: нет event или не инициализирован loop")
+        log.warning("⚠️ Событие потеряно: нет event или не инициализирован loop")
         return
 
     try:
