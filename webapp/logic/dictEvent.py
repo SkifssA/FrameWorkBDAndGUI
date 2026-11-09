@@ -42,6 +42,7 @@ def get_form_bar_ch(event: formEvent):
                    , caption_form=get_session().main_menu_form.metaInfo.caption)
 
 def selected_app(event: formEvent) -> PutData:
+    get_session().main_menu_form = None
     context = {
         "meta_app": ACTIONDISPATCHER.getModulesConfig(),
         "isMain": False
@@ -54,36 +55,10 @@ def open_form(event: formEvent) -> PutData:
     w = event.form.split('.')
     oper_form_object = get_form(w[0], event.formObject)
     oper_form_object = oper_form_object._get_children(event.form)
-    meta_form = oper_form_object.getInfoMeta()
 
     get_session().active_form = w[0]
 
-    name_template = f"form/baseForm.html"
-    
-    context = {
-        "data": oper_form_object.getData(),
-        "meta": meta_form,
-        "active_form_ch": None,
-        "formChBottom": '',
-        "formChLeft": '',
-        "formChRight": ''
-    }
-
-    if oper_form_object.childrenMeta['bottom'] != [] :
-        active_form_ch = oper_form_object.childrenMeta['bottom'][oper_form_object.active_ch]['metaForm']['name']
-        context['active_form_ch'] = active_form_ch
-        context['formChBottom'] = getHtmlForm(oper_form_object._get_children(active_form_ch), oper_form_object)
-
-    if oper_form_object.childrenMeta['right'] != [] :
-        for i in oper_form_object.childrenMeta['right']:
-            context['formChRight'] += getHtmlForm(oper_form_object._get_children(i['metaForm']['name']), oper_form_object) + '\n'
-    
-    if oper_form_object.childrenMeta['left'] != [] :
-        for i in oper_form_object.childrenMeta['left']:
-            context['formChLeft'] += getHtmlForm(oper_form_object._get_children(i['metaForm']['name']), oper_form_object) + '\n'
-
-    if meta_form['metaForm']['typeForm'] == 'list':
-        context['id_row'] = oper_form_object.active_row
+    name_template, context = get_data_form_for_ui(oper_form_object, oper_form_object)
 
     return PutData(name_template=name_template
                    , context=context
@@ -111,10 +86,9 @@ def refresh_form(event: formEvent)->PutData:
                    , context=context
                    , caption_form=oper_form_object.metaInfo.caption)
 
-def getHtmlForm(form, mainForm):
-
+def get_data_form_for_ui(form, mainForm)->tuple[str, dict]:
     name_template = f"form/baseForm.html"
-
+    
     context = {
         "data": form.getData(),
         "meta": form.getInfoMeta(),
@@ -141,6 +115,12 @@ def getHtmlForm(form, mainForm):
         for i in form.childrenMeta['left']:
             context['formChLeft'] += getHtmlForm(mainForm._get_children(i['metaForm']['name']), mainForm) + '\n'
 
+    return (name_template, context)
+
+def getHtmlForm(form, mainForm):
+
+    name_template, context = get_data_form_for_ui(form, mainForm)
+
     return templates.TemplateResponse(
                 request=current_request.get(),
                 name=name_template,
@@ -151,6 +131,7 @@ def close_form(event: formEvent) -> PutData:
     name_form = remove_from(event.form)
     if name_form == '':
         get_session().open_form = {}
+        get_session().active_form = None
         return PutData(name_template=None
                        , context=None
                        , caption_form=get_session().main_menu_form.metaInfo.caption)

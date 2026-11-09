@@ -1,0 +1,217 @@
+/* ===== ЭКРАН ВЫБОРА ПРОЕКТА / ПРИЛОЖЕНИЯ =====
+   Стиль наследует тему mainmenu.css (Catppuccin-подобный тёмный). */
+
+.select-project {
+    --sp-bg: #1e1e2e;
+    --sp-surface: #2d2d3d;
+    --sp-surface-hover: #383848;
+    --sp-border: #3f3f55;
+    --sp-accent: #007acc;
+    --sp-text: #cdd6f4;
+    --sp-text-dim: #9399b2;
+}
+
+/* Обёртка, когда экран рендерится как отдельная страница (isMain) */
+#openApp.is-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(0, 122, 204, .12), transparent 60%),
+        radial-gradient(900px 500px at 90% 110%, rgba(137, 180, 250, .08), transparent 60%),
+        var(--sp-bg);
+}
+
+/* Когда блок подменяется внутри полосы табов — без полноэкранного центрирования */
+#openApp:not(.is-page) {
+    padding: 16px;
+}
+
+/* ===== ЗАГОЛОВОК ===== */
+.sp-header {
+    text-align: center;
+    margin-bottom: 28px;
+    animation: sp-fade-up .45s ease both;
+}
+
+.sp-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--sp-text);
+    letter-spacing: .3px;
+}
+
+.sp-subtitle {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--sp-text-dim);
+}
+
+/* ===== СЕТКА КАРТОЧЕК ===== */
+.sp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    width: 100%;
+    max-width: 860px;
+}
+
+/* ===== КАРТОЧКА =====
+   Обёртка div[data-push-url] сама является элементом сетки —
+   так grid-свойства применяются к карточке напрямую. */
+.sp-grid>[data-push-url] {
+    display: flex;
+}
+
+a.select-app {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: var(--sp-surface);
+    border: 1px solid var(--sp-border);
+    border-radius: 12px;
+    color: var(--sp-text);
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+    animation: sp-fade-up .45s ease both;
+}
+
+/* Каскадная анимация появления карточек */
+.sp-grid> :nth-child(1) a.select-app {
+    animation-delay: .05s;
+}
+
+.sp-grid> :nth-child(2) a.select-app {
+    animation-delay: .12s;
+}
+
+.sp-grid> :nth-child(3) a.select-app {
+    animation-delay: .19s;
+}
+
+.sp-grid> :nth-child(4) a.select-app {
+    animation-delay: .26s;
+}
+
+.sp-grid> :nth-child(5) a.select-app {
+    animation-delay: .33s;
+}
+
+.sp-grid> :nth-child(n+6) a.select-app {
+    animation-delay: .40s;
+}
+
+/* Иконка-инициал модуля */
+a.select-app::before {
+    content: attr(data-initial);
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, var(--sp-accent), #5a9fd8);
+    box-shadow: 0 4px 10px rgba(0, 122, 204, .25);
+}
+
+/* Стрелка «открыть» */
+a.select-app::after {
+    content: '›';
+    margin-left: auto;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--sp-text-dim);
+    transform: translateX(-4px);
+    opacity: 0;
+    transition: transform .18s ease, opacity .18s ease, color .18s ease;
+}
+
+/* Акцентная линия сверху при наведении */
+a.select-app .sp-glow {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: var(--sp-accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .2s ease;
+}
+
+a.select-app:hover {
+    background: var(--sp-surface-hover);
+    border-color: var(--sp-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
+}
+
+a.select-app:hover .sp-glow {
+    transform: scaleY(1);
+}
+
+a.select-app:hover::after {
+    transform: translateX(0);
+    opacity: 1;
+    color: var(--sp-accent);
+}
+
+a.select-app:focus-visible {
+    outline: 2px solid var(--sp-accent);
+    outline-offset: 2px;
+}
+
+a.select-app:active {
+    transform: translateY(-1px) scale(.99);
+}
+
+/* Индикатор загрузки htmx на карточке */
+a.select-app.htmx-request {
+    cursor: wait;
+    opacity: .75;
+}
+
+/* ===== СОСТОЯНИЕ «ПУСТО» ===== */
+.sp-empty {
+    text-align: center;
+    color: var(--sp-text-dim);
+    font-size: 14px;
+    padding: 30px 0;
+}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes sp-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .select-project *,
+    #openApp * {
+        animation: none !important;
+        transition: none !important;
+    }
+}

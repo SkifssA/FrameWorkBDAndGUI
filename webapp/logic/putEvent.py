@@ -33,10 +33,14 @@ def set_main_loop(loop: asyncio.AbstractEventLoop):
 async def emit_event(event: formEvent):
     """Отправляет событие в очередь текущей сессии"""
     if queue := get_session_queue():
-        data = getFormHtlnForSSE(event) | {
-            'form_bar': w(get_form_bar()),
-            'parent': event.form[:event.form.rfind('.')]
-        }
+        data = getFormHtlnForSSE(event)
+
+        if typeEvent.closeApp != event.type:
+            dop = {
+                'form_bar': w(get_form_bar()),
+                'parent': event.form[:event.form.rfind('.')]
+            }
+            data = data | dop
 
         if get_session().active_form:
             data['form_bar_ch'] = w(get_form_bar_ch(event))

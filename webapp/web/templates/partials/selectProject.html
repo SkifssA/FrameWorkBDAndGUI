@@ -3,14 +3,29 @@
 {% endif %}
 
 {% block content %}
-<div id="openApp" sse-swap="openApp" hx-swap="outerHTML">
-    {% for name, data in meta_app.items() %}
-    <div data-push-url="/selectProject">
-        <a class="select-app" hx-post="/api/selected-app" hx-swap="none"
-            hx-vals='{"form_id": "{{ data.nameMainScreen }}"}' hx-push-url="true">
-            {{ data.name }}
-        </a>
+<link rel="stylesheet" href="{{ url_for('static', path='/css/selectProject.css') }}">
+<div id="openApp" class="select-project{{ ' is-page' if isMain else '' }}" sse-swap="openApp" hx-swap="outerHTML">
+    {% if isMain %}
+    <header class="sp-header">
+        <h1 class="sp-title">Выбор приложения</h1>
+        <p class="sp-subtitle">Выберите модуль, чтобы начать работу</p>
+    </header>
+    {% endif %}
+    {% if meta_app %}
+    <div class="sp-grid">
+        {% for name, data in meta_app.items() %}
+        <div data-push-url="/selectProject">
+            <a class="select-app" data-initial="{{ (data.name or name)[:1]|upper }}"
+                title="{{ data.name }} ({{ name }})" hx-post="/api/selected-app" hx-swap="none"
+                hx-vals='{"form_id": "{{ data.nameMainScreen }}"}' hx-push-url="true">
+                <span class="sp-glow"></span>
+                <span class="sp-name">{{ data.name }}</span>
+            </a>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    {% else %}
+    <p class="sp-empty">Приложения не найдены. Подключите модуль в папке projects.</p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -53,10 +53,11 @@ class Base(ABC):
 
     def _get_children(self, form:str)->'Base':
         w = form.split('.')
-        if len(w) == 1:
+        indexSelf = w.index(self.full_name().split('.')[-1])
+        if len(w) == 1 or indexSelf + 1 == len(w):
             return self
         
-        ch = self.children[w[1]]
+        ch = self.children[w[indexSelf + 1]]
         if len(w) > 2:
             return ch._get_children('.'.join(w[1:]))
         return ch
