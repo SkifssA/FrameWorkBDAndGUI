@@ -35,7 +35,7 @@ def get_form_bar_ch(event: formEvent):
                    , caption_form=SESSION_STAGE.get_main_menu().metaInfo.caption)
 
 def selected_app(event: formEvent) -> PutData:
-    get_session().main_menu_form = None
+    SESSION_STAGE.get_main_menu(None)
     context = {
         "meta_app": ACTIONDISPATCHER.getModulesConfig(),
         "isMain": False
@@ -48,19 +48,13 @@ def open_form(event: formEvent) -> PutData:
     w = event.form.split('.')
     oper_form_object = SESSION_STAGE.get_form(w[0], event.formObject)
     oper_form_object = oper_form_object._get_children(event.form)
-<<<<<<< HEAD
-=======
     SESSION_STAGE.set_active_form(w[0])
     name_template, context = get_template_and_context(oper_form_object)
->>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
 
     return PutData(name_template=name_template
                    , context=context
                    , caption_form=oper_form_object.metaInfo.caption)
 
-<<<<<<< HEAD
-    name_template, context = get_data_form_for_ui(oper_form_object, oper_form_object)
-=======
 def getHtmlForm(form):
     name_template, context = get_template_and_context(form)
     return templates.TemplateResponse(
@@ -102,7 +96,6 @@ def get_template_and_context(form:BaseSubClass)->tuple[str, dict[str, Any]]:
             context['formChLeft'] += getHtmlForm(active_form._get_children(i['metaForm']['name'])) + '\n'
 
     return (name_template, context)
->>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
 
 
 def refresh_form(event: formEvent)->PutData:
@@ -127,59 +120,10 @@ def refresh_form(event: formEvent)->PutData:
                    , context=context
                    , caption_form=oper_form_object.metaInfo.caption)
 
-<<<<<<< HEAD
-def get_data_form_for_ui(form, mainForm)->tuple[str, dict]:
-    name_template = f"form/baseForm.html"
-    
-    context = {
-        "data": form.getData(),
-        "meta": form.getInfoMeta(),
-        "metaCh": list(i.getInfoMeta() for i in form.children.values()),
-        "active_form_ch": None,
-        "formChBottom": '',
-        "formChLeft": '',
-        "formChRight": ''
-    }
-
-    if form.getInfoMeta()['metaForm']['typeForm'] == 'list':
-        context['id_row'] = form.active_row
-
-    if form.childrenMeta['bottom'] != [] :
-        active_form_ch = form.childrenMeta['bottom'][form.active_ch]['metaForm']['name']
-        context['active_form_ch'] = active_form_ch
-        context['formChBottom'] = getHtmlForm(mainForm._get_children(active_form_ch), mainForm)
-
-    if form.childrenMeta['right'] != [] :
-        for i in form.childrenMeta['right']:
-            context['formChRight'] += getHtmlForm(mainForm._get_children(i['metaForm']['name']), mainForm) + '\n'
-
-    if form.childrenMeta['left'] != [] :
-        for i in form.childrenMeta['left']:
-            context['formChLeft'] += getHtmlForm(mainForm._get_children(i['metaForm']['name']), mainForm) + '\n'
-
-    return (name_template, context)
-
-def getHtmlForm(form, mainForm):
-
-    name_template, context = get_data_form_for_ui(form, mainForm)
-
-    return templates.TemplateResponse(
-                request=current_request.get(),
-                name=name_template,
-                context=context,
-            ).body.decode('utf-8')
-
-=======
->>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
 def close_form(event: formEvent) -> PutData:
     name_form = SESSION_STAGE.remove_from(event.form)
     if name_form == '':
-<<<<<<< HEAD
-        get_session().open_form = {}
-        get_session().active_form = None
-=======
         SESSION_STAGE.set_active_form({})
->>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
         return PutData(name_template=None
                        , context=None
                        , caption_form=SESSION_STAGE.get_main_menu().metaInfo.caption)
