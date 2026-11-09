@@ -1,8 +1,6 @@
-from core.sdk import formEvent, typeEvent, ACTIONDISPATCHER
+from core.sdk import formEvent, typeEvent, ACTIONDISPATCHER, SESSION_STAGE, BaseSubClass
 from webapp.logic.dataClass import PutData
-from webapp.logic import get_session, get_form, get_open_form
 from webapp.logic.var import current_request, templates
-from webapp.logic.sessionManager import remove_from
 from typing import Any
 
 # 1. Выносим повторяющиеся HTML-шаблоны
@@ -13,22 +11,17 @@ TPL_FORM_BAR_CH = '<div id="forms-bar-ch-{parent}" hx-swap-oob="true">{form_bar_
 
 def get_form_bar():
     context = {
-        "open_forms": get_open_form(),
-        "active_form": get_session().active_form,
-        "main_menu": get_session().main_menu_form._get_parent_name()
+        "open_forms": SESSION_STAGE.get_open_form(),
+        "active_form": SESSION_STAGE.get_active_form_name(),
+        "main_menu": SESSION_STAGE.get_main_menu()._get_parent_name()
     }
-
-    if get_session().active_form:
-        meta_form = get_form(get_session().active_form)
-        if meta_form.getInfoMeta()['metaForm']['typeForm'] == 'card':
-            context['idItem'] = meta_form.getData()[0]['id']
 
     return PutData(name_template=f"partials/form_bar_main_menu.html"
                    , context=context
-                   , caption_form=get_session().main_menu_form.metaInfo.caption)
+                   , caption_form=SESSION_STAGE.get_main_menu().metaInfo.caption)
 
 def get_form_bar_ch(event: formEvent):
-    f = get_form(get_session().active_form)
+    f = SESSION_STAGE.get_active_form()
     context = {
         "meta": f.getInfoMeta(),
         "active_form_ch": event.form
@@ -39,7 +32,7 @@ def get_form_bar_ch(event: formEvent):
 
     return PutData(name_template=f"partials/form_bar_ch.html"
                    , context=context
-                   , caption_form=get_session().main_menu_form.metaInfo.caption)
+                   , caption_form=SESSION_STAGE.get_main_menu().metaInfo.caption)
 
 def selected_app(event: formEvent) -> PutData:
     get_session().main_menu_form = None
@@ -53,24 +46,72 @@ def selected_app(event: formEvent) -> PutData:
 
 def open_form(event: formEvent) -> PutData:
     w = event.form.split('.')
-    oper_form_object = get_form(w[0], event.formObject)
+    oper_form_object = SESSION_STAGE.get_form(w[0], event.formObject)
     oper_form_object = oper_form_object._get_children(event.form)
-
-    get_session().active_form = w[0]
-
-    name_template, context = get_data_form_for_ui(oper_form_object, oper_form_object)
+<<<<<<< HEAD
+=======
+    SESSION_STAGE.set_active_form(w[0])
+    name_template, context = get_template_and_context(oper_form_object)
+>>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
 
     return PutData(name_template=name_template
                    , context=context
                    , caption_form=oper_form_object.metaInfo.caption)
 
+<<<<<<< HEAD
+    name_template, context = get_data_form_for_ui(oper_form_object, oper_form_object)
+=======
+def getHtmlForm(form):
+    name_template, context = get_template_and_context(form)
+    return templates.TemplateResponse(
+                request=current_request.get(),
+                name=name_template,
+                context=context,
+            ).body.decode('utf-8')
+
+def get_template_and_context(form:BaseSubClass)->tuple[str, dict[str, Any]]:
+    active_form = SESSION_STAGE.get_active_form()
+    name_template = f"form/baseForm.html"
+    
+    context = {
+        "data": form.getData(),
+        "meta": form.getInfoMeta(),
+        "metaCh": list(i.getInfoMeta() for i in form.children.values()),
+        "active_form_ch": None,
+        "formChBottom": '',
+        "formChLeft": '',
+        "formChRight": ''
+    }
+
+    if form.getInfoMeta()['metaForm']['typeForm'] == 'list':
+        context['id_row'] = form.active_row
+    elif form.getInfoMeta()['metaForm']['typeForm'] == 'card':
+            context['idItem'] = form.getData()[0]['id']
+
+    if form.childrenMeta['bottom'] != []:
+        active_form_ch = form.childrenMeta['bottom'][form.active_ch]['metaForm']['name']
+        context['active_form_ch'] = active_form_ch
+        context['formChBottom'] = getHtmlForm(active_form._get_children(active_form_ch))
+
+    if form.childrenMeta['right'] != []:
+        for i in form.childrenMeta['right']:
+            context['formChRight'] += getHtmlForm(active_form._get_children(i['metaForm']['name'])) + '\n'
+
+    if form.childrenMeta['left'] != []:
+        for i in form.childrenMeta['left']:
+            context['formChLeft'] += getHtmlForm(active_form._get_children(i['metaForm']['name'])) + '\n'
+
+    return (name_template, context)
+>>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
+
+
 def refresh_form(event: formEvent)->PutData:
     w = event.form.split('.')
-    oper_form_object = get_form(w[0], event.formObject)
+    oper_form_object = SESSION_STAGE.get_form(w[0], event.formObject)
     oper_form_object = oper_form_object._get_children(event.form)
     meta_form = oper_form_object.getInfoMeta()
     typeForm = meta_form['metaForm']['typeForm'].lower()
-    get_session().active_form = w[0]
+    SESSION_STAGE.set_active_form(w[0])
 
     name_template = f"form/{typeForm}.html"
     
@@ -86,6 +127,7 @@ def refresh_form(event: formEvent)->PutData:
                    , context=context
                    , caption_form=oper_form_object.metaInfo.caption)
 
+<<<<<<< HEAD
 def get_data_form_for_ui(form, mainForm)->tuple[str, dict]:
     name_template = f"form/baseForm.html"
     
@@ -127,29 +169,35 @@ def getHtmlForm(form, mainForm):
                 context=context,
             ).body.decode('utf-8')
 
+=======
+>>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
 def close_form(event: formEvent) -> PutData:
-    name_form = remove_from(event.form)
+    name_form = SESSION_STAGE.remove_from(event.form)
     if name_form == '':
+<<<<<<< HEAD
         get_session().open_form = {}
         get_session().active_form = None
+=======
+        SESSION_STAGE.set_active_form({})
+>>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
         return PutData(name_template=None
                        , context=None
-                       , caption_form=get_session().main_menu_form.metaInfo.caption)
+                       , caption_form=SESSION_STAGE.get_main_menu().metaInfo.caption)
 
     event.form = name_form
     return open_form(event)
 
 def oper_app(event: formEvent) -> PutData:
-    session = get_session()
+    mm = SESSION_STAGE.get_main_menu()
     context = {
-        'meta_main_menu': session.main_menu_form.getInfoMeta(),
-        'main_menu': session.main_menu_form._get_parent_name(),
+        'meta_main_menu': mm.getInfoMeta(),
+        'main_menu': mm._get_parent_name(),
         'active_form': None,
         'open_forms': {}
     }
     return PutData(name_template=f"/form/mainmenu.html"
                    , context=context
-                   , caption_form=get_session().main_menu_form.metaInfo.caption)
+                   , caption_form=mm.metaInfo.caption)
 
 
 dataForEvent: dict[typeEvent, dict[str, Any]] = {

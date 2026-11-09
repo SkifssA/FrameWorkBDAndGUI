@@ -32,3 +32,5 @@ class MetadataManager:
     def get_impl_path(self, nameMetaFile) -> str:
         """Путь к файлу, где определён класс"""
         return ModuleManagerPkg().getMetaCache(nameMetaFile)[nameMetaFile]
+
+METADATA = MetadataManager()

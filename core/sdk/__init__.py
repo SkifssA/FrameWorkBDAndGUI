@@ -36,20 +36,22 @@ from core.package.LazyVal import LazyVal
 from core.package.FileManager import FileManager, FileManagerPkg
 
 # --- Готовые экземпляры (синглтоны ядра) ------------------------------------
-from core.package.MetadataManager import MetadataManager
-from core.package.ModuleManagerPkg import ModuleManagerPkg
+from core.package.MetadataManager import METADATA
+from core.package.ModuleManagerPkg import ACTIONDISPATCHER
+from core.package.SessionStageManager import SESSION_STAGE
 
 # --- Системный модуль sc: реестр классов -------------------------------------
 # Sc_ClsLogic — источник истины о том, какому модулю принадлежит класс/таблица
 # (getPrefixModule). Импорт ставим после METADATA/ACTIONDISPATCHER: сам модуль
 # sc при инициализации использует FileManagerPkg из этого пакета.
-METADATA = MetadataManager()
-ACTIONDISPATCHER = ModuleManagerPkg()
 
 from core.module.sc.object.cls.Sc_ClsLogic import Sc_ClsLogic
 
-# --- Переменые контекста  ---------------------------------------------------
+# --- Переменые контекста ----------------------------------------------------
 from core.context import current_session_id
+
+# --- Логер ------------------------------------------------------------------
+from core.package.loggingConfig import get_logger, setup_logging
 
 __all__ = [
     # пути
@@ -71,12 +73,16 @@ __all__ = [
     # Готовые экземпляры
     "METADATA",
     "ACTIONDISPATCHER",
+    "SESSION_STAGE",
     # Системный модуль sc (реестр классов)
     "Sc_ClsLogic",
     # Сигналы
     "eventSignal",
     # Переменые контекста
-    'current_session_id'
+    'current_session_id',
+    #Логер
+    "setup_logging",
+    "get_logger",
     #Разное
     "formEvent",
     "typeEvent",

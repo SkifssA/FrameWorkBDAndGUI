@@ -1,12 +1,12 @@
 import asyncio
-from threading import current_thread
 
-from core.sdk import eventSignal, formEvent, typeEvent, ACTIONDISPATCHER
+from core.sdk import eventSignal, formEvent, SESSION_STAGE, get_logger
 
-from webapp.logic import get_session, get_form, get_open_form
 from webapp.logic.var import current_request, templates
 from webapp.logic.dictEvent import dataForEvent, get_form_bar, get_form_bar_ch
 from webapp.logic.dataClass import PutData
+
+log = get_logger("webapp.putEven")
 
 _main_loop: asyncio.AbstractEventLoop = None
 
@@ -32,6 +32,7 @@ def set_main_loop(loop: asyncio.AbstractEventLoop):
 
 async def emit_event(event: formEvent):
     """Отправляет событие в очередь текущей сессии"""
+<<<<<<< HEAD
     if queue := get_session_queue():
         data = getFormHtlnForSSE(event)
 
@@ -41,8 +42,15 @@ async def emit_event(event: formEvent):
                 'parent': event.form[:event.form.rfind('.')]
             }
             data = data | dop
+=======
+    if queue := SESSION_STAGE.get_queue():
+        data = getFormHtlnForSSE(event) | {
+            'form_bar': w(get_form_bar()),
+            'parent': event.form[:event.form.rfind('.')]
+        }
+>>>>>>> 9d02ec5763271aed007ce6cbb16d2ad172324ef4
 
-        if get_session().active_form:
+        if SESSION_STAGE.get_active_form_name():
             data['form_bar_ch'] = w(get_form_bar_ch(event))
 
         await queue.put({
@@ -54,7 +62,7 @@ def sync_signal_handler(sender, **kwargs):
     """Синхронный мост: безопасно отправляет задачу в асинхронный цикл"""
     event = kwargs.get('fromEvent')
     if not event or not _main_loop:
-        print("⚠️ Событие потеряно: нет event или не инициализирован loop")
+        log.warning("⚠️ Событие потеряно: нет event или не инициализирован loop")
         return
 
     try:
@@ -65,11 +73,3 @@ def sync_signal_handler(sender, **kwargs):
 
 def registrSignal():
     eventSignal.connect(sync_signal_handler)
-
-def get_session_queue():
-    import uuid
-    w = get_session().queue
-    if not w:
-        get_session().queue = w = asyncio.Queue()
-        w.name = f"q-{uuid.uuid4().hex[:6]}"
-    return w

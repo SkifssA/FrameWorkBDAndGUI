@@ -6,26 +6,51 @@ import logging
 import os
 from starlette.middleware.sessions import SessionMiddleware
 import uuid
+import time
 
-from core.sdk import current_session_id
+from core.sdk import current_session_id, SESSION_STAGE, get_logger
 
 from webapp.logic import registrSignal, set_main_loop, current_request
 from webapp.endpoints.projectEndPoint import router as roputerProject
 from webapp.endpoints.staticEndPoint import router as staticProject
 
+log = get_logger('wepapp')
+
+SESSION_TTL = 3600
+
 logger = logging.getLogger(__name__)
+
+async def session_clear_loop():
+    try:
+        while True:
+            await asyncio.sleep(30)
+            now = time.time()
+            stale = [sid for sid, s in SESSION_STAGE.session_cach.items() if now - s._last_access > SESSION_TTL]
+            for sid in stale:
+                SESSION_STAGE.session_cach.pop(sid, None)
+    except asyncio.CancelledError:
+        logger.debug("session_clear_loop корректно остановлена")
+        # Обязательно пробрасываем дальше, чтобы задача считалась отмененной
+        raise 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Код при старте (вместо @app.on_event("startup"))
     loop = asyncio.get_running_loop()
     set_main_loop(loop)
-    logger.debug("Main loop сохранен для синхронных сигналов")
-    
+    log.info("Main loop сохранен для синхронных сигналов")
+
+    clear_task = asyncio.create_task(session_clear_loop())
+
     yield  # Здесь работает приложение
     
     # Код при завершении (вместо @app.on_event("shutdown"))
-    logger.debug("Приложение завершается")
+    log.info("Приложение завершается")
+    clear_task.cancel()
+    try:
+        await clear_task
+    except asyncio.CancelledError:
+        pass
 
 app = FastAPI(lifespan=lifespan)
 

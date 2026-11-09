@@ -2,5 +2,14 @@
     "database": {
         "url": "",
         "auth_token": ""
+    },
+    "logging": {
+        "level": "INFO",
+        "levels": {
+            "core": "INFO",
+            "db": "INFO",
+            "webapp": "INFO",
+            "module": "INFO"
+        }
     }
 }

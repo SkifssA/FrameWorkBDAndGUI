@@ -3,3 +3,5 @@ current_session_id: ContextVar[str] = ContextVar("session_id", default="anonymou
 
 from blinker import signal
 eventSignal = signal('form-all-events')
+
+PATH_CONFIG = 'core/config/config.json'

@@ -2,6 +2,9 @@ import importlib
 import inspect
 
 from core.package.FileManager import FileManagerPkg
+from core.package.loggingConfig import get_logger
+
+log = get_logger('core.ModuleManagerPkg')
 
 
 def getModule(nameClass: str) -> str:
@@ -46,8 +49,7 @@ class ModuleManagerPkg:
         try:
             return self._action(sAction=sAction, kattr=kattr, classMethod=classMethod)
         except Exception as e:
-            print(f"[ModuleManagerPkg] Вызов '{sAction}' завершился с ошибкой: {e}")
-
+            log.debug("Вызов '%s' завершился с ошибкой: %s", sAction, e)
     def _getModule(self, sNameModule):
         try:
             return importlib.import_module(f"module.{sNameModule}")
@@ -125,10 +127,7 @@ class ModuleManagerPkg:
                     classMethod=sAction["isClassMethod"],
                 )
             except Exception as e:
-                print(
-                    f"[ActionDispatcher] Хук '{hookName}' модуля '{moduleName}' "
-                    f"завершился с ошибкой: {e}"
-                )
+                log.debug("Хук '%s' модуля '%s' завершился с ошибкой:%s", hookName, moduleName, e)
 
     def _getMethod(self, cls, sNameMethod: str, classMethod: bool = False):
         """Получение метода класса"""
@@ -139,3 +138,5 @@ class ModuleManagerPkg:
     def _runMethod(self, attr, kattr: dict = {}):
         """Выполнение метода класса"""
         return attr(**kattr)
+
+ACTIONDISPATCHER = ModuleManagerPkg()
