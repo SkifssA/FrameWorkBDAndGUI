@@ -1,7 +1,7 @@
 import re
 
-from core.DB.Turso import ASQL
-from core.empty.obj import EmptyObj
+from core.DB import ASQL
+from core.empty.obj import EmptyObj, typeCommit
 
 
 class DataFetcher:
@@ -10,13 +10,20 @@ class DataFetcher:
     def __init__(self, class_):
         from core.empty.pub import EmptyPub
 
-        self.class_: EmptyPub = class_
-        self._obj_res = None
-        self._data:list[EmptyObj] = []
+        self.class_: EmptyPub.Base = class_
         self._attr = []
         self._dataExt = []
         self._attrExt = []
-        self._old_data = []
+
+    @property
+    def _data(self)->list[EmptyObj]:
+        from core.package.SessionStageManager import SESSION_STAGE
+        return SESSION_STAGE.get_obj()[self.class_.thisLogic().idClass]
+
+    @_data.setter
+    def _data(self, value):
+        from core.package.SessionStageManager import SESSION_STAGE
+        SESSION_STAGE.set_list_obj(self.class_.thisLogic().idClass, value)
 
     def getColumns(self):
         return self._attr + self._attrExt
@@ -25,9 +32,14 @@ class DataFetcher:
         return self._attrExt
 
     def getData(self):
+        def w(d):
+            if hasattr(d, 'typeCommit'):
+                return d.typeCommit != typeCommit.delete
+            return True
+
         if len(self._dataExt) > 0:
-            return list(d.getDict(isNotNone=False) | dE for d, dE in zip(self._data, self._dataExt))
-        return list(d.getDict(isNotNone=False) for d in self._data)
+            return list(d.getDict(isNotNone=False) | dE for d, dE in zip(self._data, self._dataExt) if w(d))
+        return list(d.getDict(isNotNone=False) for d in self._data if  w(d))
 
     def getDateExt(self):
         return self._dataExt
@@ -53,7 +65,7 @@ class DataFetcher:
             sqlAndParam = self._getSqlAndParam(res)
             resSQL = ASQL(*sqlAndParam)
             if not isExt:
-                self._attrExt = list(i for i in resSQL['columns'] if i not in resSQL['data'][0].keys())
+                self._attrExt = list(i for i in resSQL['columns'] if resSQL['data'] != [] and i not in resSQL['data'][0].keys())
                 for i in resSQL["data"]:
                     data.append(self.class_.thisLogic()._createObj(i))
                     self._dataExt.append({i:resSQL['data'][0][i] for i in self._attrExt})

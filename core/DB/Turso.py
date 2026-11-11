@@ -1,4 +1,3 @@
-import re
 from libsql_client import create_client_sync  # Синхронный клиент
 
 from core.package.FileManager import FileManagerPkg
@@ -6,18 +5,6 @@ from core.context import PATH_CONFIG
 from core.package.loggingConfig import get_logger
 
 log = get_logger('core.db')
-
-_RE_FIRST_KEYWORD = re.compile(
-    r"^\s*(?:--[^\n]*\n|\s|/\*.*?\*/)*([A-Za-z]+)",
-    re.DOTALL,
-)
-
-
-def _firstKeyword(SQLstr: str) -> str:
-    """Возвращает ключевое слово, с которого начинается запрос ('insert', 'select', ...)."""
-    m = _RE_FIRST_KEYWORD.match(SQLstr)
-    return m.group(1).lower() if m else ""
-
 
 class DbManager:
     _initialized = False
@@ -38,8 +25,8 @@ class DbManager:
     def ATSQL(self, SQLstr: str, parameters=None):
         self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
-        log.debug("%s %s", " ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
-        c = self.db.execute(SQLstr, parameters or [])
+        log.debug("%s %s", " ".join(SQLstr.replace("\n", " ").strip().split()), parameters)
+        c = self.db.execute(SQLstr, parameters)
         if c.rows:
             d = c.rows[0][0]
         else:
@@ -50,8 +37,8 @@ class DbManager:
         self._ensure_initialized()
         parameters = self.rebaseParameters(parameters)
         
-        log.debug("%s %s", " ".join(SQLstr.replace("\n", " ").strip().split()), parameters or [])
-        result = self.db.execute(SQLstr, parameters or [])
+        log.debug("%s %s", " ".join(SQLstr.replace("\n", " ").strip().split()), parameters)
+        result = self.db.execute(SQLstr, parameters)
         return {
             "columns": list(result.columns),
             "data": [dict(zip(result.columns, row)) for row in result.rows],

@@ -1,8 +1,8 @@
-from core.DB.Turso import ASQL
+from core.DB import ASQL
 from core.dataClass.tabDataClass import tabSchema
 from core.module.sc.object.cls.Sc_ClsLogic import Sc_ClsLogic
 
-SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode")
+SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode", "gid")
 
 
 class TabManager:
@@ -28,7 +28,7 @@ class TabManager:
         Sc_ClsLogic().register(data.name, data.caption)
 
     def _exist_tab(self, data: tabSchema):
-        return ASQL("SELECT * FROM sqlite_sequence WHERE name = ?;", (data.name,))['data'] != []
+        return ASQL("SELECT name FROM sqlite_master WHERE type='table' AND name = ?;", (data.name,))['data'] != []
 
     def _exist_collumn(self, data: tabSchema):
         return ASQL("SELECT * FROM pragma_table_info(?);", (data.name,))

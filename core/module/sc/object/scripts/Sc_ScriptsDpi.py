@@ -12,6 +12,8 @@ class Sc_ScriptsObj(EmptyObj):
 
 class Sc_ScriptsDpi(EmptyLogic[Sc_ScriptsObj]):
     _classObj = Sc_ScriptsObj
+    _attrForHL = ['']
+    _attrForMC = ['sCode']
 
     def _getNameClass(self):
         return "Sc_Scripts"
@@ -22,6 +24,6 @@ class Sc_ScriptsDpi(EmptyLogic[Sc_ScriptsObj]):
     def calcMnemoCode(self, rop:Sc_ScriptsObj)->str:
         return f'{rop.sCode}'
 
-    def setsCode(self, obj:Sc_ScriptsObj, value): obj.sCode = value; self.after_setter(obj)
-    def setidCls(self, obj:Sc_ScriptsObj, value): obj.idCls = value; self.after_setter(obj)
-    def setnVer(self, obj:Sc_ScriptsObj, value): obj.nVer = value; self.after_setter(obj)
+    def setsCode(self, obj:Sc_ScriptsObj, value): obj.sCode = value; self.after_setter(obj, 'sCode')
+    def setidCls(self, obj:Sc_ScriptsObj, value): obj.idCls = value; self.after_setter(obj, 'idCls')
+    def setnVer(self, obj:Sc_ScriptsObj, value): obj.nVer = value; self.after_setter(obj, 'nVer')

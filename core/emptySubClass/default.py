@@ -12,7 +12,8 @@ class Default(Base):
 
         res = super().getSelfAttr(nameAttr)
         if res['isNotValue']:
-            res = self.parentForm.getAttr(nameAttr)
+            if self.parentForm is not None:
+                res = self.parentForm.getAttr(nameAttr)
 
         return res['value'] if isinstance(res, dict) else res
     

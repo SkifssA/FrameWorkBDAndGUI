@@ -50,6 +50,7 @@ class ModuleManagerPkg:
             return self._action(sAction=sAction, kattr=kattr, classMethod=classMethod)
         except Exception as e:
             log.debug("Вызов '%s' завершился с ошибкой: %s", sAction, e)
+            
     def _getModule(self, sNameModule):
         try:
             return importlib.import_module(f"module.{sNameModule}")

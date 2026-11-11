@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from core.DB.Turso import ASQL, ATSQL
+from core.DB import ASQL, ATSQL
 import re
 
 

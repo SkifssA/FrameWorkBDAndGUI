@@ -6,11 +6,15 @@ from core.dataClass.baseDataClass import Base
 class typeCommit(StrEnum):
     insert = 'insert'
     update = 'update'
+    delete = 'delete'
     none = 'none'
 
 @dataclass
 class EmptyObj(Base):
     id: int = None
+    gid: str = None
+    sHeadLine: str = None
+    sMnemoCode: str = None
     typeCommit: str = typeCommit.none
 
     def __str__(self):

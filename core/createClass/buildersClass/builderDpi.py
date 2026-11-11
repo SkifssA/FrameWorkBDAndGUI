@@ -16,6 +16,8 @@ class {name}Obj(EmptyObj):
 
 class {name}Dpi(EmptyLogic[{name}Obj]):
     _classObj = {name}Obj
+    _attrForHL = [\'{attrForHL}\']
+    _attrForMC = [\'{attrForMC}\']
 
     def _getNameClass(self):
         return "{name}"
@@ -51,6 +53,8 @@ class {name}Dpi(EmptyLogic[{name}Obj]):
             attrLines="{attrLines}",
             deleteDetails=self.dictData["deleteDetails"],
             imports=self.__getImports(),
+            attrForHL='\', \''.join(attr.name for attr in self.data.attr if attr.isHeadLine),
+            attrForMC='\', \''.join(attr.name for attr in self.data.attr if attr.isMnemoCode)
         )
         code = (
             stage1.replace("{headLine}", self.dictData["isHeadLine"])
@@ -133,7 +137,7 @@ class {name}Dpi(EmptyLogic[{name}Obj]):
 
     def __getSetter(self):
         tempSet = (
-            "def set{nameAttr}(self, obj:{nameClass}Obj, value): obj.{nameAttr} = value; self.after_setter(obj)"
+            "def set{nameAttr}(self, obj:{nameClass}Obj, value): obj.{nameAttr} = value; self.after_setter(obj, \'{nameAttr}\')"
         )
         listTepmSet = tuple(
             tempSet.format(nameAttr=i.name, nameClass=self.data.name)

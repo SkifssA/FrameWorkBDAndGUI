@@ -15,6 +15,8 @@ class Bc_ScriptSchedulerObj(EmptyObj):
 
 class Bc_ScriptSchedulerDpi(EmptyLogic[Bc_ScriptSchedulerObj]):
     _classObj = Bc_ScriptSchedulerObj
+    _attrForHL = ['']
+    _attrForMC = ['sNameScript']
 
     def _getNameClass(self):
         return "Bc_ScriptScheduler"
@@ -25,9 +27,9 @@ class Bc_ScriptSchedulerDpi(EmptyLogic[Bc_ScriptSchedulerObj]):
     def calcMnemoCode(self, rop:Bc_ScriptSchedulerObj)->str:
         return f'{rop.sNameScript}'
 
-    def setsNameScript(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameScript = value
-    def setsNameModule(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameModule = value
-    def setbRepeat(self, obj:Bc_ScriptSchedulerObj, value): obj.bRepeat = value
-    def setnTime(self, obj:Bc_ScriptSchedulerObj, value): obj.nTime = value
-    def setidTimeLine(self, obj:Bc_ScriptSchedulerObj, value): obj.idTimeLine = value
-    def setbUsed(self, obj:Bc_ScriptSchedulerObj, value): obj.bUsed = value
+    def setsNameScript(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameScript = value; self.after_setter(obj, 'sNameScript')
+    def setsNameModule(self, obj:Bc_ScriptSchedulerObj, value): obj.sNameModule = value; self.after_setter(obj, 'sNameModule')
+    def setbRepeat(self, obj:Bc_ScriptSchedulerObj, value): obj.bRepeat = value; self.after_setter(obj, 'bRepeat')
+    def setnTime(self, obj:Bc_ScriptSchedulerObj, value): obj.nTime = value; self.after_setter(obj, 'nTime')
+    def setidTimeLine(self, obj:Bc_ScriptSchedulerObj, value): obj.idTimeLine = value; self.after_setter(obj, 'idTimeLine')
+    def setbUsed(self, obj:Bc_ScriptSchedulerObj, value): obj.bUsed = value; self.after_setter(obj, 'bUsed')

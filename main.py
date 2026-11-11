@@ -26,3 +26,6 @@ if __name__ == "__main__":
             runServer()
     else:    
         print("Команда не найдена")
+        from core.createClass import createTab
+        validateConfig()
+        createTab("D:\\Desktop\\Помощь\\wwwww\\FrameWorkBDAndGUI")

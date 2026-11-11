@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from dacite import from_dict, Config
 
-from core.DB.Turso import ASQL
+from core.DB import ASQL
 from core.dataClass.baseDataClass import Base
 
 BASE_ATTR = [
@@ -12,6 +12,14 @@ BASE_ATTR = [
         "edit": "edit",
         "isVisible": False,
         "order": -2,
+    },
+    {
+        "name": "gid",
+        "caption": "gid",
+        "type": "TEXT",
+        "edit": "edit",
+        "isVisible": False,
+        "order": -1,
     }
 ]
 
@@ -25,7 +33,7 @@ TYPE_MAPPING: dict[str, str] = {
     "DATE": "TEXT",
 }
 
-SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode")
+SERVICE_COLUMNS = ("id", "sHeadLine", "sMnemoCode", "gid")
 
 
 @dataclass
@@ -80,6 +88,7 @@ class tabSchema(Base):
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         sHeadLine TEXT,
         sMnemoCode TEXT UNIQUE,
+        gid TEXT UNIQUE,
         {columns}
     )
     """

@@ -18,6 +18,8 @@ T = TypeVar('T')
 
 class EmptyLogic(SQLLogic, Generic[T]):
     _classObj: Type[T]
+    _attrForHL = []
+    _attrForMC = []
 
     @abstractmethod
     def calcHeadLine(self, obj: T) -> str: ...
@@ -30,27 +32,49 @@ class EmptyLogic(SQLLogic, Generic[T]):
             typeCommit.insert: self._insert,
             typeCommit.update: self._updateObj
         }
+        self._idClass = None
+
+    @property
+    def idClass(self):
+        from core.module.sc import Sc_ClsLogic
+        if self._idClass is None:
+            self._idClass = Sc_ClsLogic().getByMnemocode(self._getNameClass())
+            if self._idClass is None:
+                return 1
+        return self._idClass.id
 
     def insert(self)->T:
         """Создание новой записи"""
         from core.module.sc import Sc_ClsLogic
         obj:EmptyObj = self._classObj()
         obj.id = Sc_ClsLogic().getID(self._getNameClass())
+        obj.gid = f'{self.idClass}/{obj.id}'
         obj.typeCommit = typeCommit.insert
         return obj
 
-    def after_setter(self, obj:EmptyObj):
+    def after_setter(self, obj:T, sNameAttr:str):
         if obj.typeCommit != typeCommit.insert:
             obj.typeCommit = typeCommit.update
 
+        if sNameAttr in self._attrForHL:
+            obj.sHeadLine = self.calcHeadLine(obj)
+        if sNameAttr in self._attrForMC:
+            obj.sMnemoCode = self.calcMnemoCode(obj)
+
     def delete(self, obj: T):
         """Удаление записи по obj"""
-        return self._deleteById(obj.id)
+        obj.typeCommit = typeCommit.delete
 
     def load(self, id: int) -> T:
         """Получение обьекта по id"""
-        data = self._getById(id)
-        return self._createObj(data=data["data"][0])
+        from core.package.SessionStageManager import SESSION_STAGE
+        w = list(i for i in SESSION_STAGE.get_obj()[self.idClass] if i.id == id)
+        if w == []:
+            data = self._getById(id)
+            if data['data'] != []:
+                return self._createObj(data=data["data"][0])
+            return self._createObj({})
+        return w[0]
 
     def getAll(self) -> list[T]:
         res: list[T] = []
@@ -76,8 +100,6 @@ class EmptyLogic(SQLLogic, Generic[T]):
 
     def commit(self, obj: T):
         value = asdict(obj)
-        value["sHeadLine"] = self.calcHeadLine(obj)
-        value["sMnemoCode"] = self.calcMnemoCode(obj)
         keys = [k for k in value.keys() if k not in ["typeCommit"] + (['id'] if obj.typeCommit == typeCommit.update else [])]
         self.actionCommit[obj.typeCommit](keys, value)
 

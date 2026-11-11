@@ -13,7 +13,7 @@ class Session:
     main_menu_form: Optional[BaseSubClass] = None
     _queue: Optional[asyncio.Queue] = None
     _last_access: float = time.time()
-    
+    _load_obj: dict = field(default_factory=dict)
     
     @property
     def queue(self):

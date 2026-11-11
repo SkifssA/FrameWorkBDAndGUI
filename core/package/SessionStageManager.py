@@ -27,6 +27,12 @@ class SessionStageManager:
 
         return self.session_cach[id_session]
 
+    def get_obj(self):
+        return self._get_session()._load_obj
+
+    def set_list_obj(self, name, lObj):
+        self._get_session()._load_obj[name] = lObj
+
     def get_queue(self):
         return self._get_session().queue
 
@@ -82,5 +88,11 @@ class SessionStageManager:
         if len(session.open_form) <= idx:
             idx -= 1
         return list(session.open_form.keys())[idx] if idx >= 0 else ""
+
+    def commit(self):
+        from core.empty.logic import EmptyLogic
+        for listObj in self._get_session()._load_obj.values():
+            for obj in listObj:
+                EmptyLogic().commit(obj)
 
 SESSION_STAGE = SessionStageManager()
