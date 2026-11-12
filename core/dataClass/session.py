@@ -6,6 +6,22 @@ import time
 from core.emptySubClass.base import Base as BaseSubClass
 
 @dataclass
+class GroupedData:
+    all_items: list = field(default_factory=list)
+    groups: dict = field(default_factory=dict)
+    
+    def add_to_group(self, item, group_name):
+        if item != []:
+            self.all_items.extend(item)
+            self.groups[group_name] = item
+
+    def get_group(self, group_name:str)->list:
+        return self.groups.get(group_name, [])
+
+    def get_all(self):
+        return self.all_items
+    
+@dataclass
 class Session:
     id:str
     active_form: Optional[str] = None
@@ -13,7 +29,7 @@ class Session:
     main_menu_form: Optional[BaseSubClass] = None
     _queue: Optional[asyncio.Queue] = None
     _last_access: float = time.time()
-    _load_obj: dict = field(default_factory=dict)
+    _load_obj: GroupedData = field(default_factory=GroupedData)
     
     @property
     def queue(self):

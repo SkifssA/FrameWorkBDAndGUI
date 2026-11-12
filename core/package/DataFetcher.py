@@ -11,6 +11,7 @@ class DataFetcher:
         from core.empty.pub import EmptyPub
 
         self.class_: EmptyPub.Base = class_
+        self._load_data = []
         self._attr = []
         self._dataExt = []
         self._attrExt = []
@@ -18,12 +19,12 @@ class DataFetcher:
     @property
     def _data(self)->list[EmptyObj]:
         from core.package.SessionStageManager import SESSION_STAGE
-        return SESSION_STAGE.get_obj()[self.class_.thisLogic().idClass]
+        return SESSION_STAGE.get_obj(self.class_.full_name())
 
     @_data.setter
     def _data(self, value):
         from core.package.SessionStageManager import SESSION_STAGE
-        SESSION_STAGE.set_list_obj(self.class_.thisLogic().idClass, value)
+        SESSION_STAGE.set_list_obj(self.class_.full_name(), value)
 
     def getColumns(self):
         return self._attr + self._attrExt

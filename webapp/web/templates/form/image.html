@@ -12,6 +12,8 @@
     <header class="action_panel">
         {{ render_action_buttons(meta) }}
     </header>
+    {% if (data | length) > 1 %}
     <img src="{{ data[0]['urlImg'] }}" alt="{{ data[0]['urlImg'] }}">
+    {% endif %}
 
 </section>

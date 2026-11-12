@@ -80,7 +80,10 @@ def get_template_and_context(form:BaseSubClass)->tuple[str, dict[str, Any]]:
     if form.getInfoMeta()['metaForm']['typeForm'] == 'list':
         context['id_row'] = form.active_row
     elif form.getInfoMeta()['metaForm']['typeForm'] == 'card':
-            context['idItem'] = form.getData()[0]['id']
+        if len(x:=form.getData()) > 0:
+            context['idItem'] = x[0]['id']
+        else:
+            context['idItem'] = None
 
     if form.childrenMeta['bottom'] != []:
         active_form_ch = form.childrenMeta['bottom'][form.active_ch]['metaForm']['name']

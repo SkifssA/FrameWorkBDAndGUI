@@ -19,8 +19,8 @@
     {% if attr.isVisible %}
     <div>
         <label for="{{ attr.name }}-lable">{{ attr.caption }}</label>
-        <input type="text" name="set{{ attr.name }}" value="{{ data[0][attr.name] }}" hx-post="/api/set-attr"
-            hx-trigger="change" hx-swap="none">
+        <input type="text" name="set{{ attr.name }}" value="{{ (data[0][attr.name]) if (data | length) == 1 else '' }}"
+            hx-post="/api/set-attr" hx-trigger="change" hx-swap="none">
     </div>
     {% endif %}
     {% endfor %}

@@ -27,11 +27,25 @@ class SessionStageManager:
 
         return self.session_cach[id_session]
 
-    def get_obj(self):
-        return self._get_session()._load_obj
+    def get_obj(self, nameForm):
+        return self._get_session()._load_obj.get_group(nameForm)
+
+    def get_all_obj(self):
+        return self._get_session()._load_obj.all_items
 
     def set_list_obj(self, name, lObj):
-        self._get_session()._load_obj[name] = lObj
+        current = self._get_session()._load_obj.get_group(name)
+    
+        # Добавляем только уникальные объекты (по id или другому ключу)
+        existing_ids = {obj.id for obj in current if hasattr(obj, 'id')}
+        
+        for obj in lObj:
+            if not hasattr(obj, 'id') or obj.id not in existing_ids:
+                current.append(obj)
+                if hasattr(obj, 'id'):
+                    existing_ids.add(obj.id)
+        
+        self._get_session()._load_obj.add_to_group(current, name)
 
     def get_queue(self):
         return self._get_session().queue

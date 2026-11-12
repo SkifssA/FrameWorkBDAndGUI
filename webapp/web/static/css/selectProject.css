@@ -1,31 +1,35 @@
-/* ===== ЭКРАН ВЫБОРА ПРОЕКТА / ПРИЛОЖЕНИЯ =====
-   Стиль наследует тему mainmenu.css (Catppuccin-подобный тёмный). */
+/* ============================================================
+   SELECTPROJECT.CSS — экран выбора проекта/модуля
+   Наследует токены main.css; --sp-* оставлены как совместимые алиасы.
+   У каждой карточки свой оттенок иконки (цикл из 6 цветов).
+   ============================================================ */
 
 .select-project {
-    --sp-bg: #1e1e2e;
-    --sp-surface: #2d2d3d;
-    --sp-surface-hover: #383848;
-    --sp-border: #3f3f55;
-    --sp-accent: #007acc;
-    --sp-text: #cdd6f4;
-    --sp-text-dim: #9399b2;
+    --sp-bg: var(--bg-2, #1e1e2e);
+    --sp-surface: var(--bg-3, #2d2d3d);
+    --sp-surface-hover: var(--bg-4, #383848);
+    --sp-border: var(--line, #3f3f55);
+    --sp-accent: var(--ac, #89b4fa);
+    --sp-text: var(--tx-1, #cdd6f4);
+    --sp-text-dim: var(--tx-2, #a6adc8);
 }
 
-/* Обёртка, когда экран рендерится как отдельная страница (isMain) */
+/* ===== ПОЛНОЭКРАННАЯ СТРАНИЦА (isMain) ===== */
 #openApp.is-page {
-    min-height: 100vh;
+    min-height: calc(100vh - var(--menubar-h, 35px));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40px 24px;
     background:
-        radial-gradient(1200px 600px at 20% -10%, rgba(0, 122, 204, .12), transparent 60%),
-        radial-gradient(900px 500px at 90% 110%, rgba(137, 180, 250, .08), transparent 60%),
+        radial-gradient(1100px 600px at 18% -10%, rgba(137, 180, 250, 0.14), transparent 60%),
+        radial-gradient(900px 550px at 88% 112%, rgba(203, 166, 247, 0.12), transparent 60%),
+        radial-gradient(700px 420px at 60% 45%, rgba(116, 199, 236, 0.06), transparent 65%),
         var(--sp-bg);
 }
 
-/* Когда блок подменяется внутри полосы табов — без полноэкранного центрирования */
+/* Внутри полосы табов — без полноэкранного центрирования */
 #openApp:not(.is-page) {
     padding: 16px;
 }
@@ -33,19 +37,30 @@
 /* ===== ЗАГОЛОВОК ===== */
 .sp-header {
     text-align: center;
-    margin-bottom: 28px;
-    animation: sp-fade-up .45s ease both;
+    margin-bottom: 30px;
+    animation: sp-fade-up 0.45s ease both;
 }
 
 .sp-title {
-    font-size: 26px;
-    font-weight: 600;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
     color: var(--sp-text);
-    letter-spacing: .3px;
+}
+
+/* Градиентный текст — только там, где поддерживается */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .sp-title {
+        background: linear-gradient(100deg, var(--sp-text) 15%, var(--sp-accent) 55%, var(--ac-3, #cba6f7) 95%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
 }
 
 .sp-subtitle {
-    margin-top: 6px;
+    margin-top: 8px;
     font-size: 13px;
     color: var(--sp-text-dim);
 }
@@ -53,19 +68,49 @@
 /* ===== СЕТКА КАРТОЧЕК ===== */
 .sp-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 16px;
     width: 100%;
-    max-width: 860px;
+    max-width: 880px;
 }
 
-/* ===== КАРТОЧКА =====
-   Обёртка div[data-push-url] сама является элементом сетки —
-   так grid-свойства применяются к карточке напрямую. */
+/* Обёртка div[data-push-url] сама является элементом сетки */
 .sp-grid>[data-push-url] {
     display: flex;
 }
 
+/* Индивидуальный оттенок иконки для каждой карточки */
+.sp-grid> :nth-child(6n+1) {
+    --tile-a: #1f6feb;
+    --tile-b: #388bfd;
+}
+
+.sp-grid> :nth-child(6n+2) {
+    --tile-a: #8957e5;
+    --tile-b: #a371f7;
+}
+
+.sp-grid> :nth-child(6n+3) {
+    --tile-a: #0d9488;
+    --tile-b: #2dd4bf;
+}
+
+.sp-grid> :nth-child(6n+4) {
+    --tile-a: #e11d48;
+    --tile-b: #fb7185;
+}
+
+.sp-grid> :nth-child(6n+5) {
+    --tile-a: #d97706;
+    --tile-b: #fbbf24;
+}
+
+.sp-grid> :nth-child(6n+6) {
+    --tile-a: #16a34a;
+    --tile-b: #4ade80;
+}
+
+/* ===== КАРТОЧКА ===== */
 a.select-app {
     position: relative;
     flex: 1 1 auto;
@@ -73,45 +118,45 @@ a.select-app {
     align-items: center;
     gap: 14px;
     padding: 18px 20px;
-    background: var(--sp-surface);
+    background: linear-gradient(160deg, rgba(205, 214, 244, 0.04), transparent 45%), var(--sp-surface);
     border: 1px solid var(--sp-border);
-    border-radius: 12px;
+    border-radius: var(--radius-l, 14px);
     color: var(--sp-text);
     font-size: 15px;
     text-decoration: none;
     cursor: pointer;
     overflow: hidden;
     transition:
-        transform .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease,
-        background .18s ease;
-    animation: sp-fade-up .45s ease both;
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+    animation: sp-fade-up 0.45s ease both;
 }
 
 /* Каскадная анимация появления карточек */
 .sp-grid> :nth-child(1) a.select-app {
-    animation-delay: .05s;
+    animation-delay: 0.05s;
 }
 
 .sp-grid> :nth-child(2) a.select-app {
-    animation-delay: .12s;
+    animation-delay: 0.12s;
 }
 
 .sp-grid> :nth-child(3) a.select-app {
-    animation-delay: .19s;
+    animation-delay: 0.19s;
 }
 
 .sp-grid> :nth-child(4) a.select-app {
-    animation-delay: .26s;
+    animation-delay: 0.26s;
 }
 
 .sp-grid> :nth-child(5) a.select-app {
-    animation-delay: .33s;
+    animation-delay: 0.33s;
 }
 
 .sp-grid> :nth-child(n+6) a.select-app {
-    animation-delay: .40s;
+    animation-delay: 0.40s;
 }
 
 /* Иконка-инициал модуля */
@@ -126,9 +171,9 @@ a.select-app::before {
     border-radius: 10px;
     font-size: 18px;
     font-weight: 700;
-    color: #fff;
-    background: linear-gradient(135deg, var(--sp-accent), #5a9fd8);
-    box-shadow: 0 4px 10px rgba(0, 122, 204, .25);
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--tile-a, #1f6feb), var(--tile-b, #388bfd));
+    box-shadow: 0 4px 12px rgba(17, 17, 27, 0.4);
 }
 
 /* Стрелка «открыть» */
@@ -140,25 +185,25 @@ a.select-app::after {
     color: var(--sp-text-dim);
     transform: translateX(-4px);
     opacity: 0;
-    transition: transform .18s ease, opacity .18s ease, color .18s ease;
+    transition: transform 0.18s ease, opacity 0.18s ease, color 0.18s ease;
 }
 
-/* Акцентная линия сверху при наведении */
+/* Акцентная линия слева при наведении — в цвет иконки */
 a.select-app .sp-glow {
     position: absolute;
     inset: 0 auto 0 0;
     width: 3px;
-    background: var(--sp-accent);
+    background: linear-gradient(180deg, var(--tile-a, #1f6feb), var(--tile-b, #388bfd));
     transform: scaleY(0);
     transform-origin: top;
-    transition: transform .2s ease;
+    transition: transform 0.2s ease;
 }
 
 a.select-app:hover {
-    background: var(--sp-surface-hover);
+    background: linear-gradient(160deg, rgba(205, 214, 244, 0.05), transparent 45%), var(--sp-surface-hover);
     border-color: var(--sp-accent);
     transform: translateY(-3px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
+    box-shadow: 0 12px 28px rgba(17, 17, 27, 0.55), 0 0 0 1px rgba(137, 180, 250, 0.12);
 }
 
 a.select-app:hover .sp-glow {
@@ -177,13 +222,13 @@ a.select-app:focus-visible {
 }
 
 a.select-app:active {
-    transform: translateY(-1px) scale(.99);
+    transform: translateY(-1px) scale(0.99);
 }
 
 /* Индикатор загрузки htmx на карточке */
 a.select-app.htmx-request {
     cursor: wait;
-    opacity: .75;
+    opacity: 0.75;
 }
 
 /* ===== СОСТОЯНИЕ «ПУСТО» ===== */
@@ -191,7 +236,9 @@ a.select-app.htmx-request {
     text-align: center;
     color: var(--sp-text-dim);
     font-size: 14px;
-    padding: 30px 0;
+    padding: 34px 24px;
+    border: 1px dashed var(--sp-border);
+    border-radius: var(--radius-m, 10px);
 }
 
 /* ===== АНИМАЦИИ ===== */

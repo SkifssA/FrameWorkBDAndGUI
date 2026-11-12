@@ -20,6 +20,7 @@ class EmptyLogic(SQLLogic, Generic[T]):
     _classObj: Type[T]
     _attrForHL = []
     _attrForMC = []
+    _idClass = None
 
     @abstractmethod
     def calcHeadLine(self, obj: T) -> str: ...
@@ -32,16 +33,17 @@ class EmptyLogic(SQLLogic, Generic[T]):
             typeCommit.insert: self._insert,
             typeCommit.update: self._updateObj
         }
-        self._idClass = None
+        
 
     @property
     def idClass(self):
         from core.module.sc import Sc_ClsLogic
-        if self._idClass is None:
-            self._idClass = Sc_ClsLogic().getByMnemocode(self._getNameClass())
-            if self._idClass is None:
+        if self.__class__._idClass is None:
+            w = Sc_ClsLogic().getByMnemocode(self._getNameClass())
+            if w is None:
                 return 1
-        return self._idClass.id
+            self.__class__._idClass = w.id
+        return self.__class__._idClass
 
     def insert(self)->T:
         """Создание новой записи"""
@@ -68,7 +70,7 @@ class EmptyLogic(SQLLogic, Generic[T]):
     def load(self, id: int) -> T:
         """Получение обьекта по id"""
         from core.package.SessionStageManager import SESSION_STAGE
-        w = list(i for i in SESSION_STAGE.get_obj()[self.idClass] if i.id == id)
+        w = list(i for i in SESSION_STAGE.get_all_obj() if hasattr(i, 'gid') and i.gid == f'{self.idClass}/{id}')
         if w == []:
             data = self._getById(id)
             if data['data'] != []:

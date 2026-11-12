@@ -1,3 +1,9 @@
+/* ============================================================
+   BASEFORM.CSS — каркас формы с ресайзом панелей
+   left | main | right, внутри main — bottom.
+   Ручки ресайза подсвечиваются акцентом при наведении/перетаскивании.
+   ============================================================ */
+
 /* ===== СБРОС ===== */
 #closeForm.form,
 #closeForm.form * {
@@ -10,9 +16,11 @@
     flex-direction: row;
     align-items: stretch;
     width: 100%;
-    height: 100vh;
+    /* вычитаем высоту фиксированного menubar, чтобы форма не уходила за экран */
+    height: calc(100vh - var(--menubar-h, 35px));
     overflow: hidden;
     position: relative;
+    background: var(--bg-2, #1e1e2e);
 }
 
 /* ===== РУЧКИ РЕСАЙЗА ===== */
@@ -20,17 +28,37 @@
     flex-shrink: 0;
     position: relative;
     z-index: 10;
-    transition: background 0.15s;
+    background: var(--bg-1, #181825);
+    transition: background 0.15s ease;
+    touch-action: none;
+    /* корректный pointer-drag на тач-устройствах */
 }
 
-/* Горизонтальная ручка (между left/main/right) */
+/* Тонкая линия-индикатор по центру ручки */
+.resize-handle::after {
+    content: '';
+    position: absolute;
+    background: var(--line, #3f3f55);
+    border-radius: 2px;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Горизонтальные ручки (между left/main/right) */
 .resize-handle[data-target="left"],
 .resize-handle[data-target="right"] {
     flex: 0 0 8px !important;
     min-width: 8px !important;
     max-width: 8px !important;
-    background: #e94560;
     cursor: col-resize;
+}
+
+.resize-handle[data-target="left"]::after,
+.resize-handle[data-target="right"]::after {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
 }
 
 /* Вертикальная ручка (между main/bottom) */
@@ -39,23 +67,37 @@
     min-height: 8px !important;
     max-height: 8px !important;
     width: 100%;
-    background: #e94560;
     cursor: row-resize;
+}
+
+.resize-handle[data-target="bottom"]::after {
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    transform: translateY(-50%);
 }
 
 .resize-handle:hover,
 .resize-handle.is-dragging {
-    background: #ff6b6b;
+    background: var(--ac-soft, rgba(137, 180, 250, 0.14));
+}
+
+.resize-handle:hover::after,
+.resize-handle.is-dragging::after {
+    background: var(--ac, #89b4fa);
+    box-shadow: 0 0 8px rgba(137, 180, 250, 0.55);
 }
 
 /* ===== БОКОВЫЕ ПАНЕЛИ (left/right) ===== */
 #closeForm.form .left,
 #closeForm.form .right {
     flex: 0 0 300px;
-    overflow: hidden;
     flex-shrink: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    background: var(--bg-1, #181825);
 }
 
 /* ===== ГЛАВНАЯ ПАНЕЛЬ ===== */
@@ -65,21 +107,23 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    /* 🔥 Вертикальная раскладка для bottom */
+    /* вертикальная раскладка для bottom */
+    background: var(--bg-2, #1e1e2e);
 }
 
 /* ===== НИЖНЯЯ ПАНЕЛЬ ===== */
 #closeForm.form .bottom {
     flex: 0 0 200px;
-    overflow: hidden;
     flex-shrink: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--line, #3f3f55);
+    background: var(--bg-1, #181825);
 }
 
-/* Прямые дети .main не сжимаются по вертикали */
-#closeForm.form .main>*:not(.bottom):not(.resize-handle) {
+/* Контент main растягивается, но умеет сжиматься и скроллиться */
+#closeForm.form .main> :not(.bottom):not(.resize-handle) {
     flex: 1 1 auto;
     min-height: 0;
     overflow: auto;
@@ -90,7 +134,7 @@
     #closeForm.form {
         flex-direction: column;
         height: auto;
-        min-height: 100vh;
+        min-height: calc(100vh - var(--menubar-h, 35px));
     }
 
     #closeForm.form .left,

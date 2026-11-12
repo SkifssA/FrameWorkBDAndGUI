@@ -1,30 +1,23 @@
-/* === БАЗОВЫЕ СТИЛИ === */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* ============================================================
+   MAINMENU.CSS — верхнее меню и полоса табов
+   Токены — из main.css (с fallback на случай отдельной загрузки).
+   Базовые стили body живут в main.css.
+   ============================================================ */
 
-body {
-    background: #1e1e2e;
-    font-family: 'Segoe UI', sans-serif;
-    color: #ccc;
-    padding-top: 35px;
-}
-
-/* === ВЕРХНЕЕ МЕНЮ === */
+/* ===== ВЕРХНЕЕ МЕНЮ ===== */
 .menubar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 35px;
+    height: var(--menubar-h, 35px);
     display: flex;
     align-items: center;
-    background: #3c3c4a;
+    background: linear-gradient(180deg, var(--bg-4, #383848), var(--bg-3, #2d2d3d));
+    border-bottom: 1px solid var(--bg-0, #11111b);
+    box-shadow: 0 1px 0 rgba(137, 180, 250, 0.08), 0 2px 10px rgba(17, 17, 27, 0.45);
     z-index: 1000;
     user-select: none;
-    border-bottom: 1px solid #2b2b36;
 }
 
 .menu-item {
@@ -35,28 +28,59 @@ body {
     align-items: center;
     cursor: pointer;
     font-size: 13px;
+    color: var(--tx-2, #a6adc8);
+    background: transparent;
+    /* нейтрализуем глобальный стиль кнопок */
+    border: 0;
+    transition: background var(--speed, 0.18s) var(--ease, ease),
+        color var(--speed, 0.18s) var(--ease, ease);
+}
+
+/* Акцентное подчёркивание активного пункта */
+.menu-item::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+    background: linear-gradient(90deg, var(--ac, #89b4fa), var(--ac-3, #cba6f7));
+    transform: scaleX(0);
+    transition: transform var(--speed, 0.18s) var(--ease, ease);
 }
 
 .menu-item:hover,
 .menu-item.active {
-    background: #50506a;
+    background: var(--bg-5, #45475a);
+    color: var(--tx-1, #cdd6f4);
 }
 
+.menu-item:hover::after,
+.menu-item.active::after {
+    transform: scaleX(1);
+}
+
+/* ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== */
 .dropdown {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
     min-width: 260px;
-    background: #2d2d3d;
-    border: 1px solid #555;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+    background: rgba(45, 45, 61, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--line, #3f3f55);
+    border-radius: var(--radius-m, 10px);
+    box-shadow: var(--shadow-pop, 0 16px 40px rgba(17, 17, 27, 0.6));
     z-index: 1001;
-    padding: 4px 0;
+    padding: 6px;
 }
 
 .menu-item.active .dropdown {
     display: block;
+    animation: mm-drop-in 0.16s var(--ease, ease);
 }
 
 .dd-item {
@@ -64,62 +88,89 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 20px;
+    width: 100%;
+    padding: 7px 12px;
     font-size: 13px;
+    color: var(--tx-2, #a6adc8);
     cursor: pointer;
+    background: transparent;
+    /* нейтрализуем глобальный стиль кнопок */
+    border: 0;
+    border-radius: var(--radius-s, 6px);
+    text-align: left;
+    transition: background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
 }
 
 .dd-item:hover {
-    background: #094771;
-    color: #fff;
+    background: var(--ac-soft, rgba(137, 180, 250, 0.14));
+    color: var(--tx-1, #cdd6f4);
+    box-shadow: inset 2px 0 0 var(--ac, #89b4fa);
 }
 
+/* Горячие клавиши — как kbd-чипы */
 .dd-item .shortcut {
-    color: #888;
-    font-size: 12px;
+    color: var(--tx-3, #7f849c);
+    font-family: var(--font-mono, Consolas, monospace);
+    font-size: 11px;
     margin-left: 30px;
+    padding: 1px 7px;
+    background: var(--bg-2, #1e1e2e);
+    border: 1px solid var(--line, #3f3f55);
+    border-radius: 5px;
+    transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.dd-item:hover .shortcut {
+    color: var(--tx-2, #a6adc8);
+    border-color: var(--ac, #89b4fa);
 }
 
 .separator {
     height: 1px;
-    background: #444;
-    margin: 4px 0;
+    margin: 5px 10px;
+    background: linear-gradient(90deg, transparent, var(--line, #3f3f55), transparent);
 }
 
-/* ПОДМЕНЮ */
+/* ===== ПОДМЕНЮ ===== */
 .submenu {
     display: none;
     position: absolute;
     left: 100%;
-    top: -5px;
-    min-width: 200px;
-    background: #2d2d3d;
-    border: 1px solid #555;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+    top: -6px;
+    min-width: 210px;
+    background: rgba(45, 45, 61, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--line, #3f3f55);
+    border-radius: var(--radius-m, 10px);
+    box-shadow: var(--shadow-pop, 0 16px 40px rgba(17, 17, 27, 0.6));
     z-index: 1002;
-    padding: 4px 0;
+    padding: 6px;
 }
 
 .dd-item.has-submenu:hover>.submenu {
     display: block;
+    animation: mm-sub-in 0.16s var(--ease, ease);
 }
 
 .arrow {
     font-size: 10px;
     margin-left: 10px;
-    color: #888;
+    color: var(--tx-3, #7f849c);
+    transition: color 0.12s ease, transform 0.12s ease;
 }
 
 .dd-item:hover .arrow {
-    color: #fff;
+    color: var(--ac, #89b4fa);
+    transform: translateX(2px);
 }
 
-/* === ПОЛОСА ТАБОВ === */
+/* ===== ПОЛОСА ТАБОВ ===== */
 .forms-bar {
     display: flex;
     flex-wrap: wrap;
-    background: #2d2d3d;
-    border-bottom: 1px solid #1e1e2e;
+    background: var(--bg-1, #181825);
+    border-bottom: 1px solid var(--bg-0, #11111b);
     overflow-x: visible;
     overflow-y: auto;
     min-height: 35px;
@@ -128,20 +179,24 @@ body {
     width: 100%;
 }
 
-/* ЕДИНСТВЕННЫЙ блок .form-tab */
 .form-tab {
+    position: relative;
     display: flex;
     align-items: center;
-    padding: 0 15px;
+    height: 35px;
+    padding: 0 14px;
     width: max-content;
     flex-shrink: 0;
     font-size: 13px;
-    color: #969696;
+    color: var(--tx-3, #7f849c);
     text-decoration: none;
-    border-right: 1px solid #1e1e2e;
-    border-bottom: 1px solid #1e1e2e;
-    transition: all 0.2s;
+    border-right: 1px solid var(--bg-0, #11111b);
+    border-bottom: 1px solid var(--bg-0, #11111b);
+    border-top: 2px solid transparent;
+    /* резерв под индикатор активного таба */
     white-space: nowrap;
+    transition: background var(--speed, 0.18s) ease, color var(--speed, 0.18s) ease;
+    animation: mm-tab-in 0.2s var(--ease, ease);
 }
 
 .form-tab span {
@@ -155,17 +210,18 @@ body {
     border-right: none;
 }
 
-.form-tab.active {
-    background: #1e1e2e;
-    color: #fff;
-    border-top: 2px solid #007acc;
-    pointer-events: none;
-    cursor: default;
+.form-tab:hover {
+    background: var(--bg-3, #2d2d3d);
+    color: var(--tx-1, #cdd6f4);
 }
 
-.form-tab:hover {
-    background: #383848;
-    color: #fff;
+.form-tab.active {
+    background: var(--bg-2, #1e1e2e);
+    color: #ffffff;
+    border-top: 2px solid var(--ac, #89b4fa);
+    box-shadow: inset 0 10px 14px -12px rgba(137, 180, 250, 0.55);
+    pointer-events: none;
+    cursor: default;
 }
 
 .close-tab {
@@ -173,12 +229,14 @@ body {
     background: none;
     border: none;
     color: inherit;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1;
     opacity: 0;
-    transition: opacity 0.2s;
-    padding: 0 2px;
+    padding: 2px 5px;
+    border-radius: 5px;
     cursor: pointer;
     flex-shrink: 0;
+    transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
 .form-tab:hover .close-tab,
@@ -187,11 +245,48 @@ body {
 }
 
 .close-tab:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    background: rgba(243, 139, 168, 0.18);
+    color: var(--err, #f38ba8);
 }
 
 .form-tab.active .close-tab {
     pointer-events: auto;
     cursor: pointer;
+}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes mm-drop-in {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes mm-sub-in {
+    from {
+        opacity: 0;
+        transform: translateX(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes mm-tab-in {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

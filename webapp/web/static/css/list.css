@@ -1,85 +1,114 @@
-/* ===== ОБЁРТКА ===== */
+/* ============================================================
+   LIST.CSS — таблицы-списки (DviList), полностью тёмные
+   Дублирует табличный блок main.css — оба файла дают одинаковый
+   результат, какой бы из них ни загрузился.
+   ============================================================ */
+
 .table-wrap {
     flex: 1 1 auto;
     min-height: 0;
     min-width: 0;
-    /* 🔥 КРИТИЧНО! Без этого flex-элемент не умеет сжиматься и скроллиться */
     overflow: auto;
-    /* Скролл по обеим осям */
+    overscroll-behavior: contain;
     position: relative;
+    background: var(--bg-1, #181825) !important;
+    border: 1px solid var(--line, #3f3f55);
+    border-radius: var(--radius-m, 10px);
 }
 
-/* ===== ТАБЛИЦА ===== */
-.table-wrap table {
-    width: 100%;
-    min-width: max-content !important;
-    /* 🔥 ЗАСТАВЛЯЕТ таблицу быть не уже, чем её содержимое */
-    table-layout: auto;
-    /* Разрешаем таблице самой считать ширину колонок */
-}
-
-/* Ячейки */
-.table-wrap td,
-.table-wrap th {
-    white-space: nowrap;
-    /* Запрещаем перенос текста, чтобы таблица росла вширь */
-}
-
-/* Заголовок липкий */
-.table-wrap thead th {
-    position: sticky;
-    top: 0;
-    background: #fff;
-    z-index: 2;
-    font-weight: 600;
-}
-
-/* ===== ТВОЙ СУЩЕСТВУЮЩИЙ CSS (без изменений) ===== */
-
-/* Базовые стили для таблицы, чтобы цвета не ломали границы */
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     width: 100%;
+    background: var(--bg-1, #181825) !important;
+}
+
+.table-wrap table {
+    min-width: max-content !important;
+    table-layout: auto !important;
+    font-size: 13px;
 }
 
 td,
 th {
-    padding: 8px;
-    border: 1px solid #ddd;
-}
-
-/* Сама покраска при наведении */
-tbody tr:hover {
-    background-color: #f5f5f5;
-    cursor: pointer;
-}
-
-/* Красим саму строку */
-tr.active {
-    background-color: #e2eafc;
-}
-
-/* ГЛАВНОЕ: заставляем ячейки унаследовать фон строки */
-tr.active td {
-    background-color: inherit;
-}
-
-/* ===== НОВОЕ: Улучшения для скролл-контейнера ===== */
-.table-wrap table {
-    table-layout: fixed;
+    padding: 8px 14px;
+    border: 1px solid var(--line-soft, rgba(205, 214, 244, 0.07)) !important;
+    text-align: left;
+    color: var(--tx-1, #cdd6f4) !important;
 }
 
 .table-wrap td,
 .table-wrap th {
+    white-space: nowrap;
+    max-width: 340px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
-.table-wrap thead th {
+th,
+thead th,
+thead td,
+.table-wrap th,
+.table-wrap thead th,
+.table-wrap thead td {
+    background: linear-gradient(180deg, var(--bg-4, #383848), var(--bg-3, #2d2d3d)) !important;
+    color: var(--tx-2, #a6adc8) !important;
+    border-color: var(--line, #3f3f55) !important;
+    font-weight: 600;
+}
+
+.table-wrap thead th,
+.table-wrap thead td {
     position: sticky;
     top: 0;
-    background: #fff;
     z-index: 2;
-    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+}
+
+tbody tr {
+    cursor: pointer;
+    transition: background 0.12s ease;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(205, 214, 244, 0.02);
+}
+
+tbody tr:hover {
+    background: rgba(137, 180, 250, 0.08) !important;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tr.active,
+tbody tr.active,
+.table-wrap tr.active,
+tr.selected,
+tbody tr.selected,
+tbody tr[aria-selected="true"] {
+    background: rgba(137, 180, 250, 0.16) !important;
+    color: var(--tx-1, #cdd6f4) !important;
+}
+
+tr.active td,
+tr.active th,
+.table-wrap tr.active td,
+.table-wrap tr.active th,
+tr.selected td,
+tr.selected th,
+tbody tr[aria-selected="true"] td,
+tbody tr[aria-selected="true"] th {
+    background: inherit !important;
+    color: var(--tx-1, #cdd6f4) !important;
+}
+
+tr.active td:first-child,
+.table-wrap tr.active td:first-child,
+tr.selected td:first-child {
+    box-shadow: inset 3px 0 0 var(--ac, #89b4fa);
 }
