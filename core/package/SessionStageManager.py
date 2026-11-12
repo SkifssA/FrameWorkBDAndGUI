@@ -54,8 +54,7 @@ class SessionStageManager:
         """Получить главное меню"""
         session = self._get_session()
         if sNameMainMenu:
-            if session.main_menu_form is None:
-                session.main_menu_form = validateOpenClass(sNameMainMenu)
+            session.main_menu_form = validateOpenClass(sNameMainMenu)
 
         return session.main_menu_form
 

@@ -28,4 +28,4 @@ if __name__ == "__main__":
         print("Команда не найдена")
         from core.createClass import createTab
         validateConfig()
-        createTab("D:\\Desktop\\Помощь\\wwwww\\FrameWorkBDAndGUI")
+        createTab(os.path.dirname(os.path.abspath(__file__)))
