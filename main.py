@@ -26,6 +26,10 @@ if __name__ == "__main__":
             runServer()
     else:    
         print("Команда не найдена")
-        from core.createClass import createTab
-        validateConfig()
-        createTab(os.path.dirname(os.path.abspath(__file__)))
+
+        from module.bc import Bc_MainMenuPub
+        print(Bc_MainMenuPub.default().getInfoMeta())
+
+        # from core.createClass import createTab
+        # validateConfig()
+        # createTab(os.path.dirname(os.path.abspath(__file__)))

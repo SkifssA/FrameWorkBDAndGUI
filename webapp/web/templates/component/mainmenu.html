@@ -1,0 +1,14 @@
+<div>
+    <!-- 1. Верхнее меню (рендерится только если есть items) -->
+    <nav class="menubar" id="main-menubar">
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/menubar_shoelace.css') }}">
+        {% from 'macro/menubar_shoelace.html' import builder_mainmenu_shoelace %}
+        {{ builder_mainmenu_shoelace(items_for_main_menu) }}
+    </nav>
+
+    <!-- 2. Полоса табов (появляется после openApp) -->
+    <div id="main_menu_form_bar" style="display: none;"></div>
+
+    <!-- 3. Рабочая область -->
+    <div class="main-content"></div>
+</div>

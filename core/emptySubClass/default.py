@@ -20,9 +20,6 @@ class Default(Base):
     def addDepAttr(self, nameAttr:str):
         self._attr_parent_refresh.append({'attr':nameAttr, 'old_value': None})
 
-    def full_name(self):
-        return f'{self.parentForm.full_name() + CHR_SEPARATOR_PARENT if self.parentForm else ''}{self.name()}'
-
     def name(self):
         return FormRef.create(self._get_parent_name(), self.__class__.__name__).getStr()
 

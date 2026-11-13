@@ -1,0 +1,43 @@
+{# ============================================================
+MENUBAR_SHOELACE.HTML — генерация верхнего меню на Shoelace
+============================================================ #}
+
+{% macro builder_sub_mainmenu_shoelace(item, form_name) %}
+{% if item.child %}
+<sl-menu-item>
+    <span>{{ item.label }}</span>
+    <sl-icon name="chevron-right" slot="suffix" class="submenu-arrow"></sl-icon>
+
+    <sl-dropdown slot="submenu" placement="right-start" hoist>
+        <sl-menu>
+            {% for child in item.child %}
+            {{ builder_sub_mainmenu_shoelace(child, form_name) }}
+            {% endfor %}
+        </sl-menu>
+    </sl-dropdown>
+</sl-menu-item>
+{% else %}
+<sl-menu-item value="{{ item.id }}" @click="callOper('{{ item.id }}', '{{ form_name }}')">
+    <span>{{ item.label }}</span>
+    {% if item.shortcut %}
+    <span slot="suffix" class="shortcut">{{ item.shortcut }}</span>
+    {% endif %}
+</sl-menu-item>
+{% endif %}
+{% endmacro %}
+
+
+{% macro builder_mainmenu_shoelace(items) %}
+<div class="menubar-inner">
+    {% for item in items.operForm %}
+    <sl-dropdown placement="bottom-start" hoist>
+        <button slot="trigger" class="menu-trigger">{{ item.label }}</button>
+        <sl-menu>
+            {% for child in item.child %}
+            {{ builder_sub_mainmenu_shoelace(child, items.metaForm.name) }}
+            {% endfor %}
+        </sl-menu>
+    </sl-dropdown>
+    {% endfor %}
+</div>
+{% endmacro %}
