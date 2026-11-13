@@ -1,22 +1,10 @@
-from core.dataClass.formEvent import typeEvent
+from core.dataClass.type import typeEvent
 from core.decorator.oper import Oper
 from core.context import eventSignal
 from core.emptySubClass.base import Base
 from core.dataClass.formRef import FormRef, CHR_SEPARATOR_PARENT
 
-class Default(Base):
-    def getAttr(self, nameAttr:str):
-        prefix = nameAttr.split("$")[0]
-        if prefix.lower() == 'super':
-            return self.parentForm.getAttr(nameAttr[nameAttr.find("$")+1:])
-
-        res = super().getSelfAttr(nameAttr)
-        if res['isNotValue']:
-            if self.parentForm is not None:
-                res = self.parentForm.getAttr(nameAttr)
-
-        return res['value'] if isinstance(res, dict) else res
-    
+class Default(Base):    
     def addDepAttr(self, nameAttr:str):
         self._attr_parent_refresh.append({'attr':nameAttr, 'old_value': None})
 

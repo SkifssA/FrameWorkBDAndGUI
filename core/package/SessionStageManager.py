@@ -3,6 +3,7 @@ from core.context import current_session_id
 from core.package.ModuleManagerPkg import ACTIONDISPATCHER
 from core.dataClass.formRef import FormRef
 from core.emptySubClass.base import Base
+from core.empty.pub import EmptyPub
 
 def validateOpenClass(sNameTab:str, sForm:str = 'Default')->Base:
     class_ = ACTIONDISPATCHER.getClassByName(f"{sNameTab}")
@@ -50,30 +51,13 @@ class SessionStageManager:
     def get_queue(self):
         return self._get_session().queue
 
-    def get_main_menu(self, sNameMainMenu:str=None)->Base:
+    def get_app(self, sNameMainMenu:str=None)->EmptyPub.MainMenu:
         """Получить главное меню"""
         session = self._get_session()
         if sNameMainMenu:
             session.main_menu_form = validateOpenClass(sNameMainMenu)
 
         return session.main_menu_form
-
-    def get_active_form_name(self):
-        return self._get_session().active_form
-
-    def get_active_form(self):
-        return self.get_form(self.get_active_form_name())
-
-    def set_active_form(self, value:str):
-        self._get_session().active_form = value
-
-    def get_open_form(self)->list[dict]:
-        """Получение открытых форм"""
-        return [{'caption': f_object.getInfoMeta()['metaForm']['caption'],
-                'nameClass': f_name[:f_name.find('/')], 
-                'nameForm': f_name[f_name.find('/')+1:], 
-                'name': f_name} \
-                for f_name, f_object in self._get_session().open_form.items()]
 
     def set_open_form(self, value: dict):
         self._get_session().open_form = value

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from core.empty.logic import EmptyLogic
-from core.dataClass.formEvent import typeEvent
+from core.dataClass.type import typeEvent
 from core.decorator.oper import Oper
 from core.emptySubClass.base import Base as emptyBase
 from core.emptySubClass.default import Default as emptyDefault

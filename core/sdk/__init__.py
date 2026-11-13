@@ -27,7 +27,7 @@ from core.emptySubClass.base import Base as BaseSubClass
 from core.decorator import Oper, Setter
 
 from core.dataClass.baseDataClass import Base as BaseDataClass
-from core.dataClass.formEvent import formEvent, typeEvent
+from core.dataClass.formEvent import formEvent
 from core.dataClass.setterEvent import SetterEvent
 from core.dataClass.formRef import FormRef
 
@@ -52,6 +52,9 @@ from core.context import current_session_id
 
 # --- Логер ------------------------------------------------------------------
 from core.package.loggingConfig import get_logger, setup_logging
+
+# --- Типы -------------------------------------------------------------------
+from core.dataClass.type import typeEvent
 
 __all__ = [
     # пути
@@ -83,9 +86,10 @@ __all__ = [
     #Логер
     "setup_logging",
     "get_logger",
+    #Типы
+    "typeEvent",
     #Разное
     "formEvent",
-    "typeEvent",
     "SetterEvent",
     "FormRef",
     "validateConfig"

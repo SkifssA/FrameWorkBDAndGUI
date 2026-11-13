@@ -1,15 +1,7 @@
-from enum import StrEnum
 from dataclasses import dataclass, asdict, field
 import json
 
-class typeEvent(StrEnum):
-    refresh = 'refresh'
-    openForm = 'openForm'
-    open_form_ch = 'open_form_ch'
-    closeForm = 'closeForm'
-    openFormLookUp = 'openFormLookUp'
-    openApp = 'openApp'
-    closeApp = 'closeApp'
+from core.dataClass.type import typeEvent
 
 @dataclass
 class formEvent:

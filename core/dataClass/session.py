@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 import time
 
-from core.emptySubClass.base import Base as BaseSubClass
+from core.empty.pub import EmptyPub
 
 @dataclass
 class GroupedData:
@@ -24,9 +24,7 @@ class GroupedData:
 @dataclass
 class Session:
     id:str
-    active_form: Optional[str] = None
-    open_form: dict[str, BaseSubClass] = field(default_factory=dict)
-    main_menu_form: Optional[BaseSubClass] = None
+    app: Optional[EmptyPub.MainMenu] = None
     _queue: Optional[asyncio.Queue] = None
     _last_access: float = time.time()
     _load_obj: GroupedData = field(default_factory=GroupedData)
