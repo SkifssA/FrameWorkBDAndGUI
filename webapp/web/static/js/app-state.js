@@ -130,14 +130,11 @@ document.addEventListener('alpine:init', () => {
 });
 
 // Глобальная функция для вызова операций из меню
-window.callOper = function (operId, formName) {
-    const url = `/${formName}/Default/action/${operId}`;
+window.callOper = function (operId, formName, sel = 'Default') {
+    const url = `/app/${formName}/${sel}/action/${operId}`;
 
     if (typeof htmx !== 'undefined') {
-        htmx.ajax('GET', url, {
-            target: '#app-content',
-            swap: 'innerHTML'
-        });
+        htmx.ajax('GET', url);
     }
 
     // Закрываем все открытые меню

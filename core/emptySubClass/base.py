@@ -11,6 +11,8 @@ from core.context import eventSignal
 from core.dataClass.type import typeEvent, typeLocat
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 
+DIVIDE_NAME_CLASS = '-'
+
 class Children:
     """Класс управление дочерними формами"""
     def __init__(self, parent: 'Base'):
@@ -20,6 +22,7 @@ class Children:
     def reset(self):
         """Инициализация переменных"""
         self._children:dict[str, 'Base'] = {}
+        self._children_locat:dict[str, dict] = {}
         self.childrenMeta:dict[str, list['Base']] = {
             typeLocat.left: [],
             typeLocat.right: [],
@@ -30,28 +33,57 @@ class Children:
     def set_children(self, form: 'Base', locat=typeLocat.bottom):
         """Установка новой дочерней формы"""
         self._children[form.full_name()] = form
+        self._children_locat[form.full_name()] = {'locat': locat, 'index': len(self.childrenMeta[locat])}
         self.childrenMeta[locat].append(form.getInfoMeta())
 
     def init_meta_parent(self):
         """Первичная инициализация из меты"""
         self.reset()
         for i in self.parent.metaInfo.tabsCh:
-            class_, sel  = i.nameClass, i.repres
-            class_obj = ModuleManagerPkg().getClassByName(class_)
-            sel_obj:'Base' = class_obj._getFormByName(sel)(parentFrom=self.parent)
-            self.set_children(sel_obj, i.location)
+            self._insert_children(i.nameClass, i.repres, i.location)
+
+    def _insert_children(self, class_, sel, location):
+        class_obj = ModuleManagerPkg().getClassByName(class_)
+        sel_obj:'Base' = class_obj._getFormByName(sel)(parentFrom=self.parent)
+        self.set_children(sel_obj, location)
 
     def _get_children(self, form:str)->'Base':
         """????"""
-        w = form.split('.')
-        indexSelf = w.index(self.parent.full_name().split('.')[-1])
+        w = form.split(DIVIDE_NAME_CLASS)
+        indexSelf = w.index(self.parent.full_name().split(DIVIDE_NAME_CLASS)[-1])
         if len(w) == 1 or indexSelf + 1 == len(w):
-            return self
+            return self.parent
         
         ch = self._children[w[indexSelf + 1]]
         if len(w) > 2:
             return ch._children._get_children('.'.join(w[1:]))
         return ch
+
+    def register_children(self, form:str)->'Base':
+        if self._children.get(form) is None:
+            c, s = form.split(DIVIDE_NAME_CLASS)
+            self._insert_children(c, s, typeLocat.bottom)
+
+        return self._children[form]
+
+    def refresh_children(self):
+        for key, value in self._children.items():
+            value.refreshDown()
+
+    def pop(self, nameForm: str):
+        self._children.pop(nameForm, None)
+        w = self._children_locat.pop(nameForm, None)
+        if w:
+            try:
+                self.childrenMeta[w['locat']].pop(w['index'])
+            except IndexError:
+                pass
+
+    def get_index(self, nameForm)->int|None:
+        if x:=self._children_locat.get(nameForm):
+            return x['index']
+        return None
+
 
 class Base(ABC):
     def __init__(self, parentClass, **kwargs):
@@ -110,16 +142,15 @@ class Base(ABC):
             if prefix.lower() == 'super':
                 return self.parentForm.getAttr(nameAttr[nameAttr.find("$")+1:])
     
-            res = super().getSelfAttr(nameAttr)
+            res = self.getSelfAttr(nameAttr)
             if res['isNotValue']:
                 if self.parentForm is not None:
                     res = self.parentForm.getAttr(nameAttr)
     
             return res['value'] if isinstance(res, dict) else res
 
-    def afterSetter(self, nameAttr):
+    def afterSetter(self):
         self.dataFetcher._obj(self.thisObj())
-        return super().afterSetter(nameAttr)
 
     def _get_form(self, nameAttr):
         res = {
@@ -150,7 +181,7 @@ class Base(ABC):
     def getInfoMeta(self):
         metaForm = self.metaInfo.getDict(isNotNone=False)
         metaForm['name'] = self.full_name()
-        metaForm['tabsCh'] = self.childrenMeta
+        metaForm['tabsCh'] = self._children.childrenMeta
         return {
             "operForm": self.registry.get_children_oper(),
             "setterForm": self.registry.setter(),
@@ -166,7 +197,7 @@ class Base(ABC):
         return self._parent_class.get_name()
 
     def full_name(self)->str:
-        return self._get_parent_name()
+        return f'{self._get_parent_name()}{DIVIDE_NAME_CLASS}{self.__class__.__name__}'
 
     def _get_form_event(self, typeEvent: str):
         return formEvent(form=self.full_name()
@@ -184,8 +215,7 @@ class Base(ABC):
     
     def refreshDown(self):
         self.dataFetcher.refresh()
-        for key, value in self.children.items():
-            value.refreshDown()
+        self._children.refresh_children()
 
     def open(self):
         self.refreshDown()
@@ -193,9 +223,13 @@ class Base(ABC):
 
     def _open_ui(self):
         from core.package.SessionStageManager import SESSION_STAGE
-        mm = SESSION_STAGE.get_app()
-        mm._children[typeLocat.bottom] = self
+        app = SESSION_STAGE.get_app()
+        if app._children.get_index(self.full_name()) is not None:
+            eventSignal.send(fromEvent=self._get_form_event(typeEvent.switchTab))
+            return
+        app._children.set_children(self)
         event = self._get_form_event(typeEvent.openForm)
+        event.formObject = self
         eventSignal.send(fromEvent=event)
 
     def _open_ch(self):

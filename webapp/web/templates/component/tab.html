@@ -1,0 +1,4 @@
+<sl-tab slot="nav" panel="{{ itemCh.metaForm.name }}" closable>{{ itemCh.metaForm.caption }}</sl-tab>
+<sl-tab-panel name="{{ itemCh.metaForm.name }}" hx-swap="outerHTML" sse-swap="{{ itemCh.metaForm.name }}">
+    {{ itemCh.metaForm.caption }}
+</sl-tab-panel>

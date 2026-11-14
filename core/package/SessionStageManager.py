@@ -55,36 +55,10 @@ class SessionStageManager:
         """Получить главное меню"""
         session = self._get_session()
         if sNameMainMenu:
-            session.main_menu_form = validateOpenClass(sNameMainMenu)
+            session.app = validateOpenClass(sNameMainMenu)
 
-        return session.main_menu_form
+        return session.app
 
-    def set_open_form(self, value: dict):
-        self._get_session().open_form = value
-
-    def get_form(self, form_name:str, default=None)->Base:
-        """Получение формы"""
-        session = self._get_session()  
-        isMainMenu = (x:=FormRef.createByStr(form_name)).subClsName
-        if isMainMenu:
-            if not any(f == form_name for f in session.open_form.keys()):
-                if default:
-                    default.refresh()
-                    session.open_form[form_name] = default
-                else:
-                    session.open_form[form_name] = validateOpenClass(sNameTab=x.clsName, sForm=x.subClsName)
-            return session.open_form[form_name]
-        return session.main_menu_form
-
-    def remove_from(self, form_name:str)->str:
-        """Удаление форм"""
-        session = self._get_session()
-        keys = list(session.open_form.keys())
-        idx = keys.index(form_name)
-        session.open_form.pop(form_name)
-        if len(session.open_form) <= idx:
-            idx -= 1
-        return list(session.open_form.keys())[idx] if idx >= 0 else ""
 
     def commit(self):
         from core.empty.logic import EmptyLogic

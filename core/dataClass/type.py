@@ -8,6 +8,7 @@ class typeEvent(StrEnum):
     openFormLookUp = 'openFormLookUp'
     openApp = 'openApp'
     closeApp = 'closeApp'
+    switchTab = 'switchTab'
 
 class typeLocat(StrEnum):
     bottom = 'bottom'

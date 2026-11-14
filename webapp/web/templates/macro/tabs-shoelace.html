@@ -1,0 +1,13 @@
+{# ============================================================
+MENUBAR_SHOELACE.HTML — генерация табов на Shoelace
+============================================================ #}
+
+{% macro builder_tabs_shoelace(item) %}
+<div sse-swap="switchTab" hx-swap="none"></div>
+<sl-tab-group placement="bottom" class="tabs-closable-{{ item.metaForm.name }}" hx-swap="beforeend" sse-swap="openForm"
+    hx-on::after-swap="activateNewTab(this)">
+    {% for itemCh in item.bottom %}
+    {% include "component/tab.html" %}
+    {% endfor %}
+</sl-tab-group>
+{% endmacro %}
