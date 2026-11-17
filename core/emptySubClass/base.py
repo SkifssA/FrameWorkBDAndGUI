@@ -12,6 +12,7 @@ from core.dataClass.type import typeEvent, typeLocat
 from core.package.ModuleManagerPkg import ModuleManagerPkg
 
 DIVIDE_NAME_CLASS = '-'
+DIVIDE_FORM = '|'
 
 class Children:
     """Класс управление дочерними формами"""
@@ -84,14 +85,18 @@ class Children:
             return x['index']
         return None
 
+    def get_form(self, nameForm)->'Base':
+        if x:=self._children.get(nameForm):
+            return x
+        return None
 
 class Base(ABC):
     def __init__(self, parentClass, **kwargs):
         self._parent_class = parentClass
         self.dataFetcher = DataFetcher(self)
         self.metaInfo = MetadataManager().get(parentClass.metaFile, self.__class__.__name__)
-        self._children = Children(self)
         self.parentForm:'Base' = kwargs.get('parentFrom')
+        self._children = Children(self)
         self.registry = self._initRegistry()
         self._param = {}
         self._active_row = 0
@@ -196,8 +201,13 @@ class Base(ABC):
     def _get_parent_name(self):
         return self._parent_class.get_name()
 
+    def get_parent_form_name(self):
+        if self.parentForm:
+            return self.parentForm.full_name() + DIVIDE_FORM
+        return ''
+
     def full_name(self)->str:
-        return f'{self._get_parent_name()}{DIVIDE_NAME_CLASS}{self.__class__.__name__}'
+        return f'{self.get_parent_form_name()}{self._get_parent_name()}{DIVIDE_NAME_CLASS}{self.__class__.__name__}'
 
     def _get_form_event(self, typeEvent: str):
         return formEvent(form=self.full_name()
@@ -211,7 +221,7 @@ class Base(ABC):
         return registry
 
     def close(self):
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeForm))
+        eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeForm))
     
     def refreshDown(self):
         self.dataFetcher.refresh()

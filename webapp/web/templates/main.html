@@ -14,6 +14,10 @@
     <script src="https://unpkg.com/htmx-ext-sse@2.2.4/sse.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/bigskysoftware/idiomorph@latest/dist/idiomorph-ext.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6/dist/js/tabulator.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.6.1/dist/css/tabulator.min.css">
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css" />
     <script type="module"
         src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"></script>
@@ -21,17 +25,15 @@
     <!-- 2. Потом app-state.js (БЕЗ defer, чтобы выполнился сразу) -->
     <script src="{{ url_for('static', path='/js/app-state.js') }}"></script>
 
+    <script src="{{ url_for('static', path='/js/tabulator-core.js') }}" defer></script>
+
     <!-- <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}"> -->
 </head>
 
 <body x-data="appState" class="app-shell">
     <div hx-ext="sse" sse-connect="/events">
-
         <main class="openApp" hx-swap="innerHTML" sse-swap="openApp"></main>
-
     </div>
-
-
 </body>
 
 </html>

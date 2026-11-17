@@ -15,6 +15,7 @@ from webapp.logic.var import current_request
 
 from webapp.endpoints.app import router as router_app
 from webapp.endpoints.sys import router as router_sys
+from webapp.endpoints.api import router as router_api
 
 log = get_logger('wepapp')
 
@@ -63,6 +64,7 @@ SECRET_KEY = os.getenv("SESSION_SECRET", "super-secret-key-change-in-production-
 app.mount("/static", StaticFiles(directory="webapp/web/static"), name="static")
 app.include_router(router_app)
 app.include_router(router_sys)
+app.include_router(router_api)
 registrSignal()
 
 

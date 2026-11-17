@@ -27,8 +27,8 @@ if __name__ == "__main__":
     else:    
         print("Команда не найдена")
 
-        from module.bc import Bc_MainMenuPub
-        print(Bc_MainMenuPub.default().getInfoMeta())
+        from module.bc import Bc_ScriptSchedulerPub
+        print(Bc_ScriptSchedulerPub.list().getInfoMeta())
 
         # from core.createClass import createTab
         # validateConfig()
