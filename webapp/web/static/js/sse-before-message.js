@@ -1,4 +1,4 @@
-document.body.addEventListener('htmx:sseBeforeMessage', function (event) {
+document.addEventListener('htmx:sseBeforeMessage', function (event) {
     if (event.detail.type === 'switchTab') {
         try {
             const data = JSON.parse(event.detail.data);

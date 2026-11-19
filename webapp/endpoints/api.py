@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Request, Response, Body
+from fastapi import APIRouter, Request
 
-from core.sdk import eventSignal, typeEvent, SetterEvent, SESSION_STAGE
+from core.sdk import SESSION_STAGE
 
 router = APIRouter(prefix='/api')
 
