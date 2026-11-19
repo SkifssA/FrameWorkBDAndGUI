@@ -1,20 +1,24 @@
-window.activateNewTab = function (group) {
-    // group — это гарантированно тот <sl-tab-group>, на котором висит hx-on
-    if (!group) {
-        console.error('[activateNewTab] group не передан');
-        return;
-    }
+window.activateNewTab = function (element) {
+    const tabGroup = element.closest ? element.closest('sl-tab-group') : element;
+    if (!tabGroup || tabGroup.tagName !== 'SL-TAB-GROUP') return;
 
-    setTimeout(() => {
-        const tabs = group.querySelectorAll('sl-tab[slot="nav"]');
+    // Отсекаем вложенные tab-group
+    if (tabGroup.parentElement.closest('sl-tab-group')) return;
+
+    if (tabGroup.id !== 'main_menu') return;
+
+    requestAnimationFrame(() => {
+        // 🔑 КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: ищем только прямых дочерних табов
+        const tabs = tabGroup.querySelectorAll(':scope > sl-tab[slot="nav"]');
 
         if (tabs.length > 0) {
             const lastTab = tabs[tabs.length - 1];
-            if (lastTab && lastTab.panel) {
-                group.show(lastTab.panel);
-            } else {
-                console.warn('[activateNewTab] У последнего таба нет panel');
+            const panelName = lastTab.getAttribute('panel');
+
+            if (panelName) {
+                console.log('[activateNewTab] ✅ Верхний уровень! Панель:', panelName);
+                tabGroup.show(panelName);
             }
         }
-    }, 50);
+    });
 };

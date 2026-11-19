@@ -27,8 +27,8 @@ if __name__ == "__main__":
     else:    
         print("Команда не найдена")
 
-        from module.bc import Bc_ScriptSchedulerPub
-        print(Bc_ScriptSchedulerPub.list().getInfoMeta())
+        from module.bc import Bc_TimeLinePub
+        print(Bc_TimeLinePub.list().getInfoMeta()['metaForm'])
 
         # from core.createClass import createTab
         # validateConfig()

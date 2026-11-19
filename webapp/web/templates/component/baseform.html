@@ -1,15 +1,2 @@
-<div class="auto-split" data-split-sizes="20,60,20" data-split-min-size="100" data-split-gutter="10"
-    style="display: flex; height: 400px; width: 100%;">
-
-    <div style="padding: 10px; background: #f5f5f5;">Панель слева</div>
-
-    <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
-        <div class="auto-split" data-split-direction="vertical" data-split-sizes="30,70" data-split-min-size="50"
-            data-split-gutter="10" style="display: flex; flex-direction: column; height: 100%; width: 100%;">
-            <div>{% include "component/list.html" %}</div>
-            <div style="background: #f5f5f5;">Нижняя панель</div>
-        </div>
-    </div>
-
-    <div style="padding: 10px; background: #f5f5f5;">Панель справа</div>
-</div>
+{% from 'macro/builder_form.html' import builder_form %}
+{{ builder_form(itemCh) }}

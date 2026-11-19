@@ -31,13 +31,7 @@ class ProcEvent:
         return getHtmlForm('component/mainmenu.html', {'app': form.getInfoMeta()})
 
     def openForm(self, event:formEvent)->str:
-        from webapp.logic.build_client_config import build_table_config_from_meta
-        return getHtmlForm('component/tab.html', 
-                           {
-                               'table_config': build_table_config_from_meta(event.formObject.getInfoMeta())
-                               ,'table_id': event.form
-                               ,'itemCh': event.formObject.getInfoMeta()
-                            })
+        return getHtmlForm('component/tab.html', {'itemCh': event.formObject.getInfoMeta()})
 
     def switchTab(self, event:formEvent)->str:
         return json.dumps({'panel': event.form})

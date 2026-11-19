@@ -1,0 +1,19 @@
+{# ============================================================
+INPUT_CREATE.HTML — ГЕНЕРАЦИЯ INPUT
+============================================================ #}
+
+{% macro select_form(itemCh) %}
+<div>
+    {% set form_templates = {
+    'list': 'component/list.html',
+    'card': 'component/card.html'
+    } %}
+
+    {% set tpl = form_templates.get(itemCh.metaForm.typeForm) %}
+    {% if tpl %}
+    {% include tpl %}
+    {% else %}
+    <div>НЕТ ТАКОГО ТИПА ФОРМЫ: {{ itemCh.metaForm.typeForm }}</div>
+    {% endif %}
+</div>
+{% endmacro %}

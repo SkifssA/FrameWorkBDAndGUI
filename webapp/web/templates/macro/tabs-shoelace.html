@@ -4,10 +4,10 @@ MENUBAR_SHOELACE.HTML — генерация табов на Shoelace
 
 {% macro builder_tabs_shoelace(item, bIsMainMenu=False) %}
 <div sse-swap="switchTab" hx-swap="none"></div>
-<sl-tab-group {% if bIsMainMenu %}placement="bottom" {% endif %} class="tabs-closable-{{ item.metaForm.name }}"
-    hx-swap="beforeend" sse-swap="openForm" hx-on::after-swap="activateNewTab(this)">
-    {% for itemCh in item.bottom %}
-    {% include "component/tab.html" %}
+<sl-tab-group class="tabs-closable-{{ item.metaForm.name }}" {% if bIsMainMenu %}placement="bottom" hx-swap="beforeend"
+    sse-swap="openForm" hx-on::after-swap="activateNewTab(this)" id="main_menu" {% endif %}>
+    {% for itemCh in item.metaForm.tabsCh.bottom %}
+    {% include "component/tab.html" with context %}
     {% endfor %}
 </sl-tab-group>
 {% endmacro %}

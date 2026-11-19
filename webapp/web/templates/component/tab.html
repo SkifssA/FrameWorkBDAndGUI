@@ -1,4 +1,6 @@
-<sl-tab slot="nav" panel="{{ itemCh.metaForm.name }}" closable>{{ itemCh.metaForm.caption }}</sl-tab>
+<sl-tab slot="nav" panel="{{ itemCh.metaForm.name }}" {% if '|' not in itemCh.metaForm.name %}closable{% endif %}>{{
+    itemCh.metaForm.caption
+    }}</sl-tab>
 <sl-tab-panel name="{{ itemCh.metaForm.name }}" hx-swap="outerHTML" sse-swap="{{ itemCh.metaForm.name }}">
     {% include "component/baseform.html" %}
 </sl-tab-panel>

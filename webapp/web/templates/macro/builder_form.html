@@ -1,0 +1,36 @@
+{# ============================================================
+INPUT_CREATE.HTML — ГЕНЕРАЦИЯ INPUT
+============================================================ #}
+
+{% macro builder_form(itemCh) %}
+<div class="auto-split" data-split-min-size="100" data-split-gutter="10"
+    style="display: flex; height: 400px; width: 100%;">
+    {% if itemCh.metaForm.tabsCh.left| length > 0 %}
+    <div style="padding: 10px; background: #f5f5f5;">
+        {% for itemChLeft in itemCh.metaForm.tabsCh.left %}
+        {{ builder_form(itemChLeft) }}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+        <div class="auto-split" data-split-direction="vertical" data-split-min-size="50" data-split-gutter="10"
+            style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+            {% from 'macro/select_form.html' import select_form %}
+            {{ select_form(itemCh) }}
+            {% if itemCh.metaForm.tabsCh.bottom| length > 0 %}
+            <div style="background: #f5f5f5;">
+                {% from 'macro/tabs-shoelace.html' import builder_tabs_shoelace %}
+                {{ builder_tabs_shoelace(itemCh, False) }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if itemCh.metaForm.tabsCh.right| length > 0 %}
+    <div style="padding: 10px; background: #f5f5f5;">
+        {% for itemChRight in itemCh.metaForm.tabsCh.right %}
+        {{ builder_form(itemChRight) }}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endmacro %}
