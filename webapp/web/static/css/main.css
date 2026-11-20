@@ -1,0 +1,115 @@
+/* === БАЗОВЫЙ LAYOUT === */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #fff;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-1 {
+    flex: 1;
+    min-height: 0;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.w-full {
+    width: 100%;
+}
+
+/* Скроллируемая панель */
+.panel-scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Тонкие скроллбары */
+.panel-scrollable::-webkit-scrollbar,
+.tabs-content::-webkit-scrollbar,
+sl-tab-panel::part(base)::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.panel-scrollable::-webkit-scrollbar-track,
+.tabs-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.panel-scrollable::-webkit-scrollbar-thumb,
+.tabs-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.panel-scrollable::-webkit-scrollbar-thumb:hover,
+.tabs-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* === SPLIT.JS РАЗДЕЛИТЕЛИ === */
+.gutter {
+    background-color: #cbd5e1 !important;
+    flex-shrink: 0 !important;
+    z-index: 10;
+    transition: background-color 0.2s;
+}
+
+.gutter:hover {
+    background-color: #64748b !important;
+}
+
+.gutter.gutter-horizontal {
+    cursor: col-resize;
+    width: 8px !important;
+}
+
+.gutter.gutter-vertical {
+    cursor: row-resize;
+    height: 8px !important;
+}
+
+/* === ВКЛАДКИ (TABS) === */
+.tabs-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Принудительно заставляем Shoelace tab-group растягиваться и скроллить только контент */
+.tabs-container sl-tab-group {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs-container sl-tab-group::part(base) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs-container sl-tab-panel {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs-container sl-tab-panel::part(base) {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+}

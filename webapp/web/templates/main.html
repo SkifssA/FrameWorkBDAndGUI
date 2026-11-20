@@ -30,11 +30,12 @@
     <script src="{{ url_for('static', path='/js/app-state.js') }}"></script>
 
     <script src="{{ url_for('static', path='/js/tabulator-core.js') }}" defer></script>
+    <script src="{{ url_for('static', path='/js/split-init.js') }}" defer></script>
     <script src="{{ url_for('static', path='/js/activate-new-tab.js') }}"></script>
     <script src="{{ url_for('static', path='/js/close-tab.js') }}"></script>
     <script src="{{ url_for('static', path='/js/sse-before-message.js') }}"></script>
 
-    <!-- <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}">
 </head>
 
 <body x-data="appState" class="app-shell">
