@@ -19,12 +19,12 @@ class DataFetcher:
     @property
     def _data(self)->list[EmptyObj]:
         from core.package.SessionStageManager import SESSION_STAGE
-        return SESSION_STAGE.get_obj(self.class_.full_name())
+        return SESSION_STAGE.get_obj(self.class_.name_form())
 
     @_data.setter
     def _data(self, value):
         from core.package.SessionStageManager import SESSION_STAGE
-        SESSION_STAGE.set_list_obj(self.class_.full_name(), value)
+        SESSION_STAGE.set_list_obj(self.class_.name_form(), value)
 
     def getColumns(self):
         return self._attr + self._attrExt
