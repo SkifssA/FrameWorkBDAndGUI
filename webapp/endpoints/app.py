@@ -20,7 +20,7 @@ async def action_oper(request: Request, nameMainMenu: str):
 
 @router.get("/{nameClass}/action/{nameOper}")
 async def mm_action_oper(request: Request, nameClass:str, nameOper: str):
-    "Операции главного меню"
+    "Операции"
     if form:=SESSION_STAGE.get_app():
         form = form._children._get_children(f'{nameClass}')
         if nameOper in form.getSetterAndOperName():

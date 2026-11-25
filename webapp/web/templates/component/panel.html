@@ -1,4 +1,7 @@
 <section class="panel" data-form-name="{{ itemCh.metaForm.name }}">
-    <header class="panel-header">{{ itemCh.metaForm.caption }}</header>
+    <header class="panel-header">
+        {% from "macro/toolbar.html" import builder_toolbar %}
+        {{ builder_toolbar(itemCh.operForm, itemCh.metaForm.name) }}
+    </header>
     <div class="panel-body" hx-get="/api/meta/{{ itemCh.metaForm.name }}" hx-trigger="load" hx-swap="innerHTML"></div>
 </section>

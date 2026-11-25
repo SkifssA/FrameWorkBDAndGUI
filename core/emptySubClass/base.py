@@ -33,8 +33,9 @@ class Children:
 
     def set_children(self, form: 'Base', locat=typeLocat.bottom):
         """Установка новой дочерней формы"""
-        self._children[form.full_name()] = form
-        self._children_locat[form.full_name()] = {'locat': locat, 'index': len(self.childrenMeta[locat])}
+        form.setParentForm(self.parent)
+        self._children[form.name_form()] = form
+        self._children_locat[form.name_form()] = {'locat': locat, 'index': len(self.childrenMeta[locat])}
         self.childrenMeta[locat].append(form.getInfoMeta())
 
     def init_meta_parent(self):
@@ -50,8 +51,8 @@ class Children:
 
     def _get_children(self, form:str)->'Base':
         """????"""
-        w = form.split(DIVIDE_NAME_CLASS)
-        indexSelf = w.index(self.parent.full_name().split(DIVIDE_NAME_CLASS)[-1])
+        w = form.split(DIVIDE_FORM)
+        indexSelf = w.index(self.parent.name_form())
         if len(w) == 1 or indexSelf + 1 == len(w):
             return self.parent
         
@@ -86,7 +87,7 @@ class Children:
         return None
 
     def get_form(self, nameForm)->'Base':
-        if x:=self._children.get(nameForm):
+        if x:=self._get_children(nameForm):
             return x
         return None
 
@@ -106,6 +107,8 @@ class Base(ABC):
     def setParentForm(self, parentForm):
         self.parentForm = parentForm
         self.metaInfo.name = self.full_name()
+        for i in self._children._children.values():
+            i.setParentForm(self)
 
     def get_oper_handler(self):
         return self.registry._flat_ops_handler
@@ -207,7 +210,10 @@ class Base(ABC):
         return ''
 
     def full_name(self)->str:
-        return f'{self.get_parent_form_name()}{self._get_parent_name()}{DIVIDE_NAME_CLASS}{self.__class__.__name__}'
+        return f'{self.get_parent_form_name()}{self.name_form()}'
+
+    def name_form(self)->str:
+       return f'{self._get_parent_name()}{DIVIDE_NAME_CLASS}{self.__class__.__name__}' 
 
     def _get_form_event(self, typeEvent: str):
         return formEvent(form=self.full_name()
