@@ -24,10 +24,10 @@ class Children:
         """Инициализация переменных"""
         self._children:dict[str, 'Base'] = {}
         self._children_locat:dict[str, dict] = {}
-        self.childrenMeta:dict[str, list['Base']] = {
-            typeLocat.left: [],
-            typeLocat.right: [],
-            typeLocat.bottom: []
+        self.childrenQ:dict[str, int] = {
+            typeLocat.left: 0,
+            typeLocat.right: 0,
+            typeLocat.bottom: 0
         }
         self.active_ch_bottom = 0
 
@@ -35,8 +35,20 @@ class Children:
         """Установка новой дочерней формы"""
         form.setParentForm(self.parent)
         self._children[form.name_form()] = form
-        self._children_locat[form.name_form()] = {'locat': locat, 'index': len(self.childrenMeta[locat])}
-        self.childrenMeta[locat].append(form.getInfoMeta())
+        self._children_locat[form.name_form()] = {'locat': locat, 'index': self.childrenQ[locat]}
+        self.childrenQ[locat] = self.childrenQ[locat] + 1
+
+    def getMetaAll(self)->dict[str, str]:
+        r = {
+            typeLocat.left: [],
+            typeLocat.right: [],
+            typeLocat.bottom: []
+        }
+
+        for key, value in self._children_locat.items():
+            r[value['locat']].append(self._children[key].getInfoMeta())
+
+        return r
 
     def init_meta_parent(self):
         """Первичная инициализация из меты"""
@@ -58,7 +70,7 @@ class Children:
         
         ch = self._children[w[indexSelf + 1]]
         if len(w) > 2:
-            return ch._children._get_children('.'.join(w[1:]))
+            return ch._children._get_children(DIVIDE_FORM.join(w[1:]))
         return ch
 
     def register_children(self, form:str)->'Base':
@@ -74,12 +86,7 @@ class Children:
 
     def pop(self, nameForm: str):
         self._children.pop(nameForm, None)
-        w = self._children_locat.pop(nameForm, None)
-        if w:
-            try:
-                self.childrenMeta[w['locat']].pop(w['index'])
-            except IndexError:
-                pass
+        self._children_locat.pop(nameForm, None)
 
     def get_index(self, nameForm)->int|None:
         if x:=self._children_locat.get(nameForm):
@@ -189,7 +196,7 @@ class Base(ABC):
     def getInfoMeta(self):
         metaForm = self.metaInfo.getDict(isNotNone=False)
         metaForm['name'] = self.full_name()
-        metaForm['tabsCh'] = self._children.childrenMeta
+        metaForm['tabsCh'] = self._children.getMetaAll()
         return {
             "operForm": self.registry.get_children_oper(),
             "setterForm": self.registry.setter(),
