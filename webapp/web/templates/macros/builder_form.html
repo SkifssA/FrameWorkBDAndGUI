@@ -1,0 +1,66 @@
+{# ============================================================
+INPUT_CREATE.HTML — ГЕНЕРАЦИЯ INPUT
+============================================================ #}
+
+{% macro builder_form(itemCh) %}
+{% set left = itemCh.metaForm.tabsCh.left | length > 0 %}
+{% set right = itemCh.metaForm.tabsCh.right | length > 0 %}
+{% set bottom = itemCh.metaForm.tabsCh.bottom | length > 0 %}
+{# БАЗОВЫЙ СЛУЧАЙ: если детей нет — это конечная форма (лист) #}
+{% if not left and not right and not bottom %}
+{% include 'component/panel.html' %}
+
+{# РЕКУРСИВНЫЙ СЛУЧАЙ: есть дети — строим Holy Grail Grid #}
+{% else %}
+{% set leftStr = 'left vg1 ' if left else '' %}
+{% set rightStr = ' vg2 right' if right else '' %}
+<div class="holy-grail-grid" data-split-grid="{{ itemCh.metaForm.name }}" data-split-min="100" style="
+       grid-template-columns: {% if left %}1fr 6px {% endif %}1fr{% if right %} 6px 1fr{% endif %};
+       {% if bottom %}grid-template-rows: 1fr 6px 1fr;{% endif %}
+       grid-template-areas:
+         '{{ leftStr }}top{{ rightStr }}'
+         {% if bottom %}'{{ leftStr }}hg{{ rightStr }}'{% endif %}
+         {% if bottom %}'{{ leftStr }}bottom{{ rightStr }}'{% endif %};
+     ">
+
+    {% if left %}
+    <!-- Левая панель (на всю высоту) -->
+    <section class="panel" style="grid-area: left;">
+        {% for itemChLeft in itemCh.metaForm.tabsCh.left %}
+        {{ builder_form(itemChLeft) }}
+        {% endfor %}
+    </section>
+
+    <!-- Вертикальный разделитель 1 (Track 1) -->
+    <div class="gutter gutter-col" data-split-col="1" style="grid-area: vg1;"></div>
+    {% endif %}
+
+    <!-- Верхняя центральная панель -->
+    {% include 'component/panel.html' %}
+
+    {% if bottom %}
+    <!-- Горизонтальный разделитель (Track 1 для строк) -->
+    <div class="gutter gutter-row" data-split-row="1" style="grid-area: hg;"></div>
+    <!-- Нижняя центральная панель -->
+    <section class="panel" style="grid-area: bottom;">
+        {% for itemChBottom in itemCh.metaForm.tabsCh.bottom %}
+        {{ builder_form(itemChBottom) }}
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if right %}
+    <!-- Вертикальный разделитель 2 (Track 3) -->
+    <div class="gutter gutter-col" data-split-col="{% if left %}3{% else %}1{% endif %}" style="grid-area: vg2;"></div>
+
+    <!-- Правая панель (на всю высоту) -->
+    <section class="panel" style="grid-area: right;">
+        {% for itemChRight in itemCh.metaForm.tabsCh.right %}
+        {{ builder_form(itemChRight) }}
+        {% endfor %}
+    </section>
+    {% endif %}
+
+</div>
+{% endif %}
+{% endmacro %}

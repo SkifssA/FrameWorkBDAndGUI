@@ -17,7 +17,7 @@ MENUBAR_SHOELACE.HTML — генерация верхнего меню на Shoe
     </sl-dropdown>
 </sl-menu-item>
 {% else %}
-<sl-menu-item value="{{ item.id }}" @click="callOper('{{ item.id }}', '{{ form_name }}')">
+<sl-menu-item value="{{ item.id }}" hx-get="/app/{{ form_name  }}/action/{{ item.id }}">
     <span>{{ item.label }}</span>
     {% if item.shortcut %}
     <span slot="suffix" class="shortcut">{{ item.shortcut }}</span>

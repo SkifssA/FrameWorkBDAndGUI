@@ -1,4 +1,5 @@
 document.addEventListener('htmx:sseBeforeMessage', function (event) {
+
     if (event.detail.type === 'switchTab') {
         try {
             const data = JSON.parse(event.detail.data);
@@ -22,4 +23,5 @@ document.addEventListener('htmx:sseBeforeMessage', function (event) {
             console.error('[DIAG switchTab] ❌ Ошибка:', e);
         }
     }
+
 });

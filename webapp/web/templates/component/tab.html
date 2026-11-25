@@ -2,5 +2,6 @@
     itemCh.metaForm.caption
     }}</sl-tab>
 <sl-tab-panel name="{{ itemCh.metaForm.name }}" hx-swap="outerHTML" sse-swap="{{ itemCh.metaForm.name }}">
-    {% include "component/baseform.html" %}
+    {% from "macros/builder_form.html" import builder_form %}
+    {{ builder_form(itemCh) }}
 </sl-tab-panel>

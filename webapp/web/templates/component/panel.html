@@ -1,0 +1,4 @@
+<section class="panel" data-form-name="{{ itemCh.metaForm.name }}">
+    <header class="panel-header">{{ itemCh.metaForm.caption }}</header>
+    <div class="panel-body" hx-get="/api/meta/{{ itemCh.metaForm.name }}" hx-trigger="load" hx-swap="innerHTML"></div>
+</section>

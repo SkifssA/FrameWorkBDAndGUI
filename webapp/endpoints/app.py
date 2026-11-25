@@ -18,14 +18,14 @@ async def action_oper(request: Request, nameMainMenu: str):
     return Response(content="", status_code=204)
 
 
-@router.get("/{nameClass}/{nameForm}/action/{nameOper}")
-async def mm_action_oper(request: Request, nameClass:str, nameForm: str, nameOper: str):
+@router.get("/{nameClass}/action/{nameOper}")
+async def mm_action_oper(request: Request, nameClass:str, nameOper: str):
     "Операции главного меню"
     if form:=SESSION_STAGE.get_app():
-        form = form._children._get_children(nameClass)
+        form = form._children._get_children(f'{nameClass}')
         if nameOper in form.getSetterAndOperName():
             form.get_oper_handler()[nameOper]()
             return Response(content="", status_code=204)
     raise HTTPException(
-        status_code=404, detail=f"В отображении {nameClass}.{nameForm} не найдена операция {nameOper}"
+        status_code=404, detail=f"В отображении {nameClass} не найдена операция {nameOper}"
     )
