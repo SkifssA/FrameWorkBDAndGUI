@@ -43,9 +43,8 @@ INPUT_CREATE.HTML — ГЕНЕРАЦИЯ INPUT
     <div class="gutter gutter-row" data-split-row="1" style="grid-area: hg;"></div>
     <!-- Нижняя центральная панель -->
     <section class="panel" style="grid-area: bottom;">
-        {% for itemChBottom in itemCh.metaForm.tabsCh.bottom %}
-        {{ builder_form(itemChBottom) }}
-        {% endfor %}
+        {% from 'macro/tabs-shoelace.html' import builder_tabs_shoelace %}
+        {{ builder_tabs_shoelace(itemCh, False) }}
     </section>
     {% endif %}
 
