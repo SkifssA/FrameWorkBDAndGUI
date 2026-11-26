@@ -6,14 +6,13 @@ from core.dataClass.type import typeEvent
 @dataclass
 class formEvent:
     type: str
-    form: str
     session_id: str
-    formObject: object | None = None
+    form: object | None = None
     personType: str = field(init=False)
 
     def __post_init__(self):
         if self.type == typeEvent.refresh:
-            self.personType = f"{self.type}:{self.form}" 
+            self.personType = f"{self.type}:{self.form.full_name()}" 
         else:
             self.personType = self.type
 

@@ -3,6 +3,7 @@ from typing import Any
 
 from core.package.DataFetcher import DataFetcher
 from core.fabric.OperRegistry import OperRegistry
+from core.fabric.SetterRegistry import SetterRegistry
 from core.package.MetadataManager import MetadataManager
 from core.empty.logic import EmptyLogic
 from core.dataClass.formEvent import formEvent
@@ -64,11 +65,14 @@ class Children:
     def _get_children(self, form:str)->'Base':
         """????"""
         w = form.split(DIVIDE_FORM)
-        indexSelf = w.index(self.parent.name_form())
+        try:
+            indexSelf = w.index(self.parent.name_form())
+        except ValueError:
+            return None
         if len(w) == 1 or indexSelf + 1 == len(w):
             return self.parent
         
-        ch = self._children[w[indexSelf + 1]]
+        ch = self._children.get(w[indexSelf + 1])
         if len(w) > 2:
             return ch._children._get_children(DIVIDE_FORM.join(w[1:]))
         return ch
@@ -85,8 +89,9 @@ class Children:
             value.refreshDown()
 
     def pop(self, nameForm: str):
-        self._children.pop(nameForm, None)
-        self._children_locat.pop(nameForm, None)
+        nameCh = nameForm.split(DIVIDE_FORM)[-1]
+        self._children.pop(nameCh, None)
+        self._children_locat.pop(nameCh, None)
 
     def get_index(self, nameForm)->int|None:
         if x:=self._children_locat.get(nameForm):
@@ -105,7 +110,8 @@ class Base(ABC):
         self.metaInfo = MetadataManager().get(parentClass.metaFile, self.__class__.__name__)
         self.parentForm:'Base' = kwargs.get('parentFrom')
         self._children = Children(self)
-        self.registry = self._initRegistry()
+        self.opers = OperRegistry(self)
+        self.attr = SetterRegistry(self)
         self._param = {}
         self._active_row = 0
         self._attr_parent_refresh = []
@@ -118,10 +124,10 @@ class Base(ABC):
             i.setParentForm(self)
 
     def get_oper_handler(self):
-        return self.registry._flat_ops_handler
+        return self.opers._flat_ops_handler
 
     def get_setter(self):
-        return self.registry._flat_set_handler
+        return self.attr._flat_set_handler
 
     @property
     def active_row(self):
@@ -198,14 +204,14 @@ class Base(ABC):
         metaForm['name'] = self.full_name()
         metaForm['tabsCh'] = self._children.getMetaAll()
         return {
-            "operForm": self.registry.get_children_oper(),
-            "setterForm": self.registry.setter(),
+            "operForm": self.opers.get_children_oper(),
+            "setterForm": self.attr.get_setter(),
             "metaForm": metaForm,
         }
 
     def getSetterAndOperName(self):
         return [
-            i["id"] for i in self.registry.get_setter() + self.registry.get_oper()
+            i["id"] for i in self.attr.get_setter() + self.opers.get_oper()
         ]
 
     def _get_parent_name(self):
@@ -223,15 +229,9 @@ class Base(ABC):
        return f'{self._get_parent_name()}{DIVIDE_NAME_CLASS}{self.__class__.__name__}' 
 
     def _get_form_event(self, typeEvent: str):
-        return formEvent(form=self.full_name()
+        return formEvent(form=self
                             , type=typeEvent
                             , session_id=current_session_id.get())
-
-    def _initRegistry(self) -> OperRegistry:
-        registry = OperRegistry(self)
-        registry.oper()
-        registry.setter()
-        return registry
 
     def close(self):
         eventSignal.send(fromEvent=self._get_form_event(typeEvent.closeForm))
@@ -247,13 +247,16 @@ class Base(ABC):
     def _open_ui(self):
         from core.package.SessionStageManager import SESSION_STAGE
         app = SESSION_STAGE.get_app()
-        if app._children.get_index(self.full_name()) is not None:
-            eventSignal.send(fromEvent=self._get_form_event(typeEvent.switchTab))
+        self.parentForm = app
+        if (x:=app._children.get_form(self.full_name())) is not None:
+            eventSignal.send(fromEvent=x._get_form_event(typeEvent.switchTab))
             return
         app._children.set_children(self)
         event = self._get_form_event(typeEvent.openForm)
-        event.formObject = self
         eventSignal.send(fromEvent=event)
+
+    def _open_ui_modal(self, nameAttr):
+        pass
 
     def _open_ch(self):
         event = self._get_form_event(typeEvent.open_form_ch)

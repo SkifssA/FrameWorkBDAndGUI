@@ -6,6 +6,7 @@ def Oper(
     order: int = 0,
     headOper: str = None,
     isVisible: bool = True,
+    isDisabled: bool = False,
     icon: str = None,
     shortcut: str = None,
     isCheckable: bool = False,
@@ -18,6 +19,7 @@ def Oper(
         func._order = order
         func._headOper = headOper
         func._isVisible = isVisible
+        func._isDisabled = isDisabled
         func._icon_path = icon
         func._shortcut = shortcut
         func._isCheckable = isCheckable

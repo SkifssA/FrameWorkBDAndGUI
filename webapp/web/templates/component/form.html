@@ -1,2 +1,10 @@
-{% from "macro/select_form.html" import select_form %}
-{{ select_form(itemCh) }}
+<div sse-swap="refresh:{{ itemCh.metaForm.name }}">
+    <header class="panel-header">
+        {% from "macro/toolbar.html" import builder_toolbar %}
+        {{ builder_toolbar(itemCh.operForm, itemCh.metaForm.name) }}
+    </header>
+    <div>
+        {% from "macro/select_form.html" import select_form %}
+        {{ select_form(itemCh) }}
+    </div>
+</div>

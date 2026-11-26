@@ -1,6 +1,6 @@
 import asyncio
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, Any
 import time
 
 from core.empty.pub import EmptyPub
@@ -28,6 +28,7 @@ class Session:
     _queue: Optional[asyncio.Queue] = None
     _last_access: float = time.time()
     _load_obj: GroupedData = field(default_factory=GroupedData)
+    _callback: dict[Any] = field(default_factory=list)
     
     @property
     def queue(self):
@@ -37,3 +38,12 @@ class Session:
             self._queue = w = asyncio.Queue()
             w.name = f"q-{uuid.uuid4().hex[:6]}"
         return w
+
+    def add_callback(self, name:str, obj:Any)->None:
+        self._callback[name] = obj
+
+    def del_callback(self, name:str)->None:
+        self._callback.pop(name, None)
+
+    def get_callback(self, name:str)->Any|None:
+        return self._callback.get(name)

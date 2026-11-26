@@ -1,8 +1,10 @@
 from fastapi import APIRouter, HTTPException, Request, Response, Body
+from concurrent.futures import ThreadPoolExecutor
 
 from core.sdk import eventSignal, typeEvent, SetterEvent, SESSION_STAGE
 
 router = APIRouter(prefix='/app')
+executor = ThreadPoolExecutor(max_workers=20)
 
 @router.post("/close_tab")
 async def close_tab(request: Request, tab_name: str = Body(..., embed=True)):

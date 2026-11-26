@@ -4,6 +4,9 @@ TOOLBAR.HTML — генерация тулбара
 
 {% macro builder_toolbar(listItemToolbar, form_name) %}
 {% for item in listItemToolbar %}
-<sl-button hx-get="/app/{{ form_name  }}/action/{{ item.id }}">{{ item.label }}</sl-button>
+{% if item.isVisible %}
+<sl-button hx-get="/app/{{ form_name  }}/action/{{ item.id }}" {% if item.isDisabled %}disabled{% endif %}>{{ item.label
+    }}</sl-button>
+{% endif %}
 {% endfor %}
 {% endmacro %}

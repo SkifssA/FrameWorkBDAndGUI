@@ -15,10 +15,12 @@ def set_main_loop(loop: asyncio.AbstractEventLoop):
 async def emit_event(event: formEvent):
     """Отправляет событие в очередь текущей сессии"""
     if queue := SESSION_STAGE.get_queue():
+
+        eventType, data = PROC_EVENT.get_str_by_event(event)
         
         await queue.put({
-            "event": event.personType,
-            "data": PROC_EVENT.get_str_by_event(event)
+            "event": eventType,
+            "data": data
         })
 
 def sync_signal_handler(sender, **kwargs):

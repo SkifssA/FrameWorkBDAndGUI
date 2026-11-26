@@ -25,11 +25,11 @@ if __name__ == "__main__":
             validateConfig()
             runServer()
     else:    
-        print("Команда не найдена")
+        # print("Команда не найдена")
 
-        from module.bc import Bc_TimeLinePub
-        print(Bc_TimeLinePub.list().getInfoMeta())
+        # from module.bc import Bc_TimeLinePub
+        # print(Bc_TimeLinePub.list().getInfoMeta())
 
-        # from core.createClass import createTab
-        # validateConfig()
-        # createTab(os.path.dirname(os.path.abspath(__file__)))
+        from core.createClass import createTab
+        validateConfig()
+        createTab(os.path.dirname(os.path.abspath(__file__)))

@@ -1,6 +1,7 @@
-<sl-tab slot="nav" panel="{{ itemCh.metaForm.name }}" {% if '|' not in itemCh.metaForm.name %}closable{% endif %}>{{
-    itemCh.metaForm.caption
-    }}</sl-tab>
+<sl-tab slot="nav" panel="{{ itemCh.metaForm.name }}" {% if itemCh.metaForm.name.split('|') | length < 3 %}closable{%
+    endif %}>
+    {{itemCh.metaForm.caption}}
+</sl-tab>
 <sl-tab-panel name="{{ itemCh.metaForm.name }}" hx-swap="outerHTML" sse-swap="{{ itemCh.metaForm.name }}">
     {% from "macro/builder_form.html" import builder_form %}
     {{ builder_form(itemCh) }}
